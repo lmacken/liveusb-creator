@@ -1,6 +1,22 @@
-# livecd-iso-to-usb.py
-# This script takes a Fedora Live ISO, and installs it on a USB key (in Windows)
+# This tool installs a Fedora LiveCD ISO on to a USB stick, from Windows.
+# For information regarding the installation of Fedora on USB drives, see
+# the wiki: http://fedoraproject.org/wiki/FedoraLiveCD/USBHowTo
+#
+# Copyright 2008  Red Hat, Inc.
 # Authors: Luke Macken <lmacken@redhat.com>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Library General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 import win32file
 import win32api
@@ -46,7 +62,7 @@ class LiveUSBCreator:
             win32file.SetVolumeLabel(self.drive[:-1], self.label)
         else:
             self.label = vol[0]
-    
+
     def findISO(self):
         """
         Look in the current directory for our ISO image.
@@ -107,5 +123,3 @@ if __name__ == '__main__':
         print str(e)
 
     x = raw_input("\nDone!")
-
-# vim:set expandtab ts=4 sw=4:
