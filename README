@@ -1,0 +1,26 @@
+livecd-iso-to-usb
+=================
+
+This tool installs a Fedora LiveCD ISO on to a USB stick, from Windows.
+
+Authors:
+Luke Macken <lmacken@redhat.com>
+
+================================================================================
+
+This tool ships with the following open source software:
+
+   7-Zip
+   http://www.7-zip.org
+   Copyright (C) 1999-2007 Igor Pavlov.
+   7-Zip is free software distributed under the GNU LGPL 
+   (except for unRar code and AES code).
+
+   SYSLINUX
+   http://syslinux.zytor.com/
+   Copyright 1994-2008 H. Peter Anvin - All Rights Reserved
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, Inc., 53 Temple Place Ste 330,
+   Boston MA 02111-1307, USA; either version 2 of the License, or
+   (at your option) any later version; incorporated herein by reference.
