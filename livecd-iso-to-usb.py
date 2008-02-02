@@ -70,7 +70,7 @@ class LiveUSBCreator:
         isos = [item for item in os.listdir(".") if item.endswith(".iso")]
         if not len(isos):
             raise Exception("Cannot find ISO file.  Please drag it into this "
-                            "directory.  If you haven't downloaded Fedora yet,"
+                            "directory.  If you haven't downloaded Fedora yet, "
                             "please visit: http://fedoraproject.org/get-fedora")
         if len(isos) > 1:
             print "I found the following ISOs:"
