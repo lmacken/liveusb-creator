@@ -1,4 +1,4 @@
-# This tool installs a Fedora LiveCD ISO on to a USB stick, from Windows.
+# This tool installs a Fedora Live ISO (F7+) on to a USB stick, from Windows.
 # For information regarding the installation of Fedora on USB drives, see
 # the wiki: http://fedoraproject.org/wiki/FedoraLiveCD/USBHowTo
 #
@@ -45,9 +45,9 @@ class LiveUSBCreator:
         elif len(drives) > 1:
             drives[0] = raw_input("Which drive do you want to put Fedora on: "
                                   "%s ? " % drives)
+            drives[0] = drives[0].upper()
             if not drives[0].endswith(":"):
                 drives[0] += ":"
-            drives[0] = drives[0].upper()
         self.drive = drives[0] + os.sep
 
     def verifyFilesystem(self):
