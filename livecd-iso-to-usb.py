@@ -83,6 +83,8 @@ class LiveUSBCreator:
 
     def extractISO(self):
         """ Extract our ISO with 7-zip directly to the USB key """
+        if os.path.isdir(os.path.join(self.drive, "LiveOS")):
+            print "Your device already contains a LiveOS!"
         os.system("7-Zip%s7z.exe x %s -x![BOOT] -o%s" % (os.sep, self.iso,
                                                          self.drive))
         if not os.path.isdir(os.path.join(self.drive, "LiveOS")):
