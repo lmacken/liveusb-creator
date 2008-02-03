@@ -21,7 +21,6 @@
 import win32file
 import win32api
 import shutil
-import sys
 import os
 import re
 
