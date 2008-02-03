@@ -56,7 +56,8 @@ class LiveUSBCreator:
         self.label = "FEDORA"
         vol = win32api.GetVolumeInformation(self.drive[:-1])
         if vol[-1] not in ('FAT32', 'FAT'):
-            raise Exception("Unknown filesystem: %s" % vol[-1])
+            raise Exception("Unsupported filesystem: %s\nPlease backup and "
+                            "format your USB key as FAT 16 or 32." % vol[-1])
         if vol[0] == '':
             win32file.SetVolumeLabel(self.drive[:-1], self.label)
         else:
