@@ -26,9 +26,9 @@ import re
 
 class LiveUSBCreator:
 
-    drive = None # F:\
-    label = None # FEDORA
-    iso   = None # Fedora-8-Live-i686.iso
+    iso   = None     # Fedora-8-Live-i686.iso
+    drive = None     # F:\
+    label = "FEDORA" # if one doesn't already exist
 
     def detectRemovableDrives(self):
         """
@@ -53,11 +53,15 @@ class LiveUSBCreator:
         """
         Verify our filesystem type, and set the volume label if necessary
         """
-        self.label = "FEDORA"
-        vol = win32api.GetVolumeInformation(self.drive[:-1])
+        try:
+            vol = win32api.GetVolumeInformation(self.drive[:-1])
+        except:
+            raise Exception("Make sure your USB key is plugged in and formatted"
+                            " using the FAT filesystem")
         if vol[-1] not in ('FAT32', 'FAT'):
             raise Exception("Unsupported filesystem: %s\nPlease backup and "
-                            "format your USB key as FAT 16 or 32." % vol[-1])
+                            "format your USB key with the FAT filesystem." %
+                            vol[-1])
         if vol[0] == '':
             win32file.SetVolumeLabel(self.drive[:-1], self.label)
         else:
