@@ -108,6 +108,9 @@ class LiveUSBCreator:
 
     def installBootloader(self):
         print "Installing bootloader"
+        syslinux = os.path.join(self.drive, "syslinux")
+        if os.path.isdir(syslinux):
+            shutil.rmtree(syslinux)
         shutil.move(os.path.join(self.drive, "isolinux"),
                     os.path.join(self.drive, "syslinux"))
         os.unlink(os.path.join(self.drive, "syslinux", "isolinux.cfg"))
