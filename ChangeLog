@@ -1,3 +1,15 @@
+commit 37817f778f44c8860e851e9ccb73cd99f38e5688
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Feb 6 14:44:56 2008 -0500
+
+    Update our copyright and license
+
+commit 0c75877ab7b3bc5a31b632d9f1fe23da17638f79
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue Feb 5 22:16:27 2008 -0500
+
+    Add a ChangeLog
+
 commit b4adea4e8826cdf62b5ed4924fedf1c5961cbd9c
 Author: Luke Macken <lmacken@redhat.com>
 Date:   Tue Feb 5 22:13:03 2008 -0500
