@@ -1,0 +1,95 @@
+commit b4adea4e8826cdf62b5ed4924fedf1c5961cbd9c
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue Feb 5 22:13:03 2008 -0500
+
+    Wipe out any old syslinux directories if we have to
+
+commit 67984d05973dcdd0828673bdeae939bba2f9fe0f
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue Feb 5 21:42:52 2008 -0500
+
+    Rename project to liveusb-creator
+
+commit 625062a0065cdef7bc99f90e7a59760e96eeb472
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon Feb 4 00:57:53 2008 -0500
+
+    Catch exceptions when calling win32api.GetVolumeInformation, and tell the user to make sure their USB key is plugged in and formatted properly.
+
+commit cd45aaa1f62b2318883902b1713a2ea55618e037
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon Feb 4 00:09:05 2008 -0500
+
+    Include syslinux and 7-Zip in our setup.py
+
+commit c4541d82c5636f3e499e3198b25afc492e697c10
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Feb 3 23:39:26 2008 -0500
+
+    Add fedora.ico, thanks to Máirín Duffy.
+
+commit baec42f7350c3f1a5e3e9ee08dfc289a717e2e64
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Feb 3 17:20:11 2008 -0500
+
+    Elaborate on our invalid filesystem exception message
+
+commit 6170c673fa60392be8503ab2d4dfdf60d25c708f
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Feb 3 02:45:35 2008 -0500
+
+    s/FAT16/FAT/
+
+commit cb197ac29f174fbed6fc8122c3b79cea85953786
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Feb 3 02:45:13 2008 -0500
+
+    Remove unused module
+
+commit 0492c82bd6608539b3852311213ab56e11366fdf
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Feb 3 02:44:52 2008 -0500
+
+    Notify the user if their USB key already contains a LiveOS
+
+commit cda5637c30a38ed911af485f28058a21a440f1a2
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Feb 3 02:37:33 2008 -0500
+
+    Specify that this works on F7+
+
+commit 7bc1cb196d59d88449120d9e50b898543b230697
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Feb 2 04:50:47 2008 -0500
+
+    Fix up some error message formatting
+
+commit 364de99e8c8641b554c788c33435525a70b50875
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Feb 2 04:47:55 2008 -0500
+
+    Proper syntax tends to help
+
+commit 1f0aa6f79f367219300f552d8d2c019af93e6db9
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Feb 2 04:44:24 2008 -0500
+
+    Throw our download message in the exception.
+
+commit d16298ece498a457f723bb28e741a40dfb0ee7aa
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Feb 2 04:25:55 2008 -0500
+
+    Add a README
+
+commit f71f6e2a509027f6faf12d4aacf3f900027c86d3
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Feb 2 04:24:04 2008 -0500
+
+    Add license to header
+
+commit c221332dbdf0843e25be3810e118eb7e0181afb9
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Feb 1 20:22:34 2008 -0500
+
+    Initial code dump
