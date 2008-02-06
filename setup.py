@@ -4,7 +4,7 @@ import py2exe
 setup(
     console = [
         {
-            "script" : "livecd-iso-to-usb.py",
+            "script" : "liveusb-creator.py",
             "icon_resources" : [(0, "fedora.ico")],
         }
     ],
