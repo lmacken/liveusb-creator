@@ -1,4 +1,3 @@
-#!/usr/bin/python -tt
 # -*- coding: utf-8 -*-
 #
 # Copyright © 2008  Red Hat, Inc. All rights reserved.
@@ -18,25 +17,17 @@
 #
 # Red Hat Author(s): Luke Macken <lmacken@redhat.com>
 
+import os
 import sys
-from liveusb.gui import LiveUSBApp
 
-LiveUSBApp(sys.argv)
+LiveUSBCreator = None
 
-"""
-    if console!
-
-    try:
-        live = LiveUSBCreator()
-        live.detectRemovableDrives()
-        live.verifyFilesystem()
-        live.findISO()
-        live.extractISO()
-        live.updateConfigs()
-        live.installBootloader()
-    except Exception, e:
-        print "Oops!  Something went wrong:"
-        print str(e)
-
-    x = raw_input("\nDone!")
-"""
+if sys.platform == "win32":
+    from liveusb.creator import WindowsLiveUSBCreator
+    LiveUSBCreator = WindowsLiveUSBCreator
+else:
+    if os.getuid() != 0:
+        print >> sys.stderr, "You must run this application as root"
+        sys.exit(1)
+    from liveusb.creator import LinuxLiveUSBCreator
+    LiveUSBCreator = LinuxLiveUSBCreator
