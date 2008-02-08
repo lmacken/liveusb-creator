@@ -5,12 +5,12 @@ setup(
     console = [
         {
             "script" : "liveusb-creator.py",
-            "icon_resources" : [(0, "fedora.ico")],
+            "icon_resources" : [(0, "data/fedora.ico")],
         }
     ],
     data_files = [
         "data/syslinux.exe",
         ("data/7-Zip", ["7-Zip/7z.exe", "7-Zip/7z.dll", "7-Zip/7zCon.sfx",
-                   "7-Zip/License.txt", "7-Zip/copying.txt"]),
+                        "7-Zip/License.txt", "7-Zip/copying.txt"]),
     ],
 )
