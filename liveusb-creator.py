@@ -19,13 +19,9 @@
 # Red Hat Author(s): Luke Macken <lmacken@redhat.com>
 
 import sys
-from liveusb.gui import LiveUSBApp
 
-LiveUSBApp(sys.argv)
-
-"""
-    if console!
-
+if '--nogui' in sys.argv:
+    from liveusb import LiveUSBCreator
     try:
         live = LiveUSBCreator()
         live.detectRemovableDrives()
@@ -35,8 +31,10 @@ LiveUSBApp(sys.argv)
         live.updateConfigs()
         live.installBootloader()
     except Exception, e:
-        print "Oops!  Something went wrong:"
         print str(e)
 
-    x = raw_input("\nDone!")
-"""
+    x = raw_input("\nDone!  Press any key to exit")
+else:
+    ## Start our graphical interface
+    from liveusb.gui import LiveUSBApp
+    LiveUSBApp(sys.argv)
