@@ -1,8 +1,137 @@
+commit a0a67cd754edb0a05d1832e8468fd632bbafab21
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Feb 8 03:57:25 2008 -0500
+
+    Update our setup.py to pull in PyQt4 when we py2exe
+
+ setup.py |   13 +++++++------
+ 1 files changed, 7 insertions(+), 6 deletions(-)
+
+commit 5fe91c186f3e86293d9b7aa27cb2ae023babf1b3
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Feb 8 03:52:08 2008 -0500
+
+    Update the path to our icon
+
+ setup.py |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 2a1c30763a60c3a66d44609f2a478d1e611ad86c
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Feb 8 03:25:36 2008 -0500
+
+    Add authors file
+
+ AUTHORS |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+ create mode 100644 AUTHORS
+
+commit 04567b3a24417d2dddb205e236c2f885447fe68f
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Feb 8 03:23:27 2008 -0500
+
+    Add '--nogui' option to liveusb-creator.py
+
+ liveusb-creator.py |   16 +++++++---------
+ 1 files changed, 7 insertions(+), 9 deletions(-)
+
+commit 97a33f57c6820bf505330f768b1d8999bd7d64fe
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Feb 8 03:11:51 2008 -0500
+
+    Reorganize the project, making it much more modular.
+    
+    Broke code out into, liveusb.{creator,gui}
+    Organize our binaries and other data
+
+ 7-Zip/7z.dll           |  Bin 601088 -> 0 bytes
+ 7-Zip/7z.exe           |  Bin 141824 -> 0 bytes
+ 7-Zip/7zCon.sfx        |  Bin 136192 -> 0 bytes
+ 7-Zip/History.txt      |  777 ------------------------------------------------
+ 7-Zip/License.txt      |   79 -----
+ 7-Zip/copying.txt      |  504 -------------------------------
+ 7-Zip/readme.txt       |   65 ----
+ README                 |   15 +-
+ data/7-Zip/7z.dll      |  Bin 0 -> 601088 bytes
+ data/7-Zip/7z.exe      |  Bin 0 -> 141824 bytes
+ data/7-Zip/7zCon.sfx   |  Bin 0 -> 136192 bytes
+ data/7-Zip/History.txt |  777 ++++++++++++++++++++++++++++++++++++++++++++++++
+ data/7-Zip/License.txt |   79 +++++
+ data/7-Zip/copying.txt |  504 +++++++++++++++++++++++++++++++
+ data/7-Zip/readme.txt  |   65 ++++
+ data/fedora.ico        |  Bin 0 -> 9662 bytes
+ data/luDialog.ui       |  107 +++++++
+ data/syslinux.exe      |  Bin 0 -> 24576 bytes
+ fedora.ico             |  Bin 9662 -> 0 bytes
+ liveusb-creator.py     |  108 +-------
+ liveusb/__init__.py    |   33 ++
+ liveusb/luDialog.py    |   67 ++++
+ setup.py               |    4 +-
+ syslinux.exe           |  Bin 24576 -> 0 bytes
+ 24 files changed, 1655 insertions(+), 1529 deletions(-)
+ delete mode 100644 7-Zip/7z.dll
+ delete mode 100644 7-Zip/7z.exe
+ delete mode 100644 7-Zip/7zCon.sfx
+ delete mode 100644 7-Zip/History.txt
+ delete mode 100644 7-Zip/License.txt
+ delete mode 100644 7-Zip/copying.txt
+ delete mode 100644 7-Zip/readme.txt
+ create mode 100644 data/7-Zip/7z.dll
+ create mode 100644 data/7-Zip/7z.exe
+ create mode 100644 data/7-Zip/7zCon.sfx
+ create mode 100644 data/7-Zip/History.txt
+ create mode 100644 data/7-Zip/License.txt
+ create mode 100644 data/7-Zip/copying.txt
+ create mode 100644 data/7-Zip/readme.txt
+ create mode 100644 data/fedora.ico
+ create mode 100644 data/luDialog.ui
+ create mode 100644 data/syslinux.exe
+ delete mode 100644 fedora.ico
+ mode change 100644 => 100755 liveusb-creator.py
+ create mode 100644 liveusb/__init__.py
+ create mode 100644 liveusb/luDialog.py
+ delete mode 100644 syslinux.exe
+
+commit c07051b82df32da1d3c410d37e970bc5da9e3a4c
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Feb 8 03:09:09 2008 -0500
+
+    Pull our LiveUSBCreator out into the liveusb.creator module.
+    
+    The best way to get to this is via 'liveusb.LiveUSBCreator', which will return
+    either a LinuxLiveUSBCreator, or a WindowsLiveUSBCreator based on your platform.
+
+ liveusb/creator.py |  149 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 149 insertions(+), 0 deletions(-)
+ create mode 100644 liveusb/creator.py
+
+commit 1b33fe06d8b3802cfca2806948cd9ece9fd250fd
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Feb 8 03:07:26 2008 -0500
+
+    Pull our PyQt gui out into the liveusb.gui module
+
+ liveusb/gui.py |   69 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 69 insertions(+), 0 deletions(-)
+ create mode 100644 liveusb/gui.py
+
+commit 7a4db09e3389db981af15e97e40cf8d92e7ea89f
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Feb 6 14:45:19 2008 -0500
+
+    Update ChangeLog
+
+ ChangeLog |   12 ++++++++++++
+ 1 files changed, 12 insertions(+), 0 deletions(-)
+
 commit 37817f778f44c8860e851e9ccb73cd99f38e5688
 Author: Luke Macken <lmacken@redhat.com>
 Date:   Wed Feb 6 14:44:56 2008 -0500
 
     Update our copyright and license
+
+ liveusb-creator.py |   29 ++++++++++++++++-------------
+ 1 files changed, 16 insertions(+), 13 deletions(-)
 
 commit 0c75877ab7b3bc5a31b632d9f1fe23da17638f79
 Author: Luke Macken <lmacken@redhat.com>
@@ -10,11 +139,18 @@ Date:   Tue Feb 5 22:16:27 2008 -0500
 
     Add a ChangeLog
 
+ ChangeLog |   95 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 95 insertions(+), 0 deletions(-)
+ create mode 100644 ChangeLog
+
 commit b4adea4e8826cdf62b5ed4924fedf1c5961cbd9c
 Author: Luke Macken <lmacken@redhat.com>
 Date:   Tue Feb 5 22:13:03 2008 -0500
 
     Wipe out any old syslinux directories if we have to
+
+ liveusb-creator.py |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
 
 commit 67984d05973dcdd0828673bdeae939bba2f9fe0f
 Author: Luke Macken <lmacken@redhat.com>
@@ -22,11 +158,22 @@ Date:   Tue Feb 5 21:42:52 2008 -0500
 
     Rename project to liveusb-creator
 
+ README               |    4 +-
+ livecd-iso-to-usb.py |  130 --------------------------------------------------
+ liveusb-creator.py   |  130 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ setup.py             |    2 +-
+ 4 files changed, 133 insertions(+), 133 deletions(-)
+ delete mode 100644 livecd-iso-to-usb.py
+ create mode 100644 liveusb-creator.py
+
 commit 625062a0065cdef7bc99f90e7a59760e96eeb472
 Author: Luke Macken <lmacken@redhat.com>
 Date:   Mon Feb 4 00:57:53 2008 -0500
 
     Catch exceptions when calling win32api.GetVolumeInformation, and tell the user to make sure their USB key is plugged in and formatted properly.
+
+ livecd-iso-to-usb.py |   16 ++++++++++------
+ 1 files changed, 10 insertions(+), 6 deletions(-)
 
 commit cd45aaa1f62b2318883902b1713a2ea55618e037
 Author: Luke Macken <lmacken@redhat.com>
@@ -34,11 +181,19 @@ Date:   Mon Feb 4 00:09:05 2008 -0500
 
     Include syslinux and 7-Zip in our setup.py
 
+ setup.py |    7 ++++++-
+ 1 files changed, 6 insertions(+), 1 deletions(-)
+
 commit c4541d82c5636f3e499e3198b25afc492e697c10
 Author: Luke Macken <lmacken@redhat.com>
 Date:   Sun Feb 3 23:39:26 2008 -0500
 
     Add fedora.ico, thanks to Máirín Duffy.
+
+ fedora.ico |  Bin 0 -> 9662 bytes
+ setup.py   |    9 ++++++++-
+ 2 files changed, 8 insertions(+), 1 deletions(-)
+ create mode 100644 fedora.ico
 
 commit baec42f7350c3f1a5e3e9ee08dfc289a717e2e64
 Author: Luke Macken <lmacken@redhat.com>
@@ -46,11 +201,17 @@ Date:   Sun Feb 3 17:20:11 2008 -0500
 
     Elaborate on our invalid filesystem exception message
 
+ livecd-iso-to-usb.py |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
 commit 6170c673fa60392be8503ab2d4dfdf60d25c708f
 Author: Luke Macken <lmacken@redhat.com>
 Date:   Sun Feb 3 02:45:35 2008 -0500
 
     s/FAT16/FAT/
+
+ livecd-iso-to-usb.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
 commit cb197ac29f174fbed6fc8122c3b79cea85953786
 Author: Luke Macken <lmacken@redhat.com>
@@ -58,11 +219,17 @@ Date:   Sun Feb 3 02:45:13 2008 -0500
 
     Remove unused module
 
+ livecd-iso-to-usb.py |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
+
 commit 0492c82bd6608539b3852311213ab56e11366fdf
 Author: Luke Macken <lmacken@redhat.com>
 Date:   Sun Feb 3 02:44:52 2008 -0500
 
     Notify the user if their USB key already contains a LiveOS
+
+ livecd-iso-to-usb.py |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
 
 commit cda5637c30a38ed911af485f28058a21a440f1a2
 Author: Luke Macken <lmacken@redhat.com>
@@ -70,11 +237,17 @@ Date:   Sun Feb 3 02:37:33 2008 -0500
 
     Specify that this works on F7+
 
+ livecd-iso-to-usb.py |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
 commit 7bc1cb196d59d88449120d9e50b898543b230697
 Author: Luke Macken <lmacken@redhat.com>
 Date:   Sat Feb 2 04:50:47 2008 -0500
 
     Fix up some error message formatting
+
+ livecd-iso-to-usb.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
 commit 364de99e8c8641b554c788c33435525a70b50875
 Author: Luke Macken <lmacken@redhat.com>
@@ -82,11 +255,17 @@ Date:   Sat Feb 2 04:47:55 2008 -0500
 
     Proper syntax tends to help
 
+ livecd-iso-to-usb.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
 commit 1f0aa6f79f367219300f552d8d2c019af93e6db9
 Author: Luke Macken <lmacken@redhat.com>
 Date:   Sat Feb 2 04:44:24 2008 -0500
 
     Throw our download message in the exception.
+
+ livecd-iso-to-usb.py |    7 +++----
+ 1 files changed, 3 insertions(+), 4 deletions(-)
 
 commit d16298ece498a457f723bb28e741a40dfb0ee7aa
 Author: Luke Macken <lmacken@redhat.com>
@@ -94,14 +273,43 @@ Date:   Sat Feb 2 04:25:55 2008 -0500
 
     Add a README
 
+ README |   26 ++++++++++++++++++++++++++
+ 1 files changed, 26 insertions(+), 0 deletions(-)
+ create mode 100644 README
+
 commit f71f6e2a509027f6faf12d4aacf3f900027c86d3
 Author: Luke Macken <lmacken@redhat.com>
 Date:   Sat Feb 2 04:24:04 2008 -0500
 
     Add license to header
 
+ livecd-iso-to-usb.py |   24 +++++++++++++++++++-----
+ 1 files changed, 19 insertions(+), 5 deletions(-)
+
 commit c221332dbdf0843e25be3810e118eb7e0181afb9
 Author: Luke Macken <lmacken@redhat.com>
 Date:   Fri Feb 1 20:22:34 2008 -0500
 
     Initial code dump
+
+ 7-Zip/7z.dll         |  Bin 0 -> 601088 bytes
+ 7-Zip/7z.exe         |  Bin 0 -> 141824 bytes
+ 7-Zip/7zCon.sfx      |  Bin 0 -> 136192 bytes
+ 7-Zip/History.txt    |  777 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 7-Zip/License.txt    |   79 +++++
+ 7-Zip/copying.txt    |  504 ++++++++++++++++++++++++++++++++
+ 7-Zip/readme.txt     |   65 +++++
+ livecd-iso-to-usb.py |  111 +++++++
+ setup.py             |    4 +
+ syslinux.exe         |  Bin 0 -> 24576 bytes
+ 10 files changed, 1540 insertions(+), 0 deletions(-)
+ create mode 100644 7-Zip/7z.dll
+ create mode 100644 7-Zip/7z.exe
+ create mode 100644 7-Zip/7zCon.sfx
+ create mode 100644 7-Zip/History.txt
+ create mode 100644 7-Zip/License.txt
+ create mode 100644 7-Zip/copying.txt
+ create mode 100644 7-Zip/readme.txt
+ create mode 100644 livecd-iso-to-usb.py
+ create mode 100644 setup.py
+ create mode 100644 syslinux.exe
