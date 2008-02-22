@@ -16,7 +16,7 @@
 # General Public License and may only be used or replicated with the express
 # permission of Red Hat, Inc.
 #
-# Red Hat Author(s): Luke Macken <lmacken@redhat.com>
+# Author(s): Luke Macken <lmacken@redhat.com>
 
 import sys
 

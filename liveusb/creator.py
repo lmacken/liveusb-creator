@@ -19,7 +19,7 @@
 # General Public License and may only be used or replicated with the express
 # permission of Red Hat, Inc.
 #
-# Red Hat Author(s): Luke Macken <lmacken@redhat.com>
+# Author(s): Luke Macken <lmacken@redhat.com>
 
 import shutil
 import os
@@ -111,6 +111,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         if self.fstype not in ('vfat', 'msdos', 'ext2', 'ext3'):
             raise Exception("Unsupported filesystem: %s" % self.fstype)
         # TODO: check MBR, isomd5sum, active partition
+
 
 class WindowsLiveUSBCreator(LiveUSBCreator):
 
