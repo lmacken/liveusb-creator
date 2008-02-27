@@ -4,8 +4,8 @@ import py2exe
 setup(
     windows = [
         {
-            "script" : "livecd-iso-to-usb.py",
-            "icon_resources" : [(0, "fedora.ico")],
+            "script" : "liveusb-creator.py",
+            "icon_resources" : [(0, "data/fedora.ico")],
         }
     ],
     options={"py2exe" : {"includes" : ["sip", "PyQt4._qt"]}}, 
