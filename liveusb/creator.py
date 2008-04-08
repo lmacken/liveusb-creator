@@ -25,7 +25,9 @@ import shutil
 import os
 import re
 
-class LiveUSBCreator:
+
+class LiveUSBCreator(object):
+    """ An OS-independent parent class for Live USB Creators """
 
     iso    = None     # the path to our live image
     label  = "FEDORA" # if one doesn't already exist
