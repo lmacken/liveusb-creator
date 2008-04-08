@@ -1,7 +1,7 @@
 liveusb-creator
 ===============
 
-This tool installs a Fedora LiveCD ISO on to a USB stick, from Windows.
+This tool installs a Fedora LiveCD ISO on to a USB stick.
 
 Requirements
 ============
@@ -13,15 +13,20 @@ Requirements
 
   Windows
   -------
-  o Nothing :)
+  o If you wish to compile an exe, you will need to install py2exe.
+    Alternatively, you can run the pre-compiled binary without any dependencies.
+    http://lmacken.fedorapeople.org/liveusb-creator/liveusb-creator-1.0.zip
 
-Authors
-========
-Luke Macken <lmacken@redhat.com>
+Using
+=====
+
+    See the wiki for instructions on how to use the liveusb-creator:
+
+        https://fedorahosted.org/liveusb-creator
 
 ================================================================================
 
-This tool ships with the following open source software:
+This tool is distributed with the following open source software:
 
    7-Zip
    http://www.7-zip.org
