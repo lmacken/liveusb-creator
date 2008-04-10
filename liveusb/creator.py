@@ -21,18 +21,24 @@
 #
 # Author(s): Luke Macken <lmacken@redhat.com>
 
+import subprocess
 import shutil
 import os
 import re
+
+from StringIO import StringIO
+from stat import ST_SIZE
 
 
 class LiveUSBCreator(object):
     """ An OS-independent parent class for Live USB Creators """
 
-    iso    = None     # the path to our live image
-    label  = "FEDORA" # if one doesn't already exist
+    iso = None        # the path to our live image
+    label = "FEDORA"  # if one doesn't already exist
     fstype = None     # the format of our usb stick
     drives = []       # a list of removable devices
+    overlay = 0       # size in mb of our persisten overlay
+    log = StringIO()  # log subprocess output in case of errors
 
     def detectRemovableDrives(self):
         """ This method should populate self.drives """
