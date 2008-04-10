@@ -10,8 +10,11 @@ setup(
     ],
     options={"py2exe" : {"includes" : ["sip", "PyQt4._qt"]}}, 
     data_files = [
-        "syslinux.exe",
-        ("7-Zip", ["7-Zip/7z.exe", "7-Zip/7z.dll", "7-Zip/7zCon.sfx",
-                   "7-Zip/License.txt", "7-Zip/copying.txt"]),
+        "data/dd.exe",
+        "data/syslinux.exe",
+        "data/newdialog.ui",
+        ("7-Zip", ["data/7-Zip/7z.exe", "data/7-Zip/7z.dll",
+                   "data/7-Zip/7zCon.sfx", "data/7-Zip/License.txt",
+                   "data/7-Zip/copying.txt"]),
     ],
 )
