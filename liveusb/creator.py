@@ -88,6 +88,7 @@ class LiveUSBCreator(object):
         out.write(self.log.getvalue())
         out.close()
 
+
 class LinuxLiveUSBCreator(LiveUSBCreator):
 
     def detectRemovableDrives(self):
@@ -176,6 +177,20 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
             win32file.SetVolumeLabel(self.drive[:-1], self.label)
         else:
             self.label = vol[0]
+
+    def checkFreeSpace(self):
+        """ Make sure there is enough space for the LiveOS and overlay """
+        import win32file
+        (spc, bps, fc, tc) = win32file.GetDiskFreeSpace(self.drive[:-1])
+        bpc = spc * bps # bytes-per-cluster
+        free_bytes = fc * bpc
+
+        isosize = os.stat(self.iso)[ST_SIZE]
+        overlaysize = self.overlay * 1024 * 1024
+        self.totalsize = overlaysize + isosize
+
+        if self.totalsize > free_bytes:
+            raise Exception("Not enough free space on device")
 
     def extractISO(self):
         """ Extract our ISO with 7-zip directly to the USB key """
