@@ -19,19 +19,92 @@
 # Author(s): Luke Macken <lmacken@redhat.com>
 #            Kushal Das <kushal@fedoraproject.org>
 
-from luDialog import Ui_luDialog
-from liveusb import LiveUSBCreator
+import os
+
+from time import sleep
 from PyQt4 import QtCore, QtGui
+
+from liveusb import LiveUSBCreator
+from liveusb.dialog import Ui_Dialog
+
 
 class LiveUSBApp(QtGui.QApplication):
     """ Main application class.  """
     def __init__(self, args=None):
         QtGui.QApplication.__init__(self, args)
-        self.mywindow = lsUI()
+        self.mywindow = LiveUSBDialog()
         self.mywindow.show()
         self.exec_()
 
-class lsUI(Ui_luDialog, QtGui.QDialog):
+
+class ProgressThread(QtCore.QThread):
+
+    def setData(self, size, drive):
+        self.totalsize = size / 1024
+        self.drive = drive
+        self.orig_free = self.getFreeBytes()
+        self.emit(QtCore.SIGNAL("maxprogress(int)"), self.totalsize)
+
+    def getFreeBytes(self):
+        import win32file
+        (spc, bps, fc, tc) = win32file.GetDiskFreeSpace(self.drive[:-1])
+        return fc * (spc * bps)
+
+    def run(self):
+        while True:
+            free = self.getFreeBytes()
+            value = (self.orig_free - free) / 1024
+            self.emit(QtCore.SIGNAL("progress(int)"), value)
+            if value >= self.totalsize:
+               break 
+            sleep(5)
+
+    def terminate(self):
+        self.emit(QtCore.SIGNAL("progress(int)"), self.totalsize)
+        QtCore.QThread.terminate(self)
+
+
+class LiveUSBThread(QtCore.QThread):
+
+    def __init__(self, live, progress, parent=None):
+        QtCore.QThread.__init__(self, parent)
+        self.progress = progress
+        self.live = live
+
+    def status(self, text):
+        self.emit(QtCore.SIGNAL("status(const QString &)"), text)
+
+    def run(self):
+        try:
+            self.status("Verifying filesystem...")
+            self.live.verifyFilesystem()
+            self.live.checkFreeSpace()
+
+            self.progress.setData(size=self.live.totalsize,
+                                  drive=self.live.drive)
+            self.progress.start()
+
+            self.status("Extracting ISO to USB device...")
+            self.live.extractISO()
+            if self.live.overlay:
+                self.status("Creating %d Mb persistent overlay..." %
+                            self.live.overlay)
+                self.live.createPersistentOverlay()
+            self.status("Configuring and installing bootloader...")
+            self.live.updateConfigs()
+            self.live.installBootloader()
+            self.status("Complete!")
+        except Exception, e:
+            self.status(str(e))
+            self.status("LiveUSB creation failed!")
+        self.progress.terminate()
+
+    def __del__(self):
+        # TODO: kill subprocess threads ?!
+        self.wait()
+
+
+class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
     """ Our main dialog class """
     def __init__(self):
         QtGui.QDialog.__init__(self)
@@ -39,31 +112,66 @@ class lsUI(Ui_luDialog, QtGui.QDialog):
         try:
             self.live = LiveUSBCreator()
             self.live.detectRemovableDrives()
-            for drive in self.live.drives:
+            for drive in self.live.drives[::-1]:
                 self.driveBox.addItem(drive)
         except Exception, e:
             self.textEdit.setPlainText(str(e))
+        self.progressThread= ProgressThread()
+        self.liveThread = LiveUSBThread(self.live, self.progressThread)
         self.connectslots()
 
     def connectslots(self):
         self.connect(self.isoBttn, QtCore.SIGNAL("clicked()"), self.selectfile)
-        self.connect(self.burnBttn, QtCore.SIGNAL("clicked()"), self.burn)
+        self.connect(self.burnBttn, QtCore.SIGNAL("clicked()"), self.begin)
+        self.connect(self.overlaySlider, QtCore.SIGNAL("valueChanged(int)"),
+                     self.overlayValue)
+        self.connect(self.liveThread, QtCore.SIGNAL("status(const QString &)"),
+                     self.status)
+        self.connect(self.liveThread, QtCore.SIGNAL("finished()"),
+                     self.unlockUi)
+        self.connect(self.liveThread, QtCore.SIGNAL("terminated()"),
+                     self.unlockUi)
+        self.connect(self.progressThread, QtCore.SIGNAL("progress(int)"),
+                     self.progress)
+        self.connect(self.progressThread, QtCore.SIGNAL("maxprogress(int)"),
+                     self.maxprogress)
 
-    def burn(self):
+    def progress(self, value):
+        self.progressBar.setValue(value)
+
+    def maxprogress(self, value):
+        self.progressBar.setMaximum(value)
+
+    def status(self, text):
+        self.textEdit.append(text)
+
+    def lockUi(self):
+        self.burnBttn.setEnabled(False)
+        self.overlaySlider.setEnabled(False)
+        self.driveBox.setEnabled(False)
+        self.isoBttn.setEnabled(False)
+
+    def unlockUi(self):
+        self.burnBttn.setEnabled(True)
+        self.driveBox.setEnabled(True)
+        self.overlaySlider.setEnabled(True)
+        self.isoBttn.setEnabled(True)
+
+    def overlayValue(self, value):
+        self.overlayTitle.setTitle("Persistent Overlay (%d Mb)" % value)
+
+    def begin(self):
         self.live.drive = str(self.driveBox.currentText())
-        if self.live.iso == None:
-            self.textEdit.setPlainText("Please select an ISO first")
-            return
-        try:
-            self.live.verifyFilesystem()
-            self.live.extractISO()
-            self.live.updateConfigs()
-            self.live.installBootloader()
-            self.textEdit.setPlainText("Done :)")
-        except Exception, e:
-            self.textEdit.setPlainText(str(e))
+        self.live.overlay = self.overlaySlider.value()
+        self.lockUi()
+        self.liveThread.start()
 
     def selectfile(self):
         isofile = QtGui.QFileDialog.getOpenFileName(self, "Select Live ISO",
                                                     ".", "ISO (*.iso)" )
-        self.live.iso = str(isofile)
+        if isofile:
+            self.live.iso = str(isofile)
+            self.textEdit.append(os.path.basename(self.live.iso) + ' selected')
+            self.burnBttn.setEnabled(True)
+
+# vim:ts=4 sw=4 expandtab:
