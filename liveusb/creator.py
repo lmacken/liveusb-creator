@@ -62,6 +62,9 @@ class LiveUSBCreator(object):
                 line = re.sub("rootfstype=[^ ]*",
                               "rootfstype=%s" % self.fstype,
                               line)
+            if self.overlay and "liveimg" in line:
+                line = line.replace("liveimg", "liveimg overlay=" + self.label)
+                line = line.replace(" ro ", " rw ")
             syslinux.write(line)
         isolinux.close()
         syslinux.close()
@@ -120,6 +123,18 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             raise Exception("Unsupported filesystem: %s" % self.fstype)
         # TODO: check MBR, isomd5sum, active partition
 
+    def createPersistentOverlay(self, size=1024):
+        overlay = os.path.join(self.drive, 'LiveOS', 'overlay')
+        if self.fstype == 'vfat':
+            # vfat apparently can't handle sparse files
+            ret = subprocess.call(['dd', 'if=/dev/zero', 'of=%s' % overlay,
+                                   'count=%d' % size, 'bs=1M'])
+        else:
+            ret = subprocess.call(['dd', 'if=/dev/null', 'of=%s' % overlay,
+                                   'count=1', 'bs=1M', 'seek=%d' % size])
+        if ret:
+            raise Exception("Error while creating persistent overlay")
+
 
 class WindowsLiveUSBCreator(LiveUSBCreator):
 
@@ -156,3 +171,18 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                                                          self.drive))
         if not os.path.isdir(os.path.join(self.drive, "LiveOS")):
             raise Exception("ISO extraction failed? Cannot find LiveOS")
+
+    def createPersistentOverlay(self):
+        if self.overlay:
+            import win32process
+            overlay = os.path.join(self.drive, 'LiveOS', 'overlay')
+            p = subprocess.Popen(['dd.exe', 'if=/dev/zero', 'of=' + overlay,
+                                  'count=%d' % self.overlay, 'bs=1M'],
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                 creationflags=win32process.CREATE_NO_WINDOW)
+            map(self.log.write, p.communicate())
+            if p.returncode:
+                self.writeLog()
+                raise Exception("Persistent overlay creation failed")
+
+# vim:ts=4 sw=4 expandtab:
