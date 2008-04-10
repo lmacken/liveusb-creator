@@ -118,6 +118,10 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
         if not len(self.drives):
             raise Exception("Sorry, I can't find any USB drives")
+        elif len(self.drives) == 1:
+            self.drive = self.drives[0]
+        else: # prompt the user which drive to use?
+            pass
 
     def getDevice(self, udi):
         import dbus
