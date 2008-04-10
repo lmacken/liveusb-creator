@@ -82,6 +82,11 @@ class LiveUSBCreator(object):
         if ret:
             raise Exception("An error occured while installing the bootloader")
 
+    def writeLog(self):
+        """ Write out our subprocess stdout/stderr to a log file """
+        out = file('liveusb-creator.log', 'a')
+        out.write(self.log.getvalue())
+        out.close()
 
 class LinuxLiveUSBCreator(LiveUSBCreator):
 
