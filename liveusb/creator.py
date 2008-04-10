@@ -76,8 +76,11 @@ class LiveUSBCreator(object):
         shutil.move(os.path.join(self.drive, "isolinux"),
                     os.path.join(self.drive, "syslinux"))
         os.unlink(os.path.join(self.drive, "syslinux", "isolinux.cfg"))
-        os.system("syslinux -d %s %s" % (os.path.join(self.drive, "syslinux"),
-                                         self.drive[:-1]))
+        ret = subprocess.call(['syslinux.exe', '-d',
+                               os.path.join(self.drive, 'syslinux'),
+                               self.drive[:-1]])
+        if ret:
+            raise Exception("An error occured while installing the bootloader")
 
 
 class LinuxLiveUSBCreator(LiveUSBCreator):
@@ -169,9 +172,17 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         """ Extract our ISO with 7-zip directly to the USB key """
         if os.path.isdir(os.path.join(self.drive, "LiveOS")):
             print "Your device already contains a LiveOS!"
-        os.system("7-Zip%s7z.exe x %s -x![BOOT] -o%s" % (os.sep, self.iso,
-                                                         self.drive))
-        if not os.path.isdir(os.path.join(self.drive, "LiveOS")):
+            # should we prompt the user ?
+            # it kind of does this now at the moment by opening 7-zip
+            # in a separate term.. this may change.
+        import win32process
+        p = subprocess.Popen([os.path.join('7-Zip', '7z.exe'), 'x', self.iso,
+                              '-x![BOOT]', '-y', '-o' + self.drive],
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                             creationflags=win32process.CREATE_NO_WINDOW)
+        map(self.log.write, p.communicate())
+        if p.returncode or not os.path.isdir(os.path.join(self.drive,'LiveOS')):
+            self.writeLog()
             raise Exception("ISO extraction failed? Cannot find LiveOS")
 
     def createPersistentOverlay(self):
