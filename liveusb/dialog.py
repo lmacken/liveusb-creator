@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+#
 # Form implementation generated from reading ui file 'data/newdialog.ui'
 #
 # Created: Thu Apr 10 13:07:21 2008
