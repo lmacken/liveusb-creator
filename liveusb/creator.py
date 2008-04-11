@@ -159,7 +159,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
             if win32file.GetDriveType(drive) == win32file.DRIVE_REMOVABLE:
                 self.drives.append(drive + os.sep)
         if not len(self.drives):
-            raise Exception("Sorry, I couldn't find any devices")
+            raise Exception("Unable to find any removable devices")
 
     def verifyFilesystem(self):
         import win32api, win32file
@@ -167,7 +167,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
             vol = win32api.GetVolumeInformation(self.drive[:-1])
         except:
             raise Exception("Make sure your USB key is plugged in and formatted"
-                            " using the FAT filesystem" + self.drive)
+                            " with the FAT filesystem")
         if vol[-1] not in ('FAT32', 'FAT'):
             raise Exception("Unsupported filesystem: %s\nPlease backup and "
                             "format your USB key with the FAT filesystem." %
