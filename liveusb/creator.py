@@ -37,6 +37,7 @@ class LiveUSBCreator(object):
     label = "FEDORA"  # if one doesn't already exist
     fstype = None     # the format of our usb stick
     drives = []       # a list of removable devices
+    drive = None      # the selected device that we are installing to
     overlay = 0       # size in mb of our persisten overlay
     log = StringIO()  # log subprocess output in case of errors
 
@@ -52,6 +53,10 @@ class LiveUSBCreator(object):
         """
         raise NotImplementedError
 
+    def _getDeviceUUID(self):
+        """ Return the UUID of our self.drive """
+        raise NotImplementedError
+
     def updateConfigs(self):
         """ Generate our syslinux.cfg """
         isolinux = file(os.path.join(self.drive,"isolinux","isolinux.cfg"),'r')
@@ -63,7 +68,8 @@ class LiveUSBCreator(object):
                               "rootfstype=%s" % self.fstype,
                               line)
             if self.overlay and "liveimg" in line:
-                line = line.replace("liveimg", "liveimg overlay=" + self.label)
+                line = line.replace("liveimg", "liveimg overlay=UUID=" + 
+                                    self._getDeviceUUID())
                 line = line.replace(" ro ", " rw ")
             syslinux.write(line)
         isolinux.close()
@@ -212,7 +218,8 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
     def createPersistentOverlay(self):
         if self.overlay:
             import win32process
-            overlay = os.path.join(self.drive, 'LiveOS', 'overlay')
+            overlayfile = 'overlay-%s-%s' % (self.label, self._getDeviceUUID())
+            overlay = os.path.join(self.drive, 'LiveOS', overlayfile)
             p = subprocess.Popen(['dd.exe', 'if=/dev/zero', 'of=' + overlay,
                                   'count=%d' % self.overlay, 'bs=1M'],
                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -221,5 +228,14 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
             if p.returncode:
                 self.writeLog()
                 raise Exception("Persistent overlay creation failed")
+
+    def _getDeviceUUID(self):
+        """ Return the UUID of our selected drive """
+        import win32com.client
+        objWMIService = win32com.client.Dispatch("WbemScripting.SWbemLocator")
+        objSWbemServices = objWMIService.ConnectServer(".", "root\cimv2")
+        disk = objSWbemServices.ExecQuery("Select * from Win32_LogicalDisk where Name = '%s'" % self.drive[:-1])[0]
+        uuid = disk.VolumeSerialNumber
+        return uuid[:4] + '-' + uuid[4:]
 
 # vim:ts=4 sw=4 expandtab:
