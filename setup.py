@@ -8,13 +8,20 @@ setup(
             "icon_resources" : [(0, "data/fedora.ico")],
         }
     ],
-    options={"py2exe" : {"includes" : ["sip", "PyQt4._qt"]}}, 
+    options={
+        "py2exe" : {
+            "includes" : ["sip", "PyQt4._qt"],
+            'bundle_files': 1,
+        }
+    }, 
+    zipfile=None,
     data_files = [
-        "data/dd.exe",
-        "data/syslinux.exe",
-        "data/newdialog.ui",
-        ("7-Zip", ["data/7-Zip/7z.exe", "data/7-Zip/7z.dll",
-                   "data/7-Zip/7zCon.sfx", "data/7-Zip/License.txt",
-                   "data/7-Zip/copying.txt"]),
+        ("tools", [
+            "tools/dd.exe",
+            "tools/syslinux.exe",
+            "tools/7-Zip/7z.exe",
+            "tools/7-Zip/7z.dll",
+            "tools/7-Zip/7zCon.sfx",
+        ])
     ],
 )

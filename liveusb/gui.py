@@ -116,7 +116,7 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
                 self.driveBox.addItem(drive)
         except Exception, e:
             self.textEdit.setPlainText(str(e))
-        self.progressThread= ProgressThread()
+        self.progressThread = ProgressThread()
         self.liveThread = LiveUSBThread(self.live, self.progressThread)
         self.connectslots()
 

@@ -82,7 +82,7 @@ class LiveUSBCreator(object):
         shutil.move(os.path.join(self.drive, "isolinux"),
                     os.path.join(self.drive, "syslinux"))
         os.unlink(os.path.join(self.drive, "syslinux", "isolinux.cfg"))
-        ret = subprocess.call(['syslinux.exe', '-d',
+        ret = subprocess.call([os.path.join('tools', 'syslinux.exe'), '-d',
                                os.path.join(self.drive, 'syslinux'),
                                self.drive[:-1]])
         if ret:
@@ -206,7 +206,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
             # it kind of does this now at the moment by opening 7-zip
             # in a separate term.. this may change.
         import win32process
-        p = subprocess.Popen([os.path.join('7-Zip', '7z.exe'), 'x', self.iso,
+        p = subprocess.Popen([os.path.join('tools', '7z.exe'), 'x', self.iso,
                               '-x![BOOT]', '-y', '-o' + self.drive],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                              creationflags=win32process.CREATE_NO_WINDOW)
@@ -220,7 +220,8 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
             import win32process
             overlayfile = 'overlay-%s-%s' % (self.label, self._getDeviceUUID())
             overlay = os.path.join(self.drive, 'LiveOS', overlayfile)
-            p = subprocess.Popen(['dd.exe', 'if=/dev/zero', 'of=' + overlay,
+            p = subprocess.Popen([os.path.join('tools', 'dd.exe'),
+                                  'if=/dev/zero', 'of=' + overlay,
                                   'count=%d' % self.overlay, 'bs=1M'],
                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                  creationflags=win32process.CREATE_NO_WINDOW)
