@@ -206,8 +206,8 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
             # it kind of does this now at the moment by opening 7-zip
             # in a separate term.. this may change.
         import win32process
-        p = subprocess.Popen([os.path.join('tools', '7z.exe'), 'x', self.iso,
-                              '-x![BOOT]', '-y', '-o' + self.drive],
+        p = subprocess.Popen([os.path.join('tools', '7-Zip', '7z.exe'), 'x',
+                              self.iso, '-x![BOOT]', '-y', '-o' + self.drive],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                              creationflags=win32process.CREATE_NO_WINDOW)
         map(self.log.write, p.communicate())
