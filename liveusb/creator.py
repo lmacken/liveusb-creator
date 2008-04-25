@@ -236,12 +236,20 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                 raise Exception("Persistent overlay creation failed")
 
     def _getDeviceUUID(self):
-        """ Return the UUID of our selected drive """
-        import win32com.client
-        objWMIService = win32com.client.Dispatch("WbemScripting.SWbemLocator")
-        objSWbemServices = objWMIService.ConnectServer(".", "root\cimv2")
-        disk = objSWbemServices.ExecQuery("Select * from Win32_LogicalDisk where Name = '%s'" % self.drive[:-1])[0]
-        uuid = disk.VolumeSerialNumber
-        return uuid[:4] + '-' + uuid[4:]
+        """ Return the UUID of our selected drive.
+        
+        This method only runs the query once, as it seems to cause errors
+        if we try and find the UUID multiple times.
+        """
+        if not self.uuid:
+            from win32com import client
+            uuid = client.Dispatch("WbemScripting.SWbemLocator") \
+                         .ConnectServer(".", "root\cimv2") \
+                         .ExecQuery("Select VolumeSerialNumber from "
+                                    "Win32_LogicalDisk where Name = '%s'" %
+                                    self.drive)[0].VolumeSerialNumber
+
+            self.uuid = uuid[:4] + '-' + uuid[4:]
+        return self.uuid
 
 # vim:ts=4 sw=4 expandtab:
