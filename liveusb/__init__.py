@@ -20,6 +20,8 @@
 import os
 import sys
 
+from liveusb.creator import LiveUSBError
+
 LiveUSBCreator = None
 
 if sys.platform == "win32":
@@ -32,4 +34,4 @@ else:
     from liveusb.creator import LinuxLiveUSBCreator
     LiveUSBCreator = LinuxLiveUSBCreator
 
-__all__ = ["LiveUSBCreator"]
+__all__ = ["LiveUSBCreator", "LiveUSBError"]

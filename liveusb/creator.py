@@ -48,8 +48,8 @@ class LiveUSBCreator(object):
     def verifyFilesystem(self):
         """
         Verify the filesystem of our device, setting the volume label
-        if necessary.  If something is not right, this method throws an
-        Exception
+        if necessary.  If something is not right, this method throws a
+        LiveUSBError.
         """
         raise NotImplementedError
 
@@ -124,7 +124,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                             break
 
         if not len(self.drives):
-            raise Exception("Sorry, I can't find any USB drives")
+            raise LiveUSBError("Unable to find any USB drives")
         elif len(self.drives) == 1:
             self.drive = self.drives[0]
         else: # prompt the user which drive to use?
@@ -141,8 +141,8 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         device = self.getDevice(device)
         self.fstype = device.GetProperty("volume.fstype")
         if self.fstype not in ('vfat', 'msdos', 'ext2', 'ext3'):
-            raise Exception("Unsupported filesystem: %s" % self.fstype)
-        # TODO: check MBR, isomd5sum, active partition
+            raise LiveUSBError("Unsupported filesystem: %s" % self.fstype)
+        # TODO: check MBR, active partition
 
     def createPersistentOverlay(self, size=1024):
         overlay = os.path.join(self.drive, 'LiveOS', 'overlay')
