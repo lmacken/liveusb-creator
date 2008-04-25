@@ -78,6 +78,11 @@ class LiveUSBCreator(object):
     def installBootloader(self):
         """ Run syslinux to install the bootloader on our devices """
         if os.path.isdir(os.path.join(self.drive, "syslinux")):
+            syslinuxdir = os.path.join(self.drive, "syslinux")
+            # Python for Windows is unable to delete read-only files, and some
+            # may exist here if the LiveUSB stick was created in Linux
+            for f in os.listdir(syslinuxdir):
+                os.chmod(os.path.join(syslinuxdir, f), 0777)
             shutil.rmtree(os.path.join(self.drive, "syslinux"))
         shutil.move(os.path.join(self.drive, "isolinux"),
                     os.path.join(self.drive, "syslinux"))
