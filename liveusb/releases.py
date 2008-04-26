@@ -35,7 +35,7 @@ releases = (
         'sha1': '74c8ae2529ddbb1b56ceb1a7091ea4475d3f45f9',
     },
     {
-        'name': 'Fedora 8 (x86_64)',
+        'name': 'Fedora 8 KDE (x86_64)',
         'url': 'http://download.fedoraproject.org/pub/fedora/linux/releases/8/Live/x86_64/Fedora-8-Live-KDE-x86_64.iso',
         'sha1':  '9b7e08afe5dc919be3ba8c146261d684b9327556',
     },
