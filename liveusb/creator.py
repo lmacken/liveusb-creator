@@ -97,7 +97,8 @@ class LiveUSBCreator(object):
         os.unlink(os.path.join(self.drive, "syslinux", "isolinux.cfg"))
         p = subprocess.Popen([os.path.join('tools', 'syslinux.exe'), '-d',
                               os.path.join(self.drive, 'syslinux'),
-                              self.drive])
+                              self.drive],
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         map(self.log.write, p.communicate())
         if p.returncode:
             self.writeLog()
