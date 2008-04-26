@@ -25,12 +25,12 @@ import shutil
 from time import sleep
 from datetime import datetime
 from PyQt4 import QtCore, QtGui
-from urlgrabber.grabber import URLGrabber, URLGrabError
-from urlgrabber.progress import BaseMeter
 
 from liveusb import LiveUSBCreator, LiveUSBError
 from liveusb.dialog import Ui_Dialog
 from liveusb.releases import releases
+from liveusb.urlgrabber.grabber import URLGrabber, URLGrabError
+from liveusb.urlgrabber.progress import BaseMeter
 
 
 class LiveUSBApp(QtGui.QApplication):
@@ -148,7 +148,7 @@ class LiveUSBThread(QtCore.QThread):
                                   drive=self.live.drive)
             self.progress.start()
 
-            self.status("Extracting ISO to USB device...")
+            self.status("Extracting live image to USB device...")
             self.live.extractISO()
             if self.live.overlay:
                 self.status("Creating %d Mb persistent overlay..." %
