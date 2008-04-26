@@ -86,11 +86,11 @@ class DownloadProgress(QtCore.QObject, BaseMeter):
 
     def end(self, read):
         self.update(read)
-        
+
 
 class ProgressThread(QtCore.QThread):
     """ A thread that monitors the progress of Live USB creation.
-    
+
     This thread periodically checks the amount of free space left on the 
     given drive and sends a signal to our main dialog window to update the
     progress bar.
@@ -112,7 +112,7 @@ class ProgressThread(QtCore.QThread):
             value = (self.orig_free - free) / 1024
             self.emit(QtCore.SIGNAL("progress(int)"), value)
             if value >= self.totalsize:
-               break 
+               break
             sleep(5)
 
     def terminate(self):
@@ -315,5 +315,6 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
         if isofile:
             self.live.iso = str(isofile)
             self.textEdit.append(os.path.basename(self.live.iso) + ' selected')
+
 
 # vim:ts=4 sw=4 expandtab:
