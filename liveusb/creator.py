@@ -61,6 +61,10 @@ class LiveUSBCreator(object):
         """
         raise NotImplementedError
 
+    def installBootloader(self):
+        """ Install the bootloader to our device, using syslinux """
+        raise NotImplementedError
+
     def _getDeviceUUID(self):
         """ Return the UUID of our self.drive """
         raise NotImplementedError
@@ -82,29 +86,6 @@ class LiveUSBCreator(object):
             syslinux.write(line)
         isolinux.close()
         syslinux.close()
-
-    def installBootloader(self):
-        """ Run syslinux to install the bootloader on our devices """
-        if os.path.isdir(os.path.join(self.drive, "syslinux")):
-            syslinuxdir = os.path.join(self.drive, "syslinux")
-            # Python for Windows is unable to delete read-only files, and some
-            # may exist here if the LiveUSB stick was created in Linux
-            for f in os.listdir(syslinuxdir):
-                os.chmod(os.path.join(syslinuxdir, f), 0777)
-            shutil.rmtree(os.path.join(self.drive, "syslinux"))
-        shutil.move(os.path.join(self.drive, "isolinux"),
-                    os.path.join(self.drive, "syslinux"))
-        os.unlink(os.path.join(self.drive, "syslinux", "isolinux.cfg"))
-        p = subprocess.Popen([os.path.join('tools', 'syslinux.exe'), '-d',
-                              os.path.join(self.drive, 'syslinux'),
-                              self.drive],
-                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        map(self.log.write, p.communicate())
-        if p.returncode:
-            self.writeLog()
-            raise LiveUSBError("An error occured while installing the "
-                               "bootloader.  The syslinux output as been "
-                               "written to liveusb-creator.log")
 
     def writeLog(self):
         """ Write out our subprocess stdout/stderr to a log file """
@@ -252,6 +233,31 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
             win32file.SetVolumeLabel(self.drive, self.label)
         else:
             self.label = vol[0]
+
+    def installBootloader(self):
+        """ Run syslinux to install the bootloader on our devices """
+        import win32process
+        if os.path.isdir(os.path.join(self.drive, "syslinux")):
+            syslinuxdir = os.path.join(self.drive, "syslinux")
+            # Python for Windows is unable to delete read-only files, and some
+            # may exist here if the LiveUSB stick was created in Linux
+            for f in os.listdir(syslinuxdir):
+                os.chmod(os.path.join(syslinuxdir, f), 0777)
+            shutil.rmtree(os.path.join(self.drive, "syslinux"))
+        shutil.move(os.path.join(self.drive, "isolinux"),
+                    os.path.join(self.drive, "syslinux"))
+        os.unlink(os.path.join(self.drive, "syslinux", "isolinux.cfg"))
+        p = subprocess.Popen([os.path.join('tools', 'syslinux.exe'), '-f', '-d',
+                              os.path.join(self.drive, 'syslinux'),
+                              self.drive],
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                             creationflags=win32process.CREATE_NO_WINDOW)
+        map(self.log.write, p.communicate())
+        if p.returncode:
+            self.writeLog()
+            raise LiveUSBError("An error occured while installing the "
+                               "bootloader.  The syslinux output as been "
+                               "written to liveusb-creator.log")
 
     def checkFreeSpace(self):
         """ Make sure there is enough space for the LiveOS and overlay """
