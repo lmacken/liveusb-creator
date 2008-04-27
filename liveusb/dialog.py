@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'data\logoed.ui'
 #
-# Created: Sun Apr 27 00:03:30 2008
+# Created: Sun Apr 27 01:34:11 2008
 #      by: PyQt4 UI code generator 4.3.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -83,7 +83,7 @@ class Ui_Dialog(object):
 
         self.label = QtGui.QLabel(Dialog)
         self.label.setGeometry(QtCore.QRect(0,0,430,72))
-        self.label.setPixmap(QtGui.QPixmap("liveusb-header.png"))
+        self.label.setPixmap(QtGui.QPixmap(":/liveusb-header.png"))
         self.label.setObjectName("label")
 
         self.retranslateUi(Dialog)
@@ -103,6 +103,7 @@ class Ui_Dialog(object):
         self.isoBttn.setText(QtGui.QApplication.translate("Dialog", "Browse", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox_2.setWhatsThis(QtGui.QApplication.translate("Dialog", "This is the USB stick that you want to install your Live CD on.  This device must be formatted with the FAT filesystem.", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox_2.setTitle(QtGui.QApplication.translate("Dialog", "Target Device", None, QtGui.QApplication.UnicodeUTF8))
-        self.overlayTitle.setWhatsThis(QtGui.QApplication.translate("Dialog", "By allocating extra space on your USB stick for a persistent overlay, you will be able to store data and modify your live operating system.  Without it, you will not be able to save data that will persist after a reboot.", None, QtGui.QApplication.UnicodeUTF8))
+        self.overlayTitle.setWhatsThis(QtGui.QApplication.translate("Dialog", "By allocating extra space on your USB stick for a persistent overlay, you will be able to store data and make permanent modifications to your live operating system.  Without it, you will not be able to save data that will persist after a reboot.", None, QtGui.QApplication.UnicodeUTF8))
         self.overlayTitle.setTitle(QtGui.QApplication.translate("Dialog", "Persistent Overlay (0 Mb)", None, QtGui.QApplication.UnicodeUTF8))
 
+import resources_rc
