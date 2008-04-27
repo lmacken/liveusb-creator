@@ -16,12 +16,15 @@ setup(
     }, 
     zipfile=None,
     data_files = [
+        "README",
+        "LICENSE",
         ("tools", [
             "tools/dd.exe",
             "tools/syslinux.exe",
             "tools/7-Zip/7z.exe",
             "tools/7-Zip/7z.dll",
             "tools/7-Zip/7zCon.sfx",
+            "tools/7-Zip/7-Zip-License.txt",
         ])
-    ],
+    ]
 )
