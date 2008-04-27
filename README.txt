@@ -22,6 +22,10 @@ Developing
 
         pyuic4 data\logoed.ui -o liveusb\dialog.py
 
+  o Compile the PyQt resources
+
+        pyrcc4 data\resources.qrc -o liveusb\resources_rc.py
+
   o Compiling an exe:
 
         python -OO setup.py py2exe
