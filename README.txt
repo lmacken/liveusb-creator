@@ -14,27 +14,31 @@ Using
 Developing
 ==========
 
-  Windows
-  -------
+  In Windows
+  ----------
+  o Get the latest code
+
+        http://git.fedoraproject.org/git/liveusb-creator?p=liveusb-creator.git;a=snapshot;h=HEAD;sf=tgz
+
   o Install Python2.5, PyQt4, and py2exe
-
-  o You can compile the ui file by doing:
-
-        pyuic4 data\logoed.ui -o liveusb\dialog.py
-
-  o Compile the PyQt resources
-
-        pyrcc4 data\resources.qrc -o liveusb\resources_rc.py
 
   o Compiling an exe:
 
         python -OO setup.py py2exe
 
+  o If you change the QtDesigner ui file, you can compile it by doing:
+
+        pyuic4 data\logoed.ui -o liveusb\dialog.py
+
+  o If you add more PyQt resources (pixmaps, icons, etc), you can rebuild
+    the resources module by running:
+
+        pyrcc4 data\resources.qrc -o liveusb\resources_rc.py
+
 
 ================================================================================
 
-This tool is distributed with the following open source software, each of
-which remains under their original license:
+This tool is distributed with the following open source software
 
    7-Zip
    http://www.7-zip.org
