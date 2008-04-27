@@ -115,7 +115,7 @@ class ProgressThread(QtCore.QThread):
             self.emit(QtCore.SIGNAL("progress(int)"), value)
             if value >= self.totalsize:
                break
-            sleep(5)
+            sleep(4)
 
     def terminate(self):
         self.emit(QtCore.SIGNAL("progress(int)"), self.totalsize)
