@@ -16,8 +16,8 @@ setup(
     }, 
     zipfile=None,
     data_files = [
-        "README",
-        "LICENSE",
+        "README.txt",
+        "LICENSE.txt",
         ("tools", [
             "tools/dd.exe",
             "tools/syslinux.exe",
