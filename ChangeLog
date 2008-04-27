@@ -1,3 +1,653 @@
+commit 38e788006064ed6ecefe2af820de1298854246dd
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Apr 27 04:18:01 2008 -0400
+
+    More tools/data organization
+
+ data/liveusb-header.png |  Bin 0 -> 15736 bytes
+ tools/7-Zip-License.txt |   79 +++++++++++++++++++++++++++++++++++++++++++++++
+ tools/7z.dll            |  Bin 0 -> 601088 bytes
+ tools/7z.exe            |  Bin 0 -> 141824 bytes
+ tools/7zCon.sfx         |  Bin 0 -> 136192 bytes
+ 5 files changed, 79 insertions(+), 0 deletions(-)
+
+commit 61219ee9b47ef987b7c7b6bc2f0a6cb0f5d012ce
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Apr 27 04:17:11 2008 -0400
+
+    Add the gimp file for our shiny new header
+
+ data/liveusb-header.xcf |  Bin 0 -> 26650 bytes
+ 1 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 542da89566cc1a2e314095ebbce2b3f9328b5570
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Apr 27 04:01:55 2008 -0400
+
+    Shipping the README does not seem to be necessary at the moment.
+
+ setup.py |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
+
+commit 1a9a05dadf51f3e161a4edab93ed8b2dbf5088e2
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Apr 27 03:59:30 2008 -0400
+
+    Some minor dialog tweaks
+
+ data/liveusb-creator.ui |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 07d0152605702013ee97d669a8d437928bcface7
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Apr 27 03:59:18 2008 -0400
+
+    Some minor dialog tweaks
+
+ liveusb/dialog.py |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
+
+commit 15415ba909adf0ac1e83312d36aeb51ab43fd727
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Apr 27 03:55:24 2008 -0400
+
+    Add our PyQt resources.qrc file that contains our pixmap reference
+
+ data/resources.qrc |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+commit 4a5e2d483cfbd73b9ab9e9c6acdf2043277da5a4
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Apr 27 03:54:52 2008 -0400
+
+    Rename our QtDesigner file to liveusb-creator.ui
+
+ data/liveusb-creator.ui |  230 +++++++++++++++++++++++++++++++++++++++++++++++
+ data/luDialog.ui        |  104 ---------------------
+ data/newdialog.ui       |  230 -----------------------------------------------
+ 3 files changed, 230 insertions(+), 334 deletions(-)
+
+commit c9d441fc45a1de61b01a5397f4c17344ed6dd0ff
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Apr 27 03:54:04 2008 -0400
+
+    Sync up our QtDesigner UI changes
+
+ data/newdialog.ui |   72 +++++++++++++++++++++++++++++++++++++++-------------
+ 1 files changed, 54 insertions(+), 18 deletions(-)
+
+commit aa717545a4f5c7c7507228c97bd324326b19a6a4
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Apr 27 03:46:05 2008 -0400
+
+    Some of our data files have moved.
+
+ setup.py |    8 ++++----
+ 1 files changed, 4 insertions(+), 4 deletions(-)
+
+commit 000dd04ee3efcaf3f106c7060fda05e4f3e0350e
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Apr 27 03:44:11 2008 -0400
+
+    Alter our progress polling interval
+
+ liveusb/gui.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 2d56a87ee294c130a747b092d920795dfeb917a1
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Apr 27 03:43:11 2008 -0400
+
+    Terminate any subprocesses if the application is closed in the middle of one
+
+ liveusb/creator.py |    4 ++++
+ liveusb/gui.py     |   17 ++++++++++++++++-
+ 2 files changed, 20 insertions(+), 1 deletions(-)
+
+commit 0e2e39daffd6fbe6cd9a4018fa5d5fb04e2ecf84
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Apr 27 03:42:04 2008 -0400
+
+    Move some tools around
+
+ tools/7-Zip/7-Zip-License.txt |   79 -------
+ tools/7-Zip/7z.dll            |  Bin 601088 -> 0 bytes
+ tools/7-Zip/7z.exe            |  Bin 141824 -> 0 bytes
+ tools/7-Zip/7zCon.sfx         |  Bin 136192 -> 0 bytes
+ tools/7-Zip/copying.txt       |  504 -----------------------------------------
+ 5 files changed, 0 insertions(+), 583 deletions(-)
+
+commit 380bb5df3b4ad98a9506704008f037c748869a53
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Apr 27 02:47:20 2008 -0400
+
+    Update the README with instructions for getting the latest code in Windows,
+    among other cleanups.
+
+ README.txt |   24 ++++++++++++++----------
+ 1 files changed, 14 insertions(+), 10 deletions(-)
+
+commit 2824918efb7d2d63cff9857eb7de4643efe46f71
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Apr 27 01:43:34 2008 -0400
+
+    Fix some file extensions
+
+ setup.py |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit ccb9392195fba6ec03707ace4ff51edb0dd92f8d
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Apr 27 01:40:14 2008 -0400
+
+    Add our README, LICENSE, and 7-zip license to our distribution
+
+ setup.py |    5 ++++-
+ 1 files changed, 4 insertions(+), 1 deletions(-)
+
+commit da78c537ea2db9ac4849e14cf38f1a1efd48213f
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Apr 27 01:39:43 2008 -0400
+
+    Use PyQt resources for our header pixmap.  Also change the wording a bit
+    on the overlay help.
+
+ liveusb/dialog.py |    7 ++++---
+ 1 files changed, 4 insertions(+), 3 deletions(-)
+
+commit afd84b01909dcca2dc1d15daea06ef24d0f05c6e
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Apr 27 01:39:17 2008 -0400
+
+    Add instructions for compiling the PyQt resources to the README
+
+ README.txt |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
+
+commit 81e740ae9d15993683a9ff346d47c2c63d940818
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Apr 27 01:38:38 2008 -0400
+
+    Add our compiled PyQt resource module, and move a bunch of other stuff around.
+
+ LICENSE                       |  341 --------------
+ LICENSE.txt                   |  341 ++++++++++++++
+ README                        |   49 --
+ README.txt                    |   53 +++
+ liveusb/resources_rc.py       | 1020 +++++++++++++++++++++++++++++++++++++++++
+ tools/7-Zip/7-Zip-License.txt |   79 ++++
+ tools/7-Zip/History.txt       |  777 -------------------------------
+ tools/7-Zip/License.txt       |   79 ----
+ tools/7-Zip/readme.txt        |   65 ---
+ 9 files changed, 1493 insertions(+), 1311 deletions(-)
+
+commit 1ee3c8e35ba514c18b74c610020fc5ea2c3efa61
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Apr 27 01:35:05 2008 -0400
+
+    Fix a bug in the ProgressThread where our totalsize has not been initialized.
+
+ liveusb/gui.py |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+commit 792ae98b2ce3f1a17dece3ffa6531d386ea3ff41
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Apr 27 00:13:06 2008 -0400
+
+    Interface modifications.  Added lots of help documentation for when users use
+    the question mark button in the window.
+
+ liveusb/dialog.py |   41 ++++++++++++++++++++++++++++-------------
+ 1 files changed, 28 insertions(+), 13 deletions(-)
+
+commit 2f027ce973db2be28017e6c123fd84ebf2d9e2c9
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Apr 26 01:32:50 2008 -0400
+
+    Make the LiveUSBCreator.installBootloader an OS independent method, due
+    to various tweaks that need to be done in the win32 implementation.
+
+ liveusb/creator.py |   52 +++++++++++++++++++++++++++++-----------------------
+ 1 files changed, 29 insertions(+), 23 deletions(-)
+
+commit ee833fb12e72ef047b81504f47f7227c576f4532
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Apr 26 01:29:35 2008 -0400
+
+    Fix our 7-Zip path
+
+ liveusb/creator.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit d7c9deba27361431f89fa6e9dd982dafb279f964
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Apr 26 00:19:53 2008 -0400
+
+    Include a the urlgrabber module
+
+ liveusb/gui.py                   |    6 +-
+ liveusb/urlgrabber/__init__.py   |   53 ++
+ liveusb/urlgrabber/__init__.pyc  |  Bin 0 -> 1677 bytes
+ liveusb/urlgrabber/__init__.pyo  |  Bin 0 -> 1665 bytes
+ liveusb/urlgrabber/byterange.py  |  465 ++++++++++++
+ liveusb/urlgrabber/byterange.pyc |  Bin 0 -> 16918 bytes
+ liveusb/urlgrabber/byterange.pyo |  Bin 0 -> 16391 bytes
+ liveusb/urlgrabber/grabber.py    | 1483 ++++++++++++++++++++++++++++++++++++++
+ liveusb/urlgrabber/grabber.pyc   |  Bin 0 -> 53564 bytes
+ liveusb/urlgrabber/grabber.pyo   |  Bin 0 -> 52714 bytes
+ liveusb/urlgrabber/keepalive.py  |  603 ++++++++++++++++
+ liveusb/urlgrabber/keepalive.pyc |  Bin 0 -> 20834 bytes
+ liveusb/urlgrabber/keepalive.pyo |  Bin 0 -> 20266 bytes
+ liveusb/urlgrabber/mirror.py     |  459 ++++++++++++
+ liveusb/urlgrabber/mirror.pyc    |  Bin 0 -> 16892 bytes
+ liveusb/urlgrabber/mirror.pyo    |  Bin 0 -> 16892 bytes
+ liveusb/urlgrabber/progress.py   |  609 ++++++++++++++++
+ liveusb/urlgrabber/progress.pyc  |  Bin 0 -> 23313 bytes
+ liveusb/urlgrabber/progress.pyo  |  Bin 0 -> 22515 bytes
+ 19 files changed, 3675 insertions(+), 3 deletions(-)
+
+commit 5e4189c9f575affdf915ce452da66d3199901092
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Apr 26 00:17:43 2008 -0400
+
+    Fix a release name
+
+ liveusb/releases.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 8eeaa37bf0ff21163f5d1953031029a0f291e64f
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Apr 26 00:06:39 2008 -0400
+
+    Pipe std{err,out} with our syslinux subprocess
+
+ liveusb/creator.py |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+commit 12a71e6ffe97cc2e78c18c3825d44aabdaf3e773
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Apr 26 00:03:54 2008 -0400
+
+    Whitespace cleanups
+
+ liveusb/gui.py |    7 ++++---
+ 1 files changed, 4 insertions(+), 3 deletions(-)
+
+commit 56f0f8dfdf8dc740b532fcaef226ac6c08167d23
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Apr 25 01:59:56 2008 -0400
+
+    LiveUSBCreator class enhancements
+    - New getReleases and getReleaseFromISO methods to deal with our known releases
+    - Add existingLiveOS, getLiveOS, existingOverlay, and getOverlay helper methods
+    - Add verifyImage method that verifies the SHA1 checksum of our ISO
+    - Lots of other semantic cleanups
+
+ data/fedorausb.png |  Bin 11346 -> 8861 bytes
+ liveusb/creator.py |  138 ++++++++++++++++++++++++++++++++++++---------------
+ 2 files changed, 97 insertions(+), 41 deletions(-)
+
+commit 2e52562d5107ede9ce61f33ec456a74b44a8ad35
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Apr 25 01:55:44 2008 -0400
+
+    Tons of features:
+    
+    - Add the ability to download releases!
+    - Add the ability to verify the SHA1 checksum for ISOs that we know about,
+      along with a progress monitoring
+    - Display how long the liveusb creation took upon completion
+    - Display device labels in our drive list
+      - Add a getSelectedDrive method to handle grabbing just the selected drive letter.
+    - Clean up how we lock/unlock our widgets
+    - Detect if a LiveOS or persistent overlay already exist, and warn the user asking
+      for their confirmation before continuing.
+    - By default, if no ISO is selected, kick off a download
+    - Add the ability to resume failed downloads
+
+ liveusb/gui.py |  196 ++++++++++++++++++++++++++++++++++++++++++++++++--------
+ 1 files changed, 169 insertions(+), 27 deletions(-)
+
+commit cbe5aadd72c9d1f2d7d7daacc23a1ee586cf6be0
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Apr 25 01:49:48 2008 -0400
+
+    Clean up the WindowsLiveUSBCreator._getDeviceUUID method.
+
+ liveusb/creator.py |   22 +++++++++++++++-------
+ 1 files changed, 15 insertions(+), 7 deletions(-)
+
+commit f1cd85c36e72df3d97c04b435fbf7b26d9084a85
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Apr 25 01:44:05 2008 -0400
+
+    Handle read-only files in our syslinux directory.
+    
+    Since python for windows does not allow you to delete read-only files, we have to change the permissions on them if necessary.
+
+ liveusb/creator.py |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+commit 3f92a2ee38007841307e97a1d1f6baee18a5da69
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Apr 25 01:42:56 2008 -0400
+
+    Add a LiveUSBError exception
+
+ liveusb/__init__.py |    4 +++-
+ liveusb/creator.py  |   10 +++++-----
+ 2 files changed, 8 insertions(+), 6 deletions(-)
+
+commit 2cd5f1a64478737995edf14657bfabbd6d173d34
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Apr 25 01:38:11 2008 -0400
+
+    Pull our releases out into a separate module
+
+ liveusb/releases.py |   42 ++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 42 insertions(+), 0 deletions(-)
+
+commit db92e710499aa787408c54293f66424115bb40be
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Apr 20 17:41:09 2008 -0400
+
+    Lots of GUI improvements.
+    - Add a drop down list of releases to download
+    - Move everything around
+
+ data/newdialog.ui |  226 ++++++++++++++++++++++++++++++++++-------------------
+ liveusb/dialog.py |  108 ++++++++++++++-----------
+ 2 files changed, 206 insertions(+), 128 deletions(-)
+
+commit 7dced9c37757d758f664b5d9dd0f3ff3b07e6c56
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Apr 20 17:40:04 2008 -0400
+
+    Call 7-Zip with the right path
+
+ liveusb/creator.py |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 2f0a8b6d226fa90fdd57bd3e2cb0875b38b9a641
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Apr 11 16:29:15 2008 -0400
+
+    Have py2exe bundle everything into a single exe.  Reorg our tools a bit too.
+
+ data/7-Zip/7z.dll       |  Bin 601088 -> 0 bytes
+ data/7-Zip/7z.exe       |  Bin 141824 -> 0 bytes
+ data/7-Zip/7zCon.sfx    |  Bin 136192 -> 0 bytes
+ data/7-Zip/History.txt  |  777 -----------------------------------------------
+ data/7-Zip/License.txt  |   79 -----
+ data/7-Zip/copying.txt  |  504 ------------------------------
+ data/7-Zip/readme.txt   |   65 ----
+ data/dd.exe             |  Bin 342016 -> 0 bytes
+ data/syslinux.exe       |  Bin 24576 -> 0 bytes
+ liveusb/creator.py      |    7 +-
+ liveusb/gui.py          |    2 +-
+ setup.py                |   21 +-
+ tools/7-Zip/7z.dll      |  Bin 0 -> 601088 bytes
+ tools/7-Zip/7z.exe      |  Bin 0 -> 141824 bytes
+ tools/7-Zip/7zCon.sfx   |  Bin 0 -> 136192 bytes
+ tools/7-Zip/History.txt |  777 +++++++++++++++++++++++++++++++++++++++++++++++
+ tools/7-Zip/License.txt |   79 +++++
+ tools/7-Zip/copying.txt |  504 ++++++++++++++++++++++++++++++
+ tools/7-Zip/readme.txt  |   65 ++++
+ tools/dd.exe            |  Bin 0 -> 342016 bytes
+ tools/syslinux.exe      |  Bin 0 -> 24576 bytes
+ 21 files changed, 1444 insertions(+), 1436 deletions(-)
+
+commit 44aa9e977f4a51c05df5af91a73b0f2b87f435e0
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Apr 11 14:25:46 2008 -0400
+
+    Get persistence working!
+    - Add a _getDeviceUUID method to our LiveUSBCreator, and implement the Windows version
+
+ liveusb/creator.py |   20 ++++++++++++++++++--
+ 1 files changed, 18 insertions(+), 2 deletions(-)
+
+commit c0ff3de5a9f7c294bd159b07cec39aa54c3eb6e7
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Apr 11 14:24:23 2008 -0400
+
+    Some minor exception cleanups
+
+ liveusb/creator.py |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit ce1bfef9741b41e112302e8ecb822d183ba9d259
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Apr 11 11:51:37 2008 -0400
+
+    dos2unix
+
+ liveusb/dialog.py |  158 ++++++++++++++++++++++++++--------------------------
+ 1 files changed, 79 insertions(+), 79 deletions(-)
+
+commit d6c874a49447748cdd70b9cbfba30a3dd751db2e
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Apr 10 19:38:09 2008 -0400
+
+    Update our setup.py
+
+ setup.py |    9 ++++++---
+ 1 files changed, 6 insertions(+), 3 deletions(-)
+
+commit ca7097db8397acb2894f04f8075b6e145509503c
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Apr 10 19:26:10 2008 -0400
+
+    Flip some more executable bits
+
+ 0 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 2c8b3fc3fe4850478fb1a7401433fa8d488975a9
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Apr 10 19:25:41 2008 -0400
+
+    Flip some bits
+
+ 0 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 7cbae69539d57c99ccd323db9b81c31492790d3a
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Apr 10 19:25:24 2008 -0400
+
+    Add a LICENSE file
+
+ LICENSE |  341 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 341 insertions(+), 0 deletions(-)
+
+commit 4fef8421a08477651366f75e21c77bdfb5e52d24
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Apr 10 19:24:39 2008 -0400
+
+    Add win32 dd.exe, and update our README
+
+ README      |    5 +++++
+ data/dd.exe |  Bin 0 -> 342016 bytes
+ 2 files changed, 5 insertions(+), 0 deletions(-)
+
+commit 8a1c69b21413fb101b408672cfbd16584bc9f9f0
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Apr 10 19:22:37 2008 -0400
+
+    Lots of GUI changes.
+    - Add a LiveUSBThread that does the actual work.  This sends status signals
+      to the main dialog, which then updates the status text area.
+    - Add a ProgressThread that checks up on how much work has been done, and
+      sends signals to the main dialog which updates our progress bar
+    - Lots of other UI improvements
+
+ liveusb/gui.py |  146 ++++++++++++++++++++++++++++++++++++++++++++++++-------
+ 1 files changed, 127 insertions(+), 19 deletions(-)
+
+commit cf9b2bebf9a72784306f58ac2395820fa93bc6b6
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Apr 10 18:44:32 2008 -0400
+
+    Add a checkFreeSpace method to make sure we have enough space on the device before proceeding
+
+ liveusb/creator.py |   15 +++++++++++++++
+ 1 files changed, 15 insertions(+), 0 deletions(-)
+
+commit 89952f4d29ba5d329760e5ca83d493f1c1ae7ed7
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Apr 10 18:42:18 2008 -0400
+
+    If we only find 1 drive, then default to it
+
+ liveusb/creator.py |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
+
+commit 48f160e12f2046e060821f100995674e1ac2f2ca
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Apr 10 18:41:50 2008 -0400
+
+    Add a writeLog method to the LiveUSBCreator that is called before throwing an exception after a failing subprocess
+
+ liveusb/creator.py |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+commit 9d7035f2b7055a90e37c099c922ffbb28ff7579c
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Apr 10 18:40:34 2008 -0400
+
+    Replace our os.system calls with subprocess.  Upon errors, write the
+    stdin and stderr of the processes to a file before throwing an exception.
+
+ liveusb/creator.py |   21 ++++++++++++++++-----
+ 1 files changed, 16 insertions(+), 5 deletions(-)
+
+commit 0a6fa7d27b78181a12133fd1c396c2e0704c2bff
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Apr 10 18:39:18 2008 -0400
+
+    Remove the syslinux directory if it exiss
+
+ liveusb/creator.py |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+commit 39a03d32edd8caed9fab1b24883e69f7a981b436
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Apr 10 18:36:17 2008 -0400
+
+    Add persistent overlay support.  This is not fully complete yet, as
+    we need to figure out how to grab the device UUID from windows.
+
+ liveusb/creator.py |   30 ++++++++++++++++++++++++++++++
+ 1 files changed, 30 insertions(+), 0 deletions(-)
+
+commit f2fcf0659e7ff0ef8830ae0fe2e56af7b5310ad9
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Apr 10 18:33:59 2008 -0400
+
+    Add overlay and log fields to the LiveUSBCreator parent class
+
+ liveusb/creator.py |   10 ++++++++--
+ 1 files changed, 8 insertions(+), 2 deletions(-)
+
+commit de1f79a774091910022544321157581af6684a84
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Apr 10 18:28:51 2008 -0400
+
+    Add a redesigned UI file
+
+ data/newdialog.ui |  130 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 130 insertions(+), 0 deletions(-)
+
+commit ce961baae0f92402cf7545848d145ed8f4b176af
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Apr 10 18:28:30 2008 -0400
+
+    Add a newly generated dialog module from the newdialog.ui interface
+
+ liveusb/dialog.py |   79 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 79 insertions(+), 0 deletions(-)
+
+commit b99cb1e1380f70e77f969297dac8367ee3ad331d
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Apr 10 18:27:50 2008 -0400
+
+    Remove luDialog.py in favor of the new liveusb.dialog module
+
+ liveusb/luDialog.py |   74 ---------------------------------------------------
+ 1 files changed, 0 insertions(+), 74 deletions(-)
+
+commit b91799f09f7028ee95924fd1097cd2419d81b675
+Merge: 12abbb7... f6d0187...
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue Apr 8 17:01:18 2008 -0400
+
+    Merge branch 'master' of ssh://git.fedorahosted.org/git/liveusb-creator
+
+commit 12abbb7e734b6eb0c058ba163aca0c6cdc2a6fe5
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue Apr 8 17:00:48 2008 -0400
+
+    Docstrings and new-style classes are good
+
+ liveusb/creator.py |    4 +++-
+ 1 files changed, 3 insertions(+), 1 deletions(-)
+
+commit d4cdb5287bcd611441bfcd5eb4b742478496ef97
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue Apr 8 16:55:15 2008 -0400
+
+    Add an __all__ global to our liveusb module
+
+ liveusb/__init__.py |    4 +++-
+ 1 files changed, 3 insertions(+), 1 deletions(-)
+
+commit 2e08a6bc04c024ea02d0f44bff13ec1180c3a5dd
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue Apr 8 16:53:39 2008 -0400
+
+    README updates
+
+ README |   17 +++++++++++------
+ 1 files changed, 11 insertions(+), 6 deletions(-)
+
+commit f6d0187ad5d82f73a463ed0af5da26138b024196
+Author: Kushal Das <kushal@fedoraproject.org>
+Date:   Mon Apr 7 06:18:07 2008 +0530
+
+    New persistent overlay spinbox added in the GUI, also text changed for the burnBttn
+
+ data/luDialog.ui    |   27 ++++++++++++---------------
+ liveusb/luDialog.py |   27 +++++++++++++++++----------
+ 2 files changed, 29 insertions(+), 25 deletions(-)
+
+commit d5a635f2f4baa64043bcd94139fb7c459abf6b59
+Author: Kushal Das <kd@kdlappy.(none)>
+Date:   Wed Feb 27 10:56:43 2008 +0530
+
+    liveusb-creator.py filename fixed in setup.py also changed the icon path in the same file
+
+ setup.py |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 1cb22a043c33405104daf7a99cd8955f1eda451e
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Feb 22 10:37:52 2008 -0500
+
+    Add a logo from Kushal
+
+ data/fedorausb.png |  Bin 0 -> 11346 bytes
+ liveusb-creator.py |    2 +-
+ liveusb/creator.py |    3 ++-
+ 3 files changed, 3 insertions(+), 2 deletions(-)
+
+commit 12f2aff9151a667b89915f86c1c977a81ff02487
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue Feb 12 23:21:03 2008 -0500
+
+    Update the changelog
+
+ ChangeLog |  208 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 208 insertions(+), 0 deletions(-)
+
 commit a0a67cd754edb0a05d1832e8468fd632bbafab21
 Author: Luke Macken <lmacken@redhat.com>
 Date:   Fri Feb 8 03:57:25 2008 -0500
@@ -24,7 +674,6 @@ Date:   Fri Feb 8 03:25:36 2008 -0500
 
  AUTHORS |    2 ++
  1 files changed, 2 insertions(+), 0 deletions(-)
- create mode 100644 AUTHORS
 
 commit 04567b3a24417d2dddb205e236c2f885447fe68f
 Author: Luke Macken <lmacken@redhat.com>
@@ -69,28 +718,6 @@ Date:   Fri Feb 8 03:11:51 2008 -0500
  setup.py               |    4 +-
  syslinux.exe           |  Bin 24576 -> 0 bytes
  24 files changed, 1655 insertions(+), 1529 deletions(-)
- delete mode 100644 7-Zip/7z.dll
- delete mode 100644 7-Zip/7z.exe
- delete mode 100644 7-Zip/7zCon.sfx
- delete mode 100644 7-Zip/History.txt
- delete mode 100644 7-Zip/License.txt
- delete mode 100644 7-Zip/copying.txt
- delete mode 100644 7-Zip/readme.txt
- create mode 100644 data/7-Zip/7z.dll
- create mode 100644 data/7-Zip/7z.exe
- create mode 100644 data/7-Zip/7zCon.sfx
- create mode 100644 data/7-Zip/History.txt
- create mode 100644 data/7-Zip/License.txt
- create mode 100644 data/7-Zip/copying.txt
- create mode 100644 data/7-Zip/readme.txt
- create mode 100644 data/fedora.ico
- create mode 100644 data/luDialog.ui
- create mode 100644 data/syslinux.exe
- delete mode 100644 fedora.ico
- mode change 100644 => 100755 liveusb-creator.py
- create mode 100644 liveusb/__init__.py
- create mode 100644 liveusb/luDialog.py
- delete mode 100644 syslinux.exe
 
 commit c07051b82df32da1d3c410d37e970bc5da9e3a4c
 Author: Luke Macken <lmacken@redhat.com>
@@ -103,7 +730,6 @@ Date:   Fri Feb 8 03:09:09 2008 -0500
 
  liveusb/creator.py |  149 ++++++++++++++++++++++++++++++++++++++++++++++++++++
  1 files changed, 149 insertions(+), 0 deletions(-)
- create mode 100644 liveusb/creator.py
 
 commit 1b33fe06d8b3802cfca2806948cd9ece9fd250fd
 Author: Luke Macken <lmacken@redhat.com>
@@ -113,7 +739,6 @@ Date:   Fri Feb 8 03:07:26 2008 -0500
 
  liveusb/gui.py |   69 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  1 files changed, 69 insertions(+), 0 deletions(-)
- create mode 100644 liveusb/gui.py
 
 commit 7a4db09e3389db981af15e97e40cf8d92e7ea89f
 Author: Luke Macken <lmacken@redhat.com>
@@ -141,7 +766,6 @@ Date:   Tue Feb 5 22:16:27 2008 -0500
 
  ChangeLog |   95 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  1 files changed, 95 insertions(+), 0 deletions(-)
- create mode 100644 ChangeLog
 
 commit b4adea4e8826cdf62b5ed4924fedf1c5961cbd9c
 Author: Luke Macken <lmacken@redhat.com>
@@ -163,8 +787,6 @@ Date:   Tue Feb 5 21:42:52 2008 -0500
  liveusb-creator.py   |  130 ++++++++++++++++++++++++++++++++++++++++++++++++++
  setup.py             |    2 +-
  4 files changed, 133 insertions(+), 133 deletions(-)
- delete mode 100644 livecd-iso-to-usb.py
- create mode 100644 liveusb-creator.py
 
 commit 625062a0065cdef7bc99f90e7a59760e96eeb472
 Author: Luke Macken <lmacken@redhat.com>
@@ -193,7 +815,6 @@ Date:   Sun Feb 3 23:39:26 2008 -0500
  fedora.ico |  Bin 0 -> 9662 bytes
  setup.py   |    9 ++++++++-
  2 files changed, 8 insertions(+), 1 deletions(-)
- create mode 100644 fedora.ico
 
 commit baec42f7350c3f1a5e3e9ee08dfc289a717e2e64
 Author: Luke Macken <lmacken@redhat.com>
@@ -275,7 +896,6 @@ Date:   Sat Feb 2 04:25:55 2008 -0500
 
  README |   26 ++++++++++++++++++++++++++
  1 files changed, 26 insertions(+), 0 deletions(-)
- create mode 100644 README
 
 commit f71f6e2a509027f6faf12d4aacf3f900027c86d3
 Author: Luke Macken <lmacken@redhat.com>
@@ -303,13 +923,3 @@ Date:   Fri Feb 1 20:22:34 2008 -0500
  setup.py             |    4 +
  syslinux.exe         |  Bin 0 -> 24576 bytes
  10 files changed, 1540 insertions(+), 0 deletions(-)
- create mode 100644 7-Zip/7z.dll
- create mode 100644 7-Zip/7z.exe
- create mode 100644 7-Zip/7zCon.sfx
- create mode 100644 7-Zip/History.txt
- create mode 100644 7-Zip/License.txt
- create mode 100644 7-Zip/copying.txt
- create mode 100644 7-Zip/readme.txt
- create mode 100644 livecd-iso-to-usb.py
- create mode 100644 setup.py
- create mode 100644 syslinux.exe
