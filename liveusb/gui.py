@@ -95,6 +95,7 @@ class ProgressThread(QtCore.QThread):
     given drive and sends a signal to our main dialog window to update the
     progress bar.
     """
+    totalsize = 0
     def setData(self, size, drive):
         self.totalsize = size / 1024
         self.drive = drive
