@@ -5,9 +5,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>420</width>
-    <height>318</height>
+    <width>422</width>
+    <height>386</height>
    </rect>
+  </property>
+  <property name="sizePolicy" >
+   <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle" >
    <string>Fedora LiveUSB Creator</string>
@@ -19,10 +25,13 @@
    <property name="geometry" >
     <rect>
      <x>140</x>
-     <y>280</y>
+     <y>350</y>
      <width>131</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="whatsThis" >
+    <string>This button will begin the LiveUSB creation process.  This entails optionally downloading a releas (if an existing one wasn't selected),  extracting the ISO to the USB device, creating the persistent overlay, and installing the bootloader.</string>
    </property>
    <property name="text" >
     <string>Create Live USB</string>
@@ -32,10 +41,13 @@
    <property name="geometry" >
     <rect>
      <x>10</x>
-     <y>130</y>
+     <y>200</y>
      <width>401</width>
      <height>111</height>
     </rect>
+   </property>
+   <property name="whatsThis" >
+    <string>This is the status console, where all messages get written to.</string>
    </property>
    <property name="readOnly" >
     <bool>true</bool>
@@ -45,10 +57,13 @@
    <property name="geometry" >
     <rect>
      <x>10</x>
-     <y>250</y>
+     <y>320</y>
      <width>401</width>
      <height>23</height>
     </rect>
+   </property>
+   <property name="whatsThis" >
+    <string>This is the progress bar that will indicate how far along in the LiveUSB creation process you are</string>
    </property>
    <property name="value" >
     <number>0</number>
@@ -58,10 +73,13 @@
    <property name="geometry" >
     <rect>
      <x>210</x>
-     <y>10</y>
+     <y>80</y>
      <width>201</width>
      <height>51</height>
     </rect>
+   </property>
+   <property name="whatsThis" >
+    <string>If you do not select an existing Live CD, the selected release will be downloaded for you.</string>
    </property>
    <property name="title" >
     <string>Download Fedora</string>
@@ -81,7 +99,7 @@
    <property name="geometry" >
     <rect>
      <x>180</x>
-     <y>30</y>
+     <y>100</y>
      <width>21</width>
      <height>20</height>
     </rect>
@@ -102,10 +120,13 @@
    <property name="geometry" >
     <rect>
      <x>10</x>
-     <y>10</y>
+     <y>80</y>
      <width>161</width>
      <height>51</height>
     </rect>
+   </property>
+   <property name="whatsThis" >
+    <string>This button allows you to browse for an existing Live CD ISO that you have previously downloaded.  If you do not select one, a release will be downloaded for you automatically.</string>
    </property>
    <property name="title" >
     <string>Use existing Live CD</string>
@@ -128,10 +149,13 @@
    <property name="geometry" >
     <rect>
      <x>10</x>
-     <y>70</y>
+     <y>140</y>
      <width>191</width>
      <height>51</height>
     </rect>
+   </property>
+   <property name="whatsThis" >
+    <string>This is the USB stick that you want to install your Live CD on.  This device must be formatted with the FAT filesystem.</string>
    </property>
    <property name="title" >
     <string>Target Device</string>
@@ -151,19 +175,13 @@
    <property name="geometry" >
     <rect>
      <x>210</x>
-     <y>70</y>
+     <y>140</y>
      <width>201</width>
      <height>51</height>
     </rect>
    </property>
-   <property name="toolTip" >
-    <string comment="comment?!" >Tool tip!</string>
-   </property>
-   <property name="statusTip" >
-    <string comment="comment?" >Status tip!!!</string>
-   </property>
    <property name="whatsThis" >
-    <string comment="comment!" >WTF IS THIS?!</string>
+    <string comment="comment!" >By allocating extra space on your USB stick for a persistent overlay, you will be able to store data and make permanent modifications to your live operating system.  Without it, you will not be able to save data that will persist after a reboot.</string>
    </property>
    <property name="title" >
     <string>Persistent Overlay (0 Mb)</string>
@@ -188,7 +206,25 @@
     </property>
    </widget>
   </widget>
+  <widget class="QLabel" name="label" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>430</width>
+     <height>72</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string/>
+   </property>
+   <property name="pixmap" >
+    <pixmap resource="resources.qrc" >:/liveusb-header.png</pixmap>
+   </property>
+  </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc" />
+ </resources>
  <connections/>
 </ui>
