@@ -48,6 +48,7 @@ class LiveUSBCreator(object):
     overlay = 0         # size in mb of our persisten overlay
     log = StringIO()    # log subprocess output in case of errors
     uuid = None         # the uuid of our selected drive
+    pids = []           # a list of pids of all of our subprocesses
 
     def detectRemovableDrives(self):
         """ This method should populate self.drives """
@@ -252,6 +253,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                               self.drive],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                              creationflags=win32process.CREATE_NO_WINDOW)
+        self.pids.append(p.pid)
         map(self.log.write, p.communicate())
         if p.returncode:
             self.writeLog()
@@ -280,6 +282,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                               self.iso, '-x![BOOT]', '-y', '-o' + self.drive],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                              creationflags=win32process.CREATE_NO_WINDOW)
+        self.pids.append(p.pid)
         map(self.log.write, p.communicate())
         if p.returncode or not self.existingLiveOS():
             self.writeLog()
@@ -293,6 +296,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                                   'count=%d' % self.overlay, 'bs=1M'],
                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                  creationflags=win32process.CREATE_NO_WINDOW)
+            self.pids.append(p.pid)
             map(self.log.write, p.communicate())
             if p.returncode or not self.existingOverlay():
                 self.writeLog()

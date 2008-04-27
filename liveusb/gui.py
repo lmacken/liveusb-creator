@@ -40,6 +40,7 @@ class LiveUSBApp(QtGui.QApplication):
         self.mywindow = LiveUSBDialog()
         self.mywindow.show()
         self.exec_()
+        self.mywindow.terminate()
 
 
 class ReleaseDownloader(QtCore.QThread):
@@ -171,7 +172,6 @@ class LiveUSBThread(QtCore.QThread):
         self.emit(QtCore.SIGNAL("progress(int)"), value)
 
     def __del__(self):
-        # TODO: kill subprocess threads ?!
         self.wait()
 
 
@@ -317,5 +317,20 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
             self.live.iso = str(isofile)
             self.textEdit.append(os.path.basename(self.live.iso) + ' selected')
 
+
+    def terminate(self):
+        """ Terminate any processes that we have spawned """
+        for pid in self.live.pids:
+            if hasattr(os, 'kill'):
+                os.kill(pid)
+            else:
+                import win32api, win32con, pywintypes
+                try:
+                    handle = win32api.OpenProcess(win32con.PROCESS_TERMINATE,
+                                                  False, pid)
+                    win32api.TerminateProcess(handle, 0)
+                    win32api.CloseHandle(handle)
+                except pywintypes.error:
+                    pass
 
 # vim:ts=4 sw=4 expandtab:
