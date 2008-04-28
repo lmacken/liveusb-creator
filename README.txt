@@ -28,7 +28,7 @@ Developing
 
   o If you change the QtDesigner ui file, you can compile it by doing:
 
-        pyuic4 data\logoed.ui -o liveusb\dialog.py
+        pyuic4 data\liveusb-creator.ui -o liveusb\dialog.py
 
   o If you add more PyQt resources (pixmaps, icons, etc), you can rebuild
     the resources module by running:
