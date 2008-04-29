@@ -1,3 +1,58 @@
+commit 6102c231619d0fb6eea2cf2de8b7063a028244b0
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon Apr 28 21:49:42 2008 -0400
+
+    Remove some unnecessary files
+
+ liveusb/urlgrabber/mirror.pyc |  Bin 16892 -> 0 bytes
+ 1 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 8602c0f12f4808348e085743a1bdee380843626d
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon Apr 28 21:49:32 2008 -0400
+
+    Remove some unnecessary files
+
+ liveusb/urlgrabber/__init__.pyc  |  Bin 1677 -> 0 bytes
+ liveusb/urlgrabber/byterange.pyc |  Bin 16918 -> 0 bytes
+ liveusb/urlgrabber/grabber.pyc   |  Bin 53564 -> 0 bytes
+ liveusb/urlgrabber/keepalive.pyc |  Bin 20834 -> 0 bytes
+ liveusb/urlgrabber/progress.pyc  |  Bin 23313 -> 0 bytes
+ 5 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 3122311dc1f89d5883fef324e9a29935b28e084f
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon Apr 28 21:47:16 2008 -0400
+
+    Add a refresh button for our device list (Ticket #10)
+
+ data/liveusb-creator.ui |   30 +-
+ data/refresh.png        |  Bin 0 -> 912 bytes
+ data/resources.qrc      |    3 +
+ liveusb/creator.py      |    1 +
+ liveusb/dialog.py       |   13 +-
+ liveusb/gui.py          |   12 +-
+ liveusb/resources_rc.py | 2104 ++++++++++++++++++++++++-----------------------
+ 7 files changed, 1135 insertions(+), 1028 deletions(-)
+
+commit b9a9948ce1fe778b21a88fee2e3aa8b06ab0e7b9
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Apr 27 20:27:29 2008 -0400
+
+    Fix ui filename in README
+
+ README.txt |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 94260247306ab13cfd8adfeebacacdfee08a4eed
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Apr 27 04:20:15 2008 -0400
+
+    Update the ChangeLog
+
+ ChangeLog |  690 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++----
+ 1 files changed, 650 insertions(+), 40 deletions(-)
+
 commit 38e788006064ed6ecefe2af820de1298854246dd
 Author: Luke Macken <lmacken@redhat.com>
 Date:   Sun Apr 27 04:18:01 2008 -0400
