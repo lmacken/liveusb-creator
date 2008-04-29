@@ -245,6 +245,7 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
         self.overlaySlider.setEnabled(enabled)
         self.isoBttn.setEnabled(enabled)
         self.downloadCombo.setEnabled(enabled)
+        self.refreshDevicesButton.setEnabled(enabled)
 
     def overlayValue(self, value):
         self.overlayTitle.setTitle("Persistent Overlay (%d Mb)" % value)
