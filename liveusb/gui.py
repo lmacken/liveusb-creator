@@ -182,8 +182,8 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
         self.setupUi(self)
         try:
             self.live = LiveUSBCreator()
-            self.populateDevices()
             self.populateReleases()
+            self.populateDevices()
         except Exception, e:
             self.textEdit.setPlainText(str(e))
 
