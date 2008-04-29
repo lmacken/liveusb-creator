@@ -165,9 +165,37 @@
      <rect>
       <x>10</x>
       <y>20</y>
-      <width>171</width>
+      <width>145</width>
       <height>20</height>
      </rect>
+    </property>
+    <property name="editable" >
+     <bool>false</bool>
+    </property>
+    <property name="insertPolicy" >
+     <enum>QComboBox::InsertAtTop</enum>
+    </property>
+    <property name="duplicatesEnabled" >
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="refreshDevicesButton" >
+    <property name="geometry" >
+     <rect>
+      <x>156</x>
+      <y>16</y>
+      <width>30</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="text" >
+     <string/>
+    </property>
+    <property name="icon" >
+     <iconset resource="resources.qrc" >:/refresh.png</iconset>
+    </property>
+    <property name="flat" >
+     <bool>true</bool>
     </property>
    </widget>
   </widget>

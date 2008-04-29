@@ -2,4 +2,7 @@
     <qresource>
         <file>liveusb-header.png</file>
     </qresource>
+    <qresource>
+        <file>refresh.png</file>
+    </qresource>
 </RCC>

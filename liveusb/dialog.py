@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'data\liveusb-creator.ui'
 #
-# Created: Sun Apr 27 03:57:43 2008
+# Created: Mon Apr 28 20:43:51 2008
 #      by: PyQt4 UI code generator 4.3.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -67,8 +67,17 @@ class Ui_Dialog(object):
         self.groupBox_2.setObjectName("groupBox_2")
 
         self.driveBox = QtGui.QComboBox(self.groupBox_2)
-        self.driveBox.setGeometry(QtCore.QRect(10,20,171,20))
+        self.driveBox.setGeometry(QtCore.QRect(10,20,145,20))
+        self.driveBox.setEditable(False)
+        self.driveBox.setInsertPolicy(QtGui.QComboBox.InsertAtTop)
+        self.driveBox.setDuplicatesEnabled(False)
         self.driveBox.setObjectName("driveBox")
+
+        self.refreshDevicesButton = QtGui.QPushButton(self.groupBox_2)
+        self.refreshDevicesButton.setGeometry(QtCore.QRect(156,16,30,26))
+        self.refreshDevicesButton.setIcon(QtGui.QIcon(":/refresh.png"))
+        self.refreshDevicesButton.setFlat(True)
+        self.refreshDevicesButton.setObjectName("refreshDevicesButton")
 
         self.overlayTitle = QtGui.QGroupBox(Dialog)
         self.overlayTitle.setGeometry(QtCore.QRect(210,140,201,51))

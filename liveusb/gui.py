@@ -186,6 +186,7 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
             self.populateReleases()
         except Exception, e:
             self.textEdit.setPlainText(str(e))
+
         self.progressThread = ProgressThread()
         self.downloadProgress = DownloadProgress()
         self.liveThread = LiveUSBThread(live=self.live,
@@ -195,11 +196,9 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
 
     def populateDevices(self):
         self.live.detectRemovableDrives()
-        for drive, label in self.live.drives[::-1]:
-            if label:
-                self.driveBox.addItem("%s (%s)" % (label, drive))
-            else:
-                self.driveBox.addItem(drive)
+        self.driveBox.clear()
+        for drive, label in self.live.drives:
+            self.driveBox.addItem(label and "%s (%s)" % (label, drive) or drive)
 
     def populateReleases(self):
         for release in self.live.getReleases():
@@ -228,6 +227,8 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
                      self.maxprogress)
         self.connect(self.downloadProgress, QtCore.SIGNAL("progress(int)"),
                      self.progress)
+        self.connect(self.refreshDevicesButton, QtCore.SIGNAL("clicked()"),
+                     self.populateDevices)
 
     def progress(self, value):
         self.progressBar.setValue(value)
@@ -332,5 +333,6 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
                     win32api.CloseHandle(handle)
                 except pywintypes.error:
                     pass
+
 
 # vim:ts=4 sw=4 expandtab:
