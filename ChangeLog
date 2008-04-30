@@ -1,3 +1,50 @@
+commit f6361977eb863f5d2b8637370fd42aa7c096de90
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Apr 30 15:03:44 2008 -0400
+
+    Catch LiveUSBErrors while detecting devices.  Disable the start button
+    if we can't find any, and re-enable it when one is found.
+
+ liveusb/gui.py |   24 ++++++++++++++----------
+ 1 files changed, 14 insertions(+), 10 deletions(-)
+
+commit 968f6f5cd5e17d485378940c826050a292361fe1
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Apr 30 14:48:30 2008 -0400
+
+    Don't force our syslinux install.  This could potentially hide some problems
+
+ liveusb/creator.py |    6 +-----
+ 1 files changed, 1 insertions(+), 5 deletions(-)
+
+commit 30ddf798d040724c9e6b2cb8d96049458fcf9094
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue Apr 29 10:27:48 2008 -0400
+
+    Enable/disable the refresh button as necessary.
+
+ liveusb/gui.py |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+commit 4f383ab4794df94ef5c4b7fa853b30ab5c201e98
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue Apr 29 10:00:02 2008 -0400
+
+    Populate releases before devices.  This way, if no devices are found, we
+    don't butcher our release menu.
+
+ liveusb/gui.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit f754fac0cb18e5864fcf03f6886ee75ea29ebb2c
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon Apr 28 21:50:20 2008 -0400
+
+    update changelog
+
+ ChangeLog |   55 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 55 insertions(+), 0 deletions(-)
+
 commit 6102c231619d0fb6eea2cf2de8b7063a028244b0
 Author: Luke Macken <lmacken@redhat.com>
 Date:   Mon Apr 28 21:49:42 2008 -0400
