@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
 #
-# This tool installs a Fedora Live ISO (F7+) on to a USB stick, from Windows.
-# For information regarding the installation of Fedora on USB drives, see
-# the wiki: http://fedoraproject.org/wiki/FedoraLiveCD/USBHowTo
-#
 # Copyright © 2008  Red Hat, Inc. All rights reserved.
 #
 # This copyrighted material is made available to anyone wishing to use, modify,
@@ -249,7 +245,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         shutil.move(os.path.join(self.drive, "isolinux"),
                     os.path.join(self.drive, "syslinux"))
         os.unlink(os.path.join(self.drive, "syslinux", "isolinux.cfg"))
-        p = subprocess.Popen([os.path.join('tools', 'syslinux.exe'), '-f', '-d',
+        p = subprocess.Popen([os.path.join('tools', 'syslinux.exe'), '-d',
                               os.path.join(self.drive, 'syslinux'),
                               self.drive],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
