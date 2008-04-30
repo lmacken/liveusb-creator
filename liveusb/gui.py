@@ -180,12 +180,10 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
     def __init__(self):
         QtGui.QDialog.__init__(self)
         self.setupUi(self)
-        try:
-            self.live = LiveUSBCreator()
-            self.populateReleases()
-            self.populateDevices()
-        except Exception, e:
-            self.textEdit.setPlainText(str(e))
+
+        self.live = LiveUSBCreator()
+        self.populateReleases()
+        self.populateDevices()
 
         self.progressThread = ProgressThread()
         self.downloadProgress = DownloadProgress()
@@ -195,10 +193,16 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
         self.confirmed = False
 
     def populateDevices(self):
-        self.live.detectRemovableDrives()
-        self.driveBox.clear()
-        for drive, label in self.live.drives:
-            self.driveBox.addItem(label and "%s (%s)" % (label, drive) or drive)
+        try:
+            self.live.detectRemovableDrives()
+            self.driveBox.clear()
+            for drive, label in self.live.drives:
+                self.driveBox.addItem(label and "%s (%s)" % (label, drive)
+                                      or drive)
+            self.startButton.setEnabled(True)
+        except LiveUSBError, e:
+            self.textEdit.setPlainText(str(e))
+            self.startButton.setEnabled(False)
 
     def populateReleases(self):
         for release in self.live.getReleases():
