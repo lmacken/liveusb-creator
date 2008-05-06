@@ -1,3 +1,21 @@
+commit 51eb6b0e39b95a33e87c11d90ed6a43f70556680
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue May 6 15:00:18 2008 -0400
+
+    Have syslinux use a 'safe' version, install an MBR sector, and mark it as bootable.
+
+ liveusb/creator.py |    9 ++++-----
+ 1 files changed, 4 insertions(+), 5 deletions(-)
+
+commit 461fe3cbf7745ee62caa75d464c82cc2299ac32a
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Apr 30 17:22:40 2008 -0400
+
+    Update ChangeLog
+
+ ChangeLog |   47 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 47 insertions(+), 0 deletions(-)
+
 commit f6361977eb863f5d2b8637370fd42aa7c096de90
 Author: Luke Macken <lmacken@redhat.com>
 Date:   Wed Apr 30 15:03:44 2008 -0400
