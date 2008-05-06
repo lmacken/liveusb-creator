@@ -1,3 +1,30 @@
+commit f6bfa8665bebc0236349aad7274b08c8004629cc
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue May 6 15:43:23 2008 -0400
+
+    Update syslinux to 3.63
+
+ tools/syslinux.exe |  Bin 24576 -> 24576 bytes
+ 1 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 51f6070c887466afae95acb1cabb6e8d13665274
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue May 6 15:42:39 2008 -0400
+
+    Use the device UUID instead of the label
+
+ liveusb/creator.py |    4 +++-
+ 1 files changed, 3 insertions(+), 1 deletions(-)
+
+commit 78e3906285f100d77204cc6b3098818e96ad097c
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue May 6 15:10:27 2008 -0400
+
+    Update changelog for v2.0
+
+ ChangeLog |   18 ++++++++++++++++++
+ 1 files changed, 18 insertions(+), 0 deletions(-)
+
 commit 51eb6b0e39b95a33e87c11d90ed6a43f70556680
 Author: Luke Macken <lmacken@redhat.com>
 Date:   Tue May 6 15:00:18 2008 -0400
