@@ -72,7 +72,9 @@ class LiveUSBCreator(object):
         syslinux = file(os.path.join(self.drive,"isolinux","syslinux.cfg"),'w')
         for line in isolinux.readlines():
             if "CDLABEL" in line:
-                line = re.sub("CDLABEL=[^ ]*", "LABEL=" + self.label, line)
+                line = re.sub("CDLABEL=[^ ]*",
+                              "UUID=" + self._getDeviceUUID(),
+                              line)
                 line = re.sub("rootfstype=[^ ]*",
                               "rootfstype=%s" % self.fstype,
                               line)
