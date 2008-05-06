@@ -184,7 +184,6 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         self.fstype = device.GetProperty("volume.fstype")
         if self.fstype not in ('vfat', 'msdos', 'ext2', 'ext3'):
             raise LiveUSBError("Unsupported filesystem: %s" % self.fstype)
-        # TODO: check MBR, active partition
 
     def createPersistentOverlay(self, size=1024):
         overlay = os.path.join(self.drive, 'LiveOS', 'overlay')
@@ -245,9 +244,9 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         shutil.move(os.path.join(self.drive, "isolinux"),
                     os.path.join(self.drive, "syslinux"))
         os.unlink(os.path.join(self.drive, "syslinux", "isolinux.cfg"))
-        p = subprocess.Popen([os.path.join('tools', 'syslinux.exe'), '-d',
-                              os.path.join(self.drive, 'syslinux'),
-                              self.drive],
+        p = subprocess.Popen([os.path.join('tools', 'syslinux.exe'),
+                              '-s', '-m', '-a', '-d',
+                              os.path.join(self.drive, 'syslinux'), self.drive],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                              creationflags=win32process.CREATE_NO_WINDOW)
         self.pids.append(p.pid)
@@ -312,8 +311,8 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                          .ExecQuery("Select VolumeSerialNumber from "
                                     "Win32_LogicalDisk where Name = '%s'" %
                                     self.drive)[0].VolumeSerialNumber
-
             self.uuid = uuid[:4] + '-' + uuid[4:]
         return self.uuid
+
 
 # vim:ts=4 sw=4 expandtab:
