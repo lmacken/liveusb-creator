@@ -1,23 +1,23 @@
 releases = (
     {
-        'name': 'Fedora 9 Preview (i686)',
-        'url': 'http://download.fedoraproject.org/pub/fedora/linux/releases/test/9-Preview/Live/i686/Fedora-9-Preview-i686-Live.iso',
-        'sha1': '8879964cb31470d1f5dc1dd814e357165564e0de',
+        'name': 'Fedora 9 (i686)',
+        'url': 'http://download.fedoraproject.org/pub/fedora/linux/releases/9/Live/i686/Fedora-9-i686-Live.iso',
+        'sha1': '3ea129ebce5fd55499a813aaa8a042735f2aad6d',
     },
     {
-        'name': 'Fedora 9 Preview (x86_64)',
-        'url': 'http://download.fedoraproject.org/pub/fedora/linux/releases/test/9-Preview/Live/x86_64/Fedora-9-Preview-x86_64-Live.iso',
-        'sha1': '6b10ce1f780bb93cbe9923589012f759b46906a6',
+        'name': 'Fedora 9 (x86_64)',
+        'url': 'http://download.fedoraproject.org/pub/fedora/linux/releases/9/Live/x86_64/Fedora-9-x86_64-Live.iso',
+        'sha1': 'eb4aae6befa106e6eaa1a5f1a83192572957178a',
     },
     {
-        'name': 'Fedora 9 KDE Preview (i686)',
-        'url': 'http://download.fedoraproject.org/pub/fedora/linux/releases/test/9-Preview/Live/i686/Fedora-9-Preview-i686-Live-KDE.iso',
-        'sha1': 'bf03bb213ae2e622f38811eba963c161c6d67b78',
+        'name': 'Fedora 9 KDE (i686)',
+        'url': 'http://download.fedoraproject.org/pub/fedora/linux/releases/9/Live/i686/Fedora-9-i686-Live-KDE.iso',
+        'sha1': '53e7a022f9f6bb8fc160f4785bddf1c10f317adb',
     },
     {
-        'name': 'Fedora 9 KDE Preview (x86_64)',
-        'url': 'http://download.fedoraproject.org/pub/fedora/linux/releases/test/9-Preview/Live/x86_64/Fedora-9-Preview-x86_64-Live-KDE.iso',
-        'sha1': '5ffa1418854f18d52c9a072cd32d2c5a0e315e6b',
+        'name': 'Fedora 9 KDE (x86_64)',
+        'url': 'http://download.fedoraproject.org/pub/fedora/linux/releases/9/Live/x86_64/Fedora-9-x86_64-Live-KDE.iso',
+        'sha1': 'ebb037e50b16e9e4741c49b98a44e223cf77e236',
     },
     {
         'name': 'Fedora 8 (i686)',
