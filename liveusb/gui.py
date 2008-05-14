@@ -159,7 +159,8 @@ class LiveUSBThread(QtCore.QThread):
             self.status("Configuring and installing bootloader...")
             self.live.updateConfigs()
             self.live.installBootloader()
-            self.status("Complete! (%s)" % str(datetime.now() - now))
+            duration = str(datetime.now() - now).split('.')[0]
+            self.status("Complete! (%s)" % duration)
         except LiveUSBError, e:
             self.status(str(e))
             self.status("LiveUSB creation failed!")
