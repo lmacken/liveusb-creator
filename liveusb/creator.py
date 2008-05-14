@@ -136,6 +136,13 @@ class LiveUSBCreator(object):
                 progress.updateProgress(total / 1024)
             return checksum.hexdigest() == release['sha1']
 
+    def setDrive(self, drive):
+        self.drive = drive
+        self._getDeviceUUID()
+
+    def setOverlay(self, overlay):
+        self.overlay = overlay
+
 
 class LinuxLiveUSBCreator(LiveUSBCreator):
 
