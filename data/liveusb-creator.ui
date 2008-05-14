@@ -31,7 +31,7 @@
     </rect>
    </property>
    <property name="whatsThis" >
-    <string>This button will begin the LiveUSB creation process.  This entails optionally downloading a releas (if an existing one wasn't selected),  extracting the ISO to the USB device, creating the persistent overlay, and installing the bootloader.</string>
+    <string>This button will begin the LiveUSB creation process.  This entails optionally downloading a release (if an existing one wasn't selected),  extracting the ISO to the USB device, creating the persistent overlay, and installing the bootloader.</string>
    </property>
    <property name="text" >
     <string>Create Live USB</string>
