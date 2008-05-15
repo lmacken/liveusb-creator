@@ -70,15 +70,15 @@ class LiveUSBCreator(object):
         """ Generate our syslinux.cfg """
         isolinux = file(os.path.join(self.drive,"isolinux","isolinux.cfg"),'r')
         syslinux = file(os.path.join(self.drive,"isolinux","syslinux.cfg"),'w')
+        usblabel = self.uuid and 'UUID=' + self.uuid or 'LABEL=' + self.label
         for line in isolinux.readlines():
             if "CDLABEL" in line:
-                line = re.sub("CDLABEL=[^ ]*", "LABEL=" + self.label, line)
+                line = re.sub("CDLABEL=[^ ]*", usblabel, line)
                 line = re.sub("rootfstype=[^ ]*",
                               "rootfstype=%s" % self.fstype,
                               line)
             if self.overlay and "liveimg" in line:
-                line = line.replace("liveimg", "liveimg overlay=UUID=" + 
-                                    self._getDeviceUUID())
+                line = line.replace("liveimg", "liveimg overlay=" + usblabel)
                 line = line.replace(" ro ", " rw ")
             syslinux.write(line)
         isolinux.close()
@@ -104,8 +104,7 @@ class LiveUSBCreator(object):
 
     def getOverlay(self):
         return os.path.join(self.getLiveOS(),
-                            'overlay-%s-%s' % (self.label,
-                                               self._getDeviceUUID()))
+                            'overlay-%s-%s' % (self.label, self.uuid or ''))
 
     def getReleaseFromISO(self):
         """ If the ISO is for a known release, return it. """
@@ -252,7 +251,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                     os.path.join(self.drive, "syslinux"))
         os.unlink(os.path.join(self.drive, "syslinux", "isolinux.cfg"))
         p = subprocess.Popen([os.path.join('tools', 'syslinux.exe'),
-                              '-s', '-m', '-a', '-d',
+                              '-m', '-a', '-d',
                               os.path.join(self.drive, 'syslinux'), self.drive],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                              creationflags=win32process.CREATE_NO_WINDOW)
@@ -306,11 +305,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                 raise LiveUSBError("Persistent overlay creation failed")
 
     def _getDeviceUUID(self):
-        """ Return the UUID of our selected drive.
-
-        This method only runs the query once, as it seems to cause errors
-        if we try and find the UUID multiple times.
-        """
+        """ Return the UUID of our selected drive """
         if not self.uuid:
             import win32com.client
             wmi = win32com.client.GetObject("winmgmts:")
@@ -318,8 +313,11 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                                    'Win32_LogicalDisk WHERE Name="%s"' %
                                    self.drive)
             if result and len(result):
-                self.uuid = str(result[0].Properties_("VolumeSerialNumber"))
-                if self.uuid == 'None': self.uuid = None
+                uuid = str(result[0].Properties_("VolumeSerialNumber"))
+                if uuid == 'None':
+                    self.uuid = None
+                else:
+                    self.uuid = uuid[:4] + '-' + uuid[4:]
         return self.uuid
 
 # vim:ts=4 sw=4 expandtab:

@@ -266,15 +266,6 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
         self.live.setDrive(self.getSelectedDrive())
         self.live.setOverlay(self.overlaySlider.value())
 
-        # For certain devices, Windows does not give us a VolumeSerialNumber.
-        # Without this UUID, we are unable to utilize persistence.
-        if not self.live.uuid and self.live.overlay:
-            self.status("Warning: Unable to determine the serial number of "
-                        "your device.  Persistence will be disabled.  This is "
-                        "an unfortunate side-effect for some usb drives "
-                        "in Windows.")
-            self.live.setOverlay(0)
-
         if self.live.existingLiveOS():
             if not self.confirmed:
                 self.status("Your device already contains a LiveOS.  If you "
