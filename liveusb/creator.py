@@ -235,7 +235,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         if vol[0] == '':
             win32file.SetVolumeLabel(self.drive, self.label)
         else:
-            self.label = vol[0]
+            self.label = vol[0].replace(' ', '_')
 
     def installBootloader(self):
         """ Run syslinux to install the bootloader on our devices """
