@@ -1,3 +1,114 @@
+commit 199ac3c57f63473987290eedba15660ea5e7953b
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat May 17 01:44:46 2008 -0400
+
+    Catch all exceptions in _getDeviceUUID, and fallback to dealing with labels.
+
+ liveusb/creator.py |   25 ++++++++++++++-----------
+ 1 files changed, 14 insertions(+), 11 deletions(-)
+
+commit 65fa522cee67fc8727f8dcdbb620b94340b57954
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat May 17 01:42:54 2008 -0400
+
+    Fix persistence for devices that have a label containing a space (ticket #34)
+
+ liveusb/creator.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 53d1462719b8cab34b90c9aff123c6ae2e84fe07
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed May 14 23:46:21 2008 -0400
+
+    If we can't find a UUID, use a LABEL instead.  This makes it so persistence can work
+    on sticks that do not have a serial number.
+
+ liveusb/creator.py |   24 +++++++++++-------------
+ liveusb/gui.py     |    9 ---------
+ 2 files changed, 11 insertions(+), 22 deletions(-)
+
+commit fb9cf8ef12df1d0e3e9bbfeac07d749bac1f018b
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed May 14 19:29:43 2008 -0400
+
+    Try and grab the UUID before we being, to see if we have to disable persistence
+    or not.  For certain devices, Windows does not give us a VolumeSerialNumber.
+    This sucks, but we can still hack around it.  This fixes ticket #19.
+
+ liveusb/gui.py |   13 +++++++++++--
+ 1 files changed, 11 insertions(+), 2 deletions(-)
+
+commit 597f9ac36279e53eaec67d7fb31589d11a2aed1b
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed May 14 19:29:07 2008 -0400
+
+    Make the LiveUSBCreator._getDeviceUUID a bit less insane for Windows platforms.
+
+ liveusb/creator.py |   18 +++++++++---------
+ 1 files changed, 9 insertions(+), 9 deletions(-)
+
+commit 8d2a8059520416119adab2f338af8e26fb4d2c82
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed May 14 19:28:19 2008 -0400
+
+    Add setDrive and setOverlay methods to the LiveUSBCreator.
+
+ liveusb/creator.py |    7 +++++++
+ 1 files changed, 7 insertions(+), 0 deletions(-)
+
+commit 83421151d39ccce3d86cfc4d67fa2be061854b86
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed May 14 19:27:25 2008 -0400
+
+    Switch back to using the LABEL for the root device by default, as we
+    make sure it this set anyway, and it'll save us the check if we have to
+    disable persistence due to a missing UUID.
+
+ liveusb/creator.py |    4 +---
+ 1 files changed, 1 insertions(+), 3 deletions(-)
+
+commit f4f93c097e6ca3efca5409fc8c6738d9a177fcc4
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed May 14 19:26:37 2008 -0400
+
+    Remove the miliseconds from our duration time
+
+ liveusb/gui.py |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+commit 655c2cdceccd56268420c5df2c873c97dfc544f7
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue May 13 20:37:18 2008 -0400
+
+    Fix a typo in one of the tooltips
+
+ data/liveusb-creator.ui |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 0d1837e40234298cc22fc7c2855c83e3d32b2649
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue May 13 14:38:44 2008 -0400
+
+    Add the Fedora 9 release
+
+ liveusb/releases.py |   84 +++++++++++++++++++++++++-------------------------
+ 1 files changed, 42 insertions(+), 42 deletions(-)
+
+commit 9eb8d2c06ead6ab61195459810a658473c22c866
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue May 6 16:29:13 2008 -0400
+
+    v2.1
+
+ ChangeLog                        |   27 +++++++++++++++++++++++++++
+ liveusb/urlgrabber/__init__.pyo  |  Bin 1665 -> 0 bytes
+ liveusb/urlgrabber/byterange.pyo |  Bin 16391 -> 0 bytes
+ liveusb/urlgrabber/grabber.pyo   |  Bin 52714 -> 0 bytes
+ liveusb/urlgrabber/keepalive.pyo |  Bin 20266 -> 0 bytes
+ liveusb/urlgrabber/mirror.pyo    |  Bin 16892 -> 0 bytes
+ liveusb/urlgrabber/progress.pyo  |  Bin 22515 -> 0 bytes
+ 7 files changed, 27 insertions(+), 0 deletions(-)
+
 commit f6bfa8665bebc0236349aad7274b08c8004629cc
 Author: Luke Macken <lmacken@redhat.com>
 Date:   Tue May 6 15:43:23 2008 -0400
