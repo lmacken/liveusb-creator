@@ -307,17 +307,20 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
     def _getDeviceUUID(self):
         """ Return the UUID of our selected drive """
         if not self.uuid:
-            import win32com.client
-            wmi = win32com.client.GetObject("winmgmts:")
-            result = wmi.ExecQuery('SELECT VolumeSerialNumber FROM '
-                                   'Win32_LogicalDisk WHERE Name="%s"' %
-                                   self.drive)
-            if result and len(result):
-                uuid = str(result[0].Properties_("VolumeSerialNumber"))
-                if uuid == 'None':
-                    self.uuid = None
-                else:
-                    self.uuid = uuid[:4] + '-' + uuid[4:]
+            try:
+                import win32com.client
+                wmi = win32com.client.GetObject("winmgmts:")
+                result = wmi.ExecQuery('SELECT VolumeSerialNumber FROM '
+                                       'Win32_LogicalDisk WHERE Name="%s"' %
+                                       self.drive)
+                if result and len(result):
+                    uuid = str(result[0].Properties_("VolumeSerialNumber"))
+                    if uuid == 'None':
+                        self.uuid = None
+                    else:
+                        self.uuid = uuid[:4] + '-' + uuid[4:]
+            except:
+                self.uuid = None
         return self.uuid
 
 # vim:ts=4 sw=4 expandtab:
