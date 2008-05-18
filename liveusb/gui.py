@@ -35,9 +35,9 @@ from liveusb.urlgrabber.progress import BaseMeter
 
 class LiveUSBApp(QtGui.QApplication):
     """ Main application class.  """
-    def __init__(self, args=None):
+    def __init__(self, opts, args):
         QtGui.QApplication.__init__(self, args)
-        self.mywindow = LiveUSBDialog()
+        self.mywindow = LiveUSBDialog(opts)
         self.mywindow.show()
         self.exec_()
         self.mywindow.terminate()
@@ -127,6 +127,7 @@ class LiveUSBThread(QtCore.QThread):
     def __init__(self, live, progress, parent=None):
         QtCore.QThread.__init__(self, parent)
         self.progress = progress
+        self.parent = parent
         self.live = live
 
     def status(self, text):
@@ -158,7 +159,7 @@ class LiveUSBThread(QtCore.QThread):
                 self.live.createPersistentOverlay()
             self.status("Configuring and installing bootloader...")
             self.live.updateConfigs()
-            self.live.installBootloader()
+            self.live.installBootloader(force=self.parent.opts.force)
             duration = str(datetime.now() - now).split('.')[0]
             self.status("Complete! (%s)" % duration)
         except LiveUSBError, e:
@@ -178,9 +179,10 @@ class LiveUSBThread(QtCore.QThread):
 
 class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
     """ Our main dialog class """
-    def __init__(self):
+    def __init__(self, opts):
         QtGui.QDialog.__init__(self)
         self.setupUi(self)
+        self.opts = opts
 
         self.live = LiveUSBCreator()
         self.populateReleases()
@@ -189,14 +191,18 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
         self.progressThread = ProgressThread()
         self.downloadProgress = DownloadProgress()
         self.liveThread = LiveUSBThread(live=self.live,
-                                        progress=self.progressThread)
+                                        progress=self.progressThread,
+                                        parent=self)
         self.connectslots()
         self.confirmed = False
 
     def populateDevices(self):
+        self.driveBox.clear()
+        if self.opts.force:
+            self.driveBox.addItem(self.opts.force)
+            return
         try:
             self.live.detectRemovableDrives()
-            self.driveBox.clear()
             for drive, label in self.live.drives:
                 self.driveBox.addItem(label and "%s (%s)" % (label, drive)
                                       or drive)

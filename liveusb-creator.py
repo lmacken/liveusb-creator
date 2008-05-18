@@ -18,9 +18,18 @@
 #
 # Author(s): Luke Macken <lmacken@redhat.com>
 
-import sys
+from optparse import OptionParser
 
-if '--nogui' in sys.argv:
+parser = OptionParser()
+parser.add_option('-c', '--console', dest='console', action='store_true',
+                  help='Use console mode instead of the GUI')
+parser.add_option('-f', '--force', dest='force', action='store', type='string',
+                  help='Force the use of a given drive', metavar='DRIVE')
+parser.add_option('-s', '--safe', dest='safe', action='store_true',
+                  help='Use the "safe, slow and stupid" bootloader')
+opts, args = parser.parse_args()
+
+if opts.console:
     from liveusb import LiveUSBCreator
     try:
         live = LiveUSBCreator()
@@ -36,5 +45,6 @@ if '--nogui' in sys.argv:
     x = raw_input("\nDone!  Press any key to exit")
 else:
     ## Start our graphical interface
+    import sys
     from liveusb.gui import LiveUSBApp
-    LiveUSBApp(sys.argv)
+    LiveUSBApp(opts, sys.argv)

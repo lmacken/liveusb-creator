@@ -58,7 +58,7 @@ class LiveUSBCreator(object):
         """
         raise NotImplementedError
 
-    def installBootloader(self):
+    def installBootloader(self, force=False):
         """ Install the bootloader to our device, using syslinux """
         raise NotImplementedError
 
@@ -237,7 +237,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         else:
             self.label = vol[0].replace(' ', '_')
 
-    def installBootloader(self):
+    def installBootloader(self, force=False):
         """ Run syslinux to install the bootloader on our devices """
         import win32process
         if os.path.isdir(os.path.join(self.drive, "syslinux")):
@@ -251,7 +251,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                     os.path.join(self.drive, "syslinux"))
         os.unlink(os.path.join(self.drive, "syslinux", "isolinux.cfg"))
         p = subprocess.Popen([os.path.join('tools', 'syslinux.exe'),
-                              '-m', '-a', '-d',
+                              force and '-f' or '', '-m', '-a', '-d',
                               os.path.join(self.drive, 'syslinux'), self.drive],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                              creationflags=win32process.CREATE_NO_WINDOW)
