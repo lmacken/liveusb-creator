@@ -254,6 +254,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                               force and '-f' or '', '-m', '-a', '-d',
                               os.path.join(self.drive, 'syslinux'), self.drive],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                             stdin=subprocess.PIPE,
                              creationflags=win32process.CREATE_NO_WINDOW)
         self.pids.append(p.pid)
         map(self.log.write, p.communicate())
@@ -283,6 +284,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         p = subprocess.Popen([os.path.join('tools', '7z.exe'), 'x',
                               self.iso, '-x![BOOT]', '-y', '-o' + self.drive],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                             stdin=subprocess.PIPE,
                              creationflags=win32process.CREATE_NO_WINDOW)
         self.pids.append(p.pid)
         map(self.log.write, p.communicate())
@@ -297,6 +299,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                                   'if=/dev/zero', 'of=' + self.getOverlay(),
                                   'count=%d' % self.overlay, 'bs=1M'],
                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                 stdin=subprocess.PIPE,
                                  creationflags=win32process.CREATE_NO_WINDOW)
             self.pids.append(p.pid)
             map(self.log.write, p.communicate())
