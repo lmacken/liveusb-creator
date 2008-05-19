@@ -250,9 +250,9 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         shutil.move(os.path.join(self.drive, "isolinux"),
                     os.path.join(self.drive, "syslinux"))
         os.unlink(os.path.join(self.drive, "syslinux", "isolinux.cfg"))
-        p = subprocess.Popen([os.path.join('tools', 'syslinux.exe'),
-                              force and '-f' or '', '-m', '-a', '-d',
-                              os.path.join(self.drive, 'syslinux'), self.drive],
+        p = subprocess.Popen(os.path.join('tools', 'syslinux.exe') +
+                             '%s -m -a -d %s %s' % (force and ' -f' or ' ',
+                             os.path.join(self.drive, 'syslinux'), self.drive),
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                              stdin=subprocess.PIPE,
                              creationflags=win32process.CREATE_NO_WINDOW)
