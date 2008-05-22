@@ -1,3 +1,45 @@
+commit af93e20cbb443d7fe5e8637a9cc5628e65e1cd4a
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun May 18 21:37:48 2008 -0400
+
+    Fix the optional force argument to syslinux
+
+ liveusb/creator.py |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
+
+commit fdf782b7cfeb22f98ccbe9d10d981ef65cd917c0
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun May 18 14:29:42 2008 -0400
+
+    Set stdin to a subprocess.PIPE, to avoid "the handle is invalid" errors (#38)
+    
+    This issue only occurs when running the executable from the command-line.
+    More details can be found here:
+        http://www.py2exe.org/index.cgi/Py2ExeSubprocessInteractions
+
+ liveusb/creator.py |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+commit 346cee602daee2b128244782d8f3227174bcffb8
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun May 18 03:58:37 2008 -0400
+
+    Add a '--force' option to force the use of a specific device (ticket #15)
+
+ liveusb-creator.py |   16 +++++++++++++---
+ liveusb/creator.py |    6 +++---
+ liveusb/gui.py     |   18 ++++++++++++------
+ 3 files changed, 28 insertions(+), 12 deletions(-)
+
+commit 68de834ef2aedbf67c3c2b7a11e6eba6e74c9c40
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat May 17 01:45:56 2008 -0400
+
+    v2.4
+
+ ChangeLog |  111 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 111 insertions(+), 0 deletions(-)
+
 commit 199ac3c57f63473987290eedba15660ea5e7953b
 Author: Luke Macken <lmacken@redhat.com>
 Date:   Sat May 17 01:44:46 2008 -0400
