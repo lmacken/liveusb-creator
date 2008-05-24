@@ -35,7 +35,6 @@ if opts.console:
         live = LiveUSBCreator()
         live.detectRemovableDrives()
         live.verifyFilesystem()
-        live.findISO()
         live.extractISO()
         live.updateConfigs()
         live.installBootloader()
