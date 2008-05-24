@@ -143,6 +143,9 @@
     <property name="text" >
      <string>Browse</string>
     </property>
+    <property name="shortcut" >
+     <string>Alt+B</string>
+    </property>
    </widget>
   </widget>
   <widget class="QGroupBox" name="groupBox_2" >
