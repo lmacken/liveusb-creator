@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'data\liveusb-creator.ui'
 #
-# Created: Mon Apr 28 20:43:51 2008
+# Created: Sat May 24 10:46:52 2008
 #      by: PyQt4 UI code generator 4.3.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -100,7 +100,7 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", "Fedora LiveUSB Creator", None, QtGui.QApplication.UnicodeUTF8))
-        self.startButton.setWhatsThis(QtGui.QApplication.translate("Dialog", "This button will begin the LiveUSB creation process.  This entails optionally downloading a releas (if an existing one wasn\'t selected),  extracting the ISO to the USB device, creating the persistent overlay, and installing the bootloader.", None, QtGui.QApplication.UnicodeUTF8))
+        self.startButton.setWhatsThis(QtGui.QApplication.translate("Dialog", "This button will begin the LiveUSB creation process.  This entails optionally downloading a release (if an existing one wasn\'t selected),  extracting the ISO to the USB device, creating the persistent overlay, and installing the bootloader.", None, QtGui.QApplication.UnicodeUTF8))
         self.startButton.setText(QtGui.QApplication.translate("Dialog", "Create Live USB", None, QtGui.QApplication.UnicodeUTF8))
         self.textEdit.setWhatsThis(QtGui.QApplication.translate("Dialog", "This is the status console, where all messages get written to.", None, QtGui.QApplication.UnicodeUTF8))
         self.progressBar.setWhatsThis(QtGui.QApplication.translate("Dialog", "This is the progress bar that will indicate how far along in the LiveUSB creation process you are", None, QtGui.QApplication.UnicodeUTF8))
@@ -110,6 +110,7 @@ class Ui_Dialog(object):
         self.groupBox.setWhatsThis(QtGui.QApplication.translate("Dialog", "This button allows you to browse for an existing Live CD ISO that you have previously downloaded.  If you do not select one, a release will be downloaded for you automatically.", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox.setTitle(QtGui.QApplication.translate("Dialog", "Use existing Live CD", None, QtGui.QApplication.UnicodeUTF8))
         self.isoBttn.setText(QtGui.QApplication.translate("Dialog", "Browse", None, QtGui.QApplication.UnicodeUTF8))
+        self.isoBttn.setShortcut(QtGui.QApplication.translate("Dialog", "Alt+B", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox_2.setWhatsThis(QtGui.QApplication.translate("Dialog", "This is the USB stick that you want to install your Live CD on.  This device must be formatted with the FAT filesystem.", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox_2.setTitle(QtGui.QApplication.translate("Dialog", "Target Device", None, QtGui.QApplication.UnicodeUTF8))
         self.overlayTitle.setWhatsThis(QtGui.QApplication.translate("Dialog", "By allocating extra space on your USB stick for a persistent overlay, you will be able to store data and make permanent modifications to your live operating system.  Without it, you will not be able to save data that will persist after a reboot.", None, QtGui.QApplication.UnicodeUTF8))
