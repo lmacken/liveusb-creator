@@ -142,6 +142,9 @@ class LiveUSBCreator(object):
     def setOverlay(self, overlay):
         self.overlay = overlay
 
+    def setImage(self, iso):
+        self.iso = iso
+
 
 class LinuxLiveUSBCreator(LiveUSBCreator):
 
