@@ -36,7 +36,7 @@ from liveusb.urlgrabber.progress import BaseMeter
 class LiveUSBApp(QtGui.QApplication):
     """ Main application class.  """
     def __init__(self, opts, args):
-        QtGui.QApplication.__init__(self, args)
+        QtGui.QApplication.__init__(self, args) 
         self.mywindow = LiveUSBDialog(opts)
         self.mywindow.show()
         self.exec_()
@@ -159,7 +159,8 @@ class LiveUSBThread(QtCore.QThread):
                 self.live.createPersistentOverlay()
             self.status("Configuring and installing bootloader...")
             self.live.updateConfigs()
-            self.live.installBootloader(force=self.parent.opts.force)
+            self.live.installBootloader(force=self.parent.opts.force,
+                                        safe=self.parent.opts.safe)
             duration = str(datetime.now() - now).split('.')[0]
             self.status("Complete! (%s)" % duration)
         except LiveUSBError, e:
