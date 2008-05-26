@@ -66,6 +66,67 @@ class LiveUSBCreator(object):
         """ Return the UUID of our self.drive """
         raise NotImplementedError
 
+    def popen(self, cmd, **kwargs):
+        """ A wrapper method for running subprocesses.
+
+        Execute a specified command, first looking to see if it lives in
+        the 'tools' directory, and then resorting to whatever is in the path.
+        This method handles logging of the command and it's output, and keeps
+        track of the pids in case we need to kill them.
+
+        @param cmd: The commandline to execute.  Either a string or a list.
+        @param kwargs: Extra arguments to pass to subprocess.Popen
+        """
+        self.log.write(cmd)
+        p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
+                             stderr=subprocess.PIPE, stdin=subprocess.PIPE,
+                             **kwargs)
+        self.pids.append(p.pid)
+        map(self.log.write, p.communicate())
+        return p
+
+    def verifyImage(self, progress=None):
+        """ Verify the SHA1 checksum of our ISO if it is in our release list """
+        if not progress:
+            class DummyProgress:
+                def setMaxProgress(self, value): pass
+                def updateProgress(self, value): pass 
+            progress = DummyProgress()
+        release = self.getReleaseFromISO()
+        if release:
+            progress.setMaxProgress(self.isosize / 1024)
+            checksum = sha.new()
+            isofile = file(self.iso, 'rb')
+            bytes = 4096
+            total = 0
+            while bytes:
+                data = isofile.read(bytes)
+                checksum.update(data)
+                bytes = len(data)
+                total += bytes
+                progress.updateProgress(total / 1024)
+            return checksum.hexdigest() == release['sha1']
+
+    def extractISO(self):
+        """ Extract our ISO with 7-zip directly to the USB key """
+        p = self.popen('7z x "%s" -x![BOOT] -y -o%s' % (self.iso, self.drive))
+        if p.returncode or not self.existingLiveOS():
+            self.writeLog()
+            raise LiveUSBError("ISO extraction failed? Cannot find LiveOS")
+
+    def createPersistentOverlay(self):
+        if self.overlay:
+            if self.fstype == 'vfat':
+                # vfat apparently can't handle sparse files
+                p = self.popen('dd if=/dev/zero of=%s count=%d bs=1M'
+                               % (self.getOverlay(), self.overlay))
+            else:
+                p = self.popen('dd if=/dev/null of=%s count=1 bs=1M seek=%d'
+                               % (self.getOverlay(), size))
+            if p.returncode or not self.existingOverlay():
+                self.writeLog()
+                raise LiveUSBError("Persistent overlay creation failed")
+
     def updateConfigs(self):
         """ Generate our syslinux.cfg """
         isolinux = file(os.path.join(self.drive,"isolinux","isolinux.cfg"),'r')
@@ -83,6 +144,27 @@ class LiveUSBCreator(object):
             syslinux.write(line)
         isolinux.close()
         syslinux.close()
+
+    def installBootloader(self, force=False, safe=False):
+        """ Run syslinux to install the bootloader on our devices """
+        if os.path.isdir(os.path.join(self.drive, "syslinux")):
+            syslinuxdir = os.path.join(self.drive, "syslinux")
+            # Python for Windows is unable to delete read-only files, and some
+            # may exist here if the LiveUSB stick was created in Linux
+            for f in os.listdir(syslinuxdir):
+                os.chmod(os.path.join(syslinuxdir, f), 0777)
+            shutil.rmtree(os.path.join(self.drive, "syslinux"))
+        shutil.move(os.path.join(self.drive, "isolinux"),
+                    os.path.join(self.drive, "syslinux"))
+        os.unlink(os.path.join(self.drive, "syslinux", "isolinux.cfg"))
+        p = self.popen('syslinux %s %s -m -a -d %s %s' %  (force and ' -f' or
+                       ' ', safe and ' -s' or ' ',
+                       os.path.join(self.drive, 'syslinux'), self.drive))
+        if p.returncode:
+            self.writeLog()
+            raise LiveUSBError("An error occured while installing the "
+                               "bootloader.  The syslinux output as been "
+                               "written to liveusb-creator.log")
 
     def writeLog(self):
         """ Write out our subprocess stdout/stderr to a log file """
@@ -113,28 +195,6 @@ class LiveUSBCreator(object):
             if os.path.basename(release['url']) == isoname:
                 return release
 
-    def verifyImage(self, progress=None):
-        """ Verify the SHA1 checksum of our ISO if it is in our release list """
-        if not progress:
-            class DummyProgress:
-                def setMaxProgress(self, value): pass
-                def updateProgress(self, value): pass 
-            progress = DummyProgress()
-        release = self.getReleaseFromISO()
-        if release:
-            progress.setMaxProgress(self.isosize / 1024)
-            checksum = sha.new()
-            isofile = file(self.iso, 'rb')
-            bytes = 4096
-            total = 0
-            while bytes:
-                data = isofile.read(bytes)
-                checksum.update(data)
-                bytes = len(data)
-                total += bytes
-                progress.updateProgress(total / 1024)
-            return checksum.hexdigest() == release['sha1']
-
     def setDrive(self, drive):
         self.drive = drive
         self._getDeviceUUID()
@@ -157,7 +217,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         storage_devices = self.hal.FindDeviceByCapability("storage")
 
         for device in storage_devices:
-            dev = self.getDevice(device)
+            dev = self._getDevice(device)
             if dev.GetProperty("storage.bus") == "usb" and \
                dev.GetProperty("storage.removable"):
                 if dev.GetProperty("block.is_volume"):
@@ -176,35 +236,19 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
         if not len(self.drives):
             raise LiveUSBError("Unable to find any USB drives")
-        elif len(self.drives) == 1:
-            self.drive = self.drives[0]
-        else: # prompt the user which drive to use?
-            pass
-
-    def getDevice(self, udi):
-        import dbus
-        dev_obj = self.bus.get_object("org.freedesktop.Hal", udi)
-        return dbus.Interface(dev_obj, "org.freedesktop.Hal.Device")
 
     def verifyFilesystem(self):
         device = self.hal.FindDeviceStringMatch("volume.mount_point",
                                                 self.drive)[0]
-        device = self.getDevice(device)
+        device = self._getDevice(device)
         self.fstype = device.GetProperty("volume.fstype")
         if self.fstype not in ('vfat', 'msdos', 'ext2', 'ext3'):
             raise LiveUSBError("Unsupported filesystem: %s" % self.fstype)
 
-    def createPersistentOverlay(self, size=1024):
-        overlay = os.path.join(self.drive, 'LiveOS', 'overlay')
-        if self.fstype == 'vfat':
-            # vfat apparently can't handle sparse files
-            ret = subprocess.call(['dd', 'if=/dev/zero', 'of=%s' % overlay,
-                                   'count=%d' % size, 'bs=1M'])
-        else:
-            ret = subprocess.call(['dd', 'if=/dev/null', 'of=%s' % overlay,
-                                   'count=1', 'bs=1M', 'seek=%d' % size])
-        if ret or not self.existingOverlay():
-            raise LiveUSBError("Error while creating persistent overlay")
+    def _getDevice(self, udi):
+        import dbus
+        dev_obj = self.bus.get_object("org.freedesktop.Hal", udi)
+        return dbus.Interface(dev_obj, "org.freedesktop.Hal.Device")
 
 
 class WindowsLiveUSBCreator(LiveUSBCreator):
@@ -240,33 +284,6 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         else:
             self.label = vol[0].replace(' ', '_')
 
-    def installBootloader(self, force=False):
-        """ Run syslinux to install the bootloader on our devices """
-        import win32process
-        if os.path.isdir(os.path.join(self.drive, "syslinux")):
-            syslinuxdir = os.path.join(self.drive, "syslinux")
-            # Python for Windows is unable to delete read-only files, and some
-            # may exist here if the LiveUSB stick was created in Linux
-            for f in os.listdir(syslinuxdir):
-                os.chmod(os.path.join(syslinuxdir, f), 0777)
-            shutil.rmtree(os.path.join(self.drive, "syslinux"))
-        shutil.move(os.path.join(self.drive, "isolinux"),
-                    os.path.join(self.drive, "syslinux"))
-        os.unlink(os.path.join(self.drive, "syslinux", "isolinux.cfg"))
-        p = subprocess.Popen(os.path.join('tools', 'syslinux.exe') +
-                             '%s -m -a -d %s %s' % (force and ' -f' or ' ',
-                             os.path.join(self.drive, 'syslinux'), self.drive),
-                             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                             stdin=subprocess.PIPE,
-                             creationflags=win32process.CREATE_NO_WINDOW)
-        self.pids.append(p.pid)
-        map(self.log.write, p.communicate())
-        if p.returncode:
-            self.writeLog()
-            raise LiveUSBError("An error occured while installing the "
-                               "bootloader.  The syslinux output as been "
-                               "written to liveusb-creator.log")
-
     def checkFreeSpace(self):
         """ Make sure there is enough space for the LiveOS and overlay """
         import win32file
@@ -280,35 +297,6 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
 
         if self.totalsize > free_bytes:
             raise LiveUSBError("Not enough free space on device")
-
-    def extractISO(self):
-        """ Extract our ISO with 7-zip directly to the USB key """
-        import win32process
-        p = subprocess.Popen([os.path.join('tools', '7z.exe'), 'x',
-                              self.iso, '-x![BOOT]', '-y', '-o' + self.drive],
-                             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                             stdin=subprocess.PIPE,
-                             creationflags=win32process.CREATE_NO_WINDOW)
-        self.pids.append(p.pid)
-        map(self.log.write, p.communicate())
-        if p.returncode or not self.existingLiveOS():
-            self.writeLog()
-            raise LiveUSBError("ISO extraction failed? Cannot find LiveOS")
-
-    def createPersistentOverlay(self):
-        if self.overlay:
-            import win32process
-            p = subprocess.Popen([os.path.join('tools', 'dd.exe'),
-                                  'if=/dev/zero', 'of=' + self.getOverlay(),
-                                  'count=%d' % self.overlay, 'bs=1M'],
-                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                                 stdin=subprocess.PIPE,
-                                 creationflags=win32process.CREATE_NO_WINDOW)
-            self.pids.append(p.pid)
-            map(self.log.write, p.communicate())
-            if p.returncode or not self.existingOverlay():
-                self.writeLog()
-                raise LiveUSBError("Persistent overlay creation failed")
 
     def _getDeviceUUID(self):
         """ Return the UUID of our selected drive """
@@ -329,4 +317,9 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                 self.uuid = None
         return self.uuid
 
-# vim:ts=4 sw=4 expandtab:
+    def popen(self, cmd):
+        import win32process
+        if isinstance(cmd, basestring): cmd = cmd.split()
+        cmd = [os.path.join('tools', '%s.exe' % cmd[0])] + cmd[1:]
+        return LiveUSBCreator.popen(self, ' '.join(cmd),
+                                    creationflags=win32process.CREATE_NO_WINDOW)
