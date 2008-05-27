@@ -56,15 +56,15 @@ class ReleaseDownloader(QtCore.QThread):
             raise LiveUSBError("Unknown release: %s" % release)
 
     def run(self):
-        self.emit(QtCore.SIGNAL("status(const QString &)"),
+        self.emit(QtCore.SIGNAL("status(PyQt_PyObject)"),
                   "Downloading %s..." % os.path.basename(self.url))
         grabber = URLGrabber(progress_obj=self.progress)
         try:
             iso = grabber.urlgrab(self.url, reget='simple')
         except URLGrabError, e:
-            self.emit(QtCore.SIGNAL("dlcomplete(const QString &)"), e.strerror)
+            self.emit(QtCore.SIGNAL("dlcomplete(PyQt_PyObject)"), e.strerror)
         else:
-            self.emit(QtCore.SIGNAL("dlcomplete(const QString &)"), iso)
+            self.emit(QtCore.SIGNAL("dlcomplete(PyQt_PyObject)"), iso)
 
 
 class DownloadProgress(QtCore.QObject, BaseMeter):
@@ -126,7 +126,7 @@ class LiveUSBThread(QtCore.QThread):
         self.live = live
 
     def status(self, text):
-        self.emit(QtCore.SIGNAL("status(const QString &)"), text)
+        self.emit(QtCore.SIGNAL("status(PyQt_PyObject)"), text)
 
     def run(self):
         now = datetime.now()
@@ -224,7 +224,7 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
         self.connect(self.startButton, QtCore.SIGNAL("clicked()"), self.begin)
         self.connect(self.overlaySlider, QtCore.SIGNAL("valueChanged(int)"),
                      self.overlayValue)
-        self.connect(self.liveThread, QtCore.SIGNAL("status(const QString &)"),
+        self.connect(self.liveThread, QtCore.SIGNAL("status(PyQt_PyObject)"),
                      self.status)
         self.connect(self.liveThread, QtCore.SIGNAL("finished()"),
                      lambda: self.enableWidgets(True))
@@ -302,10 +302,10 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
                     self.downloadCombo.currentText(),
                     progress=self.downloadProgress)
             self.connect(self.downloader,
-                         QtCore.SIGNAL("dlcomplete(const QString &)"),
+                         QtCore.SIGNAL("dlcomplete(PyQt_PyObject)"),
                          self.downloadComplete)
             self.connect(self.downloader,
-                         QtCore.SIGNAL("status(const QString &)"),
+                         QtCore.SIGNAL("status(PyQt_PyObject)"),
                          self.status)
             self.downloader.start()
 
