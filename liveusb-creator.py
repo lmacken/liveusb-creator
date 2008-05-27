@@ -27,6 +27,8 @@ parser.add_option('-f', '--force', dest='force', action='store', type='string',
                   help='Force the use of a given drive', metavar='DRIVE')
 parser.add_option('-s', '--safe', dest='safe', action='store_true',
                   help='Use the "safe, slow and stupid" bootloader')
+parser.add_option('-n', '--noverify', dest='noverify', action='store_true',
+                  help='Skip checksum verification')
 opts, args = parser.parse_args()
 
 if opts.console:

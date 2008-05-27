@@ -141,11 +141,12 @@ class LiveUSBThread(QtCore.QThread):
             self.live.checkFreeSpace()
 
             # If the ISO looks familar, verify it's SHA1SUM
-            if self.live.getReleaseFromISO():
-                self.status("Verifying SHA1 of LiveCD image...")
-                if not self.live.verifyImage(progress=self):
-                    self.status("Error: The SHA1 of your Live CD is invalid")
-                    return
+            if not self.parent.opts.noverify:
+                if self.live.getReleaseFromISO():
+                    self.status("Verifying SHA1 of LiveCD image...")
+                    if not self.live.verifyImage(progress=self):
+                        self.status("Error: The SHA1 of your Live CD is invalid")
+                        return
 
             self.progress.setData(size=self.live.totalsize,
                                   drive=self.live.drive)
