@@ -18,6 +18,7 @@
 # Author(s): Luke Macken <lmacken@redhat.com>
 
 import subprocess
+import logging
 import shutil
 import sha
 import os
@@ -43,13 +44,29 @@ class LiveUSBCreator(object):
     overlay = 0         # size in mb of our persisten overlay
     dest = None         # the mount point of of our selected drive
     uuid = None         # the uuid of our selected drive
-    log = StringIO()    # log subprocess output in case of errors
     pids = []           # a list of pids of all of our subprocesses
+    output = StringIO() # log subprocess output in case of errors
 
     # The selected device
     drive = property(fget=lambda self: self._drive,
                      fset=lambda self, d: self._setDrive(d))
     _drive = None
+
+    def __init__(self, opts):
+        self.opts = opts
+        self.setupLogger()
+
+    def setupLogger(self):
+        self.log = logging.getLogger(__name__)
+        level = logging.INFO
+        if self.opts.verbose:
+            level = logging.DEBUG
+        self.log.setLevel(level)
+        ch = logging.StreamHandler()
+        ch.setLevel(level)
+        formatter = logging.Formatter("[%(module)s:%(lineno)s] %(message)s")
+        ch.setFormatter(formatter)
+        self.log.addHandler(ch)
 
     def detectRemovableDrives(self, force=None):
         """ This method should populate self.drives with removable devices.
@@ -104,13 +121,13 @@ class LiveUSBCreator(object):
         @param cmd: The commandline to execute.  Either a string or a list.
         @param kwargs: Extra arguments to pass to subprocess.Popen
         """
-        print cmd
-        self.log.write(cmd)
+        self.log.info(cmd)
+        self.output.write(cmd)
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE, stdin=subprocess.PIPE,
                              shell=True, **kwargs)
         self.pids.append(p.pid)
-        map(self.log.write, p.communicate())
+        map(self.output.write, p.communicate())
         if p.returncode:
             self.writeLog()
             raise LiveUSBError("There was a problem executing the following "
@@ -143,8 +160,11 @@ class LiveUSBCreator(object):
     def checkFreeSpace(self):
         """ Make sure there is enough space for the LiveOS and overlay """
         freebytes = self.getFreeBytes()
+        self.log.debug('freebytes = %d' % freebytes)
         self.isosize = os.stat(self.iso)[ST_SIZE]
+        self.log.debug('isosize = %d' % self.isosize)
         overlaysize = self.overlay * 1024 * 1024
+        self.log.debug('overlaysize = %d' % overlaysize)
         self.totalsize = overlaysize + self.isosize
         if self.totalsize > freebytes:
             raise LiveUSBError("Not enough free space on device")
@@ -182,13 +202,13 @@ class LiveUSBCreator(object):
         for d in [self.getLiveOS(), os.path.join(self.dest, 'syslinux'),
                   os.path.join(self.dest, 'isolinux')]:
             if os.path.exists(d):
-                print "Deleting ", d
+                self.log.info("Deleting " + d)
                 shutil.rmtree(d)
 
     def writeLog(self):
         """ Write out our subprocess stdout/stderr to a log file """
         out = file('liveusb-creator.log', 'a')
-        out.write(self.log.getvalue())
+        out.write(self.output.getvalue())
         out.close()
 
     def getReleases(self):
@@ -284,33 +304,38 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         if self.drives[self.drive]['label']:
             self.label = self.drives[self.drive]['label']
         else:
-            print "Setting label on %s to %s" % (self.drive, self.label)
+            self.log.info("Setting label on %s to %s" % (self.drive,self.label))
             if self.fstype in ('vfat', 'msdos'):
                 p = self.popen('/sbin/dosfslabel %s %s' % (self.drive,
                                                            self.label))
             else:
                 p = self.popen('/sbin/e2label %s %s' % (self.drive, self.label))
             if p.returncode:
+                log.warning("Failed to set label")
                 self.label = None
 
     def extractISO(self):
         """ Extract self.iso to self.dest """
         import tempfile
         tmpdir = tempfile.mkdtemp()
+        self.log.info("Extracting ISO to device")
         self.popen('mount -o loop,ro %s %s' % (self.iso, tmpdir))
         tmpliveos = os.path.join(tmpdir, 'LiveOS')
         liveos = os.path.join(self.dest, 'LiveOS')
-        os.mkdir(liveos)
+        if not os.path.exists(liveos):
+            os.mkdir(liveos)
         for img in ('squashfs.img', 'osmin.img'):
             self.popen('cp %s %s' % (os.path.join(tmpliveos, img),
                                      os.path.join(liveos, img)))
         isolinux = os.path.join(self.dest, 'isolinux')
-        os.mkdir(isolinux)
+        if not os.path.exists(isolinux):
+            os.mkdir(isolinux)
         self.popen('cp %s/* %s' % (os.path.join(tmpdir, 'isolinux'), isolinux))
         self.popen('umount ' + tmpdir)
 
     def installBootloader(self, force=False, safe=False):
         """ Run syslinux to install the bootloader on our devices """
+        self.log.info("Installing bootloader")
         shutil.move(os.path.join(self.dest, "isolinux"),
                     os.path.join(self.dest, "syslinux"))
         os.unlink(os.path.join(self.dest, "syslinux", "isolinux.cfg"))
@@ -330,18 +355,13 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         dev_obj = self.bus.get_object("org.freedesktop.Hal", udi)
         return dbus.Interface(dev_obj, "org.freedesktop.Hal.Device")
 
-    def _getDeviceUUID(self):
-        p = subprocess.Popen(['/lib/udev/vol_id', '-u', self.drive],
-                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        out, err = p.communicate()
-        self.uuid = out.strip()
-        return self.uuid
-
     def terminate(self):
         import signal
+        self.log.info("Cleaning up...")
         for pid in self.pids:
             try:
                 os.kill(pid, signal.SIGHUP)
+                self.log.debug("Killed process %d" % pid)
             except OSError:
                 pass
         self.unmountDevice()
@@ -381,8 +401,9 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         if vol[0] == '':
             try:
                 win32file.SetVolumeLabel(self.drive, self.label)
+                self.log.info("Set label on %s to %s" % (self.drive,self.label))
             except pywintypes.error, e:
-                print "Unable to SetVolumeLabel:", str(e)
+                self.log.warning("Unable to SetVolumeLabel: " + str(e))
                 self.label = None
         else:
             self.label = vol[0].replace(' ', '_')
@@ -395,10 +416,12 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
 
     def extractISO(self):
         """ Extract our ISO with 7-zip directly to the USB key """
+        self.log.info("Extracting ISO to USB device")
         self.popen('7z x "%s" -x![BOOT] -y -o%s' % (self.iso, self.drive))
 
     def installBootloader(self, force=False, safe=False):
         """ Run syslinux to install the bootloader on our devices """
+        self.log.info("Installing bootloader")
         if os.path.isdir(os.path.join(self.drive + os.path.sep, "syslinux")):
             syslinuxdir = os.path.join(self.drive + os.path.sep, "syslinux")
             # Python for Windows is unable to delete read-only files, and some
@@ -448,7 +471,8 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
             try:
                 handle = win32api.OpenProcess(win32con.PROCESS_TERMINATE,
                                               False, pid)
-                win32api.TerminateProcess(handle, 0)
+                self.log.debug("Terminating process %s" % pid)
+                win32api.TerminateProcess(handle, -1)
                 win32api.CloseHandle(handle)
             except pywintypes.error:
                 pass
