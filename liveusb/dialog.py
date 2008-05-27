@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'data\liveusb-creator.ui'
+# Form implementation generated from reading ui file 'data/liveusb-creator.ui'
 #
-# Created: Sat May 24 10:46:52 2008
+# Created: Mon May 26 01:33:50 2008
 #      by: PyQt4 UI code generator 4.3.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -22,11 +22,15 @@ class Ui_Dialog(object):
 
         self.startButton = QtGui.QPushButton(Dialog)
         self.startButton.setEnabled(True)
-        self.startButton.setGeometry(QtCore.QRect(140,350,131,31))
+        self.startButton.setGeometry(QtCore.QRect(130,350,158,34))
         self.startButton.setObjectName("startButton")
 
         self.textEdit = QtGui.QTextEdit(Dialog)
         self.textEdit.setGeometry(QtCore.QRect(10,200,401,111))
+
+        font = QtGui.QFont()
+        font.setPointSize(8)
+        self.textEdit.setFont(font)
         self.textEdit.setReadOnly(True)
         self.textEdit.setObjectName("textEdit")
 
@@ -37,6 +41,10 @@ class Ui_Dialog(object):
 
         self.downloadGroup = QtGui.QGroupBox(Dialog)
         self.downloadGroup.setGeometry(QtCore.QRect(210,80,201,51))
+
+        font = QtGui.QFont()
+        font.setPointSize(8)
+        self.downloadGroup.setFont(font)
         self.downloadGroup.setObjectName("downloadGroup")
 
         self.downloadCombo = QtGui.QComboBox(self.downloadGroup)
@@ -44,7 +52,7 @@ class Ui_Dialog(object):
         self.downloadCombo.setObjectName("downloadCombo")
 
         self.label_2 = QtGui.QLabel(Dialog)
-        self.label_2.setGeometry(QtCore.QRect(180,100,21,20))
+        self.label_2.setGeometry(QtCore.QRect(180,100,23,24))
 
         font = QtGui.QFont()
         font.setFamily("Verdana")
@@ -56,6 +64,10 @@ class Ui_Dialog(object):
 
         self.groupBox = QtGui.QGroupBox(Dialog)
         self.groupBox.setGeometry(QtCore.QRect(10,80,161,51))
+
+        font = QtGui.QFont()
+        font.setPointSize(8)
+        self.groupBox.setFont(font)
         self.groupBox.setObjectName("groupBox")
 
         self.isoBttn = QtGui.QPushButton(self.groupBox)
@@ -64,6 +76,10 @@ class Ui_Dialog(object):
 
         self.groupBox_2 = QtGui.QGroupBox(Dialog)
         self.groupBox_2.setGeometry(QtCore.QRect(10,140,191,51))
+
+        font = QtGui.QFont()
+        font.setPointSize(8)
+        self.groupBox_2.setFont(font)
         self.groupBox_2.setObjectName("groupBox_2")
 
         self.driveBox = QtGui.QComboBox(self.groupBox_2)
@@ -81,6 +97,10 @@ class Ui_Dialog(object):
 
         self.overlayTitle = QtGui.QGroupBox(Dialog)
         self.overlayTitle.setGeometry(QtCore.QRect(210,140,201,51))
+
+        font = QtGui.QFont()
+        font.setPointSize(8)
+        self.overlayTitle.setFont(font)
         self.overlayTitle.setObjectName("overlayTitle")
 
         self.overlaySlider = QtGui.QSlider(self.overlayTitle)
