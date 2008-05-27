@@ -280,6 +280,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 'label'  : str(dev.GetProperty('volume.label')),
                 'mount'  : str(dev.GetProperty('volume.mount_point')),
                 'fstype' : str(dev.GetProperty('volume.fstype')),
+                'uuid'   : str(dev.GetProperty('volume.uuid')),
         }
 
     def mountDevice(self):
@@ -367,17 +368,16 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
     def detectRemovableDrives(self, force=None):
         import win32file, win32api
         self.drives = {}
-        if force:
-            self.drives[force] = {'label': None, 'mount': force}
-            return
         for drive in [l + ':' for l in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ']:
-            if win32file.GetDriveType(drive) == win32file.DRIVE_REMOVABLE:
+            if win32file.GetDriveType(drive) == win32file.DRIVE_REMOVABLE or \
+               drive == force:
                 try:
                     vol = win32api.GetVolumeInformation(drive)
                     label = vol[0]
                 except:
                     label = None
-                self.drives[drive] = {'label': label, 'mount': drive}
+                self.drives[drive] = {'label': label, 'mount': drive,
+                                      'uuid': self._getDeviceUUID(drive)}
         if not len(self.drives):
             raise LiveUSBError("Unable to find any removable devices")
 
@@ -433,24 +433,24 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                    os.path.join(self.drive + os.path.sep, 'syslinux'),
                    self.drive))
 
-    def _getDeviceUUID(self):
+    def _getDeviceUUID(self, drive):
         """ Return the UUID of our selected drive """
-        if not self.uuid:
-            try:
-                import win32com.client
-                wmi = win32com.client.GetObject("winmgmts:")
-                result = wmi.ExecQuery('SELECT VolumeSerialNumber FROM '
-                                       'Win32_LogicalDisk WHERE Name="%s"' %
-                                       self.drive)
-                if result and len(result):
-                    uuid = str(result[0].Properties_("VolumeSerialNumber"))
-                    if uuid == 'None':
-                        self.uuid = None
-                    else:
-                        self.uuid = uuid[:4] + '-' + uuid[4:]
-            except:
-                self.uuid = None
-        return self.uuid
+        uuid = None
+        try:
+            import win32com.client
+            wmi = win32com.client.GetObject("winmgmts:")
+            result = wmi.ExecQuery('SELECT VolumeSerialNumber FROM '
+                                   'Win32_LogicalDisk WHERE Name="%s"' %
+                                   self.drive)
+            if result and len(result):
+                serial = str(result[0].Properties_("VolumeSerialNumber"))
+                if uuid == 'None':
+                    uuid = None
+                else:
+                    uuid = serial[:4] + '-' + serial[4:]
+        except Exception, e:
+            self.log.warning("Exception while fetching UUID: %s" % str(e))
+        return uuid
 
     def popen(self, cmd):
         import win32process
