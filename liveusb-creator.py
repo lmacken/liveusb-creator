@@ -18,34 +18,46 @@
 #
 # Author(s): Luke Macken <lmacken@redhat.com>
 
-from optparse import OptionParser
+__version__ = '0.3.0'
 
-parser = OptionParser()
-parser.add_option('-c', '--console', dest='console', action='store_true',
-                  help='Use console mode instead of the GUI')
-parser.add_option('-f', '--force', dest='force', action='store', type='string',
-                  help='Force the use of a given drive', metavar='DRIVE')
-parser.add_option('-s', '--safe', dest='safe', action='store_true',
-                  help='Use the "safe, slow and stupid" bootloader')
-parser.add_option('-n', '--noverify', dest='noverify', action='store_true',
-                  help='Skip checksum verification')
-opts, args = parser.parse_args()
+def parse_args():
+    from optparse import OptionParser
+    parser = OptionParser(version=__version__)
+    parser.add_option('-c', '--console', dest='console', action='store_true',
+                      help='Use console mode instead of the GUI')
+    parser.add_option('-f', '--force', dest='force', action='store', type='string',
+                      help='Force the use of a given drive', metavar='DRIVE')
+    parser.add_option('-s', '--safe', dest='safe', action='store_true',
+                      help='Use the "safe, slow and stupid" bootloader')
+    parser.add_option('-n', '--noverify', dest='noverify', action='store_true',
+                      help='Skip checksum verification')
+    parser.add_option('-v', '--verbose', dest='verbose', action='store_true',
+                      help='Output extra debugging messages')
+    return parser.parse_args() # (opts, args)
 
-if opts.console:
-    from liveusb import LiveUSBCreator
-    try:
-        live = LiveUSBCreator()
-        live.detectRemovableDrives()
-        live.verifyFilesystem()
-        live.extractISO()
-        live.updateConfigs()
-        live.installBootloader()
-    except Exception, e:
-        print str(e)
 
-    x = raw_input("\nDone!  Press any key to exit")
-else:
-    ## Start our graphical interface
-    import sys
-    from liveusb.gui import LiveUSBApp
-    LiveUSBApp(opts, sys.argv)
+def main():
+    opts, args = parse_args()
+    if opts.console:
+        from liveusb import LiveUSBCreator
+        try:
+            live = LiveUSBCreator()
+            live.detectRemovableDrives()
+            live.verifyFilesystem()
+            live.extractISO()
+            live.updateConfigs()
+            live.installBootloader()
+        except Exception, e:
+            print str(e)
+        x = raw_input("\nDone!  Press any key to exit")
+    else:
+        ## Start our graphical interface
+        import sys
+        from liveusb.gui import LiveUSBApp
+        try:
+            LiveUSBApp(opts, sys.argv)
+        except KeyboardInterrupt:
+            pass
+
+if __name__ == '__main__':
+    main()
