@@ -237,14 +237,9 @@ class LiveUSBCreator(object):
     def _setDrive(self, drive):
         if not self.drives.has_key(drive):
             raise LiveUSBError("Cannot find device %s" % drive)
+        self.log.debug("%s selected: %s" % (drive, self.drives[drive]))
         self._drive = drive
-        self._getDeviceUUID()
-
-    def setOverlay(self, overlay):
-        self.overlay = overlay
-
-    def setImage(self, iso):
-        self.iso = iso
+        self.uuid = self.drives[drive]['uuid']
 
 
 class LinuxLiveUSBCreator(LiveUSBCreator):
