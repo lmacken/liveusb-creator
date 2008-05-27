@@ -202,6 +202,7 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
 
     def populateDevices(self):
         self.driveBox.clear()
+        self.textEdit.clear()
         try:
             self.live.detectRemovableDrives(force=self.opts.force)
             for device, info in self.live.drives.items():
