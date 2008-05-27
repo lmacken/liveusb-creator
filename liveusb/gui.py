@@ -138,6 +138,10 @@ class LiveUSBThread(QtCore.QThread):
         try:
             self.status("Verifying filesystem...")
             self.live.verifyFilesystem()
+            if not self.live.uuid and not self.live.label:
+                self.status("Error: Cannot set the label or obtain " 
+                            "the UUID of your device.  Unable to continue.")
+
             self.live.checkFreeSpace()
 
             # If the ISO looks familar, verify it's SHA1SUM
