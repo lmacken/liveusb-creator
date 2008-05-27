@@ -53,7 +53,7 @@ class LiveUSBCreator(object):
 
     def detectRemovableDrives(self, force=None):
         """ This method should populate self.drives with removable devices.
-        
+
         If an optional 'force' argument is given, use the specified device
         regardless of whether it is removable or not.
         """
@@ -73,7 +73,7 @@ class LiveUSBCreator(object):
 
     def installBootloader(self, force=False, safe=False):
         """ Install the bootloader to our device, using syslinux.
-        
+
         At this point, we can assume that extractISO has already run, and
         that there is an 'isolinux' directory on our device.
         """
@@ -319,9 +319,10 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                    self.drive))
 
     def getFreeBytes(self):
+        """ Return the number of available bytes on our device """
         import statvfs
         stat = os.statvfs(self.dest)
-        return stat[statvfs.F_BSIZE] * stat[statvfs.F_BAVAIL] 
+        return stat[statvfs.F_BSIZE] * stat[statvfs.F_BAVAIL]
 
     def _getDevice(self, udi):
         """ Return a dbus Interface to a specific HAL device UDI """
