@@ -116,7 +116,8 @@ class LiveUSBCreator(object):
         """ A wrapper method for running subprocesses.
 
         This method handles logging of the command and it's output, and keeps
-        track of the pids in case we need to kill them.
+        track of the pids in case we need to kill them.  If something goes
+        wrong, an error log is written out and a LiveUSBError is thrown.
 
         @param cmd: The commandline to execute.  Either a string or a list.
         @param kwargs: Extra arguments to pass to subprocess.Popen
@@ -127,7 +128,8 @@ class LiveUSBCreator(object):
                              stderr=subprocess.PIPE, stdin=subprocess.PIPE,
                              shell=True, **kwargs)
         self.pids.append(p.pid)
-        map(self.output.write, p.communicate())
+        out, err = p.communicate()
+        self.output.write(out + '\n' + err + '\n')
         if p.returncode:
             self.writeLog()
             raise LiveUSBError("There was a problem executing the following "
