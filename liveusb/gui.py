@@ -97,16 +97,12 @@ class ProgressThread(QtCore.QThread):
     progress bar.
     """
     totalsize = 0
-    def setData(self, size, drive):
+    def setData(self, size, drive, freebytes):
         self.totalsize = size / 1024
         self.drive = drive
+        self.getFreeBytes = freebytes
         self.orig_free = self.getFreeBytes()
         self.emit(QtCore.SIGNAL("maxprogress(int)"), self.totalsize)
-
-    def getFreeBytes(self):
-        import win32file
-        (spc, bps, fc, tc) = win32file.GetDiskFreeSpace(self.drive)
-        return fc * (spc * bps)
 
     def run(self):
         while True:
@@ -153,7 +149,8 @@ class LiveUSBThread(QtCore.QThread):
                         return
 
             self.progress.setData(size=self.live.totalsize,
-                                  drive=self.live.drive)
+                                  drive=self.live.drive,
+                                  freebytes=self.live.getFreeBytes)
             self.progress.start()
 
             self.status("Extracting live image to USB device...")
@@ -171,6 +168,8 @@ class LiveUSBThread(QtCore.QThread):
         except LiveUSBError, e:
             self.status(str(e))
             self.status("LiveUSB creation failed!")
+
+        self.live.unmountDevice()
         self.progress.terminate()
 
     def setMaxProgress(self, max):
@@ -204,14 +203,13 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
 
     def populateDevices(self):
         self.driveBox.clear()
-        if self.opts.force:
-            self.driveBox.addItem(self.opts.force)
-            return
         try:
-            self.live.detectRemovableDrives()
-            for drive, label in self.live.drives:
-                self.driveBox.addItem(label and "%s (%s)" % (label, drive)
-                                      or drive)
+            self.live.detectRemovableDrives(force=self.opts.force)
+            for device, info in self.live.drives.items():
+                if info['label']:
+                    self.driveBox.addItem("%s (%s)" % (device, info['label']))
+                else:
+                    self.driveBox.addItem(device)
             self.startButton.setEnabled(True)
         except LiveUSBError, e:
             self.textEdit.setPlainText(str(e))
@@ -268,15 +266,13 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
         self.overlayTitle.setTitle("Persistent Overlay (%d Mb)" % value)
 
     def getSelectedDrive(self):
-        drive = str(self.driveBox.currentText()).split()[-1]
-        if drive[0] == '(':
-            drive = drive[1:-1]
-        return drive
+        return str(self.driveBox.currentText()).split()[0]
 
     def begin(self):
         self.enableWidgets(False)
-        self.live.setDrive(self.getSelectedDrive())
-        self.live.setOverlay(self.overlaySlider.value())
+        self.live.overlay = self.overlaySlider.value()
+        self.live.drive = self.getSelectedDrive()
+        self.live.mountDevice()
 
         if self.live.existingLiveOS():
             if not self.confirmed:
@@ -288,6 +284,7 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
                 self.status("Press 'Create Live USB' again if you wish to "
                             "continue.")
                 self.confirmed = True
+                self.live.unmountDevice()
                 self.enableWidgets(True)
                 return
             else:
@@ -295,7 +292,7 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
                 # existing Live OS.  Here we delete it first, in order to 
                 # accurately calculate progress.
                 self.status("Removing existing Live OS...")
-                shutil.rmtree(self.live.getLiveOS())
+                self.live.deleteLiveOS()
 
         # If the user has selected an ISO, use it.  If not, download one.
         if self.live.iso:
@@ -339,18 +336,4 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
 
     def terminate(self):
         """ Terminate any processes that we have spawned """
-        for pid in self.live.pids:
-            if hasattr(os, 'kill'):
-                os.kill(pid)
-            else:
-                import win32api, win32con, pywintypes
-                try:
-                    handle = win32api.OpenProcess(win32con.PROCESS_TERMINATE,
-                                                  False, pid)
-                    win32api.TerminateProcess(handle, 0)
-                    win32api.CloseHandle(handle)
-                except pywintypes.error:
-                    pass
-
-
-# vim:ts=4 sw=4 expandtab:
+        self.live.terminate()

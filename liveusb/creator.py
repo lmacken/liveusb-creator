@@ -39,15 +39,24 @@ class LiveUSBCreator(object):
     iso = None          # the path to our live image
     label = "FEDORA"    # if one doesn't already exist
     fstype = None       # the format of our usb stick
-    drives = []         # a list of removable devices
-    drive = None        # the selected device that we are installing to
+    drives = {}         # {device: {'label': label, 'mount': mountpoint}}
     overlay = 0         # size in mb of our persisten overlay
-    log = StringIO()    # log subprocess output in case of errors
+    dest = None         # the mount point of of our selected drive
     uuid = None         # the uuid of our selected drive
+    log = StringIO()    # log subprocess output in case of errors
     pids = []           # a list of pids of all of our subprocesses
 
-    def detectRemovableDrives(self):
-        """ This method should populate self.drives """
+    # The selected device
+    drive = property(fget=lambda self: self._drive,
+                     fset=lambda self, d: self._setDrive(d))
+    _drive = None
+
+    def detectRemovableDrives(self, force=None):
+        """ This method should populate self.drives with removable devices.
+        
+        If an optional 'force' argument is given, use the specified device
+        regardless of whether it is removable or not.
+        """
         raise NotImplementedError
 
     def verifyFilesystem(self):
@@ -58,31 +67,55 @@ class LiveUSBCreator(object):
         """
         raise NotImplementedError
 
-    def installBootloader(self, force=False):
-        """ Install the bootloader to our device, using syslinux """
+    def extractISO(self):
+        """ Extract the LiveCD ISO to the USB drive """
+        raise NotImplementedError
+
+    def installBootloader(self, force=False, safe=False):
+        """ Install the bootloader to our device, using syslinux.
+        
+        At this point, we can assume that extractISO has already run, and
+        that there is an 'isolinux' directory on our device.
+        """
         raise NotImplementedError
 
     def _getDeviceUUID(self):
         """ Return the UUID of our self.drive """
         raise NotImplementedError
 
+    def terminate(self):
+        """ Terminate any subprocesses that we have spawned """
+        raise NotImplementedError
+
+    def mountDevice(self):
+        """ Mount self.drive, setting the mount point to self.mount """
+        raise NotImplementedError
+
+    def unmountDevice(self):
+        """ Unmount the device mounted at self.mount """
+        raise NotImplementedError
+
     def popen(self, cmd, **kwargs):
         """ A wrapper method for running subprocesses.
 
-        Execute a specified command, first looking to see if it lives in
-        the 'tools' directory, and then resorting to whatever is in the path.
         This method handles logging of the command and it's output, and keeps
         track of the pids in case we need to kill them.
 
         @param cmd: The commandline to execute.  Either a string or a list.
         @param kwargs: Extra arguments to pass to subprocess.Popen
         """
+        print cmd
         self.log.write(cmd)
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                              stderr=subprocess.PIPE, stdin=subprocess.PIPE,
-                             **kwargs)
+                             shell=True, **kwargs)
         self.pids.append(p.pid)
         map(self.log.write, p.communicate())
+        if p.returncode:
+            self.writeLog()
+            raise LiveUSBError("There was a problem executing the following "
+                               "command: `%s`\nA more detailed error log has "
+                               "been written to 'liveusb-creator.log'" % cmd)
         return p
 
     def verifyImage(self, progress=None):
@@ -107,30 +140,29 @@ class LiveUSBCreator(object):
                 progress.updateProgress(total / 1024)
             return checksum.hexdigest() == release['sha1']
 
-    def extractISO(self):
-        """ Extract our ISO with 7-zip directly to the USB key """
-        p = self.popen('7z x "%s" -x![BOOT] -y -o%s' % (self.iso, self.drive))
-        if p.returncode or not self.existingLiveOS():
-            self.writeLog()
-            raise LiveUSBError("ISO extraction failed? Cannot find LiveOS")
+    def checkFreeSpace(self):
+        """ Make sure there is enough space for the LiveOS and overlay """
+        freebytes = self.getFreeBytes()
+        self.isosize = os.stat(self.iso)[ST_SIZE]
+        overlaysize = self.overlay * 1024 * 1024
+        self.totalsize = overlaysize + self.isosize
+        if self.totalsize > freebytes:
+            raise LiveUSBError("Not enough free space on device")
 
     def createPersistentOverlay(self):
         if self.overlay:
             if self.fstype == 'vfat':
                 # vfat apparently can't handle sparse files
-                p = self.popen('dd if=/dev/zero of=%s count=%d bs=1M'
-                               % (self.getOverlay(), self.overlay))
+                self.popen('dd if=/dev/zero of=%s count=%d bs=1M'
+                           % (self.getOverlay(), self.overlay))
             else:
-                p = self.popen('dd if=/dev/null of=%s count=1 bs=1M seek=%d'
-                               % (self.getOverlay(), size))
-            if p.returncode or not self.existingOverlay():
-                self.writeLog()
-                raise LiveUSBError("Persistent overlay creation failed")
+                self.popen('dd if=/dev/zero of=%s count=1 bs=1M seek=%d'
+                           % (self.getOverlay(), self.overlay))
 
     def updateConfigs(self):
         """ Generate our syslinux.cfg """
-        isolinux = file(os.path.join(self.drive,"isolinux","isolinux.cfg"),'r')
-        syslinux = file(os.path.join(self.drive,"isolinux","syslinux.cfg"),'w')
+        isolinux = file(os.path.join(self.dest, "isolinux", "isolinux.cfg"),'r')
+        syslinux = file(os.path.join(self.dest, "isolinux", "syslinux.cfg"),'w')
         usblabel = self.uuid and 'UUID=' + self.uuid or 'LABEL=' + self.label
         for line in isolinux.readlines():
             if "CDLABEL" in line:
@@ -145,26 +177,13 @@ class LiveUSBCreator(object):
         isolinux.close()
         syslinux.close()
 
-    def installBootloader(self, force=False, safe=False):
-        """ Run syslinux to install the bootloader on our devices """
-        if os.path.isdir(os.path.join(self.drive, "syslinux")):
-            syslinuxdir = os.path.join(self.drive, "syslinux")
-            # Python for Windows is unable to delete read-only files, and some
-            # may exist here if the LiveUSB stick was created in Linux
-            for f in os.listdir(syslinuxdir):
-                os.chmod(os.path.join(syslinuxdir, f), 0777)
-            shutil.rmtree(os.path.join(self.drive, "syslinux"))
-        shutil.move(os.path.join(self.drive, "isolinux"),
-                    os.path.join(self.drive, "syslinux"))
-        os.unlink(os.path.join(self.drive, "syslinux", "isolinux.cfg"))
-        p = self.popen('syslinux %s %s -m -a -d %s %s' %  (force and ' -f' or
-                       ' ', safe and ' -s' or ' ',
-                       os.path.join(self.drive, 'syslinux'), self.drive))
-        if p.returncode:
-            self.writeLog()
-            raise LiveUSBError("An error occured while installing the "
-                               "bootloader.  The syslinux output as been "
-                               "written to liveusb-creator.log")
+    def deleteLiveOS(self):
+        """ Delete the existing LiveOS """
+        for d in [self.getLiveOS(), os.path.join(self.dest, 'syslinux'),
+                  os.path.join(self.dest, 'isolinux')]:
+            if os.path.exists(d):
+                print "Deleting ", d
+                shutil.rmtree(d)
 
     def writeLog(self):
         """ Write out our subprocess stdout/stderr to a log file """
@@ -179,7 +198,7 @@ class LiveUSBCreator(object):
         return os.path.exists(self.getLiveOS())
 
     def getLiveOS(self):
-        return os.path.join(self.drive, "LiveOS")
+        return os.path.join(self.dest + os.path.sep, "LiveOS")
 
     def existingOverlay(self):
         return os.path.exists(self.getOverlay())
@@ -195,8 +214,10 @@ class LiveUSBCreator(object):
             if os.path.basename(release['url']) == isoname:
                 return release
 
-    def setDrive(self, drive):
-        self.drive = drive
+    def _setDrive(self, drive):
+        if not self.drives.has_key(drive):
+            raise LiveUSBError("Cannot find device %s" % drive)
+        self._drive = drive
         self._getDeviceUUID()
 
     def setOverlay(self, overlay):
@@ -208,8 +229,12 @@ class LiveUSBCreator(object):
 
 class LinuxLiveUSBCreator(LiveUSBCreator):
 
-    def detectRemovableDrives(self):
+    def detectRemovableDrives(self, force=None):
         import dbus
+        self.drives = {}
+        if force:
+            self.drives[force] = {'label': None, 'mount': None}
+            return
         self.bus = dbus.SystemBus()
         hal_obj = self.bus.get_object("org.freedesktop.Hal",
                                       "/org/freedesktop/Hal/Manager")
@@ -221,41 +246,114 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             if dev.GetProperty("storage.bus") == "usb" and \
                dev.GetProperty("storage.removable"):
                 if dev.GetProperty("block.is_volume"):
-                    self.drives.append(dev.GetProperty("volume.mount_point"))
+                    self._addDevice(dev)
                     continue
                 else: # iterate over children looking for a volume
                     children = self.hal.FindDeviceStringMatch("info.parent",
                                                               device)
                     for child in children:
-                        child = self.getDevice(child)
+                        child = self._getDevice(child)
                         if child.GetProperty("block.is_volume"):
-                            self.drives.append(
-                                    child.GetProperty("volume.mount_point")
-                            )
+                            self._addDevice(child)
                             break
 
         if not len(self.drives):
             raise LiveUSBError("Unable to find any USB drives")
 
+    def _addDevice(self, dev):
+        self.drives[str(dev.GetProperty('block.device'))] = {
+                'label'  : str(dev.GetProperty('volume.label')),
+                'mount'  : str(dev.GetProperty('volume.mount_point')),
+                'fstype' : str(dev.GetProperty('volume.fstype')),
+        }
+
+    def mountDevice(self):
+        import tempfile
+        self.dest = tempfile.mkdtemp()
+        self.popen('mount %s %s' % (self.drive, self.dest))
+
+    def unmountDevice(self):
+        if self.dest:
+            self.popen('umount %s' % self.dest)
+            self.dest = None
+
     def verifyFilesystem(self):
-        device = self.hal.FindDeviceStringMatch("volume.mount_point",
-                                                self.drive)[0]
-        device = self._getDevice(device)
-        self.fstype = device.GetProperty("volume.fstype")
+        self.fstype = self.drives[self.drive]['fstype']
         if self.fstype not in ('vfat', 'msdos', 'ext2', 'ext3'):
             raise LiveUSBError("Unsupported filesystem: %s" % self.fstype)
+        if self.drives[self.drive]['label']:
+            self.label = self.drives[self.drive]['label']
+        else:
+            print "Setting label on %s to %s" % (self.drive, self.label)
+            if self.fstype in ('vfat', 'msdos'):
+                p = self.popen('/sbin/dosfslabel %s %s' % (self.drive,
+                                                           self.label))
+            else:
+                p = self.popen('/sbin/e2label %s %s' % (self.drive, self.label))
+            if p.returncode:
+                self.label = None
+
+    def extractISO(self):
+        """ Extract self.iso to self.dest """
+        import tempfile
+        tmpdir = tempfile.mkdtemp()
+        self.popen('mount -o loop,ro %s %s' % (self.iso, tmpdir))
+        tmpliveos = os.path.join(tmpdir, 'LiveOS')
+        liveos = os.path.join(self.dest, 'LiveOS')
+        os.mkdir(liveos)
+        for img in ('squashfs.img', 'osmin.img'):
+            self.popen('cp %s %s' % (os.path.join(tmpliveos, img),
+                                     os.path.join(liveos, img)))
+        isolinux = os.path.join(self.dest, 'isolinux')
+        os.mkdir(isolinux)
+        self.popen('cp %s/* %s' % (os.path.join(tmpdir, 'isolinux'), isolinux))
+        self.popen('umount ' + tmpdir)
+
+    def installBootloader(self, force=False, safe=False):
+        """ Run syslinux to install the bootloader on our devices """
+        shutil.move(os.path.join(self.dest, "isolinux"),
+                    os.path.join(self.dest, "syslinux"))
+        os.unlink(os.path.join(self.dest, "syslinux", "isolinux.cfg"))
+        self.popen('syslinux%s%s -d %s %s' %  (force and ' -f' or ' ',
+                   safe and ' -s' or ' ', os.path.join(self.dest, 'syslinux'),
+                   self.drive))
+
+    def getFreeBytes(self):
+        import statvfs
+        stat = os.statvfs(self.dest)
+        return stat[statvfs.F_BSIZE] * stat[statvfs.F_BAVAIL] 
 
     def _getDevice(self, udi):
+        """ Return a dbus Interface to a specific HAL device UDI """
         import dbus
         dev_obj = self.bus.get_object("org.freedesktop.Hal", udi)
         return dbus.Interface(dev_obj, "org.freedesktop.Hal.Device")
 
+    def _getDeviceUUID(self):
+        p = subprocess.Popen(['/lib/udev/vol_id', '-u', self.drive],
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        out, err = p.communicate()
+        self.uuid = out.strip()
+        return self.uuid
+
+    def terminate(self):
+        import signal
+        for pid in self.pids:
+            try:
+                os.kill(pid, signal.SIGHUP)
+            except OSError:
+                pass
+        self.unmountDevice()
+
 
 class WindowsLiveUSBCreator(LiveUSBCreator):
 
-    def detectRemovableDrives(self):
+    def detectRemovableDrives(self, force=None):
         import win32file, win32api
-        self.drives = []
+        self.drives = {}
+        if force:
+            self.drives[force] = {'label': None, 'mount': force}
+            return
         for drive in [l + ':' for l in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ']:
             if win32file.GetDriveType(drive) == win32file.DRIVE_REMOVABLE:
                 try:
@@ -263,12 +361,12 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                     label = vol[0]
                 except:
                     label = None
-                self.drives.append((drive, label))
+                self.drives[drive] = {'label': label, 'mount': drive}
         if not len(self.drives):
             raise LiveUSBError("Unable to find any removable devices")
 
-    def verifyFilesystem(self):
-        import win32api, win32file
+    def verifyFilesystem(self, force=False):
+        import win32api, win32file, pywintypes
         try:
             vol = win32api.GetVolumeInformation(self.drive)
         except Exception, e:
@@ -280,23 +378,41 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                                vol[-1])
         self.fstype = 'vfat'
         if vol[0] == '':
-            win32file.SetVolumeLabel(self.drive, self.label)
+            try:
+                win32file.SetVolumeLabel(self.drive, self.label)
+            except pywintypes.error, e:
+                print "Unable to SetVolumeLabel:", str(e)
+                self.label = None
         else:
             self.label = vol[0].replace(' ', '_')
 
-    def checkFreeSpace(self):
-        """ Make sure there is enough space for the LiveOS and overlay """
+    def getFreeBytes(self):
+        """ Return the number of free bytes on self.drive """
         import win32file
         (spc, bps, fc, tc) = win32file.GetDiskFreeSpace(self.drive)
-        bpc = spc * bps # bytes-per-cluster
-        free_bytes = fc * bpc
+        return fc * (spc * bps) # free-clusters * bytes per-cluster
 
-        self.isosize = os.stat(self.iso)[ST_SIZE]
-        overlaysize = self.overlay * 1024 * 1024
-        self.totalsize = overlaysize + self.isosize
+    def extractISO(self):
+        """ Extract our ISO with 7-zip directly to the USB key """
+        self.popen('7z x "%s" -x![BOOT] -y -o%s' % (self.iso, self.drive))
 
-        if self.totalsize > free_bytes:
-            raise LiveUSBError("Not enough free space on device")
+    def installBootloader(self, force=False, safe=False):
+        """ Run syslinux to install the bootloader on our devices """
+        if os.path.isdir(os.path.join(self.drive + os.path.sep, "syslinux")):
+            syslinuxdir = os.path.join(self.drive + os.path.sep, "syslinux")
+            # Python for Windows is unable to delete read-only files, and some
+            # may exist here if the LiveUSB stick was created in Linux
+            for f in os.listdir(syslinuxdir):
+                os.chmod(os.path.join(syslinuxdir, f), 0777)
+            shutil.rmtree(syslinuxdir)
+        shutil.move(os.path.join(self.drive + os.path.sep, "isolinux"),
+                    os.path.join(self.drive + os.path.sep, "syslinux"))
+        os.unlink(os.path.join(self.drive + os.path.sep, "syslinux",
+                               "isolinux.cfg"))
+        self.popen('syslinux%s%s -m -a -d %s %s' %  (force and ' -f' or ' ',
+                   safe and ' -s' or ' ',
+                   os.path.join(self.drive + os.path.sep, 'syslinux'),
+                   self.drive))
 
     def _getDeviceUUID(self):
         """ Return the UUID of our selected drive """
@@ -322,4 +438,22 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         if isinstance(cmd, basestring): cmd = cmd.split()
         cmd = [os.path.join('tools', '%s.exe' % cmd[0])] + cmd[1:]
         return LiveUSBCreator.popen(self, ' '.join(cmd),
-                                    creationflags=win32process.CREATE_NO_WINDOW)
+                creationflags=win32process.CREATE_NO_WINDOW)
+
+    def terminate(self):
+        """ Terminate any subprocesses that we have spawned """
+        import win32api, win32con, pywintypes
+        for pid in self.pids:
+            try:
+                handle = win32api.OpenProcess(win32con.PROCESS_TERMINATE,
+                                              False, pid)
+                win32api.TerminateProcess(handle, 0)
+                win32api.CloseHandle(handle)
+            except pywintypes.error:
+                pass
+
+    def mountDevice(self):
+        self.dest = self.drives[self.drive]['mount']
+
+    def unmountDevice(self):
+        pass
