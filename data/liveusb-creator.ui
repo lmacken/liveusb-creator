@@ -24,10 +24,10 @@
    </property>
    <property name="geometry" >
     <rect>
-     <x>140</x>
+     <x>130</x>
      <y>350</y>
-     <width>131</width>
-     <height>31</height>
+     <width>158</width>
+     <height>34</height>
     </rect>
    </property>
    <property name="whatsThis" >
@@ -45,6 +45,11 @@
      <width>401</width>
      <height>111</height>
     </rect>
+   </property>
+   <property name="font" >
+    <font>
+     <pointsize>8</pointsize>
+    </font>
    </property>
    <property name="whatsThis" >
     <string>This is the status console, where all messages get written to.</string>
@@ -78,6 +83,11 @@
      <height>51</height>
     </rect>
    </property>
+   <property name="font" >
+    <font>
+     <pointsize>8</pointsize>
+    </font>
+   </property>
    <property name="whatsThis" >
     <string>If you do not select an existing Live CD, the selected release will be downloaded for you.</string>
    </property>
@@ -100,8 +110,8 @@
     <rect>
      <x>180</x>
      <y>100</y>
-     <width>21</width>
-     <height>20</height>
+     <width>23</width>
+     <height>24</height>
     </rect>
    </property>
    <property name="font" >
@@ -124,6 +134,11 @@
      <width>161</width>
      <height>51</height>
     </rect>
+   </property>
+   <property name="font" >
+    <font>
+     <pointsize>8</pointsize>
+    </font>
    </property>
    <property name="whatsThis" >
     <string>This button allows you to browse for an existing Live CD ISO that you have previously downloaded.  If you do not select one, a release will be downloaded for you automatically.</string>
@@ -156,6 +171,11 @@
      <width>191</width>
      <height>51</height>
     </rect>
+   </property>
+   <property name="font" >
+    <font>
+     <pointsize>8</pointsize>
+    </font>
    </property>
    <property name="whatsThis" >
     <string>This is the USB stick that you want to install your Live CD on.  This device must be formatted with the FAT filesystem.</string>
@@ -210,6 +230,11 @@
      <width>201</width>
      <height>51</height>
     </rect>
+   </property>
+   <property name="font" >
+    <font>
+     <pointsize>8</pointsize>
+    </font>
    </property>
    <property name="whatsThis" >
     <string comment="comment!" >By allocating extra space on your USB stick for a persistent overlay, you will be able to store data and make permanent modifications to your live operating system.  Without it, you will not be able to save data that will persist after a reboot.</string>
