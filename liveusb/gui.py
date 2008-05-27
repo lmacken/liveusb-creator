@@ -20,7 +20,6 @@
 #            Kushal Das <kushal@fedoraproject.org>
 
 import os
-import shutil
 
 from time import sleep
 from datetime import datetime
