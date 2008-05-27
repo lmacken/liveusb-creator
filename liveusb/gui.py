@@ -38,8 +38,10 @@ class LiveUSBApp(QtGui.QApplication):
         QtGui.QApplication.__init__(self, args) 
         self.mywindow = LiveUSBDialog(opts)
         self.mywindow.show()
-        self.exec_()
-        self.mywindow.terminate()
+        try:
+            self.exec_()
+        finally:
+            self.mywindow.terminate()
 
 
 class ReleaseDownloader(QtCore.QThread):
@@ -188,7 +190,7 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
         self.setupUi(self)
         self.opts = opts
 
-        self.live = LiveUSBCreator()
+        self.live = LiveUSBCreator(opts=opts)
         self.populateReleases()
         self.populateDevices()
 
