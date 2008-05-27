@@ -140,14 +140,14 @@ class LiveUSBCreator(object):
         if not progress:
             class DummyProgress:
                 def setMaxProgress(self, value): pass
-                def updateProgress(self, value): pass 
+                def updateProgress(self, value): pass
             progress = DummyProgress()
         release = self.getReleaseFromISO()
         if release:
             progress.setMaxProgress(self.isosize / 1024)
             checksum = sha.new()
             isofile = file(self.iso, 'rb')
-            bytes = 4096
+            bytes = 1024*1024
             total = 0
             while bytes:
                 data = isofile.read(bytes)
