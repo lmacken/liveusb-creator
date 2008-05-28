@@ -279,7 +279,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
     def _addDevice(self, dev):
         self.drives[str(dev.GetProperty('block.device'))] = {
-                'label'  : str(dev.GetProperty('volume.label')),
+                'label'  : str(dev.GetProperty('volume.label')).replace(' ', '_'),
                 'mount'  : str(dev.GetProperty('volume.mount_point')),
                 'fstype' : str(dev.GetProperty('volume.fstype')),
                 'uuid'   : str(dev.GetProperty('volume.uuid')),
