@@ -11,7 +11,6 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  PyQt4-devel
 Requires:       PyQt4
-Requires:       p7zip
 Requires:       syslinux
 
 %description
