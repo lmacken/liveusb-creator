@@ -294,7 +294,10 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
                 # existing Live OS.  Here we delete it first, in order to 
                 # accurately calculate progress.
                 self.status("Removing existing Live OS...")
-                self.live.deleteLiveOS()
+                try:
+                    self.live.deleteLiveOS()
+                except LiveUSBError, e:
+                    self.status(str(e))
 
         # If the user has selected an ISO, use it.  If not, download one.
         if self.live.iso:
