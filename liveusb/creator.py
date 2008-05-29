@@ -336,7 +336,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             else:
                 p = self.popen('/sbin/e2label %s %s' % (self.drive, self.label))
             if p.returncode:
-                log.warning("Failed to set label")
+                self.log.warning("Failed to set label")
                 self.label = None
 
     def extractISO(self):
