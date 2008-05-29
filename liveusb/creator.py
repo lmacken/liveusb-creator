@@ -18,6 +18,7 @@
 # Author(s): Luke Macken <lmacken@redhat.com>
 
 import subprocess
+import tempfile
 import logging
 import shutil
 import sha
@@ -176,6 +177,7 @@ class LiveUSBCreator(object):
 
     def createPersistentOverlay(self):
         if self.overlay:
+            self.log.info("Creating %sMB persistent overlay" % self.overlay)
             if self.fstype == 'vfat':
                 # vfat apparently can't handle sparse files
                 self.popen('dd if=/dev/zero of=%s count=%d bs=1M'
@@ -245,6 +247,7 @@ class LiveUSBCreator(object):
         self.log.debug("%s selected: %s" % (drive, self.drives[drive]))
         self._drive = drive
         self.uuid = self.drives[drive]['uuid']
+        self.fstype = self.drives[drive]['fstype']
 
 
 class LinuxLiveUSBCreator(LiveUSBCreator):
@@ -286,20 +289,33 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 'mount'  : str(dev.GetProperty('volume.mount_point')),
                 'fstype' : str(dev.GetProperty('volume.fstype')),
                 'uuid'   : str(dev.GetProperty('volume.uuid')),
+                'udi'    : dev,
         }
 
     def mountDevice(self):
-        import tempfile
-        self.dest = tempfile.mkdtemp()
-        self.popen('mount %s %s' % (self.drive, self.dest))
+        """ Mount our device with HAL if it is not already mounted """
+        self.dest = self.drives[self.drive]['mount']
+        if self.dest in (None, ''):
+            self.dest = tempfile.mkdtemp(dir='/media')
+            self.log.debug("Mounting %s to %s" % (self.drive, self.dest))
+            self.drives[self.drive]['udi'].Mount(
+                    os.path.basename(self.dest), self.fstype, [],
+                    dbus_interface='org.freedesktop.Hal.Device.Volume'
+            )
+            self.drives[self.drive]['unmount'] = True
 
     def unmountDevice(self):
-        if self.dest:
-            self.popen('umount %s' % self.dest)
+        """ Unmount our device if we mounted it to begin with """
+        if self.dest and self.drives[self.drive].has_key('unmount'):
+            self.log.debug("Unmounting %s from %s" % (self.drive, self.dest))
+            self.drives[self.drive]['udi'].Unmount(
+                    os.path.basename(self.dest), self.fstype, [],
+                    dbus_interface='org.freedesktop.Hal.Device.Volume'
+            )
+            del self.drives[self.drive]['unmount']
             self.dest = None
 
     def verifyFilesystem(self):
-        self.fstype = self.drives[self.drive]['fstype']
         if self.fstype not in ('vfat', 'msdos', 'ext2', 'ext3'):
             raise LiveUSBError("Unsupported filesystem: %s" % self.fstype)
         if self.drives[self.drive]['label']:
@@ -317,7 +333,6 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
     def extractISO(self):
         """ Extract self.iso to self.dest """
-        import tempfile
         tmpdir = tempfile.mkdtemp()
         self.log.info("Extracting ISO to device")
         self.popen('mount -o loop,ro %s %s' % (self.iso, tmpdir))
