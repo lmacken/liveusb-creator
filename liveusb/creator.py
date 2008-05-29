@@ -210,7 +210,11 @@ class LiveUSBCreator(object):
                   os.path.join(self.dest, 'isolinux')]:
             if os.path.exists(d):
                 self.log.info("Deleting " + d)
-                shutil.rmtree(d)
+                try:
+                    shutil.rmtree(d)
+                except OSError, e:
+                    raise LiveUSBError("Unable to remove previous LiveOS: %s" %
+                                       str(e))
 
     def writeLog(self):
         """ Write out our subprocess stdout/stderr to a log file """
