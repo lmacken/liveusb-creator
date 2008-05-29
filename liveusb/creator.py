@@ -289,11 +289,12 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
     def _addDevice(self, dev):
         self.drives[str(dev.GetProperty('block.device'))] = {
-                'label'  : str(dev.GetProperty('volume.label')).replace(' ', '_'),
-                'mount'  : str(dev.GetProperty('volume.mount_point')),
-                'fstype' : str(dev.GetProperty('volume.fstype')),
-                'uuid'   : str(dev.GetProperty('volume.uuid')),
-                'udi'    : dev,
+                'label'   : str(dev.GetProperty('volume.label')).replace(' ', '_'),
+                'mount'   : str(dev.GetProperty('volume.mount_point')),
+                'fstype'  : str(dev.GetProperty('volume.fstype')),
+                'uuid'    : str(dev.GetProperty('volume.uuid')),
+                'udi'     : dev,
+                'unmount' : False,
         }
 
     def mountDevice(self):
@@ -302,21 +303,24 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         if self.dest in (None, ''):
             self.dest = tempfile.mkdtemp(dir='/media')
             self.log.debug("Mounting %s to %s" % (self.drive, self.dest))
-            self.drives[self.drive]['udi'].Mount(
-                    os.path.basename(self.dest), self.fstype, [],
-                    dbus_interface='org.freedesktop.Hal.Device.Volume'
-            )
+            self.drives[self.drive]['udi'].Mount('', self.fstype, [],
+                    dbus_interface='org.freedesktop.Hal.Device.Volume')
             self.drives[self.drive]['unmount'] = True
 
     def unmountDevice(self):
         """ Unmount our device if we mounted it to begin with """
+        import dbus
         if self.dest and self.drives[self.drive].has_key('unmount'):
             self.log.debug("Unmounting %s from %s" % (self.drive, self.dest))
-            self.drives[self.drive]['udi'].Unmount(
-                    os.path.basename(self.dest), self.fstype, [],
-                    dbus_interface='org.freedesktop.Hal.Device.Volume'
-            )
-            del self.drives[self.drive]['unmount']
+            try:
+                self.drives[self.drive]['udi'].Unmount([],
+                        dbus_interface='org.freedesktop.Hal.Device.Volume')
+            except dbus.exceptions.DBusException, e:
+                self.log.warning("Unable to unmount device: %s" % str(e))
+                return
+            self.drives[self.drive]['unmount'] = False
+            if os.path.exists(self.dest):
+                shutil.rmtree(self.dest)
             self.dest = None
 
     def verifyFilesystem(self):
@@ -340,18 +344,23 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         tmpdir = tempfile.mkdtemp()
         self.log.info("Extracting ISO to device")
         self.popen('mount -o loop,ro %s %s' % (self.iso, tmpdir))
-        tmpliveos = os.path.join(tmpdir, 'LiveOS')
-        liveos = os.path.join(self.dest, 'LiveOS')
-        if not os.path.exists(liveos):
-            os.mkdir(liveos)
-        for img in ('squashfs.img', 'osmin.img'):
-            self.popen('cp %s %s' % (os.path.join(tmpliveos, img),
-                                     os.path.join(liveos, img)))
-        isolinux = os.path.join(self.dest, 'isolinux')
-        if not os.path.exists(isolinux):
-            os.mkdir(isolinux)
-        self.popen('cp %s/* %s' % (os.path.join(tmpdir, 'isolinux'), isolinux))
-        self.popen('umount ' + tmpdir)
+        try:
+            tmpliveos = os.path.join(tmpdir, 'LiveOS')
+            if not os.path.isdir(tmpliveos):
+                raise LiveUSBError("Unable to find LiveOS on ISO")
+            liveos = os.path.join(self.dest, 'LiveOS')
+            if not os.path.exists(liveos):
+                os.mkdir(liveos)
+            for img in ('squashfs.img', 'osmin.img'):
+                self.popen('cp %s %s' % (os.path.join(tmpliveos, img),
+                                         os.path.join(liveos, img)))
+            isolinux = os.path.join(self.dest, 'isolinux')
+            if not os.path.exists(isolinux):
+                os.mkdir(isolinux)
+            self.popen('cp %s/* %s' % (os.path.join(tmpdir, 'isolinux'),
+                                       isolinux))
+        finally:
+            self.popen('umount ' + tmpdir)
 
     def installBootloader(self, force=False, safe=False):
         """ Run syslinux to install the bootloader on our devices """
