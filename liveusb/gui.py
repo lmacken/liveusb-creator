@@ -324,7 +324,7 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
         """
         if os.path.exists(iso):
             self.status("Download complete!")
-            self.live.iso = str(iso)
+            self.live.iso = iso
             self.liveThread.start()
         else:
             self.status("Download failed: " + iso)
