@@ -150,7 +150,7 @@ class LiveUSBCreator(object):
             progress.setMaxProgress(self.isosize / 1024)
             checksum = sha.new()
             isofile = file(self.iso, 'rb')
-            bytes = 1024*1024
+            bytes = 1024**2
             total = 0
             while bytes:
                 data = isofile.read(bytes)
@@ -166,14 +166,14 @@ class LiveUSBCreator(object):
         self.log.debug('freebytes = %d' % freebytes)
         self.isosize = os.stat(self.iso)[ST_SIZE]
         self.log.debug('isosize = %d' % self.isosize)
-        overlaysize = self.overlay * 1024 * 1024
+        overlaysize = self.overlay * 1024**2
         self.log.debug('overlaysize = %d' % overlaysize)
         self.totalsize = overlaysize + self.isosize
         if self.totalsize > freebytes:
-            raise LiveUSBError("Not enough free space on device.  "
+            raise LiveUSBError("Not enough free space on device.\n\t"
                                "%dMB ISO + %dMB overlay > %dMB free space" % 
-                               (self.isosize/1024/1024, self.overlay,
-                                freebytes/1024/1024))
+                               (self.isosize/1024**2, self.overlay,
+                                freebytes/1024**2))
 
     def createPersistentOverlay(self):
         if self.overlay:
@@ -288,13 +288,15 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             raise LiveUSBError("Unable to find any USB drives")
 
     def _addDevice(self, dev):
-        self.drives[str(dev.GetProperty('block.device'))] = {
+        device = str(dev.GetProperty('block.device'))
+        self.drives[device] = {
                 'label'   : str(dev.GetProperty('volume.label')).replace(' ', '_'),
                 'mount'   : str(dev.GetProperty('volume.mount_point')),
                 'fstype'  : str(dev.GetProperty('volume.fstype')),
                 'uuid'    : str(dev.GetProperty('volume.uuid')),
                 'udi'     : dev,
                 'unmount' : False,
+                'free'    : self.getFreeBytes(device) / 1024**2
         }
 
     def mountDevice(self):
@@ -372,10 +374,11 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                    safe and ' -s' or ' ', os.path.join(self.dest, 'syslinux'),
                    self.drive))
 
-    def getFreeBytes(self):
+    def getFreeBytes(self, device=None):
         """ Return the number of available bytes on our device """
         import statvfs
-        stat = os.statvfs(self.dest)
+        device = device and device or self.dest
+        stat = os.statvfs(device)
         return stat[statvfs.F_BSIZE] * stat[statvfs.F_BAVAIL]
 
     def _getDevice(self, udi):
@@ -436,10 +439,11 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         else:
             self.label = vol[0].replace(' ', '_')
 
-    def getFreeBytes(self):
+    def getFreeBytes(self, device=None):
         """ Return the number of free bytes on self.drive """
         import win32file
-        (spc, bps, fc, tc) = win32file.GetDiskFreeSpace(self.drive)
+        device = device and device or self.drive
+        (spc, bps, fc, tc) = win32file.GetDiskFreeSpace(device)
         return fc * (spc * bps) # free-clusters * bytes per-cluster
 
     def extractISO(self):
