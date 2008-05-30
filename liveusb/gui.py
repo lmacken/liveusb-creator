@@ -265,7 +265,7 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
         self.refreshDevicesButton.setEnabled(enabled)
 
     def overlayValue(self, value):
-        self.overlayTitle.setTitle("Persistent Overlay (%d Mb)" % value)
+        self.overlayTitle.setTitle("Persistent Storage (%d Mb)" % value)
 
     def getSelectedDrive(self):
         return str(self.driveBox.currentText()).split()[0]
