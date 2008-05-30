@@ -315,7 +315,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
     def unmountDevice(self):
         """ Unmount our device if we mounted it to begin with """
         import dbus
-        if self.dest and self.drives[self.drive].has_key('unmount'):
+        if self.dest and self.drives.get('unmount'):
             self.log.debug("Unmounting %s from %s" % (self.drive, self.dest))
             try:
                 self.drives[self.drive]['udi'].Unmount([],
