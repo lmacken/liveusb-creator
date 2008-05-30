@@ -298,6 +298,9 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
                     self.live.deleteLiveOS()
                 except LiveUSBError, e:
                     self.status(str(e))
+                    self.live.unmountDevice()
+                    self.enableWidgets(True)
+                    return
 
         # If the user has selected an ISO, use it.  If not, download one.
         if self.live.iso:
