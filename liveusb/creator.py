@@ -291,15 +291,15 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             raise LiveUSBError("Unable to find any USB drives")
 
     def _addDevice(self, dev):
-        device = str(dev.GetProperty('block.device'))
-        self.drives[device] = {
+        mount = str(dev.GetProperty('volume.mount_point'))
+        self.drives[str(dev.GetProperty('block.device'))] = {
                 'label'   : str(dev.GetProperty('volume.label')).replace(' ', '_'),
-                'mount'   : str(dev.GetProperty('volume.mount_point')),
                 'fstype'  : str(dev.GetProperty('volume.fstype')),
                 'uuid'    : str(dev.GetProperty('volume.uuid')),
+                'mount'   : mount,
                 'udi'     : dev,
                 'unmount' : False,
-                'free'    : self.getFreeBytes(device) / 1024**2
+                'free'    : mount and self.getFreeBytes(mount) / 1024**2 or None
         }
 
     def mountDevice(self):

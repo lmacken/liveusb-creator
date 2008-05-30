@@ -247,6 +247,20 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
         self.connect(self.refreshDevicesButton, QtCore.SIGNAL("clicked()"),
                      self.populateDevices)
 
+    @QtCore.pyqtSignature("QString")
+    def on_driveBox_currentIndexChanged(self, drive):
+        """ Change the maximum overlay size when each drive is selected.
+
+        This sets the maximum megabyte size of the persistent storage slider
+        to the number of free megabytes on the currently selected
+        "Target Device".  If the device is not mounted, or if it has more than
+        2gigs of free space, set the maximum to 2047mb.
+        """
+        freespace = self.live.drives[str(drive).split()[0]]['free']
+        if not freespace or freespace > 2047:
+            freespace = 2047
+        self.overlaySlider.setMaximum(freespace)
+
     def progress(self, value):
         self.progressBar.setValue(value)
 
@@ -340,7 +354,6 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
         if isofile:
             self.live.iso = str(isofile)
             self.textEdit.append(os.path.basename(self.live.iso) + ' selected')
-
 
     def terminate(self):
         """ Terminate any processes that we have spawned """
