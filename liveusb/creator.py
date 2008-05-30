@@ -257,20 +257,23 @@ class LiveUSBCreator(object):
 class LinuxLiveUSBCreator(LiveUSBCreator):
 
     def detectRemovableDrives(self, force=None):
+        """ Detect all removable USB storage devices using HAL via D-Bus """
         import dbus
         self.drives = {}
-        if force:
-            self.drives[force] = {'label': None, 'mount': None}
-            return
         self.bus = dbus.SystemBus()
         hal_obj = self.bus.get_object("org.freedesktop.Hal",
                                       "/org/freedesktop/Hal/Manager")
         self.hal = dbus.Interface(hal_obj, "org.freedesktop.Hal.Manager")
-        storage_devices = self.hal.FindDeviceByCapability("storage")
 
-        for device in storage_devices:
+        devices = []
+        if force:
+            devices = self.hal.FindDeviceStringMatch('block.device', force)
+        else:
+            devices = self.hal.FindDeviceByCapability("storage")
+
+        for device in devices:
             dev = self._getDevice(device)
-            if dev.GetProperty("storage.bus") == "usb" and \
+            if force or dev.GetProperty("storage.bus") == "usb" and \
                dev.GetProperty("storage.removable"):
                 if dev.GetProperty("block.is_volume"):
                     self._addDevice(dev)
