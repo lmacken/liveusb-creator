@@ -308,8 +308,11 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         if self.dest in (None, ''):
             self.dest = tempfile.mkdtemp(dir='/media')
             self.log.debug("Mounting %s to %s" % (self.drive, self.dest))
-            self.drives[self.drive]['udi'].Mount('', self.fstype, [],
-                    dbus_interface='org.freedesktop.Hal.Device.Volume')
+            try:
+                self.drives[self.drive]['udi'].Mount('', self.fstype, [],
+                        dbus_interface='org.freedesktop.Hal.Device.Volume')
+            except Exception, e:
+                raise LiveUSBError("Unable to mount device: %s" % str(e))
             self.drives[self.drive]['unmount'] = True
 
     def unmountDevice(self):
@@ -335,13 +338,14 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             self.label = self.drives[self.drive]['label']
         else:
             self.log.info("Setting label on %s to %s" % (self.drive,self.label))
-            if self.fstype in ('vfat', 'msdos'):
-                p = self.popen('/sbin/dosfslabel %s %s' % (self.drive,
-                                                           self.label))
-            else:
-                p = self.popen('/sbin/e2label %s %s' % (self.drive, self.label))
-            if p.returncode:
-                self.log.warning("Failed to set label")
+            try:
+                if self.fstype in ('vfat', 'msdos'):
+                    p = self.popen('/sbin/dosfslabel %s %s' % (self.drive,
+                                                               self.label))
+                else:
+                    p = self.popen('/sbin/e2label %s %s' % (self.drive, self.label))
+            except LiveUSBError, e:
+                self.log.error("Unable to change volume label: %s" % str(e))
                 self.label = None
 
     def extractISO(self):
@@ -513,7 +517,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                 handle = win32api.OpenProcess(win32con.PROCESS_TERMINATE,
                                               False, pid)
                 self.log.debug("Terminating process %s" % pid)
-                win32api.TerminateProcess(handle, -1)
+                win32api.TerminateProcess(handle, -2)
                 win32api.CloseHandle(handle)
             except pywintypes.error:
                 pass
