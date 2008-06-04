@@ -256,6 +256,8 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
         "Target Device".  If the device is not mounted, or if it has more than
         2gigs of free space, set the maximum to 2047mb.
         """
+        if not str(drive):
+            return
         freespace = self.live.drives[str(drive).split()[0]]['free']
         if not freespace or freespace > 2047:
             freespace = 2047
@@ -288,7 +290,12 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
         self.enableWidgets(False)
         self.live.overlay = self.overlaySlider.value()
         self.live.drive = self.getSelectedDrive()
-        self.live.mountDevice()
+        try:
+            self.live.mountDevice()
+        except LiveUSBError, e:
+            self.status(str(e))
+            self.enableWidgets(True)
+            return 
 
         if self.live.existingLiveOS():
             if not self.confirmed:
