@@ -419,8 +419,13 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                     label = vol[0]
                 except:
                     label = None
-                self.drives[drive] = {'label': label, 'mount': drive,
-                                      'uuid': self._getDeviceUUID(drive)}
+                self.drives[drive] = {
+                    'label': label,
+                    'mount': drive,
+                    'uuid': self._getDeviceUUID(drive),
+                    'free': self.getFreeBytes(drive) / 1024**2,
+                    'fstype': 'vfat',
+                }
         if not len(self.drives):
             raise LiveUSBError("Unable to find any removable devices")
 
