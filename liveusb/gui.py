@@ -189,11 +189,9 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
         QtGui.QDialog.__init__(self)
         self.setupUi(self)
         self.opts = opts
-
         self.live = LiveUSBCreator(opts=opts)
         self.populateReleases()
         self.populateDevices()
-
         self.progressThread = ProgressThread()
         self.downloadProgress = DownloadProgress()
         self.liveThread = LiveUSBThread(live=self.live,
@@ -299,7 +297,7 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
 
         if self.live.existingLiveOS():
             if not self.confirmed:
-                self.status("Your device already contains a LiveOS.  If you "
+                self.status("Your device already contains a LiveOS.\nIf you "
                             "continue, this will be overwritten.")
                 if self.live.existingOverlay() and self.overlaySlider.value():
                     self.status("Warning: Creating a new persistent overlay "
@@ -359,7 +357,16 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
         isofile = QtGui.QFileDialog.getOpenFileName(self, "Select Live ISO",
                                                     ".", "ISO (*.iso)" )
         if isofile:
-            self.live.iso = str(isofile)
+            try:
+                self.live.iso = str(isofile)
+            except Exception, e:
+                self.live.log.error(str(e))
+                self.status("Sorry, I'm having trouble encoding the filename "
+                            "of your livecd.  You may have better luck if "
+                            "you move your ISO to the root of your drive "
+                            "(ie: C:\)")
+                
+            self.live.log.info("ISO selected: %s" % repr(self.live.iso))
             self.textEdit.append(os.path.basename(self.live.iso) + ' selected')
 
     def terminate(self):
