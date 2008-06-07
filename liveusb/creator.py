@@ -503,16 +503,15 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
 
     def popen(self, cmd):
         import win32process
-        if isinstance(cmd, basestring): cmd = cmd.split()
-        cmd = [os.path.join('tools', '%s.exe' % cmd[0])] + cmd[1:]
-        try:
-            return LiveUSBCreator.popen(self, ' '.join(cmd),
-                    creationflags=win32process.CREATE_NO_WINDOW)
-        except Exception, e:
-            self.log.error("Error executing command: %s" % str(e))
-            raise LiveUSBError("Unable to execute command.  Make sure that "
-                               "you have fully extracted the zip file before "
-                               "running this program.")
+        if isinstance(cmd, basestring):
+            cmd = cmd.split()
+        tool = os.path.join('tools', '%s.exe' % cmd[0])
+        if not os.path.exists(tool):
+            raise LiveUSBError("Cannot find '%s'.  Make sure to extract the "
+                               "entire liveusb-creator zip file before running "
+                               "this program.")
+        return LiveUSBCreator.popen(self, ' '.join([tool] + cmd[1:]),
+                                    creationflags=win32process.CREATE_NO_WINDOW)
 
     def terminate(self):
         """ Terminate any subprocesses that we have spawned """
