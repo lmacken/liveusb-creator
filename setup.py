@@ -4,7 +4,7 @@ import py2exe
 setup(
     windows = [
         {
-            "script" : "liveusb-creator.py",
+            "script" : "liveusb-creator",
             "icon_resources" : [(0, "data/fedora.ico")],
         }
     ],
