@@ -253,6 +253,10 @@ class LiveUSBCreator(object):
         self.uuid = self.drives[drive]['uuid']
         self.fstype = self.drives[drive]['fstype']
 
+    def get_proxies(self):
+        """ Return a dictionary of proxy settings """
+        return None
+
 
 class LinuxLiveUSBCreator(LiveUSBCreator):
 
@@ -533,3 +537,26 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
 
     def unmountDevice(self):
         pass
+
+    def get_proxies(self):
+        proxies = {}
+        try:
+            import _winreg as winreg
+            settings = winreg.OpenKey(winreg.HKEY_CURRENT_USER,
+                                      'Software\\Microsoft\\Windows'
+                                      '\\CurrentVersion\\Internet Settings')
+            proxy = winreg.QueryValueEx(settings, "ProxyEnable")[0]
+            if proxy:
+                server = str(winreg.QueryValueEx(settings, 'ProxyServer')[0])
+                if ';' in server:
+                    for p in server.split(';'):
+                        protocol, address = p.split('=')
+                        proxies[protocol] = '%s://%s' % (protocol, address)
+                else:
+                    proxies['http'] = 'http://%s' % server
+                    proxies['ftp'] = 'ftp://%s' % server
+            settings.Close()
+        except Exception, e:
+            self.log.warning('Unable to detect proxy settings: %s' % str(e))
+        self.log.debug('Using proxies: %s' % proxies)
+        return proxies

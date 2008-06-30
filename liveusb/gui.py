@@ -46,10 +46,11 @@ class LiveUSBApp(QtGui.QApplication):
 
 class ReleaseDownloader(QtCore.QThread):
 
-    def __init__(self, release, progress):
+    def __init__(self, release, progress, proxies):
         QtCore.QThread.__init__(self)
         self.release = release
-        self.progress = progress 
+        self.progress = progress
+        self.proxies = proxies
         for r in releases:
             if r['name'] == str(release):
                 self.url = r['url']
@@ -60,7 +61,7 @@ class ReleaseDownloader(QtCore.QThread):
     def run(self):
         self.emit(QtCore.SIGNAL("status(PyQt_PyObject)"),
                   "Downloading %s..." % os.path.basename(self.url))
-        grabber = URLGrabber(progress_obj=self.progress)
+        grabber = URLGrabber(progress_obj=self.progress, proxies=self.proxies)
         try:
             iso = grabber.urlgrab(self.url, reget='simple')
         except URLGrabError, e:
@@ -327,7 +328,8 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
         else:
             self.downloader = ReleaseDownloader(
                     self.downloadCombo.currentText(),
-                    progress=self.downloadProgress)
+                    progress=self.downloadProgress,
+                    proxies=self.live.get_proxies())
             self.connect(self.downloader,
                          QtCore.SIGNAL("dlcomplete(PyQt_PyObject)"),
                          self.downloadComplete)
