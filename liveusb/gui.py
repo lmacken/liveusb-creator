@@ -175,8 +175,7 @@ class LiveUSBThread(QtCore.QThread):
                 self.live.create_persistent_overlay()
             self.status("Configuring and installing bootloader...")
             self.live.update_configs()
-            self.live.install_bootloader(force=self.parent.opts.force,
-                                        safe=self.parent.opts.safe)
+            self.live.install_bootloader()
             duration = str(datetime.now() - now).split('.')[0]
             self.status("Complete! (%s)" % duration)
         except LiveUSBError, e:
@@ -202,7 +201,6 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
         QtGui.QDialog.__init__(self)
         Ui_Dialog.__init__(self)
         self.setupUi(self)
-        self.opts = opts
         self.live = LiveUSBCreator(opts=opts)
         self.populate_releases()
         self.populate_devices()
@@ -219,7 +217,7 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
         self.driveBox.clear()
         self.textEdit.clear()
         try:
-            self.live.detect_removable_drives(force=self.opts.force)
+            self.live.detect_removable_drives()
             for device, info in self.live.drives.items():
                 if info['label']:
                     self.driveBox.addItem("%s (%s)" % (device, info['label']))
@@ -396,4 +394,3 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
             if not isinstance(obj, unicode):
                 obj = unicode(obj, encoding, 'replace')
         return obj
-

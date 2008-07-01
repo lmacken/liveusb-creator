@@ -79,12 +79,8 @@ class LiveUSBCreator(object):
         handler.setFormatter(formatter)
         self.log.addHandler(handler)
 
-    def detect_removable_drives(self, force=None):
-        """ This method should populate self.drives with removable devices.
-
-        If an optional 'force' argument is given, use the specified device
-        regardless of whether it is removable or not.
-        """
+    def detect_removable_drives(self):
+        """ This method should populate self.drives with removable devices """
         raise NotImplementedError
 
     def verify_filesystem(self):
@@ -106,7 +102,7 @@ class LiveUSBCreator(object):
         """ Extract the LiveCD ISO to the USB drive """
         raise NotImplementedError
 
-    def install_bootloader(self, force=False, safe=False):
+    def install_bootloader(self):
         """ Install the bootloader to our device, using syslinux.
 
         At this point, we can assume that extract_iso has already run, and
@@ -273,7 +269,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
     bus = None # the dbus.SystemBus
     hal = None # an org.freedesktop.Hal.Manager dbus.Interface
 
-    def detect_removable_drives(self, force=None):
+    def detect_removable_drives(self):
         """ Detect all removable USB storage devices using HAL via D-Bus """
         import dbus
         self.drives = {}
@@ -283,14 +279,15 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         self.hal = dbus.Interface(hal_obj, "org.freedesktop.Hal.Manager")
 
         devices = []
-        if force:
-            devices = self.hal.FindDeviceStringMatch('block.device', force)
+        if self.opts.force:
+            devices = self.hal.FindDeviceStringMatch('block.device',
+                                                     self.opts.force)
         else:
             devices = self.hal.FindDeviceByCapability("storage")
 
         for device in devices:
             dev = self._get_device(device)
-            if force or dev.GetProperty("storage.bus") == "usb" and \
+            if self.opts.force or dev.GetProperty("storage.bus") == "usb" and \
                dev.GetProperty("storage.removable"):
                 if dev.GetProperty("block.is_volume"):
                     self._add_device(dev)
@@ -392,13 +389,13 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         finally:
             self.popen('umount ' + tmpdir)
 
-    def install_bootloader(self, force=False, safe=False):
+    def install_bootloader(self):
         """ Run syslinux to install the bootloader on our devices """
         self.log.info("Installing bootloader")
         shutil.move(os.path.join(self.dest, "isolinux"),
                     os.path.join(self.dest, "syslinux"))
         os.unlink(os.path.join(self.dest, "syslinux", "isolinux.cfg"))
-        self.popen('syslinux%s%s -d %s %s' %  (force and ' -f' or ' ',
+        self.popen('syslinux%s%s -d %s %s' %  (self.opts.force and ' -f' or ' ',
                    safe and ' -s' or ' ', os.path.join(self.dest, 'syslinux'),
                    self.drive))
 
@@ -429,12 +426,12 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
 class WindowsLiveUSBCreator(LiveUSBCreator):
 
-    def detect_removable_drives(self, force=None):
+    def detect_removable_drives(self):
         import win32file, win32api
         self.drives = {}
         for drive in [l + ':' for l in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ']:
             if win32file.GetDriveType(drive) == win32file.DRIVE_REMOVABLE or \
-               drive == force:
+               drive == self.opts.force:
                 try:
                     vol = win32api.GetVolumeInformation(drive)
                     label = vol[0]
@@ -484,7 +481,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         self.log.info("Extracting ISO to USB device")
         self.popen('7z x "%s" -x![BOOT] -y -o%s' % (self.iso, self.drive))
 
-    def install_bootloader(self, force=False, safe=False):
+    def install_bootloader(self):
         """ Run syslinux to install the bootloader on our devices """
         self.log.info("Installing bootloader")
         if os.path.isdir(os.path.join(self.drive + os.path.sep, "syslinux")):
@@ -498,8 +495,8 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                     os.path.join(self.drive + os.path.sep, "syslinux"))
         os.unlink(os.path.join(self.drive + os.path.sep, "syslinux",
                                "isolinux.cfg"))
-        self.popen('syslinux%s%s -m -a -d %s %s' %  (force and ' -f' or ' ',
-                   safe and ' -s' or ' ',
+        self.popen('syslinux%s%s -m -a -d %s %s' %  (self.opts.force and ' -f'
+                   or ' ', safe and ' -s' or ' ',
                    os.path.join(self.drive + os.path.sep, 'syslinux'),
                    self.drive))
 
