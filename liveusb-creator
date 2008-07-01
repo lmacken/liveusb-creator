@@ -41,12 +41,12 @@ def main():
     if opts.console:
         from liveusb import LiveUSBCreator
         try:
-            live = LiveUSBCreator()
-            live.detectRemovableDrives()
-            live.verifyFilesystem()
-            live.extractISO()
-            live.updateConfigs()
-            live.installBootloader()
+            live = LiveUSBCreator(opts)
+            live.detect_removable_drives()
+            live.verify_filesystem()
+            live.extract_iso()
+            live.update_configs()
+            live.install_bootloader()
         except Exception, e:
             print str(e)
         x = raw_input("\nDone!  Press any key to exit")
