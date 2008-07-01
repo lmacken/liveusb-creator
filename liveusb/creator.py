@@ -65,9 +65,9 @@ class LiveUSBCreator(object):
 
     def __init__(self, opts):
         self.opts = opts
-        self.setup_logger()
+        self._setup_logger()
 
-    def setup_logger(self):
+    def _setup_logger(self):
         self.log = logging.getLogger(__name__)
         level = logging.INFO
         if self.opts.verbose:
