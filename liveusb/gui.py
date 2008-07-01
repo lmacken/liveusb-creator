@@ -360,17 +360,26 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
                                                     ".", "ISO (*.iso)" )
         if isofile:
             try:
-                self.live.iso = str(isofile)
+                self.live.iso = self._to_unicode(isofile)
             except Exception, e:
                 self.live.log.error(str(e))
                 self.status("Sorry, I'm having trouble encoding the filename "
                             "of your livecd.  You may have better luck if "
                             "you move your ISO to the root of your drive "
                             "(ie: C:\)")
-                
+
             self.live.log.info("ISO selected: %s" % repr(self.live.iso))
             self.textEdit.append(os.path.basename(self.live.iso) + ' selected')
 
     def terminate(self):
         """ Terminate any processes that we have spawned """
         self.live.terminate()
+
+    def _to_unicode(self, obj, encoding='utf-8'):
+        if hasattr(obj, 'toUtf8'): # PyQt4.QtCore.QString
+            obj = str(obj.toUtf8())
+        if isinstance(obj, basestring):
+            if not isinstance(obj, unicode):
+                obj = unicode(obj, encoding, 'replace')
+        return obj
+
