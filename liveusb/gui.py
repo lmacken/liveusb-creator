@@ -148,6 +148,7 @@ class LiveUSBThread(QtCore.QThread):
             if not self.live.uuid and not self.live.label:
                 self.status("Error: Cannot set the label or obtain " 
                             "the UUID of your device.  Unable to continue.")
+                return
 
             self.live.check_free_space()
 
