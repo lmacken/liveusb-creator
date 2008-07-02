@@ -396,8 +396,8 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                     os.path.join(self.dest, "syslinux"))
         os.unlink(os.path.join(self.dest, "syslinux", "isolinux.cfg"))
         self.popen('syslinux%s%s -d %s %s' %  (self.opts.force and ' -f' or ' ',
-                   safe and ' -s' or ' ', os.path.join(self.dest, 'syslinux'),
-                   self.drive))
+                   self.opts.safe and ' -s' or ' ',
+                   os.path.join(self.dest, 'syslinux'), self.drive))
 
     def get_free_bytes(self, device=None):
         """ Return the number of available bytes on our device """
@@ -496,7 +496,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         os.unlink(os.path.join(self.drive + os.path.sep, "syslinux",
                                "isolinux.cfg"))
         self.popen('syslinux%s%s -m -a -d %s %s' %  (self.opts.force and ' -f'
-                   or ' ', safe and ' -s' or ' ',
+                   or ' ', self.opts.safe and ' -s' or ' ',
                    os.path.join(self.drive + os.path.sep, 'syslinux'),
                    self.drive))
 
