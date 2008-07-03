@@ -201,6 +201,7 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
     def __init__(self, opts):
         QtGui.QDialog.__init__(self)
         Ui_Dialog.__init__(self)
+        self.opts = opts
         self.setupUi(self)
         self.live = LiveUSBCreator(opts=opts)
         self.populate_releases()
@@ -266,7 +267,8 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
         This sets the maximum megabyte size of the persistent storage slider
         to the number of free megabytes on the currently selected
         "Target Device".  If the device is not mounted, or if it has more than
-        2gigs of free space, set the maximum to 2047mb.
+        2gigs of free space, set the maximum to 2047mb, which is apparently
+        the largest file we can/should store on a vfat partition.
         """
         if not str(drive):
             return
