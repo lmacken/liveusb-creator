@@ -84,3 +84,30 @@ class TestLiveUSBCreator:
             live.verify_filesystem()
             assert live.label
             assert live.drive['label']
+
+    def test_extract_iso(self):
+        from glob import glob
+        live = self._get_creator()
+        live.detect_removable_drives()
+        isos = filter(lambda x: x.endswith('.iso'), 
+                      filter(os.path.isfile, glob('*') + glob('*/*')))
+        assert isos, "No ISOs found.  Put one in this directory"
+        for drive in live.drives:
+            live.drive = drive
+            live.iso = isos[0]
+            live.mount_device()
+            if os.path.exists(live.get_liveos()):
+                live.delete_liveos()
+            assert not os.path.exists(live.get_liveos())
+            live.extract_iso()
+            assert os.path.exists(live.get_liveos())
+            assert os.path.isdir(live.get_liveos())
+            assert os.path.exists(os.path.join(live.get_liveos(), 'osmin.img'))
+            assert os.path.exists(os.path.join(live.get_liveos(),
+                'squashfs.img'))
+            assert os.path.isdir(os.path.join(os.path.dirname(
+                live.get_liveos()), 'isolinux'))
+            assert os.path.exists(os.path.join(os.path.dirname(
+                live.get_liveos()), 'isolinux', 'isolinux.cfg'))
+            assert os.path.exists(os.path.join(os.path.dirname(
+                live.get_liveos()), 'isolinux', 'vmlinuz0'))
