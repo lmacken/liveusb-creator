@@ -1,3 +1,4 @@
+import os
 
 class LiveUSBCreatorOptions(object):
     console = True
@@ -34,3 +35,24 @@ class TestLiveUSBCreator:
             assert release['name']
             assert release['url']
             assert release['sha1'] and len(release['sha1']) == 40
+
+    def test_mount_device(self):
+        live = self._get_creator()
+        live.detect_removable_drives()
+        for drive in live.drives:
+            live.drive = drive
+            if live.drive['mount']:
+                assert not live.drive['unmount']
+                assert os.path.exists(live.drive['mount'])
+                # this method will only unmount if we have mounted it first
+                live.unmount_device()
+                assert os.path.exists(live.drive['mount'])
+                # fake it out, forcing it to unmount
+                live.dest = live.drive['mount']
+                live.drive['unmount'] = True
+                live.unmount_device()
+                assert not live.drive['mount'] and not live.drive['unmount']
+            live.mount_device()
+            assert live.drive['mount'] # make sure we set the mountpoint
+            assert live.drive['unmount'] # make sure we know to unmount this
+            assert os.path.exists(live.drive['mount']), live.drive
