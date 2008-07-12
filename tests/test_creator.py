@@ -23,6 +23,9 @@ class TestLiveUSBCreator:
         live = self._get_creator()
         live.detect_removable_drives()
         assert len(live.drives), "No devices found"
+        for drive in live.drives:
+            for key in ('label', 'fstype', 'uuid', 'free'):
+                assert key in live.drives[drive]
 
     def test_releases(self):
         from liveusb.releases import releases
