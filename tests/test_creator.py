@@ -56,3 +56,31 @@ class TestLiveUSBCreator:
             assert live.drive['mount'] # make sure we set the mountpoint
             assert live.drive['unmount'] # make sure we know to unmount this
             assert os.path.exists(live.drive['mount']), live.drive
+
+    def test_unmount_device(self):
+        live = self._get_creator()
+        live.detect_removable_drives()
+        for drive in live.drives:
+            live.drive = drive
+            if live.drive['mount']:
+                assert os.path.exists(live.drive['mount'])
+                # this method will only unmount if we have mounted it first
+                live.unmount_device()
+                assert os.path.exists(live.drive['mount'])
+                # fake it out, forcing it to unmount
+                live.dest = live.drive['mount']
+                live.drive['unmount'] = True
+                live.unmount_device()
+                assert not live.drive['mount'] and not live.drive['unmount']
+            else:
+                raise Exception, "Device not mounted from previous test?"
+
+    def test_verify_filesystem(self):
+        live = self._get_creator()
+        live.detect_removable_drives()
+        for drive in live.drives:
+            live.drive = drive
+            assert live.fstype
+            live.verify_filesystem()
+            assert live.label
+            assert live.drive['label']
