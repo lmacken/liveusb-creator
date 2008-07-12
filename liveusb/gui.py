@@ -145,7 +145,7 @@ class LiveUSBThread(QtCore.QThread):
         try:
             self.status("Verifying filesystem...")
             self.live.verify_filesystem()
-            if not self.live.uuid and not self.live.label:
+            if not self.live.drive['uuid'] and not self.live.label:
                 self.status("Error: Cannot set the label or obtain " 
                             "the UUID of your device.  Unable to continue.")
                 return
@@ -164,8 +164,8 @@ class LiveUSBThread(QtCore.QThread):
                         return
 
             self.progress.set_data(size=self.live.totalsize,
-                                  drive=self.live.drive,
-                                  freebytes=self.live.get_free_bytes)
+                                   drive=self.live.drive['device'],
+                                   freebytes=self.live.get_free_bytes)
             self.progress.start()
 
             self.status("Extracting live image to USB device...")

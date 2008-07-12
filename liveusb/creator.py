@@ -60,7 +60,7 @@ class LiveUSBCreator(object):
     _drive = None       # mountpoint of the currently selected drive
     log = None
 
-    drive = property(fget=lambda self: self._drive,
+    drive = property(fget=lambda self: self.drives[self._drive],
                      fset=lambda self, d: self._set_drive(d))
 
     def __init__(self, opts):
@@ -306,61 +306,85 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
     def _add_device(self, dev):
         mount = str(dev.GetProperty('volume.mount_point'))
-        self.drives[str(dev.GetProperty('block.device'))] = {
+        device = str(dev.GetProperty('block.device'))
+        self.drives[device] = {
             'label'   : str(dev.GetProperty('volume.label')).replace(' ', '_'),
             'fstype'  : str(dev.GetProperty('volume.fstype')),
             'uuid'    : str(dev.GetProperty('volume.uuid')),
             'mount'   : mount,
             'udi'     : dev,
             'unmount' : False,
-            'free'    : mount and self.get_free_bytes(mount) / 1024**2 or None
+            'free'    : mount and self.get_free_bytes(mount) / 1024**2 or None,
+            'device'  : device,
         }
 
     def mount_device(self):
         """ Mount our device with HAL if it is not already mounted """
-        self.dest = self.drives[self.drive]['mount']
-        if self.dest in (None, ''):
+        self.dest = self.drive['mount']
+        if not self.dest:
+            if not self.fstype:
+                raise LiveUSBError("Filesystem for %s unknown!" % 
+                                   self.drive['device'])
             try:
-                self.drives[self.drive]['udi'].Mount('', self.fstype, [],
+                self.log.debug("Calling %s.Mount('', %s, [], ...)" % (
+                               self.drive['udi'], self.fstype))
+                self.drive['udi'].Mount('', self.fstype, [],
                         dbus_interface='org.freedesktop.Hal.Device.Volume')
             except Exception, e:
                 raise LiveUSBError("Unable to mount device: %s" % str(e))
-            device = self.hal.FindDeviceStringMatch('block.device', self.drive)
+            device = self.hal.FindDeviceStringMatch('block.device',
+                                                    self.drive['device'])
             device = self._get_device(device[0])
             self.dest = device.GetProperty('volume.mount_point')
-            self.log.debug("Mounted %s to %s " % (self.drive, self.dest))
-            self.drives[self.drive]['unmount'] = True
+            self.log.debug("Mounted %s to %s " % (self.drive['device'],
+                                                  self.dest))
+            self.drive['mount'] = self.dest
+            self.drive['unmount'] = True
+        else:
+            self.log.debug("Using existing mount: %s" % self.dest)
 
     def unmount_device(self):
         """ Unmount our device if we mounted it to begin with """
         import dbus
-        if self.dest and self.drives[self.drive].get('unmount'):
-            self.log.debug("Unmounting %s from %s" % (self.drive, self.dest))
+        if self.dest and self.drive.get('unmount'):
+            print "unmounting"
+            self.log.debug("Unmounting %s from %s" % (self.drive['device'],
+                                                      self.dest))
             try:
-                self.drives[self.drive]['udi'].Unmount([],
+                self.drive['udi'].Unmount([],
                         dbus_interface='org.freedesktop.Hal.Device.Volume')
             except dbus.exceptions.DBusException, e:
+                raise
                 self.log.warning("Unable to unmount device: %s" % str(e))
                 return
-            self.drives[self.drive]['unmount'] = False
+            self.drive['unmount'] = False
+            self.drive['mount'] = None
             if os.path.exists(self.dest):
-                shutil.rmtree(self.dest)
+                self.log.error("Mount %s exists after unmounting" % self.dest)
+                #shutil.rmtree(self.dest) too agressive?
             self.dest = None
+        else:
+            print "SKIPPING UNMOUNT"
 
     def verify_filesystem(self):
         if self.fstype not in ('vfat', 'msdos', 'ext2', 'ext3'):
-            raise LiveUSBError("Unsupported filesystem: %s" % self.fstype)
-        if self.drives[self.drive]['label']:
-            self.label = self.drives[self.drive]['label']
+            if not self.fstype:
+                raise LiveUSBError("Unknown filesystem for %s.  Your device "
+                                   "may need to be reformatted.")
+            else:
+                raise LiveUSBError("Unsupported filesystem: %s" % self.fstype)
+        if self.drive['label']:
+            self.label = self.drive['label']
         else:
-            self.log.info("Setting %s label to %s" % (self.drive, self.label))
+            self.log.info("Setting %s label to %s" % (self.drive['device'],
+                                                      self.label))
             try:
                 if self.fstype in ('vfat', 'msdos'):
                     # @@ Fix this, it doesn't seem to work...
-                    self.popen('/sbin/dosfslabel %s %s' % (self.drive,
+                    self.popen('/sbin/dosfslabel %s %s' % (self.drive['device'],
                                                            self.label))
                 else:
-                    self.popen('/sbin/e2label %s %s' % (self.drive,
+                    self.popen('/sbin/e2label %s %s' % (self.drive['device'],
                                                         self.label))
             except LiveUSBError, e:
                 self.log.error("Unable to change volume label: %s" % str(e))
@@ -397,7 +421,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         os.unlink(os.path.join(self.dest, "syslinux", "isolinux.cfg"))
         self.popen('syslinux%s%s -d %s %s' %  (self.opts.force and ' -f' or ' ',
                    self.opts.safe and ' -s' or ' ',
-                   os.path.join(self.dest, 'syslinux'), self.drive))
+                   os.path.join(self.dest, 'syslinux'), self.drive['device']))
 
     def get_free_bytes(self, device=None):
         """ Return the number of available bytes on our device """
@@ -450,7 +474,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
     def verify_filesystem(self):
         import win32api, win32file, pywintypes
         try:
-            vol = win32api.GetVolumeInformation(self.drive)
+            vol = win32api.GetVolumeInformation(self.drive['device'])
         except Exception, e:
             raise LiveUSBError("Make sure your USB key is plugged in and "
                                "formatted with the FAT filesystem")
@@ -461,8 +485,9 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         self.fstype = 'vfat'
         if vol[0] == '':
             try:
-                win32file.SetVolumeLabel(self.drive, self.label)
-                self.log.info("Set %s label to %s" % (self.drive, self.label))
+                win32file.SetVolumeLabel(self.drive['device'], self.label)
+                self.log.info("Set %s label to %s" % (self.drive['device'],
+                                                      self.label))
             except pywintypes.error, e:
                 self.log.warning("Unable to SetVolumeLabel: " + str(e))
                 self.label = None
@@ -470,35 +495,36 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
             self.label = vol[0].replace(' ', '_')
 
     def get_free_bytes(self, device=None):
-        """ Return the number of free bytes on self.drive """
+        """ Return the number of free bytes on our selected drive """
         import win32file
-        device = device and device or self.drive
+        device = device and device or self.drive['device']
         (spc, bps, fc, tc) = win32file.GetDiskFreeSpace(device)
         return fc * (spc * bps) # free-clusters * bytes per-cluster
 
     def extract_iso(self):
         """ Extract our ISO with 7-zip directly to the USB key """
         self.log.info("Extracting ISO to USB device")
-        self.popen('7z x "%s" -x![BOOT] -y -o%s' % (self.iso, self.drive))
+        self.popen('7z x "%s" -x![BOOT] -y -o%s' % (
+                   self.iso, self.drive['device']))
 
     def install_bootloader(self):
-        """ Run syslinux to install the bootloader on our devices """
+        """ Run syslinux to install the bootloader on our device """
         self.log.info("Installing bootloader")
-        if os.path.isdir(os.path.join(self.drive + os.path.sep, "syslinux")):
-            syslinuxdir = os.path.join(self.drive + os.path.sep, "syslinux")
+        device = self.drive['device']
+        if os.path.isdir(os.path.join(device + os.path.sep, "syslinux")):
+            syslinuxdir = os.path.join(device + os.path.sep, "syslinux")
             # Python for Windows is unable to delete read-only files, and some
             # may exist here if the LiveUSB stick was created in Linux
             for f in os.listdir(syslinuxdir):
                 os.chmod(os.path.join(syslinuxdir, f), 0777)
             shutil.rmtree(syslinuxdir)
-        shutil.move(os.path.join(self.drive + os.path.sep, "isolinux"),
-                    os.path.join(self.drive + os.path.sep, "syslinux"))
-        os.unlink(os.path.join(self.drive + os.path.sep, "syslinux",
+        shutil.move(os.path.join(device + os.path.sep, "isolinux"),
+                    os.path.join(device + os.path.sep, "syslinux"))
+        os.unlink(os.path.join(device + os.path.sep, "syslinux",
                                "isolinux.cfg"))
         self.popen('syslinux%s%s -m -a -d %s %s' %  (self.opts.force and ' -f'
                    or ' ', self.opts.safe and ' -s' or ' ',
-                   os.path.join(self.drive + os.path.sep, 'syslinux'),
-                   self.drive))
+                   os.path.join(device + os.path.sep, 'syslinux'), device))
 
     def _get_device_uuid(self, drive):
         """ Return the UUID of our selected drive """
@@ -546,7 +572,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                 pass
 
     def mount_device(self):
-        self.dest = self.drives[self.drive]['mount']
+        self.dest = self.drive['mount']
 
     def unmount_device(self):
         pass
