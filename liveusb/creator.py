@@ -347,7 +347,6 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         """ Unmount our device if we mounted it to begin with """
         import dbus
         if self.dest and self.drive.get('unmount'):
-            print "unmounting"
             self.log.debug("Unmounting %s from %s" % (self.drive['device'],
                                                       self.dest))
             try:
@@ -363,8 +362,6 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 self.log.error("Mount %s exists after unmounting" % self.dest)
                 #shutil.rmtree(self.dest) too agressive?
             self.dest = None
-        else:
-            print "SKIPPING UNMOUNT"
 
     def verify_filesystem(self):
         if self.fstype not in ('vfat', 'msdos', 'ext2', 'ext3'):
