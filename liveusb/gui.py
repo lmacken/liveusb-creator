@@ -35,6 +35,12 @@ from liveusb.releases import releases
 from liveusb.urlgrabber.grabber import URLGrabber, URLGrabError
 from liveusb.urlgrabber.progress import BaseMeter
 
+try:
+    import dbus.mainloop.qt
+    dbus.mainloop.qt.DBusQtMainLoop(set_as_default=True)
+except:
+    pass
+
 
 class LiveUSBApp(QtGui.QApplication):
     """ Main application class """
@@ -215,7 +221,7 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
         self.connect_slots()
         self.confirmed = False
 
-    def populate_devices(self):
+    def populate_devices(self, *args, **kw):
         self.driveBox.clear()
         self.textEdit.clear()
         try:
@@ -259,6 +265,13 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
                      self.progress)
         self.connect(self.refreshDevicesButton, QtCore.SIGNAL("clicked()"),
                      self.populate_devices)
+
+        # If we have access to HAL & DBus, intercept some useful signals
+        if hasattr(self.live, 'hal'):
+            self.live.hal.connect_to_signal('DeviceAdded',
+                                            self.populate_devices)
+            self.live.hal.connect_to_signal('DeviceRemoved',
+                                            self.populate_devices)
 
     @QtCore.pyqtSignature("QString")
     def on_driveBox_currentIndexChanged(self, drive):
