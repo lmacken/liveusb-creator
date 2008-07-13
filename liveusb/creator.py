@@ -496,7 +496,11 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         """ Return the number of free bytes on our selected drive """
         import win32file
         device = device and device or self.drive['device']
-        (spc, bps, fc, tc) = win32file.GetDiskFreeSpace(device)
+        try:
+            (spc, bps, fc, tc) = win32file.GetDiskFreeSpace(device)
+        except Exception, e:
+            self.log.error("Problem determining free space: %s" % str(e))
+            return 0
         return fc * (spc * bps) # free-clusters * bytes per-cluster
 
     def extract_iso(self):
