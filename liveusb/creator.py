@@ -393,18 +393,22 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         self.log.info("Extracting ISO to device")
         self.popen('mount -o loop,ro %s %s' % (self.iso, tmpdir))
         tmpliveos = os.path.join(tmpdir, 'LiveOS')
-        if not os.path.isdir(tmpliveos):
-            raise LiveUSBError("Unable to find LiveOS on ISO")
-        liveos = os.path.join(self.dest, 'LiveOS')
-        if not os.path.exists(liveos):
-            os.mkdir(liveos)
-        for img in ('squashfs.img', 'osmin.img'):
-            self.popen('cp %s %s' % (os.path.join(tmpliveos, img),
-                                     os.path.join(liveos, img)))
-        isolinux = os.path.join(self.dest, 'isolinux')
-        if not os.path.exists(isolinux):
-            os.mkdir(isolinux)
-        self.popen('cp %s/* %s' % (os.path.join(tmpdir, 'isolinux'), isolinux))
+        try:
+            if not os.path.isdir(tmpliveos):
+                raise LiveUSBError("Unable to find LiveOS on ISO")
+            liveos = os.path.join(self.dest, 'LiveOS')
+            if not os.path.exists(liveos):
+                os.mkdir(liveos)
+            for img in ('squashfs.img', 'osmin.img'):
+                self.popen('cp %s %s' % (os.path.join(tmpliveos, img),
+                                         os.path.join(liveos, img)))
+            isolinux = os.path.join(self.dest, 'isolinux')
+            if not os.path.exists(isolinux):
+                os.mkdir(isolinux)
+            self.popen('cp %s/* %s' % (os.path.join(tmpdir, 'isolinux'),
+                                       isolinux))
+        finally:
+            self.popen('umount %s' % tmpdir)
 
     def install_bootloader(self):
         """ Run syslinux to install the bootloader on our devices """
