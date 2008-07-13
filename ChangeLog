@@ -1,3 +1,733 @@
+commit 50fd39450148866f4b45f290f45f990651feac8e
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Jul 13 01:04:16 2008 -0400
+
+    Catch all Exceptions in our GUI, as to not cause silent explosions.
+
+ liveusb/gui.py |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+commit 5a6131e3e84346904def7f6ec000bed0826a5062
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Jul 13 00:45:16 2008 -0400
+
+    Automatically detect when drives have been added/removed, and update the GUI.
+    
+    If HAL and DBus are available, attach to the Device{Added,Removed} signals,
+    which allow us to automatically update the GUI when devices are added
+    and removed from the system.  This will allow us to remove the refresh button
+    in our Linux version.
+
+ liveusb/gui.py |   15 ++++++++++++++-
+ 1 files changed, 14 insertions(+), 1 deletions(-)
+
+commit f0e8d8da3ba23d17752aa99ceb04fe4a1f16836b
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Jul 13 00:24:43 2008 -0400
+
+    Ensure we always unmount our ISO
+
+ liveusb/creator.py |   28 ++++++++++++++++------------
+ 1 files changed, 16 insertions(+), 12 deletions(-)
+
+commit 555a168cc23c70ce5746ee65509be7ea99078148
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Jul 12 23:54:35 2008 -0400
+
+    Remove some superfluous output
+
+ liveusb/creator.py |    3 ---
+ 1 files changed, 0 insertions(+), 3 deletions(-)
+
+commit 83db0fd2cd3ae5ccce10541214341ad87669cc2c
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Jul 12 23:40:47 2008 -0400
+
+    Make sure to add a 'device' field to each drive in self.drives
+
+ liveusb/creator.py |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+commit 17ef28519bc0ed6740c8348129351dd8d51133bc
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Jul 12 23:35:31 2008 -0400
+
+    Revert to the previous _get_device_uuid implementation.
+    
+    This seems to be a bit more stable, seeing as how the second implementation
+    completely stopped working for me.
+
+ liveusb/creator.py |   21 +++++++++++----------
+ 1 files changed, 11 insertions(+), 10 deletions(-)
+
+commit c3d531acfdca32124b49e56fabafd56f016f4788
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Jul 12 02:05:01 2008 -0400
+
+    Add an extract_iso test case
+
+ tests/test_creator.py |   27 +++++++++++++++++++++++++++
+ 1 files changed, 27 insertions(+), 0 deletions(-)
+
+commit 1badaec48162762366e5c41c05de12a3def4db18
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Jul 12 02:04:30 2008 -0400
+
+    Don't unmount in the extract_iso method
+
+ liveusb/creator.py |   30 +++++++++++++-----------------
+ 1 files changed, 13 insertions(+), 17 deletions(-)
+
+commit 5a9f4a90e7e5f41508ecc9ca09504e595d71afa6
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Jul 12 02:04:06 2008 -0400
+
+    Change the way we access the selected drive from the LiveUSBCreator.
+    
+    - Set the fget for the ``drive`` property to avoid doing it everywhere
+
+ liveusb/creator.py |   98 +++++++++++++++++++++++++++++++++-------------------
+ liveusb/gui.py     |    6 ++--
+ 2 files changed, 65 insertions(+), 39 deletions(-)
+
+commit 03b4f9718ad5d0d50061c5587a759c53bb31b3c4
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Jul 12 00:12:31 2008 -0400
+
+    Add a test_verify_filesystem test case
+
+ tests/test_creator.py |   28 ++++++++++++++++++++++++++++
+ 1 files changed, 28 insertions(+), 0 deletions(-)
+
+commit 528680f99122028a34e308a931d2227727bff053
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Jul 12 00:06:52 2008 -0400
+
+    Write a test_mount_device unit test
+
+ tests/test_creator.py |   22 ++++++++++++++++++++++
+ 1 files changed, 22 insertions(+), 0 deletions(-)
+
+commit e3e3b47f98e4f046e659ab660e5d68012585d786
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Jul 11 22:40:34 2008 -0400
+
+    Improve our detect_removable_drives test case
+
+ tests/test_creator.py |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+commit bdde79fb751aaad14a87020536ed2b618939bf57
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Jul 2 21:21:32 2008 -0400
+
+    Add the beginnings of a test suite
+
+ tests/test_creator.py |   33 +++++++++++++++++++++++++++++++++
+ 1 files changed, 33 insertions(+), 0 deletions(-)
+
+commit cb9af2c23eea0e7e74be63f9037cefa0239e8966
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Jul 2 21:08:29 2008 -0400
+
+    Add the opts back to the LiveUSBDialog
+
+ liveusb/gui.py |    4 +++-
+ 1 files changed, 3 insertions(+), 1 deletions(-)
+
+commit fbc866e0c07cfb06152b1fbcf87c46ffa7f56539
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue Jul 1 22:19:55 2008 -0400
+
+    Bail out if we cannot get/set a label or a uuid
+
+ liveusb/gui.py |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+commit 92b0c45a841a34154071ad30124b7e7c5fdfcbab
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue Jul 1 22:19:22 2008 -0400
+
+    Use the self.opts.safe, instead of the method argument
+
+ liveusb-creator    |    5 +++--
+ liveusb/creator.py |    6 +++---
+ 2 files changed, 6 insertions(+), 5 deletions(-)
+
+commit 97488c0ac65fecde8beedf126cd68395d21b040c
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue Jul 1 18:13:52 2008 -0400
+
+    Clean up the API a bit by removing the force/safe arguments from our methods.
+    
+    This data comes in via our opts, and is not only passed into the LiveUSBCreator
+    upon creation, but also to the gui as well.  This removes the force and safe
+    arguments from various LiveUSBCreator methods since it already knows the
+    values of those via self.opts.
+
+ liveusb/creator.py |   33 +++++++++++++++------------------
+ liveusb/gui.py     |    7 ++-----
+ 2 files changed, 17 insertions(+), 23 deletions(-)
+
+commit 7cb58797c687aa7130fd194a24ccc20ab1804f9a
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue Jul 1 17:08:03 2008 -0400
+
+    LiveUSBCreator.setup_logger does not need to be 'public'
+
+ liveusb/creator.py |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit dd67ede7b566a485f4943eb0e80ce4c2487135c5
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue Jul 1 03:41:25 2008 -0400
+
+    Lots of PEP8 semantic changes based on an initial pylint check.
+
+ liveusb-creator    |   12 ++--
+ liveusb/creator.py |  216 ++++++++++++++++++++++++++++------------------------
+ liveusb/gui.py     |  166 ++++++++++++++++++++++------------------
+ 3 files changed, 212 insertions(+), 182 deletions(-)
+
+commit c319757b8b79df8fe1b696639343b5e82376fbad
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue Jul 1 03:40:28 2008 -0400
+
+    Create a _to_unicode method to help us mitigate some unicode issues
+
+ liveusb/gui.py |   13 +++++++++++--
+ 1 files changed, 11 insertions(+), 2 deletions(-)
+
+commit fc145174d119f62bb4535605d3bf0d9036ad2c4d
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon Jun 30 02:07:23 2008 -0400
+
+    Support proxies in Windows (Ticket #111)
+
+ liveusb/creator.py |   27 +++++++++++++++++++++++++++
+ liveusb/gui.py     |   10 ++++++----
+ 2 files changed, 33 insertions(+), 4 deletions(-)
+
+commit d22c61e036bf5ed23c409d4af32b961a71a5d3f8
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Jun 12 18:41:45 2008 -0400
+
+    Fix mounting unmounted devices
+
+ liveusb/creator.py |    6 ++++--
+ 1 files changed, 4 insertions(+), 2 deletions(-)
+
+commit 7fccbea7deb9268e47df3b0b55017412ab7368c2
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Jun 11 13:30:33 2008 -0400
+
+    Patch from Caio Begotti to fix our py2exe configuration
+
+ setup.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit f1e0d383b60ab3b25ce55a3a51b36afda3b6e8b6
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Jun 7 17:29:56 2008 -0400
+
+    If we cannot decode the iso filename, which is most likely due to unicode
+    issues on Windows, then suggest the user move the ISO to the root directory.
+
+ liveusb/gui.py |   15 +++++++++++----
+ 1 files changed, 11 insertions(+), 4 deletions(-)
+
+commit c2d0851c7f56be04f1ab16f0aea344ff89652064
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Jun 7 17:22:03 2008 -0400
+
+    Minor status formatting change
+
+ liveusb/creator.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 28d9bd884066058e4078f68b6ff75fcb950f4c7d
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Jun 7 17:05:04 2008 -0400
+
+    Fix a logic bug in unmountDevice()
+
+ liveusb/creator.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit e3495a730430c3938797f75fdf3b9d35279e802c
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Jun 6 23:11:56 2008 -0400
+
+    Make sure our tools exist.  If not, tell the user to extract the entire zip.
+
+ liveusb/creator.py |   19 +++++++++----------
+ 1 files changed, 9 insertions(+), 10 deletions(-)
+
+commit bd3095782ba191b40b848fa3207301e5d5333595
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Jun 6 14:27:41 2008 -0400
+
+    Add the free space and fstype of our devices upon detection in Windows
+
+ liveusb-creator    |    2 +-
+ liveusb/creator.py |    9 +++++++--
+ 2 files changed, 8 insertions(+), 3 deletions(-)
+
+commit 75023cf6b644fba92a46628762006a29026f77cc
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Jun 4 10:30:48 2008 -0400
+
+    Catch some more errors in the gui
+
+ liveusb/gui.py |    9 ++++++++-
+ 1 files changed, 8 insertions(+), 1 deletions(-)
+
+commit dfd9e225e8287f3d540e973ace5bc7430a517707
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Jun 4 10:29:52 2008 -0400
+
+    Catch dbus and filesystem label change errors
+
+ liveusb/creator.py |   24 ++++++++++++++----------
+ 1 files changed, 14 insertions(+), 10 deletions(-)
+
+commit 3fdeb6deef0b7fcdf65bc4b5d5bb6fd36a98bedc
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri May 30 17:39:00 2008 -0400
+
+    Dynamically alter the max persistence slider based on the selected device.
+    
+    This only works for mounted devices, since we can easily determine how much
+    free space is available.  For devices that are not mounted, or have more than
+    2 gigs of free space, we set the maximum overlay size to 2047mb.
+
+ liveusb/creator.py |    8 ++++----
+ liveusb/gui.py     |   15 ++++++++++++++-
+ 2 files changed, 18 insertions(+), 5 deletions(-)
+
+commit cfcddf99f3a593395832d5532b6d374041583762
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri May 30 17:34:37 2008 -0400
+
+    If we cannot remove the existing LiveOS, something is wrong, so bail out.
+
+ liveusb/gui.py |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+commit 0e622473bedc961a71badca6b36472363d3adff8
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu May 29 23:03:19 2008 -0400
+
+    Actually check the value of the 'unmount' flag when exiting
+
+ liveusb/creator.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit e0d43449a0b052d72b595c9753b7f219e99d5df4
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu May 29 23:02:43 2008 -0400
+
+    Make --force work in Linux
+
+ liveusb/creator.py |   15 +++++++++------
+ 1 files changed, 9 insertions(+), 6 deletions(-)
+
+commit 2033daf7f395660abf12a39b8c54c1960f95c07c
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu May 29 23:00:28 2008 -0400
+
+    Keep track of all of the free bytes of our drives upon detection.
+
+ liveusb/creator.py |   24 ++++++++++++++----------
+ 1 files changed, 14 insertions(+), 10 deletions(-)
+
+commit cfa6bafec7245138c7f6f9c32f6ec21abdc8aa9e
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu May 29 22:57:05 2008 -0400
+
+    s/Overlay/Storage/
+
+ data/liveusb-creator.ui |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 07f93ad1fb996ee4c84ced98a55e6f249fe3ab24
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu May 29 22:56:41 2008 -0400
+
+    s/Overlay/Storage/
+
+ liveusb/dialog.py |    4 ++--
+ liveusb/gui.py    |    2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+commit 58055f0bb20dd52f2cc679f078898567ef8787fb
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu May 29 00:51:53 2008 -0400
+
+    Fix a log typo
+
+ liveusb/creator.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 06b70f678e74fd29cf7a441c54099d1c2d9a107a
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu May 29 00:51:17 2008 -0400
+
+    Add some error handling for when people do not fully extract the zip file.
+
+ liveusb/creator.py |   10 ++++++++--
+ 1 files changed, 8 insertions(+), 2 deletions(-)
+
+commit 4580e30eb6d680d95bf809e6fb6d6e54e76809f8
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu May 29 00:30:10 2008 -0400
+
+    No need to str()ify our slot arguments anymore, thanks to PyQt_PyObject.
+
+ liveusb/gui.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit b4364105fbd9360322b924ca6a3af295cc67ae16
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu May 29 00:29:33 2008 -0400
+
+    Catch LiveUSBErrors when trying to remove an existing LiveOS
+
+ liveusb/gui.py |    5 ++++-
+ 1 files changed, 4 insertions(+), 1 deletions(-)
+
+commit f5691d5ca062ff3f0a88819a256eae7000346441
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu May 29 00:29:04 2008 -0400
+
+    Fixes to our HAL mounting/unmounting code, making it more robust.
+
+ liveusb/creator.py |   61 +++++++++++++++++++++++++++++----------------------
+ 1 files changed, 35 insertions(+), 26 deletions(-)
+
+commit ac860aad9f9de373f04cde57510ffea6b6d122b8
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed May 28 23:25:10 2008 -0400
+
+    Catch OSErrors when trying to remove the previous LiveOS
+
+ liveusb/creator.py |    6 +++++-
+ 1 files changed, 5 insertions(+), 1 deletions(-)
+
+commit dde26de0b26455af098d32198cb7933f6efb8beb
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed May 28 23:20:45 2008 -0400
+
+    Remove p7zip from our spec requirement
+
+ liveusb-creator.spec |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
+
+commit 433c26a290d5181dd5c35906c48395d6af4fb65b
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed May 28 23:20:09 2008 -0400
+
+    Use HAL via D-Bus to Mount and Unmount our device when using Linux.
+
+ liveusb/creator.py |   29 ++++++++++++++++++++++-------
+ 1 files changed, 22 insertions(+), 7 deletions(-)
+
+commit 3554ba9723787315f4834e9b350347693a059274
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed May 28 23:19:19 2008 -0400
+
+    Make our "not enough drive space" message a bit more useful.
+
+ liveusb/creator.py |    5 ++++-
+ 1 files changed, 4 insertions(+), 1 deletions(-)
+
+commit 10c64dedae4c50716aaa01cffc398fb06e8dee28
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed May 28 23:18:25 2008 -0400
+
+    Add a tweaked out QtDesigner ui file specifically for Linux,
+    since there are some font size differences between the two platforms.
+
+ data/liveusb-creator-linux.ui |  286 +++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 286 insertions(+), 0 deletions(-)
+
+commit 4b1fa684e93c2518c0028c2b881aa3d3cdef802d
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed May 28 13:19:08 2008 -0400
+
+    mv liveusb-creator{.py,}
+
+ liveusb-creator    |   63 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ liveusb-creator.py |   63 ----------------------------------------------------
+ 2 files changed, 63 insertions(+), 63 deletions(-)
+
+commit c606205924576d90ec2836853912008eed338ea3
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed May 28 12:58:18 2008 -0400
+
+    Replace blank spaces with underscores in device labels in our LinuxLiveUSBCreator
+
+ liveusb/creator.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit c81e4b46a18a9c99c1633165a0f6487b87182f1d
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue May 27 02:23:10 2008 -0400
+
+    Make some minor cleanups to LiveUSBCreator.popen
+
+ liveusb/creator.py |    6 ++++--
+ 1 files changed, 4 insertions(+), 2 deletions(-)
+
+commit 25c47fe28c595bf2ce1a496be6ebcd5edef208ad
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue May 27 02:05:00 2008 -0400
+
+    Refactor our UUID handling.  Remove the need for LiveUSBCreator._getDeviceUUID.
+    
+    Upon loading, we grab the UUID's of all of the removable (or forced) devices,
+    and store them in self.drives[drive]['uuid'].
+
+ liveusb/creator.py |   44 ++++++++++++++++++++++----------------------
+ 1 files changed, 22 insertions(+), 22 deletions(-)
+
+commit 7a7ee3cbcd149932d1cd84673eb968cd0cf00c03
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue May 27 02:03:30 2008 -0400
+
+    Remove the last two lame setter methods, setImage/setOverlay.
+
+ liveusb/creator.py |    9 ++-------
+ 1 files changed, 2 insertions(+), 7 deletions(-)
+
+commit a52b50678fd28ca8f9e9ef631045131cbe0125e1
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue May 27 02:02:51 2008 -0400
+
+    Read 1mb chunks when doing the SHA1 check.
+    
+    This seems to fix an issue with the progressbar being updated too fast, which
+    causes some serious lag.
+
+ liveusb/creator.py |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit b9ca23b474ed3fc3ee9ffb2ef624a5a289ef67f2
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue May 27 02:01:12 2008 -0400
+
+    Add a logger to the LiveUSBCreator class
+
+ liveusb/creator.py |   60 ++++++++++++++++++++++++++++++++++++---------------
+ 1 files changed, 42 insertions(+), 18 deletions(-)
+
+commit 0c2d226f4c2dc25853c96198ddc505cea1e697d8
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue May 27 01:59:27 2008 -0400
+
+    Make sure we always terminate() our dialog  window
+
+ liveusb/gui.py |    8 +++++---
+ 1 files changed, 5 insertions(+), 3 deletions(-)
+
+commit d4143f035f0a841ccca28813c22357d085786d1d
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue May 27 01:48:50 2008 -0400
+
+    Clean up our main script
+
+ liveusb-creator.py |   68 ++++++++++++++++++++++++++++++---------------------
+ 1 files changed, 40 insertions(+), 28 deletions(-)
+
+commit 6c5426a01b5937a028f4a1128bd20b4b62b8d697
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue May 27 00:09:54 2008 -0400
+
+    Replace our use of the 'const QString &' signal arguments with PyQt_PyObject
+
+ liveusb/gui.py |   14 +++++++-------
+ 1 files changed, 7 insertions(+), 7 deletions(-)
+
+commit 8377b5cdad64ff3a128c02d48b22e6d0fe95d76d
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue May 27 00:05:19 2008 -0400
+
+    Whitespace and some comment cleanups
+
+ liveusb/creator.py |    7 ++++---
+ 1 files changed, 4 insertions(+), 3 deletions(-)
+
+commit 6d5926f4b6eeafdd0f34b0fb28bda803e3f30c79
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon May 26 21:31:39 2008 -0400
+
+    Clear the status window when the devices are refreshed
+
+ liveusb-creator.spec |   44 ++++++++++++++++++++++++++++++++++++++++++++
+ liveusb/gui.py       |    1 +
+ 2 files changed, 45 insertions(+), 0 deletions(-)
+
+commit 7e83e81b850836d20ce9de08d0b3bde74b1a5064
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon May 26 20:38:18 2008 -0400
+
+    Remove an unused module from the gui
+
+ liveusb/gui.py |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
+
+commit 7a9ca80477d2077597f10cc5213a6990089277d9
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon May 26 20:37:33 2008 -0400
+
+    Linux support!  Along with a ton of refactoring...
+    
+    - Implement the rest of the missing LinuxLiveUSBCreator methods
+    - Keep track of our removable devices in a dictionary containing the device,
+      label and mount point, which is necessary for the Linux implementation
+    - Change LiveUSBCreator.drive into a property
+    - LiveUSBCreator.dest is our destination, where 'drive' is now the device name.
+    - Add a 'force' option to the detectRemovableDrives method
+    - Make extractISO platform-dependent, as we cannot use 7za to extract ISOs
+      in Linux
+    - Added new LiveUSBCreator methods:
+        - terminate
+        - mountDevice / unmountDevice
+        - deleteLiveOS
+        - getFreeBytes
+    - Do all of our subprocess error handling within LiveUSBCreator.popen,
+      so we don't have to look at p.returncode every time we use it
+    - Make installBootloader platform-specific, as syslinux has different arguments
+      for each platform.
+    - Have the LinuxLiveUSBCreator.verifyFilesystem set the label if necessary
+    - Catch errors when setting the volume label in Windows
+    - Moved a bunch of logic from the gui into the LiveUSBCreator class
+
+ liveusb/creator.py |  282 ++++++++++++++++++++++++++++++++++++++--------------
+ liveusb/gui.py     |   55 ++++-------
+ 2 files changed, 227 insertions(+), 110 deletions(-)
+
+commit 84dc794eb75692a9d492d55bbfca439cae1ad7f0
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon May 26 20:29:24 2008 -0400
+
+    If we can't acquire the UUID and set a label, bail out.
+
+ liveusb/gui.py |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
+
+commit d34adad42dfbbd41e639a56e6d4b38638bc1e0c7
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon May 26 20:27:30 2008 -0400
+
+    Update the dialog module for the new ui changes
+
+ liveusb/dialog.py |   28 ++++++++++++++++++++++++----
+ 1 files changed, 24 insertions(+), 4 deletions(-)
+
+commit 9360c331877ecc3f44a340e446753e03e510b627
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon May 26 20:27:10 2008 -0400
+
+    Add a --noverify option to allow skipping checksum verification
+
+ liveusb-creator.py |    2 ++
+ liveusb/gui.py     |   11 ++++++-----
+ tools/7z.exe       |  Bin 0 -> 141824 bytes
+ tools/7za.exe      |  Bin 141824 -> 0 bytes
+ 4 files changed, 8 insertions(+), 5 deletions(-)
+
+commit 6bb7f9460862a49cd0bcddfc513e44b86d7dc845
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon May 26 20:25:31 2008 -0400
+
+    Make our fonts a bit smaller
+
+ data/liveusb-creator.ui |   35 ++++++++++++++++++++++++++++++-----
+ 1 files changed, 30 insertions(+), 5 deletions(-)
+
+commit 79bb371840681c5b41d7497afc2da8aec9cabeac
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon May 26 13:26:31 2008 -0400
+
+    Rename 7z.exe to 7za.exe, which will let us use the same method across Linux (p7zip) and Windows (7-Zip)
+
+ tools/7z.exe  |  Bin 141824 -> 0 bytes
+ tools/7za.exe |  Bin 0 -> 141824 bytes
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 98538d6aead0bcd2464c6d9e79dcc8eb829ce670
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun May 25 20:06:14 2008 -0400
+
+    Move a lot of logic up into the LiveUSBCreator class, making our
+    platform-specific subclasses much cleaner.
+    
+    - Create a generic popen method to handle spawning and logging subprocesses
+    - Moved the following methods up into the platform-independent LiveUSBCreator
+        verifyImage
+        extractISO
+        createPersistentOverlay
+        installBootloader
+    - Move getDevice to _getDevice in the LinuxLiveUSBCreator
+
+ liveusb/creator.py |  195 +++++++++++++++++++++++++---------------------------
+ 1 files changed, 94 insertions(+), 101 deletions(-)
+
+commit 4998ce696a72e2029dd7bcc0a3d35c85e399af3f
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun May 25 19:38:47 2008 -0400
+
+    Pass the optional 'safe' argument to LiveUSBCreator.installBootloader
+
+ liveusb/gui.py |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
+
+commit 352585ae724f3b136e34d6d10076b89527b73b76
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun May 25 19:36:12 2008 -0400
+
+    Fix a typo in one of the tooltips, and make an alt+b shortcut to browse for an ISO
+
+ liveusb/dialog.py |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
+
+commit 8441ee3b868eadbfcd961bdf40ad7fd7ec59f3aa
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun May 25 19:33:07 2008 -0400
+
+    Add a setImage method to our LiveUSBCreator
+
+ liveusb/creator.py |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+commit 7a52dab1297a087f73afdcd172bdcc73a76039a7
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat May 24 12:24:52 2008 -0400
+
+    Remove non-existant method call
+
+ liveusb-creator.py |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
+
+commit cb18a79ee111229d61da07b0f2d7542b3561a887
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat May 24 12:24:33 2008 -0400
+
+    Add an alt+b shortcut for the Browse button
+
+ data/liveusb-creator.ui |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+commit a214cb628b00448ec3f51e8c15e1ea5437d73460
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed May 21 23:53:26 2008 -0400
+
+    v2.5
+
+ ChangeLog |   42 ++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 42 insertions(+), 0 deletions(-)
+
 commit af93e20cbb443d7fe5e8637a9cc5628e65e1cd4a
 Author: Luke Macken <lmacken@redhat.com>
 Date:   Sun May 18 21:37:48 2008 -0400
