@@ -463,6 +463,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                     'uuid': self._get_device_uuid(drive),
                     'free': self.get_free_bytes(drive) / 1024**2,
                     'fstype': 'vfat',
+                    'device': drive,
                 }
         if not len(self.drives):
             raise LiveUSBError("Unable to find any removable devices")
