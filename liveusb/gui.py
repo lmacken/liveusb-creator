@@ -188,6 +188,11 @@ class LiveUSBThread(QtCore.QThread):
         except LiveUSBError, e:
             self.status(str(e))
             self.status("LiveUSB creation failed!")
+        except Exception, e:
+            self.status(str(e))
+            self.status("LiveUSB creation failed!")
+            import traceback
+            traceback.print_exc()
 
         self.live.unmount_device()
         self.progress.terminate()
