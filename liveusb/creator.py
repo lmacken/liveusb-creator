@@ -527,18 +527,19 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         uuid = None
         try:
             import win32com.client
-            wmi = win32com.client.GetObject("winmgmts:")
-            result = wmi.ExecQuery('SELECT VolumeSerialNumber FROM '
-                                   'Win32_LogicalDisk WHERE Name="%s"' %
-                                   drive and drive or self.drive)
-            if result and len(result):
-                serial = str(result[0].Properties_("VolumeSerialNumber"))
-                if uuid == 'None':
-                    uuid = None
-                else:
-                    uuid = serial[:4] + '-' + serial[4:]
+            uuid = win32com.client.Dispatch("WbemScripting.SWbemLocator") \
+                         .ConnectServer(".", "root\cimv2") \
+                         .ExecQuery("Select VolumeSerialNumber from "
+                                    "Win32_LogicalDisk where Name = '%s'" %
+                                    drive)[0].VolumeSerialNumber
+            if uuid == 'None':
+                uuid = None
+            else:
+                uuid = uuid[:4] + '-' + uuid[4:]
         except Exception, e:
             self.log.warning("Exception while fetching UUID: %s" % str(e))
+            raise
+        self.log.debug("Found UUID %s for %s" % (uuid, drive))
         return uuid
 
     def popen(self, cmd, **kwargs):
