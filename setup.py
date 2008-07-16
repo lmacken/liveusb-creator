@@ -6,7 +6,7 @@ except ImportError:
 
 setup(
     name = 'liveusb-creator',
-    version = '0.3.0',
+    version = '2.7',
     packages = ['liveusb', 'liveusb/urlgrabber'],
     scripts = ['liveusb-creator'], 
     license = 'GNU General Public License (GPL)',
