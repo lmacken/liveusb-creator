@@ -542,10 +542,9 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                 uuid = None
             else:
                 uuid = uuid[:4] + '-' + uuid[4:]
+            self.log.debug("Found UUID %s for %s" % (uuid, drive))
         except Exception, e:
             self.log.warning("Exception while fetching UUID: %s" % str(e))
-            raise
-        self.log.debug("Found UUID %s for %s" % (uuid, drive))
         return uuid
 
     def popen(self, cmd, **kwargs):
