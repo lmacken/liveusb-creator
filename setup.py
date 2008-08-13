@@ -53,5 +53,6 @@ else:
         platforms = ['Linux'],
         maintainer = 'Luke Macken',
         maintainer_email = 'lmacken@redhat.com',
+        data_files = [("/usr/share/applications",["data/liveusb-creator.desktop"]), ('/usr/share/pixmaps',["data/fedora.ico"])]
         )
 

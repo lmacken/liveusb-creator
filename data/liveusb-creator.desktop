@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=liveusb-creator
+GenericName=liveusb-creator
+Comment=Liveusb creator
+Icon=fedora.png
+TryExec=liveusb-creator
+Exec=liveusb-creator
+Terminal=false
+Categories=Application;Qt;
