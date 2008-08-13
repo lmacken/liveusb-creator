@@ -16,4 +16,5 @@ liveusb/urlgrabber/mirror.py
 liveusb/urlgrabber/progress.py
 data/liveusb-creator.desktop
 data/fedora.ico
-liveusb-creator.policy
+liveusb-creator.console
+liveusb-creator.pam

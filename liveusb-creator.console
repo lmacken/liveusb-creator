@@ -1,0 +1,5 @@
+USER=root
+PROGRAM=/usr/sbin/liveusb-creator
+SESSION=true
+FALLBACK=true
+

@@ -54,8 +54,7 @@ else:
         maintainer = 'Luke Macken',
         maintainer_email = 'lmacken@redhat.com',
         data_files = [("/usr/share/applications",["data/liveusb-creator.desktop"]), 
-                      ('/usr/share/pixmaps',["data/fedora.ico"]),
-                      ('/usr/share/PolicyKit/policy',["liveusb-creator.policy"])
+                      ('/usr/share/pixmaps',["data/fedora.ico"])
                       ]
         
         )
