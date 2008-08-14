@@ -27,25 +27,25 @@ A liveusb creator from Live Fedora images
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
-%{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
+rm -rf %{buildroot}
+%{__python} setup.py install -O1 --skip-build --root %{buildroot}
 
 # Adjust for console-helper magic
-mkdir -p $RPM_BUILD_ROOT%{_sbindir}
-mv $RPM_BUILD_ROOT%{_bindir}/%{name} $RPM_BUILD_ROOT%{_sbindir}/%{name}
-ln -s ../bin/consolehelper $RPM_BUILD_ROOT%{_bindir}/%{name}
-mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/pam.d
-cp %{name}.pam $RPM_BUILD_ROOT%{_sysconfdir}/pam.d/%{name}
-mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/security/console.apps
-cp %{name}.console $RPM_BUILD_ROOT%{_sysconfdir}/security/console.apps/%{name}
+mkdir -p %{buildroot}%{_sbindir}
+mv %{buildroot}%{_bindir}/%{name} %{buildroot}%{_sbindir}/%{name}
+ln -s ../bin/consolehelper %{buildroot}%{_bindir}/%{name}
+mkdir -p %{buildroot}%{_sysconfdir}/pam.d
+cp %{name}.pam %{buildroot}%{_sysconfdir}/pam.d/%{name}
+mkdir -p %{buildroot}%{_sysconfdir}/security/console.apps
+cp %{name}.console %{buildroot}%{_sysconfdir}/security/console.apps/%{name}
 
 desktop-file-install --vendor="fedora"                    \
---dir=${RPM_BUILD_ROOT}%{_datadir}/applications           \
+--dir=${buildroot}%{_datadir}/applications           \
 %{buildroot}/%{_datadir}/applications/liveusb-creator.desktop
 rm -rf %{buildroot}/%{_datadir}/applications/liveusb-creator.desktop
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 
 %files
