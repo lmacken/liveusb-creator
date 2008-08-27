@@ -29,7 +29,7 @@ from time import sleep
 from datetime import datetime
 from PyQt4 import QtCore, QtGui
 
-from liveusb import LiveUSBCreator, LiveUSBError
+from liveusb import LiveUSBCreator, LiveUSBError, _
 from liveusb.dialog import Ui_Dialog
 from liveusb.releases import releases
 from liveusb.urlgrabber.grabber import URLGrabber, URLGrabError
@@ -66,11 +66,11 @@ class ReleaseDownloader(QtCore.QThread):
                 self.url = rel['url']
                 break
         else:
-            raise LiveUSBError("Unknown release: %s" % release)
+            raise LiveUSBError(_("Unknown release: %s" % release))
 
     def run(self):
         self.emit(QtCore.SIGNAL("status(PyQt_PyObject)"),
-                  "Downloading %s..." % os.path.basename(self.url))
+                  _("Downloading %s..." % os.path.basename(self.url)))
         grabber = URLGrabber(progress_obj=self.progress, proxies=self.proxies)
         try:
             iso = grabber.urlgrab(self.url, reget='simple')
@@ -149,11 +149,11 @@ class LiveUSBThread(QtCore.QThread):
     def run(self):
         now = datetime.now()
         try:
-            self.status("Verifying filesystem...")
+            self.status(_("Verifying filesystem..."))
             self.live.verify_filesystem()
             if not self.live.drive['uuid'] and not self.live.label:
-                self.status("Error: Cannot set the label or obtain " 
-                            "the UUID of your device.  Unable to continue.")
+                self.status(_("Error: Cannot set the label or obtain " 
+                              "the UUID of your device.  Unable to continue."))
                 return
 
             self.live.check_free_space()
@@ -161,12 +161,12 @@ class LiveUSBThread(QtCore.QThread):
             # If the ISO looks familar, verify it's SHA1SUM
             if not self.parent.opts.noverify:
                 if self.live.get_release_from_iso():
-                    self.status("Verifying SHA1 of LiveCD image...")
+                    self.status(_("Verifying SHA1 of LiveCD image..."))
                     if not self.live.verify_image(progress=self):
-                        self.status("Error: The SHA1 of your Live CD is "
-                                    "invalid.  You can run this program with "
-                                    "the --noverify argument to bypass this "
-                                    "verification check.")
+                        self.status(_("Error: The SHA1 of your Live CD is "
+                                      "invalid.  You can run this program with "
+                                      "the --noverify argument to bypass this "
+                                      "verification check."))
                         return
 
             self.progress.set_data(size=self.live.totalsize,
@@ -174,23 +174,23 @@ class LiveUSBThread(QtCore.QThread):
                                    freebytes=self.live.get_free_bytes)
             self.progress.start()
 
-            self.status("Extracting live image to USB device...")
+            self.status(_("Extracting live image to USB device..."))
             self.live.extract_iso()
             if self.live.overlay:
-                self.status("Creating %d Mb persistent overlay..." %
-                            self.live.overlay)
+                self.status(_("Creating %d Mb persistent overlay..." %
+                            self.live.overlay))
                 self.live.create_persistent_overlay()
-            self.status("Configuring and installing bootloader...")
+            self.status(_("Configuring and installing bootloader..."))
             self.live.update_configs()
             self.live.install_bootloader()
             duration = str(datetime.now() - now).split('.')[0]
-            self.status("Complete! (%s)" % duration)
+            self.status(_("Complete! (%s)" % duration))
         except LiveUSBError, e:
             self.status(str(e))
-            self.status("LiveUSB creation failed!")
+            self.status(_("LiveUSB creation failed!"))
         except Exception, e:
             self.status(str(e))
-            self.status("LiveUSB creation failed!")
+            self.status(_("LiveUSB creation failed!"))
             import traceback
             traceback.print_exc()
 
@@ -313,7 +313,7 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
         self.refreshDevicesButton.setEnabled(enabled)
 
     def overlay_value(self, value):
-        self.overlayTitle.setTitle("Persistent Storage (%d Mb)" % value)
+        self.overlayTitle.setTitle(_("Persistent Storage (%d Mb)" % value))
 
     def get_selected_drive(self):
         return str(self.driveBox.currentText()).split()[0]
@@ -331,13 +331,13 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
 
         if self.live.existing_liveos():
             if not self.confirmed:
-                self.status("Your device already contains a LiveOS.\nIf you "
-                            "continue, this will be overwritten.")
+                self.status(_("Your device already contains a LiveOS.\nIf you "
+                              "continue, this will be overwritten."))
                 if self.live.existing_overlay() and self.overlaySlider.value():
-                    self.status("Warning: Creating a new persistent overlay "
-                                "will delete your existing one.")
-                self.status("Press 'Create Live USB' again if you wish to "
-                            "continue.")
+                    self.status(_("Warning: Creating a new persistent overlay "
+                                  "will delete your existing one."))
+                self.status(_("Press 'Create Live USB' again if you wish to "
+                              "continue."))
                 self.confirmed = True
                 self.live.unmount_device()
                 self.enable_widgets(True)
@@ -346,7 +346,7 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
                 # The user has confirmed that they wish to overwrite their
                 # existing Live OS.  Here we delete it first, in order to 
                 # accurately calculate progress.
-                self.status("Removing existing Live OS...")
+                self.status(_("Removing existing Live OS..."))
                 try:
                     self.live.delete_liveos()
                 except LiveUSBError, e:
@@ -380,28 +380,28 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
         the error message.
         """
         if os.path.exists(iso):
-            self.status("Download complete!")
+            self.status(_("Download complete!"))
             self.live.iso = iso
             self.live_thread.start()
         else:
-            self.status("Download failed: " + iso)
-            self.status("You can try again to resume your download")
+            self.status(_("Download failed: " + iso))
+            self.status(_("You can try again to resume your download"))
             self.enable_widgets(True)
 
     def selectfile(self):
-        isofile = QtGui.QFileDialog.getOpenFileName(self, "Select Live ISO",
+        isofile = QtGui.QFileDialog.getOpenFileName(self, _("Select Live ISO"),
                                                     ".", "ISO (*.iso)" )
         if isofile:
             try:
                 self.live.iso = self._to_unicode(isofile)
             except Exception, e:
                 self.live.log.error(str(e))
-                self.status("Sorry, I'm having trouble encoding the filename "
-                            "of your livecd.  You may have better luck if "
-                            "you move your ISO to the root of your drive "
-                            "(ie: C:\)")
+                self.status(_("Sorry, I'm having trouble encoding the filename "
+                              "of your livecd.  You may have better luck if "
+                              "you move your ISO to the root of your drive "
+                              "(ie: C:\)"))
 
-            self.live.log.info("ISO selected: %s" % repr(self.live.iso))
+            self.live.log.info(_("ISO selected: %s" % repr(self.live.iso)))
             self.textEdit.append(os.path.basename(self.live.iso) + ' selected')
 
     def terminate(self):

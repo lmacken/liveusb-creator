@@ -37,6 +37,7 @@ from StringIO import StringIO
 from stat import ST_SIZE
 
 from liveusb.releases import releases
+from liveusb import _
 
 
 class LiveUSBError(Exception):
@@ -142,9 +143,9 @@ class LiveUSBCreator(object):
         self.output.write(out + '\n' + err + '\n')
         if proc.returncode:
             self.write_log()
-            raise LiveUSBError("There was a problem executing the following "
-                               "command: `%s`\nA more detailed error log has "
-                               "been written to 'liveusb-creator.log'" % cmd)
+            raise LiveUSBError(_("There was a problem executing the following "
+                                 "command: `%s`\nA more detailed error log has "
+                                 "been written to 'liveusb-creator.log'" % cmd))
         return proc
 
     def verify_image(self, progress=None):
@@ -179,14 +180,14 @@ class LiveUSBCreator(object):
         self.log.debug('overlaysize = %d' % overlaysize)
         self.totalsize = overlaysize + self.isosize
         if self.totalsize > freebytes:
-            raise LiveUSBError("Not enough free space on device.\n"
-                               "%dMB ISO + %dMB overlay > %dMB free space" % 
-                               (self.isosize/1024**2, self.overlay,
-                                freebytes/1024**2))
+            raise LiveUSBError(_("Not enough free space on device." + 
+                                 "\n%dMB ISO + %dMB overlay > %dMB free space" %
+                                 (self.isosize/1024**2, self.overlay,
+                                  freebytes/1024**2)))
 
     def create_persistent_overlay(self):
         if self.overlay:
-            self.log.info("Creating %sMB persistent overlay" % self.overlay)
+            self.log.info(_("Creating %sMB persistent overlay" % self.overlay))
             if self.fstype == 'vfat':
                 # vfat apparently can't handle sparse files
                 self.popen('dd if=/dev/zero of=%s count=%d bs=1M'
@@ -222,8 +223,8 @@ class LiveUSBCreator(object):
                 try:
                     shutil.rmtree(path)
                 except OSError, e:
-                    raise LiveUSBError("Unable to remove previous LiveOS: %s" %
-                                       str(e))
+                    raise LiveUSBError(_("Unable to remove previous LiveOS: "
+                                         "%s" % str(e)))
 
     def write_log(self):
         """ Write out our subprocess stdout/stderr to a log file """
@@ -253,7 +254,7 @@ class LiveUSBCreator(object):
 
     def _set_drive(self, drive):
         if not self.drives.has_key(drive):
-            raise LiveUSBError("Cannot find device %s" % drive)
+            raise LiveUSBError(_("Cannot find device %s" % drive))
         self.log.debug("%s selected: %s" % (drive, self.drives[drive]))
         self._drive = drive
         self.uuid = self.drives[drive]['uuid']
@@ -302,7 +303,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                             break
 
         if not len(self.drives):
-            raise LiveUSBError("Unable to find any USB drives")
+            raise LiveUSBError(_("Unable to find any USB drives"))
 
     def _add_device(self, dev):
         mount = str(dev.GetProperty('volume.mount_point'))
@@ -323,15 +324,15 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         self.dest = self.drive['mount']
         if not self.dest:
             if not self.fstype:
-                raise LiveUSBError("Filesystem for %s unknown!" % 
-                                   self.drive['device'])
+                raise LiveUSBError(_("Filesystem for %s unknown!" % 
+                                     self.drive['device']))
             try:
                 self.log.debug("Calling %s.Mount('', %s, [], ...)" % (
                                self.drive['udi'], self.fstype))
                 self.drive['udi'].Mount('', self.fstype, [],
                         dbus_interface='org.freedesktop.Hal.Device.Volume')
             except Exception, e:
-                raise LiveUSBError("Unable to mount device: %s" % str(e))
+                raise LiveUSBError(_("Unable to mount device: %s" % str(e)))
             device = self.hal.FindDeviceStringMatch('block.device',
                                                     self.drive['device'])
             device = self._get_device(device[0])
@@ -366,10 +367,11 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
     def verify_filesystem(self):
         if self.fstype not in ('vfat', 'msdos', 'ext2', 'ext3'):
             if not self.fstype:
-                raise LiveUSBError("Unknown filesystem for %s.  Your device "
-                                   "may need to be reformatted.")
+                raise LiveUSBError(_("Unknown filesystem for %s.  Your device "
+                                     "may need to be reformatted."))
             else:
-                raise LiveUSBError("Unsupported filesystem: %s" % self.fstype)
+                raise LiveUSBError(_("Unsupported filesystem: %s" %
+                                     self.fstype))
         if self.drive['label']:
             self.label = self.drive['label']
         else:
@@ -395,7 +397,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         tmpliveos = os.path.join(tmpdir, 'LiveOS')
         try:
             if not os.path.isdir(tmpliveos):
-                raise LiveUSBError("Unable to find LiveOS on ISO")
+                raise LiveUSBError(_("Unable to find LiveOS on ISO"))
             liveos = os.path.join(self.dest, 'LiveOS')
             if not os.path.exists(liveos):
                 os.mkdir(liveos)
@@ -467,19 +469,19 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                     'device': drive,
                 }
         if not len(self.drives):
-            raise LiveUSBError("Unable to find any removable devices")
+            raise LiveUSBError(_("Unable to find any removable devices"))
 
     def verify_filesystem(self):
         import win32api, win32file, pywintypes
         try:
             vol = win32api.GetVolumeInformation(self.drive['device'])
         except Exception, e:
-            raise LiveUSBError("Make sure your USB key is plugged in and "
-                               "formatted with the FAT filesystem")
+            raise LiveUSBError(_("Make sure your USB key is plugged in and "
+                                 "formatted with the FAT filesystem"))
         if vol[-1] not in ('FAT32', 'FAT'):
-            raise LiveUSBError("Unsupported filesystem: %s\nPlease backup and "
-                               "format your USB key with the FAT filesystem." %
-                               vol[-1])
+            raise LiveUSBError(_("Unsupported filesystem: %s\nPlease backup "
+                                 "and format your USB key with the FAT "
+                                 "filesystem." % vol[-1]))
         self.fstype = 'vfat'
         if vol[0] == '':
             try:
@@ -553,9 +555,9 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
             cmd = cmd.split()
         tool = os.path.join('tools', '%s.exe' % cmd[0])
         if not os.path.exists(tool):
-            raise LiveUSBError("Cannot find '%s'.  Make sure to extract the "
-                               "entire liveusb-creator zip file before running "
-                               "this program.")
+            raise LiveUSBError(_("Cannot find '%s'.  Make sure to extract the "
+                                 "entire liveusb-creator zip file before "
+                                 "running this program."))
         return LiveUSBCreator.popen(self, ' '.join([tool] + cmd[1:]),
                                     creationflags=win32process.CREATE_NO_WINDOW,
                                     **kwargs)
