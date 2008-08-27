@@ -19,6 +19,11 @@
 
 import os
 import sys
+import gettext
+
+translation = gettext.translation('liveusb-creator', '/usr/share/locale',
+                                  fallback=True)
+_ = translation.ugettext
 
 from liveusb.creator import LiveUSBError
 
@@ -29,9 +34,9 @@ if sys.platform == "win32":
     LiveUSBCreator = WindowsLiveUSBCreator
 else:
     if os.getuid() != 0:
-        print >> sys.stderr, "You must run this application as root"
+        print >> sys.stderr, _("You must run this application as root")
         sys.exit(1)
     from liveusb.creator import LinuxLiveUSBCreator
     LiveUSBCreator = LinuxLiveUSBCreator
 
-__all__ = ["LiveUSBCreator", "LiveUSBError"]
+__all__ = ("LiveUSBCreator", "LiveUSBError", "_")
