@@ -1,0 +1,215 @@
+# translation of pl.po to Polish
+# Piotr Drąg <piotrdrag@gmail.com>, 2008.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: pl\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-08-27 09:34-0400\n"
+"PO-Revision-Date: 2008-08-27 23:05+0200\n"
+"Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
+"Language-Team: Polish <pl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../liveusb/gui.py:69
+#, python-format
+msgid "Unknown release: %s"
+msgstr "Nieznane wydanie: %s"
+
+#: ../liveusb/gui.py:73
+#, python-format
+msgid "Downloading %s..."
+msgstr "Pobieranie %s..."
+
+#: ../liveusb/gui.py:152
+msgid "Verifying filesystem..."
+msgstr "Sprawdzanie systemu plików..."
+
+#: ../liveusb/gui.py:155
+msgid ""
+"Error: Cannot set the label or obtain the UUID of your device.  Unable to "
+"continue."
+msgstr ""
+"Błąd: nie można ustawić etykiety lub uzyskać UUID urządzenia. Nie można "
+"kontynuować."
+
+#: ../liveusb/gui.py:164
+msgid "Verifying SHA1 of LiveCD image..."
+msgstr "Sprawdzanie sumy kontrolnej SHA1 obrazu LiveCD..."
+
+#: ../liveusb/gui.py:166
+msgid ""
+"Error: The SHA1 of your Live CD is invalid.  You can run this program with "
+"the --noverify argument to bypass this verification check."
+msgstr ""
+"Błąd: suma kontrolna SHA1 obrazu LiveCD jest nieprawidłowa. Można uruchomić "
+"ten program za pomocą parametru --noverify, aby obejść to sprawdzanie."
+
+#: ../liveusb/gui.py:177
+msgid "Extracting live image to USB device..."
+msgstr "Rozpakowywanie obrazu Live na urządzenie USB..."
+
+#: ../liveusb/gui.py:180
+#, python-format
+msgid "Creating %d Mb persistent overlay..."
+msgstr "Tworzenie %d MB warstwy trwałości..."
+
+#: ../liveusb/gui.py:183
+msgid "Configuring and installing bootloader..."
+msgstr "Konfigurowanie i instalowanie programu startowego..."
+
+#: ../liveusb/gui.py:187
+#, python-format
+msgid "Complete! (%s)"
+msgstr "Zakończono! (%s)"
+
+#: ../liveusb/gui.py:190 ../liveusb/gui.py:193
+msgid "LiveUSB creation failed!"
+msgstr "Utworzenie LiveUSB nie powiodło się!"
+
+#: ../liveusb/gui.py:316
+#, python-format
+msgid "Persistent Storage (%d Mb)"
+msgstr "Pamięć stała (%d MB)"
+
+#: ../liveusb/gui.py:334
+msgid ""
+"Your device already contains a LiveOS.\n"
+"If you continue, this will be overwritten."
+msgstr ""
+"Urządzenie zawiera już LiveOS.\n"
+"Jeśli kontynuujesz, zostanie on zastąpiony."
+
+#: ../liveusb/gui.py:337
+msgid ""
+"Warning: Creating a new persistent overlay will delete your existing one."
+msgstr "Ostrzeżenie: tworzenie nowej warstwy trwałości usunie istniejącą."
+
+#: ../liveusb/gui.py:339
+msgid "Press 'Create Live USB' again if you wish to continue."
+msgstr "Naciśnij \"Utwórz LiveUSB\" ponownie, jeśli chcesz kontynuować."
+
+#. The user has confirmed that they wish to overwrite their
+#. existing Live OS.  Here we delete it first, in order to
+#. accurately calculate progress.
+#: ../liveusb/gui.py:349
+msgid "Removing existing Live OS..."
+msgstr "Usuwanie istniejącego LiveOS..."
+
+#: ../liveusb/gui.py:383
+msgid "Download complete!"
+msgstr "Pobieranie zakończone!"
+
+#: ../liveusb/gui.py:387
+msgid "Download failed: "
+msgstr "Pobieranie nie powiodło się: "
+
+#: ../liveusb/gui.py:388
+msgid "You can try again to resume your download"
+msgstr "Można spróbować ponownie, aby wznowić pobieranie"
+
+#: ../liveusb/gui.py:392
+msgid "Select Live ISO"
+msgstr "Wybierz LiveOS"
+
+#: ../liveusb/gui.py:399
+msgid ""
+"Sorry, I'm having trouble encoding the filename of your livecd.  You may "
+"have better luck if you move your ISO to the root of your drive (ie: C:\\)"
+msgstr ""
+"Przepraszam, wystąpił błąd podczas kodowania nazwy pliku LiveCD. Łatwiej "
+"będzie po przeniesieniu pliku ISO do głównego folderu napędu (np. C:\\)"
+
+#: ../liveusb/gui.py:404
+#, python-format
+msgid "ISO selected: %s"
+msgstr "Wybrany plik ISO: %s"
+
+#: ../liveusb/creator.py:146
+#, python-format
+msgid ""
+"There was a problem executing the following command: `%s`\n"
+"A more detailed error log has been written to 'liveusb-creator.log'"
+msgstr ""
+"Wystąpił problem podczas wykonywania następującego polecenia: `%s`\n"
+"Bardziej szczegółowy dziennik błędu został zapisany do "
+"\"liveusb-creator.log\""
+
+#: ../liveusb/creator.py:183
+msgid "Not enough free space on device."
+msgstr "Niewystarczająca ilość wolnego miejsca na urządzeniu."
+
+#: ../liveusb/creator.py:190
+#, python-format
+msgid "Creating %sMB persistent overlay"
+msgstr "Tworzenie %sMB warstwy trwałości"
+
+#: ../liveusb/creator.py:226
+#, python-format
+msgid "Unable to remove previous LiveOS: %s"
+msgstr "Nie można usunąć poprzedniego LiveOS: %s"
+
+#: ../liveusb/creator.py:257
+#, python-format
+msgid "Cannot find device %s"
+msgstr "Nie można znaleźć urządzenia %s"
+
+#: ../liveusb/creator.py:306
+msgid "Unable to find any USB drives"
+msgstr "Nie można znaleźć żadnych urządzeń USB"
+
+#: ../liveusb/creator.py:327
+#, python-format
+msgid "Filesystem for %s unknown!"
+msgstr "System plików %s jest nieznany!"
+
+#: ../liveusb/creator.py:335
+#, python-format
+msgid "Unable to mount device: %s"
+msgstr "Nie można zamontować urządzenia: %s"
+
+#: ../liveusb/creator.py:370
+#, python-format
+msgid "Unknown filesystem for %s.  Your device may need to be reformatted."
+msgstr ""
+"Nieznany system plików %s. Urządzenie może wymagać ponownego sformatowania."
+
+#: ../liveusb/creator.py:373
+#, python-format
+msgid "Unsupported filesystem: %s"
+msgstr "Nieobsługiwany system plików: %s"
+
+#: ../liveusb/creator.py:400
+msgid "Unable to find LiveOS on ISO"
+msgstr "Nie można znaleźć LiveOS w pliku ISO"
+
+#: ../liveusb/creator.py:472
+msgid "Unable to find any removable devices"
+msgstr "Nie można znaleźć żadnych urządzeń wymiennych"
+
+#: ../liveusb/creator.py:479
+msgid ""
+"Make sure your USB key is plugged in and formatted with the FAT filesystem"
+msgstr ""
+"Upewnij się, że klucz USB jest podłączony i sformatowany w systemie plików "
+"FAT"
+
+#: ../liveusb/creator.py:482
+#, python-format
+msgid ""
+"Unsupported filesystem: %s\n"
+"Please backup and format your USB key with the FAT filesystem."
+msgstr ""
+"Nieobsługiwany system plików: %s\n"
+"Wykonaj kopię zapasową i sformatuj klucz USB w systemie plików FAT."
+
+#: ../liveusb/creator.py:558
+#, python-format
+msgid ""
+"Cannot find '%s'.  Make sure to extract the entire liveusb-creator zip file "
+"before running this program."
+msgstr ""
+"Nie można znaleźć \"%s\". Upewnij się, że rozpakowano cały plik ZIP "
+"liveusb-creator przed uruchomieniem tego programu."
