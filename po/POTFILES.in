@@ -1,3 +1,4 @@
 [encoding: UTF-8]
 liveusb/gui.py
 liveusb/creator.py
+liveusb/dialog.py
