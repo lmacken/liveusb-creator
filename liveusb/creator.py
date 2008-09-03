@@ -321,6 +321,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
     def mount_device(self):
         """ Mount our device with HAL if it is not already mounted """
+        import dbus
         self.dest = self.drive['mount']
         if not self.dest:
             if not self.fstype:
@@ -331,6 +332,10 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                                self.drive['udi'], self.fstype))
                 self.drive['udi'].Mount('', self.fstype, [],
                         dbus_interface='org.freedesktop.Hal.Device.Volume')
+            except dbus.exceptions.DBusException, e:
+                if e.get_dbus_name() == \
+                        'org.freedesktop.Hal.Device.Volume.AlreadyMounted':
+                    self.log.debug('Device already mounted')
             except Exception, e:
                 raise LiveUSBError(_("Unable to mount device: %s" % str(e)))
             device = self.hal.FindDeviceStringMatch('block.device',
