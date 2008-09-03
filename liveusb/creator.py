@@ -332,6 +332,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                                self.drive['udi'], self.fstype))
                 self.drive['udi'].Mount('', self.fstype, [],
                         dbus_interface='org.freedesktop.Hal.Device.Volume')
+                self.drive['unmount'] = True
             except dbus.exceptions.DBusException, e:
                 if e.get_dbus_name() == \
                         'org.freedesktop.Hal.Device.Volume.AlreadyMounted':
@@ -345,7 +346,6 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             self.log.debug("Mounted %s to %s " % (self.drive['device'],
                                                   self.dest))
             self.drive['mount'] = self.dest
-            self.drive['unmount'] = True
         else:
             self.log.debug("Using existing mount: %s" % self.dest)
 
