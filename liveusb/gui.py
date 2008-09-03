@@ -29,8 +29,7 @@ from time import sleep
 from datetime import datetime
 from PyQt4 import QtCore, QtGui
 
-from liveusb import LiveUSBCreator, LiveUSBError, _
-from liveusb.dialog import Ui_Dialog
+from liveusb import LiveUSBCreator, LiveUSBError, LiveUSBInterface, _
 from liveusb.releases import releases
 from liveusb.urlgrabber.grabber import URLGrabber, URLGrabError
 from liveusb.urlgrabber.progress import BaseMeter
@@ -207,11 +206,11 @@ class LiveUSBThread(QtCore.QThread):
         self.wait()
 
 
-class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
+class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
     """ Our main dialog class """
     def __init__(self, opts):
         QtGui.QDialog.__init__(self)
-        Ui_Dialog.__init__(self)
+        LiveUSBInterface.__init__(self)
         self.opts = opts
         self.setupUi(self)
         self.live = LiveUSBCreator(opts=opts)
@@ -268,8 +267,9 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
                      self.maxprogress)
         self.connect(self.download_progress, QtCore.SIGNAL("progress(int)"),
                      self.progress)
-        self.connect(self.refreshDevicesButton, QtCore.SIGNAL("clicked()"),
-                     self.populate_devices)
+        if hasattr(self, 'refreshDevicesButton'):
+            self.connect(self.refreshDevicesButton, QtCore.SIGNAL("clicked()"),
+                         self.populate_devices)
 
         # If we have access to HAL & DBus, intercept some useful signals
         if hasattr(self.live, 'hal'):
@@ -310,7 +310,8 @@ class LiveUSBDialog(QtGui.QDialog, Ui_Dialog):
         self.overlaySlider.setEnabled(enabled)
         self.isoBttn.setEnabled(enabled)
         self.downloadCombo.setEnabled(enabled)
-        self.refreshDevicesButton.setEnabled(enabled)
+        if hasattr(self, 'refreshDevicesButton'):
+            self.refreshDevicesButton.setEnabled(enabled)
 
     def overlay_value(self, value):
         self.overlayTitle.setTitle(_("Persistent Storage (%d Mb)" % value))
