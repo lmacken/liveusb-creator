@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'data/liveusb-creator.ui'
+# Form implementation generated from reading ui file 'data/liveusb-creator-linux.ui'
 #
-# Created: Thu May 29 22:56:03 2008
-#      by: PyQt4 UI code generator 4.3.3
+# Created: Wed Sep  3 03:31:13 2008
+#      by: PyQt4 UI code generator 4.4.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -13,48 +13,39 @@ from liveusb import _
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(QtCore.QSize(QtCore.QRect(0,0,422,388).size()).expandedTo(Dialog.minimumSizeHint()))
-
+        Dialog.resize(431,388)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed,QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(Dialog.sizePolicy().hasHeightForWidth())
         Dialog.setSizePolicy(sizePolicy)
-
         self.startButton = QtGui.QPushButton(Dialog)
         self.startButton.setEnabled(True)
-        self.startButton.setGeometry(QtCore.QRect(130,350,158,34))
+        self.startButton.setGeometry(QtCore.QRect(112,348,209,34))
         self.startButton.setObjectName("startButton")
-
         self.textEdit = QtGui.QTextEdit(Dialog)
-        self.textEdit.setGeometry(QtCore.QRect(10,200,401,111))
-
+        self.textEdit.setGeometry(QtCore.QRect(8,200,409,111))
         font = QtGui.QFont()
         font.setPointSize(8)
         self.textEdit.setFont(font)
         self.textEdit.setReadOnly(True)
         self.textEdit.setObjectName("textEdit")
-
         self.progressBar = QtGui.QProgressBar(Dialog)
-        self.progressBar.setGeometry(QtCore.QRect(10,320,401,23))
+        self.progressBar.setGeometry(QtCore.QRect(10,320,405,23))
         self.progressBar.setProperty("value",QtCore.QVariant(0))
+        self.progressBar.setTextVisible(True)
         self.progressBar.setObjectName("progressBar")
-
         self.downloadGroup = QtGui.QGroupBox(Dialog)
-        self.downloadGroup.setGeometry(QtCore.QRect(210,80,201,51))
-
+        self.downloadGroup.setGeometry(QtCore.QRect(216,80,205,51))
         font = QtGui.QFont()
         font.setPointSize(8)
         self.downloadGroup.setFont(font)
         self.downloadGroup.setObjectName("downloadGroup")
-
         self.downloadCombo = QtGui.QComboBox(self.downloadGroup)
-        self.downloadCombo.setGeometry(QtCore.QRect(10,20,181,22))
+        self.downloadCombo.setGeometry(QtCore.QRect(10,20,189,25))
         self.downloadCombo.setObjectName("downloadCombo")
-
         self.label_2 = QtGui.QLabel(Dialog)
-        self.label_2.setGeometry(QtCore.QRect(180,100,23,24))
-
+        self.label_2.setGeometry(QtCore.QRect(184,100,23,24))
         font = QtGui.QFont()
         font.setFamily("Verdana")
         font.setPointSize(10)
@@ -62,55 +53,39 @@ class Ui_Dialog(object):
         font.setBold(True)
         self.label_2.setFont(font)
         self.label_2.setObjectName("label_2")
-
         self.groupBox = QtGui.QGroupBox(Dialog)
-        self.groupBox.setGeometry(QtCore.QRect(10,80,161,51))
-
+        self.groupBox.setGeometry(QtCore.QRect(12,80,161,51))
         font = QtGui.QFont()
         font.setPointSize(8)
         self.groupBox.setFont(font)
         self.groupBox.setObjectName("groupBox")
-
         self.isoBttn = QtGui.QPushButton(self.groupBox)
         self.isoBttn.setGeometry(QtCore.QRect(11,18,141,25))
         self.isoBttn.setObjectName("isoBttn")
-
         self.groupBox_2 = QtGui.QGroupBox(Dialog)
-        self.groupBox_2.setGeometry(QtCore.QRect(10,140,191,51))
-
+        self.groupBox_2.setGeometry(QtCore.QRect(10,140,201,51))
         font = QtGui.QFont()
         font.setPointSize(8)
         self.groupBox_2.setFont(font)
         self.groupBox_2.setObjectName("groupBox_2")
-
         self.driveBox = QtGui.QComboBox(self.groupBox_2)
-        self.driveBox.setGeometry(QtCore.QRect(10,20,145,20))
+        self.driveBox.setGeometry(QtCore.QRect(10,20,181,25))
         self.driveBox.setEditable(False)
         self.driveBox.setInsertPolicy(QtGui.QComboBox.InsertAtTop)
         self.driveBox.setDuplicatesEnabled(False)
         self.driveBox.setObjectName("driveBox")
-
-        self.refreshDevicesButton = QtGui.QPushButton(self.groupBox_2)
-        self.refreshDevicesButton.setGeometry(QtCore.QRect(156,16,30,26))
-        self.refreshDevicesButton.setIcon(QtGui.QIcon(":/refresh.png"))
-        self.refreshDevicesButton.setFlat(True)
-        self.refreshDevicesButton.setObjectName("refreshDevicesButton")
-
         self.overlayTitle = QtGui.QGroupBox(Dialog)
-        self.overlayTitle.setGeometry(QtCore.QRect(210,140,201,51))
-
+        self.overlayTitle.setGeometry(QtCore.QRect(216,140,205,51))
         font = QtGui.QFont()
         font.setPointSize(8)
         self.overlayTitle.setFont(font)
         self.overlayTitle.setObjectName("overlayTitle")
-
         self.overlaySlider = QtGui.QSlider(self.overlayTitle)
         self.overlaySlider.setGeometry(QtCore.QRect(10,20,181,21))
         self.overlaySlider.setMaximum(2047)
         self.overlaySlider.setOrientation(QtCore.Qt.Horizontal)
         self.overlaySlider.setTickPosition(QtGui.QSlider.NoTicks)
         self.overlaySlider.setObjectName("overlaySlider")
-
         self.label = QtGui.QLabel(Dialog)
         self.label.setGeometry(QtCore.QRect(0,0,430,72))
         self.label.setPixmap(QtGui.QPixmap(":/liveusb-header.png"))
@@ -133,7 +108,7 @@ class Ui_Dialog(object):
         self.isoBttn.setText(QtGui.QApplication.translate("Dialog", _("Browse"), None, QtGui.QApplication.UnicodeUTF8))
         self.isoBttn.setShortcut(QtGui.QApplication.translate("Dialog", "Alt+B", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox_2.setWhatsThis(QtGui.QApplication.translate("Dialog", _("This is the USB stick that you want to install your Live CD on.  This device must be formatted with the FAT filesystem."), None, QtGui.QApplication.UnicodeUTF8))
-        self.groupBox_2.setTitle(QtGui.QApplication.translate("Dialog", _("Target Device"), None, QtGui.QApplication.UnicodeUTF8))
+        self.groupBox_2.setTitle(QtGui.QApplication.translate("Dialog", "Target Device", None, QtGui.QApplication.UnicodeUTF8))
         self.overlayTitle.setWhatsThis(QtGui.QApplication.translate("Dialog", _("By allocating extra space on your USB stick for a persistent overlay, you will be able to store data and make permanent modifications to your live operating system.  Without it, you will not be able to save data that will persist after a reboot."), None, QtGui.QApplication.UnicodeUTF8))
         self.overlayTitle.setTitle(QtGui.QApplication.translate("Dialog", _("Persistent Storage (0 Mb)"), None, QtGui.QApplication.UnicodeUTF8))
 
