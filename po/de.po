@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liveusb-creator\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-31 03:28+0000\n"
-"PO-Revision-Date: 2008-08-31 12:34+0100\n"
-"Last-Translator: Fabian Affolter <fab@fedoraproject.org>\n"
+"POT-Creation-Date: 2008-09-03 01:22+0000\n"
+"PO-Revision-Date: 2008-09-11 09:52+0100\n"
+"Last-Translator: Marcus Nitzschke <marcusni@gmx.de>\n"
 "Language-Team: German <fedora-trans-de@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -41,11 +41,11 @@ msgstr "Verifiziere SHA1 des LiveCD-Abbildes..."
 
 #: ../liveusb/gui.py:166
 msgid "Error: The SHA1 of your Live CD is invalid.  You can run this program with the --noverify argument to bypass this verification check."
-msgstr "Fehler: Der SHA1 Ihrer Live CD ist ungültig. Sie können dieses Programm mit dem '--noverify'-Argument auführen, um den Verifikationsprüfung zu umgehen."
+msgstr "Fehler: Der SHA1 Ihrer Live CD ist ungültig. Sie können dieses Programm mit dem '--noverify'-Argument ausführen, um die Verifikationsprüfung zu umgehen."
 
 #: ../liveusb/gui.py:177
 msgid "Extracting live image to USB device..."
-msgstr "Extraiere Live-Abbild auf USB-Gerät..."
+msgstr "Extrahiere Live-Abbild auf USB-Gerät..."
 
 #: ../liveusb/gui.py:180
 #, python-format
@@ -112,7 +112,7 @@ msgstr "Live ISO-Abbild wählen"
 
 #: ../liveusb/gui.py:399
 msgid "Sorry, I'm having trouble encoding the filename of your livecd.  You may have better luck if you move your ISO to the root of your drive (ie: C:\\)"
-msgstr "Entschuldigung, ich habe Probleme beim Codieren des Dateinamens Ihrer LiveCD. Vielleicht haben Sie mehr Glück, wenn Sie das ISO-Abbild in das Wurzelverzeichnis Ihrers Laufwerkes verschieben (z. B.: C:\\)."
+msgstr "Entschuldigung, ich habe Probleme beim Codieren des Dateinamens Ihrer LiveCD. Vielleicht haben Sie mehr Glück, wenn Sie das ISO-Abbild in das Wurzelverzeichnis Ihres Laufwerkes verschieben (z. B.: C:\\)."
 
 #: ../liveusb/gui.py:404
 #, python-format
@@ -125,8 +125,8 @@ msgid ""
 "There was a problem executing the following command: `%s`\n"
 "A more detailed error log has been written to 'liveusb-creator.log'"
 msgstr ""
-"Es ist ein Fehler bei der Ausführen des folgenden Befehl aufgetreten: `%s`\n"
-"Ein detallierter Fehler wurde in die Datei 'liveusb-creator.log' geschrieben"
+"Es ist ein Fehler bei der Ausführung des folgenden Befehls aufgetreten: `%s`\n"
+"Ein detaillierter Fehler wurde in die Datei 'liveusb-creator.log' geschrieben"
 
 #: ../liveusb/creator.py:183
 msgid "Not enough free space on device."
@@ -182,7 +182,7 @@ msgstr "Unbekanntes Dateisystem für %s. Ihr Gerät muss neu formatiert werden."
 #: ../liveusb/creator.py:373
 #, python-format
 msgid "Unsupported filesystem: %s"
-msgstr "Nicht unterstützes Dateisystem: %s"
+msgstr "Nicht unterstütztes Dateisystem: %s"
 
 #: ../liveusb/creator.py:400
 msgid "Unable to find LiveOS on ISO"
@@ -190,7 +190,7 @@ msgstr "Kann kein LiveOS auf ISO finden"
 
 #: ../liveusb/creator.py:472
 msgid "Unable to find any removable devices"
-msgstr "Kann keine Wechseldatenträgen finden"
+msgstr "Kann keine Wechseldatenträger finden"
 
 #: ../liveusb/creator.py:479
 msgid "Make sure your USB key is plugged in and formatted with the FAT filesystem"
@@ -208,5 +208,5 @@ msgstr ""
 #: ../liveusb/creator.py:558
 #, python-format
 msgid "Cannot find '%s'.  Make sure to extract the entire liveusb-creator zip file before running this program."
-msgstr "Kann '%s' nicht finden. Entpacken Sie das komplette liveusb-creator Zip-Archive bevor Sie das Programm laufen lassen."
+msgstr "Kann '%s' nicht finden. Entpacken Sie das komplette liveusb-creator Zip-Archiv bevor Sie das Programm laufen lassen."
 
