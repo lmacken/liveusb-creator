@@ -80,26 +80,26 @@ You can get the gettext tools from the following sites:
 # 
 import os
 import sys
-import wx
-# -----------------------------------------------------------------------------
-# Global variables
-# ----------------
-#
 
-__author__ = "Pierre Rouleau"
-__version__= "$Revision: 1.5 $"
 
-# -----------------------------------------------------------------------------
+# Instead of scraping the wx module for language names, lets just use whatever po
+# files are in the current directory.  Transifex takes care of putting new languages
+# there for us already.
+# def getlanguageDict():
+#     import wx
+#     languageDict = {}
+# 
+#     for lang in [x for x in dir(wx) if x.startswith("LANGUAGE")]:
+#         i = wx.Locale(wx.LANGUAGE_DEFAULT).GetLanguageInfo(getattr(wx, lang))
+#         if i:
+#             languageDict[i.CanonicalName] = i.Description
+# 
+#     return languageDict
 
 def getlanguageDict():
-    languageDict = {}
-    
-    for lang in [x for x in dir(wx) if x.startswith("LANGUAGE")]:
-        i = wx.Locale(wx.LANGUAGE_DEFAULT).GetLanguageInfo(getattr(wx, lang))
-        if i:
-            languageDict[i.CanonicalName] = i.Description
-
-    return languageDict
+    #return dict([(lang, None) for lang in LANGUAGES])
+    # lang.po from our current directory!
+    return dict([(lang, None) for lang in ['.'.join(po.split('.')[:-1]) for po in os.listdir('.') if po.endswith('.po')]])
 
 # -----------------------------------------------------------------------------
 # m a k e P O ( )         -- Build the Portable Object file for the application --
