@@ -185,10 +185,10 @@ class LiveUSBThread(QtCore.QThread):
             duration = str(datetime.now() - now).split('.')[0]
             self.status(_("Complete! (%s)" % duration))
         except LiveUSBError, e:
-            self.status(str(e))
+            self.status(e.message)
             self.status(_("LiveUSB creation failed!"))
         except Exception, e:
-            self.status(str(e))
+            self.status(e.message)
             self.status(_("LiveUSB creation failed!"))
             import traceback
             traceback.print_exc()
@@ -237,7 +237,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                     self.driveBox.addItem(device)
             self.startButton.setEnabled(True)
         except LiveUSBError, e:
-            self.textEdit.setPlainText(str(e))
+            self.textEdit.setPlainText(e.message.encode('utf8'))
             self.startButton.setEnabled(False)
 
     def populate_releases(self):
@@ -302,7 +302,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         self.progressBar.setMaximum(value)
 
     def status(self, text):
-        self.textEdit.append(text)
+        self.textEdit.append(text.encode('utf8', 'replace'))
 
     def enable_widgets(self, enabled=True):
         self.startButton.setEnabled(enabled)
@@ -326,7 +326,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         try:
             self.live.mount_device()
         except LiveUSBError, e:
-            self.status(str(e))
+            self.status(e.message)
             self.enable_widgets(True)
             return 
 
@@ -351,7 +351,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                 try:
                     self.live.delete_liveos()
                 except LiveUSBError, e:
-                    self.status(str(e))
+                    self.status(e.message)
                     self.live.unmount_device()
                     self.enable_widgets(True)
                     return
@@ -396,7 +396,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
             try:
                 self.live.iso = self._to_unicode(isofile)
             except Exception, e:
-                self.live.log.error(str(e))
+                self.live.log.error(e.message.encode('utf8'))
                 self.status(_("Sorry, I'm having trouble encoding the filename "
                               "of your livecd.  You may have better luck if "
                               "you move your ISO to the root of your drive "
