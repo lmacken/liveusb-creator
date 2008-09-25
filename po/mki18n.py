@@ -450,7 +450,4 @@ if __name__ == "__main__":
             printUsage(e[1] + '\n   You must write a file app.fil that contains the list of all files to parse.')
     if option['mo']:
         makeMO(appDirPath,option['moTarget'],option['domain'],option['verbose'],option['forceEnglish'])
-    sys.exit(1)            
-            
-
-# -----------------------------------------------------------------------------
+    sys.exit(0)
