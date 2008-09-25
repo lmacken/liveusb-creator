@@ -28,7 +28,9 @@ pot:
 	#cd po ; intltool-update --pot -g liveusb-creator
 
 mo:
+	cd po; for po in `ls *.po`; do cp $$po liveusb-creator_$$po; done
 	cd po; python mki18n.py -v --domain=liveusb-creator -m
+	rm po/liveusb-creator_*.po*
 
 clean:
 	rm -f *.py{c,o} */*.py{c,o} */*/*.py{c,o}
