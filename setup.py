@@ -1,7 +1,16 @@
 from distutils.core import setup
-import sys
+import sys, os
+
+LOCALE_DIR= '/usr/share/locale'
+
+locales = []
+if os.path.exists('po/locale'):
+    for lang in os.listdir('po/locale'):
+        locales.append(os.path.join(lang, 'LC_MESSAGES'))
+
 if sys.platform == 'win32':
     import py2exe
+    LOCALE_DIR = 'locale'
 
     setup(
         name = 'liveusb-creator',
@@ -37,13 +46,15 @@ if sys.platform == 'win32':
                 "tools/7z.dll",
                 "tools/7zCon.sfx",
                 "tools/7-Zip-License.txt",
-            ])
-        ]
+            ],)
+          ] + [(os.path.join(LOCALE_DIR, locale),
+                [os.path.join('po', 'locale', locale, 'liveusb-creator.mo')])
+                for locale in locales]
     )
 else:
     setup(
         name = 'liveusb-creator',
-        version = '2.7',
+        version = '3.0',
         packages = ['liveusb', 'liveusb/urlgrabber'],
         scripts = ['liveusb-creator'],
         license = 'GNU General Public License (GPL)',
@@ -54,8 +65,9 @@ else:
         maintainer = 'Luke Macken',
         maintainer_email = 'lmacken@redhat.com',
         data_files = [("/usr/share/applications",["data/liveusb-creator.desktop"]), 
-                      ('/usr/share/pixmaps',["data/fedorausb.png"])
-                      ]
-        
+                      ('/usr/share/pixmaps',["data/fedorausb.png"]),
+                      ] + [(os.path.join(LOCALE_DIR, locale),
+                            [os.path.join('po', 'locale', locale, 'liveusb-creator.mo')])
+                            for locale in locales]
         )
 
