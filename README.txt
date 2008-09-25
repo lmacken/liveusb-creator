@@ -1,44 +1,31 @@
+===============
 liveusb-creator
 ===============
 
-This tool installs a Fedora LiveCD ISO on to a USB stick.
+A cross-platform tool for easily installing live operating systems on to USB
+flash drives.
 
 Using
-=====
+-----
+See the wiki for instructions on how to use the liveusb-creator:
 
-    See the wiki for instructions on how to use the liveusb-creator:
-
-        https://fedorahosted.org/liveusb-creator
-
+    https://fedorahosted.org/liveusb-creator
 
 Developing
-==========
+----------
+See the Developers Guide on the wiki for details,
 
-  In Windows
-  ----------
-  o Get the latest code
-
-        http://git.fedoraproject.org/git/liveusb-creator?p=liveusb-creator.git;a=snapshot;h=HEAD;sf=tgz
-
-  o Install Python2.5, PyQt4, and py2exe
-
-  o Compiling an exe:
-
-        python -OO setup.py py2exe
-
-  o If you change the QtDesigner ui file, you can compile it by doing:
-
-        pyuic4 data\liveusb-creator.ui -o liveusb\dialog.py
-
-  o If you add more PyQt resources (pixmaps, icons, etc), you can rebuild
-    the resources module by running:
-
-        pyrcc4 data\resources.qrc -o liveusb\resources_rc.py
-
+        https://fedorahosted.org/liveusb-creator/wiki/Development
 
 ================================================================================
 
 This tool is distributed with the following open source software
+
+   Python
+   http://python.org
+
+   PyQt4
+   http://wiki.python.org/moin/PyQt4
 
    7-Zip
    http://www.7-zip.org
