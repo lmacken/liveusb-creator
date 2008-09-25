@@ -28,6 +28,10 @@ else:
                                       fallback=True)
 _ = translation.ugettext
 
+def utf8_gettext(string):
+    " Translate string, converting it to a UTF-8 encoded bytestring "
+    return _(string).encode('utf8')
+
 from liveusb.creator import LiveUSBError
 
 if sys.platform == "win32":
@@ -40,4 +44,4 @@ else:
     from liveusb.creator import LinuxLiveUSBCreator as LiveUSBCreator
     from liveusb.linux_dialog import Ui_Dialog as LiveUSBInterface
 
-__all__ = ("LiveUSBCreator", "LiveUSBError", "LiveUSBDialog", "_")
+__all__ = ("LiveUSBCreator", "LiveUSBError", "LiveUSBDialog", "_", "utf8_gettext")

@@ -8,7 +8,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
-from liveusb import _
+from liveusb import utf8_gettext as _
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
