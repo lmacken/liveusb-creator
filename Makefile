@@ -7,6 +7,11 @@ dist:
 srpm: dist
 	@rpmbuild -bs ${PKGRPMFLAGS} ${PKGNAME}.spec
 
+rpm: dist
+	cp dist/* ~/rpmbuild/SOURCES/
+	cp *.spec ~/rpmbuild/SPECS/
+	rpmbuild -ba ~/rpmbuild/SPECS/liveusb-creator.spec
+
 gui:
 	pyrcc4 data/resources.qrc -o liveusb/resources_rc.py
 	pyuic4 data/liveusb-creator.ui -o liveusb/windows_dialog.py
