@@ -19,4 +19,12 @@ pylint:
 	pylint liveusb/*.py
 
 pot:
-	cd po ; intltool-update --pot -g liveusb-creator
+	cd po; python mki18n.py -v --domain=liveusb-creator -p
+	#cd po ; intltool-update --pot -g liveusb-creator
+
+mo:
+	cd po; python mki18n.py -v --domain=liveusb-creator -m
+
+clean:
+	rm -f *.py{c,o} */*.py{c,o} */*/*.py{c,o}
+	rm -fr po/${PKGNAME}*.po{,.new} po/locale
