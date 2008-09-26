@@ -35,3 +35,4 @@ mo:
 clean:
 	rm -f *.py{c,o} */*.py{c,o} */*/*.py{c,o}
 	rm -fr po/${PKGNAME}*.po{,.new} po/locale
+	rm -fr build
