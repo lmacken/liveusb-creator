@@ -177,7 +177,7 @@ class LiveUSBThread(QtCore.QThread):
             self.live.extract_iso()
             self.status(_("Wrote to device at %d MB/sec" % self.live.mb_per_sec))
             if self.live.overlay:
-                self.status(_("Creating %d Mb persistent overlay..." %
+                self.status(_("Creating %d MB persistent overlay..." %
                             self.live.overlay))
                 self.live.create_persistent_overlay()
             self.status(_("Configuring and installing bootloader..."))
@@ -315,7 +315,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
             self.refreshDevicesButton.setEnabled(enabled)
 
     def overlay_value(self, value):
-        self.overlayTitle.setTitle(_("Persistent Storage (%d Mb)" % value))
+        self.overlayTitle.setTitle(_("Persistent Storage") + " (%d MB)" % value)
 
     def get_selected_drive(self):
         return str(self.driveBox.currentText()).split()[0]
