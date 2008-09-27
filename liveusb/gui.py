@@ -175,6 +175,7 @@ class LiveUSBThread(QtCore.QThread):
 
             self.status(_("Extracting live image to USB device..."))
             self.live.extract_iso()
+            self.status(_("Wrote to device at %d MB/sec" % self.live.mb_per_sec))
             if self.live.overlay:
                 self.status(_("Creating %d Mb persistent overlay..." %
                             self.live.overlay))

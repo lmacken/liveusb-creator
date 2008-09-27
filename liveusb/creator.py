@@ -34,6 +34,7 @@ import os
 import re
 
 from StringIO import StringIO
+from datetime import datetime
 from stat import ST_SIZE
 
 from liveusb.releases import releases
@@ -59,6 +60,7 @@ class LiveUSBCreator(object):
     totalsize = 0       # the total size of our overlay + iso
     isosize = 0         # the size of the selected iso
     _drive = None       # mountpoint of the currently selected drive
+    mb_per_sec = 0      # how many megabytes per second we can write
     log = None
 
     drive = property(fget=lambda self: self.drives[self._drive],
@@ -407,8 +409,13 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             if not os.path.exists(liveos):
                 os.mkdir(liveos)
             for img in ('squashfs.img', 'osmin.img'):
+                start = datetime.now()
                 self.popen('cp %s %s' % (os.path.join(tmpliveos, img),
                                          os.path.join(liveos, img)))
+                delta = datetime.now() - start
+                if delta.seconds:
+                    self.mb_per_sec = (self.isosize / delta.seconds) / 1024**2
+                    self.log.info("Copied at %d MB/sec" % self.mb_per_sec)
             isolinux = os.path.join(self.dest, 'isolinux')
             if not os.path.exists(isolinux):
                 os.mkdir(isolinux)
