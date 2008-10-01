@@ -567,8 +567,9 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
             cmd = cmd.split()
         tool = os.path.join('tools', '%s.exe' % cmd[0])
         if not os.path.exists(tool):
-            raise LiveUSBError(_("Cannot find '%s'.  Make sure to extract the "
-                                 "entire liveusb-creator zip file before "
+            raise LiveUSBError(_("Cannot find") + ' %s.  ' % (cmd[0]) +
+                               _("Make sure to extract the entire "
+                                 "liveusb-creator zip file before "
                                  "running this program."))
         return LiveUSBCreator.popen(self, ' '.join([tool] + cmd[1:]),
                                     creationflags=win32process.CREATE_NO_WINDOW,
