@@ -1,3 +1,691 @@
+commit 25edbbd2db11199afb9f6dd5b7044b87fd0ec188
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Oct 2 07:33:02 2008 -0400
+
+    Update our AUTHORS file
+
+ AUTHORS              |   19 +++++++++++++++++--
+ liveusb-creator.spec |    1 +
+ 2 files changed, 18 insertions(+), 2 deletions(-)
+
+commit b1e1da8fc77ff9251bfae78b4e78878633002017
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Oct 2 07:26:38 2008 -0400
+
+    Add an os.path.sep hack to see if this fixes a Windows issue.
+
+ liveusb/creator.py |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
+
+commit d32c086a6e00300a6ec0e63095dce77af6ff83e7
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Oct 2 07:25:59 2008 -0400
+
+    v3.0
+
+ setup.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit f52d1e6fb055e7f227ab42078caede7cd7e02800
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Oct 2 07:25:40 2008 -0400
+
+    Fix our %find_lang usage in the spec
+
+ liveusb-creator.spec |    5 ++---
+ 1 files changed, 2 insertions(+), 3 deletions(-)
+
+commit 6a9b87d05c031cf5bd70367d5f40d6147d8e2bf3
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Oct 2 07:03:32 2008 -0400
+
+    Add Fedora 10 Beta support!
+
+ liveusb-creator.spec |    2 +-
+ liveusb/releases.py  |   21 +++++++++++++++++++++
+ 2 files changed, 22 insertions(+), 1 deletions(-)
+
+commit 973ca7b2bb7e88cbc3e008430e989e55255f9d82
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Oct 2 04:56:14 2008 -0400
+
+    Fix our Mb/MB nomenclature (#162)
+
+ data/liveusb-creator-linux.ui |    2 +-
+ data/liveusb-creator.ui       |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 110fb0db3fa876be13f15c0d4e810abc3deb3b15
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Oct 2 04:43:06 2008 -0400
+
+    Quote our paths when copying the live image (#221)
+
+ liveusb/creator.py |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
+
+commit 8c04daa68fc1920300e9cfa1f30c1da547fae5f7
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Oct 2 03:34:38 2008 -0400
+
+    Add a LinuxLiveUSBCreator.get_proxies method that grabs the proxy
+    settings in KDE.  Thanks to Kevin Kofler for the patch (#128)
+
+ liveusb/creator.py |   22 ++++++++++++++++++++++
+ 1 files changed, 22 insertions(+), 0 deletions(-)
+
+commit 531bc8ca9be47778ff57fa5f56986ff7f40c4264
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Oct 2 03:13:25 2008 -0400
+
+    Calculate the transfer speed in our WindowsLiveUSBCreator
+
+ liveusb/creator.py |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+commit 68b6057084d7151ef3420a5327df9c570ce35a4f
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Oct 1 10:57:17 2008 -0400
+
+    Fix the error message that occurs when the tools are missing (#243)
+
+ liveusb/creator.py |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
+
+commit 0cd3212d2cb4242ea521073cbd58043ea49114be
+Merge: c268c73... 14a2839...
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue Sep 30 18:58:31 2008 -0400
+
+    Merge branch 'master' of ssh://git.fedorahosted.org/git/liveusb-creator
+
+commit 14a28392e97d5d2270aa538696239b5530552782
+Author: Fabian Affolter <fabian@bernewireless.net>
+Date:   Mon Sep 29 10:32:38 2008 +0000
+
+    Updated German translation
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/de.po |  159 +++++++++++++++++++++++++++++++++++++++++++++++---------------
+ 1 files changed, 121 insertions(+), 38 deletions(-)
+
+commit c268c73f17d1ab522167f5a3b0d5aff65035d9d2
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Sep 26 20:33:39 2008 -0400
+
+    s/Mb/MB/g
+
+ liveusb/gui.py |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 12a1af3b9e591e6e779613f1732d8dccd572b09f
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Sep 26 20:26:58 2008 -0400
+
+    Calculate the number of megabytes per second for our iso extraction
+
+ liveusb/creator.py |    7 +++++++
+ liveusb/gui.py     |    1 +
+ 2 files changed, 8 insertions(+), 0 deletions(-)
+
+commit 50635135c42ec40be506d057ca603822a1e33b26
+Author: Adam Pribyl <covex@lowlevel.cz>
+Date:   Fri Sep 26 18:00:50 2008 +0000
+
+    complete czech translation
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/cs.po |  316 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 316 insertions(+), 0 deletions(-)
+
+commit 3c38e72499f11d0da19ade5a41ffc198e91eafcf
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Sep 25 20:58:19 2008 -0400
+
+    Clean up more
+
+ Makefile |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+commit 6d608d3d8cf5f647f08865624aa72535a1eed18c
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Sep 25 20:58:03 2008 -0400
+
+    Add a smaller logo
+
+ data/liveusb-creator-logo-small.png |  Bin 0 -> 3074 bytes
+ 1 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 72a13bbbc396194e09257131596c5f9d72b63fd5
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Sep 25 20:57:36 2008 -0400
+
+    Add our logo
+
+ data/liveusb-creator-logo.png |  Bin 0 -> 13439 bytes
+ 1 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 6ba2b653bd3abaaa8d5b9de37468ee03c8faba09
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Sep 25 20:56:35 2008 -0400
+
+    Add an app.fil list for the mk18n.py
+
+ po/app.fil |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+commit f969a99dc809978f8a20f87458ec37d774f6bd1f
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Sep 25 18:32:59 2008 -0400
+
+    Update our setup.py to include our locales
+
+ setup.py |   26 +++++++++++++++++++-------
+ 1 files changed, 19 insertions(+), 7 deletions(-)
+
+commit 1b0a5a474881ab6b01c0c96d2c91b12c4db1756d
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Sep 25 18:31:03 2008 -0400
+
+    Encode our translated GUI strings to UTF8 bytestrings before sending to PyQt4
+
+ liveusb/__init__.py       |    6 +++++-
+ liveusb/linux_dialog.py   |    2 +-
+ liveusb/windows_dialog.py |    2 +-
+ 3 files changed, 7 insertions(+), 3 deletions(-)
+
+commit 3332249b56509e0f610795c4c3adbdd2f8c84422
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Sep 25 18:26:06 2008 -0400
+
+    Ensure we're dealing with UTF8 bytestrings when displaying exception messages.
+
+ liveusb/gui.py |   14 +++++++-------
+ 1 files changed, 7 insertions(+), 7 deletions(-)
+
+commit 7a8cb6813ce3f0b6d23d3701e1082f2d502e12bd
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Sep 25 18:25:34 2008 -0400
+
+    Dynamically determine our locale directory
+
+ liveusb/__init__.py |    7 +++++--
+ 1 files changed, 5 insertions(+), 2 deletions(-)
+
+commit 010f4f3fe9295d67d78024f504ef2f8f193d0d5c
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Sep 25 18:24:55 2008 -0400
+
+    Update our RPM spec to handle the new translations
+
+ liveusb-creator.spec |   32 ++++++++++++++++++++++----------
+ 1 files changed, 22 insertions(+), 10 deletions(-)
+
+commit a36db752e0f287bdc6312ee421eb03cfafc1e36c
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Sep 25 18:24:30 2008 -0400
+
+    Update our 'mo' Makefile target
+
+ Makefile |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+commit 1a5880d307236234b984e8138843595f50a13037
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Sep 25 18:24:12 2008 -0400
+
+    Add an 'rpm' Makefile target
+
+ Makefile |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+commit 9af1e5cb19986532d34a776d46299659225df3ed
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Sep 25 18:23:54 2008 -0400
+
+    Update our MANIFEST.in with some new files
+
+ MANIFEST.in |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+commit 36f175af09520a2fa76c7787c3b9f86f2cab6b29
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Sep 25 16:37:08 2008 -0400
+
+    Add a 'mo' and 'clean' Makefile targets
+
+ Makefile |   10 +++++++++-
+ 1 files changed, 9 insertions(+), 1 deletions(-)
+
+commit f25b556f959ce4d1ea86ce04992abac9595990f0
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Sep 25 16:36:39 2008 -0400
+
+    Update our README
+
+ README.txt |   43 +++++++++++++++----------------------------
+ 1 files changed, 15 insertions(+), 28 deletions(-)
+
+commit d104d0b8aa8f8716d9b6b5b266d3a8fd561cca46
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Sep 25 16:35:10 2008 -0400
+
+    Return 0 upon success, to make `make` happy.
+
+ po/mki18n.py |    5 +----
+ 1 files changed, 1 insertions(+), 4 deletions(-)
+
+commit 8490ff3b5a56e20be15232c86a31b5ff63c6964c
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Sep 25 16:34:43 2008 -0400
+
+    Instead of scraping the wx module for language names, lets just use whatever po
+    files are in the current directory.  Transifex takes care of putting new languages
+    there for us already.
+
+ po/mki18n.py |   32 ++++++++++++++++----------------
+ 1 files changed, 16 insertions(+), 16 deletions(-)
+
+commit 06468b92365324b51204c3539d394a90bbf77ccc
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Sep 25 16:33:53 2008 -0400
+
+    Add mki18n.py to help with our internationalization.
+    
+    Trying hard to avoid autotools crackrock at all costs.
+
+ po/mki18n.py |  456 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 456 insertions(+), 0 deletions(-)
+
+commit 680c72a4a29dc6536be30a229f3f9b6801cb50fa
+Author: Igor Pires Soares <igorsoares@gmail.com>
+Date:   Thu Sep 25 15:13:38 2008 +0000
+
+    Initial Brazilian Portuguese translation
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/pt_BR.po |  260 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 260 insertions(+), 0 deletions(-)
+
+commit 3f397fb19dec8253c6442bc28cd4b8dac4b626e8
+Author: Domingo Becker <domingobecker@gmail.com>
+Date:   Wed Sep 24 13:24:29 2008 +0000
+
+    Spanish translation
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/es.po |  284 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 284 insertions(+), 0 deletions(-)
+
+commit e5d32798f4fe3a08401cf6f3e8cb5cb757f40c34
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue Sep 23 20:42:34 2008 -0400
+
+    Update the POTFILES.in
+
+ po/POTFILES.in |    4 +++-
+ 1 files changed, 3 insertions(+), 1 deletions(-)
+
+commit d879f4e7578118a4c25df6c571c093632f910c9f
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue Sep 23 20:42:06 2008 -0400
+
+    Add a bunch of Makefile targets (dist, srpm, pyflakes, pylint, pot)
+
+ Makefile |   17 +++++++++++++++++
+ 1 files changed, 17 insertions(+), 0 deletions(-)
+
+commit c81217a9e648201bb5e664a370e79a8158cef9df
+Author: Sharuzzaman Ahmat Raslan <sharuzzaman@gmail.com>
+Date:   Sun Sep 21 14:39:38 2008 +0000
+
+    New Malay translation
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/ms.po |  207 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 207 insertions(+), 0 deletions(-)
+
+commit 3b5e541a23f97ade7b7650726e81c8a2055092b6
+Author: Marcus Nitzschke <marcusni@gmx.de>
+Date:   Thu Sep 11 07:59:03 2008 +0000
+
+    Updated German Translation
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/de.po |   22 +++++++++++-----------
+ 1 files changed, 11 insertions(+), 11 deletions(-)
+
+commit 56bdda5be02090400606c923ff63d6aad8fa71fb
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:   Sun Sep 7 12:40:55 2008 +0000
+
+    Updated Polish translation
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/pl.po |  125 ++++++++++++++++++++++++++++++++++++++++++++++++++++++--------
+ 1 files changed, 109 insertions(+), 16 deletions(-)
+
+commit 060b394d85407ae05195009f8b4f434f5313bc61
+Author: Valter Fukuoka <dotsoft@gmail.com>
+Date:   Fri Sep 5 13:53:23 2008 +0000
+
+    Portuguese translation including GUI strings
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/pt.po |   66 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
+ 1 files changed, 63 insertions(+), 3 deletions(-)
+
+commit e1a287888121a8305a1782e5ae659c167a89dfc0
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Sep 3 04:23:34 2008 -0400
+
+    Add a MANIFEST.in
+
+ MANIFEST.in |   21 +++++++++++++++++++++
+ 1 files changed, 21 insertions(+), 0 deletions(-)
+
+commit 39f096160df1844f383a8a3e43df983b4fc3df32
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Sep 3 04:14:14 2008 -0400
+
+    Don't unmount the device if it was already mounted
+
+ liveusb/creator.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 0deadc8889138af3395c442ade7b82462abf9cab
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Sep 3 04:08:28 2008 -0400
+
+    Fix an annoying device AlreadyMounted HAL/DBus race-condition.
+
+ liveusb/creator.py |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+commit b71127a2473e8c7734b827fc182378ffee521da5
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Sep 3 04:07:34 2008 -0400
+
+    Add a LiveUSBInterface class to the liveusb module.
+    
+    This class takes the place of the automatically PyQt generated Ui_Dialog class
+    that the main dialog inherits from.  Our liveusb.__init__ module will
+    automatically detect your platform, and set this class appropriately.
+
+ Makefile            |    5 +++++
+ liveusb/__init__.py |   12 +++++-------
+ liveusb/gui.py      |   15 ++++++++-------
+ 3 files changed, 18 insertions(+), 14 deletions(-)
+
+commit 1fb35118384159f00ad77fbb5b59db1327f42c5a
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Sep 3 04:05:41 2008 -0400
+
+    Update our resources file
+
+ liveusb/resources_rc.py |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit aa34023d566010c2f5bc73b669397809af15fce0
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Sep 3 04:05:27 2008 -0400
+
+    Pull our dialogs out into platform specific interfaces
+
+ liveusb/dialog.py         |  140 ---------------------------------------------
+ liveusb/linux_dialog.py   |  115 +++++++++++++++++++++++++++++++++++++
+ liveusb/windows_dialog.py |  121 ++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 236 insertions(+), 140 deletions(-)
+
+commit ed8c1cd9ce3498fec88baa81871cd9e12644e931
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Sep 3 04:00:30 2008 -0400
+
+    Remove the refresh button from our Linux UI, as we are able to detect new
+    devices automatically thanks to DBus and HAL.
+
+ data/liveusb-creator-linux.ui |   76 ++++++++++++++++-------------------------
+ 1 files changed, 30 insertions(+), 46 deletions(-)
+
+commit 1fbd51ae1bd7fa3e2c6d49c41ca210d667723c58
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Sep 3 03:59:47 2008 -0400
+
+    Remove an unnecessary manifest
+
+ MANIFEST |   20 --------------------
+ 1 files changed, 0 insertions(+), 20 deletions(-)
+
+commit bae94bce117a8494c57b88d62e5b41a0b5ac4ed6
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Sep 3 02:57:36 2008 -0400
+
+    Make the rest of our GUI strings translatable, and update our pot file.
+
+ liveusb/dialog.py      |   31 ++++++++--------
+ po/POTFILES.in         |    1 +
+ po/liveusb-creator.pot |   91 ++++++++++++++++++++++++++++++++++++++++++++----
+ 3 files changed, 101 insertions(+), 22 deletions(-)
+
+commit 3ed915e920c33b4051f30e053edf791694f25fc8
+Author: Valter Fukuoka <dotsoft@gmail.com>
+Date:   Wed Sep 3 05:30:10 2008 +0000
+
+    Portuguese Brazilian translation.
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/pt.po |  197 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 197 insertions(+), 0 deletions(-)
+
+commit 558652b8dcad798e0d26f394611d92476c5a2974
+Author: Fabian Affolter <fabian@bernewireless.net>
+Date:   Sun Aug 31 10:36:40 2008 +0000
+
+    Updated German translation
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/de.po |   16 +++++++++-------
+ 1 files changed, 9 insertions(+), 7 deletions(-)
+
+commit ef404aedc3910985507b7e7030e5dfbd5bfa5b09
+Author: Fabian Affolter <fabian@bernewireless.net>
+Date:   Fri Aug 29 14:08:54 2008 +0000
+
+    Initial German translation
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/de.po |  210 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 210 insertions(+), 0 deletions(-)
+
+commit 1329ab51bf120bbfdfc68625d328854e78579f0a
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:   Thu Aug 28 08:08:09 2008 +0000
+
+    Initial Polish translation
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/pl.po |  215 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 215 insertions(+), 0 deletions(-)
+
+commit b2b0abe2f137095f8244f0b5e9eaa17c804cb533
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Aug 27 09:38:48 2008 -0400
+
+    Add our liveusb-creator.pot file
+
+ po/liveusb-creator.pot |  200 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 200 insertions(+), 0 deletions(-)
+
+commit c622a3c5b0ca80991147e572fe110829c79751b5
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Aug 27 09:33:10 2008 -0400
+
+    Make our strings translatable
+
+ liveusb/creator.py |   58 ++++++++++++++++++++++--------------------
+ liveusb/gui.py     |   70 ++++++++++++++++++++++++++--------------------------
+ 2 files changed, 65 insertions(+), 63 deletions(-)
+
+commit e88e621c97e899b3c5cb98b14a0b56f46816741f
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Aug 27 09:32:48 2008 -0400
+
+    Add translation.ugettext (as _) in liveusb.__init__ module
+
+ liveusb/__init__.py |    9 +++++++--
+ 1 files changed, 7 insertions(+), 2 deletions(-)
+
+commit f45ae9b6c76164a63c3f00023403f950c5d3a895
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Aug 27 09:31:42 2008 -0400
+
+    Add a po directory, along with a POTFILES.in
+
+ po/POTFILES.in |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+commit a8a171da8982a008d12300c2f2bcf4c235d44da0
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Aug 14 01:17:49 2008 -0400
+
+    Make our use of the %{buildroot} consistent
+
+ liveusb-creator.spec |   22 +++++++++++-----------
+ 1 files changed, 11 insertions(+), 11 deletions(-)
+
+commit 09ca7513e9b0d9ef574f6b30b323a1d059dd8f40
+Author: Kushal Das <kdas@d80.(none)>
+Date:   Wed Aug 13 22:16:39 2008 +0530
+
+    new spec file
+
+ liveusb-creator.spec |   55 ++++++++++++++++++++++++++++++++++---------------
+ 1 files changed, 38 insertions(+), 17 deletions(-)
+
+commit 1d3b2a63c61dbeb39502d91cc8b5015b0de0efea
+Author: Kushal Das <kdas@d80.(none)>
+Date:   Wed Aug 13 22:15:19 2008 +0530
+
+    fixed the applications menu entry and icon issue
+
+ MANIFEST                     |    2 +-
+ data/liveusb-creator.desktop |    4 ++--
+ setup.py                     |    2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
+commit 7e199c7a6702500cffc051694324f8fce43b13db
+Author: Kushal Das <kdas@d80.(none)>
+Date:   Wed Aug 13 22:06:02 2008 +0530
+
+    moved to consolehelper to have root power
+
+ MANIFEST                |    3 ++-
+ liveusb-creator.console |    5 +++++
+ liveusb-creator.pam     |    5 +++++
+ liveusb-creator.policy  |   16 ----------------
+ setup.py                |    3 +--
+ 5 files changed, 13 insertions(+), 19 deletions(-)
+
+commit 6019c53be1f76e5ae64aff49eafc6d0347dc441d
+Author: Kushal Das <kdas@d80.(none)>
+Date:   Wed Aug 13 21:34:18 2008 +0530
+
+    tried to write a PolicyKit policy file, which is not working btw :)
+
+ MANIFEST               |    1 +
+ liveusb-creator.policy |   16 ++++++++++++++++
+ setup.py               |    6 +++++-
+ 3 files changed, 22 insertions(+), 1 deletions(-)
+
+commit 5c231fc6dfa8befc18a40b9d7d13bf32e0acd224
+Author: Kushal Das <kdas@d80.(none)>
+Date:   Wed Aug 13 21:08:49 2008 +0530
+
+    Fixed to have a cleaner Linux based package
+
+ LICENSE.txt                  |  683 +++++++++++++++++++++---------------------
+ MANIFEST                     |    2 +
+ data/liveusb-creator.desktop |   11 +
+ setup.py                     |    1 +
+ 4 files changed, 356 insertions(+), 341 deletions(-)
+
+commit 18e5c7f60e763fe9e57fc085c728518157059942
+Author: Kushal Das <kdas@d80.(none)>
+Date:   Wed Aug 13 20:17:16 2008 +0530
+
+    setup.py fixed, now it will create different packages for different platform
+
+ setup.py |   94 +++++++++++++++++++++++++++++++++++--------------------------
+ 1 files changed, 54 insertions(+), 40 deletions(-)
+
+commit d744a6aa9de3ed98fb41278b02875b1bb2c78d4b
+Author: Kushal Das <kdas@d80.(none)>
+Date:   Tue Aug 12 00:02:48 2008 +0530
+
+    Added LICENSE.txt into MANIFEST
+
+ MANIFEST |   16 ++++++++++++++++
+ 1 files changed, 16 insertions(+), 0 deletions(-)
+
+commit 4e588fab8008db2544c44e94d4e2f1e9e10d72ec
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Jul 16 00:14:34 2008 -0400
+
+    2.7
+
+ setup.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 3625e264b813df62393a34901a6fb02734b390fa
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Jul 16 00:13:00 2008 -0400
+
+    Make WindowsLiveUSBCreator._get_device_uuid errors less fatal
+
+ liveusb/creator.py |    3 +--
+ 1 files changed, 1 insertions(+), 2 deletions(-)
+
+commit b6ed472dd356423ba80aad4708d4cafc253605b8
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Jul 13 02:19:38 2008 -0400
+
+    Return 0 from get_free_bytes if win32file.GetDiskFreeSpace throwns an exception
+    
+    This is a temporary workaround for the issues mentioned in Ticket #115.
+
+ liveusb/creator.py |    6 +++++-
+ 1 files changed, 5 insertions(+), 1 deletions(-)
+
+commit c07d292d529c94173b0f457cb0afc19c92e6c003
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Jul 13 01:23:15 2008 -0400
+
+    Update our setup.py to handle distutils.  Patch from caio1982@gmail.com (#94)
+
+ setup.py |   16 +++++++++++++++-
+ 1 files changed, 15 insertions(+), 1 deletions(-)
+
+commit c5172dd771fc2c7a6d0bd61ec515de492497d5fb
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Jul 13 01:21:13 2008 -0400
+
+    Update the ChangeLog
+
+ ChangeLog |  730 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 730 insertions(+), 0 deletions(-)
+
 commit 50fd39450148866f4b45f290f45f990651feac8e
 Author: Luke Macken <lmacken@redhat.com>
 Date:   Sun Jul 13 01:04:16 2008 -0400
