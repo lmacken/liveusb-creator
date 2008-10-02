@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liveusb-creator\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-29 09:49+0000\n"
-"PO-Revision-Date: 2008-09-29 12:30+0100\n"
+"POT-Creation-Date: 2008-10-02 10:28+0000\n"
+"PO-Revision-Date: 2008-10-02 16:05+0100\n"
 "Last-Translator: Fabian Affolter <fab@fedoraproject.org>\n"
 "Language-Team: German <fedora-trans-de@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -58,8 +58,8 @@ msgstr "Schreibe auf Gerät mit %d MB/sec"
 
 #: ../liveusb/gui.py:180
 #, python-format
-msgid "Creating %d Mb persistent overlay..."
-msgstr "Erzeuge %d MB bleibendes Overlay..."
+msgid "Creating %d MB persistent overlay..."
+msgstr "Erzeuge %d MB persitentes Overlay ..."
 
 #: ../liveusb/gui.py:183
 msgid "Configuring and installing bootloader..."
@@ -76,9 +76,8 @@ msgid "LiveUSB creation failed!"
 msgstr "LiveUSB-Erzeugung fehlgeschlagen!"
 
 #: ../liveusb/gui.py:318
-#, python-format
-msgid "Persistent Storage (%d Mb)"
-msgstr "Persistenter Speicher (%d MB)"
+msgid "Persistent Storage"
+msgstr "Persistenter Speicher"
 
 #: ../liveusb/gui.py:336
 msgid ""
@@ -197,15 +196,15 @@ msgstr "Nicht unterstütztes Dateisystem: %s"
 msgid "Unable to find LiveOS on ISO"
 msgstr "Kann kein LiveOS auf ISO finden"
 
-#: ../liveusb/creator.py:484
+#: ../liveusb/creator.py:506
 msgid "Unable to find any removable devices"
 msgstr "Kann keine Wechseldatenträger finden"
 
-#: ../liveusb/creator.py:491
+#: ../liveusb/creator.py:513
 msgid "Make sure your USB key is plugged in and formatted with the FAT filesystem"
 msgstr "Stellen Sie sicher, dass Ihr USB-Stick eingesteckt ist und formatiert mit einem FAT-Dateisystem"
 
-#: ../liveusb/creator.py:494
+#: ../liveusb/creator.py:516
 #, python-format
 msgid ""
 "Unsupported filesystem: %s\n"
@@ -214,10 +213,13 @@ msgstr ""
 "Nicht unterstütztes Dateisystem: %s\n"
 "Bitte erstellen Sie eine Daten-Sicherung und formatieren Sie Ihren USB-Stick mit einem FAT-Dateisystem."
 
-#: ../liveusb/creator.py:570
-#, python-format
-msgid "Cannot find '%s'.  Make sure to extract the entire liveusb-creator zip file before running this program."
-msgstr "Kann '%s' nicht finden. Entpacken Sie das komplette liveusb-creator Zip-Archiv bevor Sie das Programm laufen lassen."
+#: ../liveusb/creator.py:597
+msgid "Cannot find"
+msgstr "Kann nicht finden"
+
+#: ../liveusb/creator.py:598
+msgid "Make sure to extract the entire liveusb-creator zip file before running this program."
+msgstr "Stellen Sie sicher, dass Sie das komplette liveusb-creator Zip-Archiv entpackt haben, bevor Sie das Programm laufen lassen."
 
 #: ../liveusb/linux_dialog.py:98
 #: ../liveusb/windows_dialog.py:104
@@ -292,4 +294,7 @@ msgstr "Persistenter Speicher (0 MB)"
 #: ../liveusb/windows_dialog.py:117
 msgid "Target Device"
 msgstr "Ziel-Gerät"
+
+#~ msgid "Persistent Storage (%d Mb)"
+#~ msgstr "Persistenter Speicher (%d MB)"
 
