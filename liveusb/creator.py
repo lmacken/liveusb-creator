@@ -410,8 +410,8 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 os.mkdir(liveos)
             for img in ('squashfs.img', 'osmin.img'):
                 start = datetime.now()
-                self.popen('cp %s %s' % (os.path.join(tmpliveos, img),
-                                         os.path.join(liveos, img)))
+                self.popen("cp %s '%s'" % (os.path.join(tmpliveos, img),
+                                           os.path.join(liveos, img)))
                 delta = datetime.now() - start
                 if delta.seconds:
                     self.mb_per_sec = (self.isosize / delta.seconds) / 1024**2
@@ -419,7 +419,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             isolinux = os.path.join(self.dest, 'isolinux')
             if not os.path.exists(isolinux):
                 os.mkdir(isolinux)
-            self.popen('cp %s/* %s' % (os.path.join(tmpdir, 'isolinux'),
+            self.popen("cp %s/* '%s'" % (os.path.join(tmpdir, 'isolinux'),
                                        isolinux))
         finally:
             self.popen('umount %s' % tmpdir)
