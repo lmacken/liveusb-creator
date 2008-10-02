@@ -70,6 +70,7 @@ rm -rf %{buildroot}
 - German Translation (Marcus Nitzschke, Fabian Affolter)
 - Polish translation (Piotr Drąg)
 - Portuguese translation (Valter Fukuoka)
+- Czech translation (Adam Pribyl)
 
 * Tue Aug 12 2008 Kushal Das <kushal@fedoraproject.org> 2.7-1
 - Initial release
