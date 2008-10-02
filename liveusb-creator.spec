@@ -48,16 +48,15 @@ rm -rf %{buildroot}/%{_datadir}/applications/liveusb-creator.desktop
 %clean
 rm -rf %{buildroot}
 
-%files
+%files -f %{name}.lang
 %defattr(-,root,root,-)
 %doc README.txt LICENSE.txt
-# For noarch packages: sitelib
 %{python_sitelib}/*
 %{_bindir}/%{name}
 %{_sbindir}/%{name}
 %{_datadir}/applications/fedora-liveusb-creator.desktop
 %{_datadir}/pixmaps/fedorausb.png
-%{_datadir}/locale/*/LC_MESSAGES/liveusb-creator.mo
+#%{_datadir}/locale/*/LC_MESSAGES/liveusb-creator.mo
 %config(noreplace) %{_sysconfdir}/pam.d/%{name}
 %config(noreplace) %{_sysconfdir}/security/console.apps/%{name}
 
