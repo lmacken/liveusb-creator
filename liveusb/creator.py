@@ -458,6 +458,28 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 pass
         self.unmount_device()
 
+    def get_proxies(self):
+        """ Return the proxy settings.
+
+        At the moment this implementation only works on KDE, and should
+        eventually be expanded to support other platforms as well.
+        """
+        kioslaverc = QtCore.QDir.homePath() + '/.kde/share/config/kioslaverc'
+        if not QtCore.QFile.exists(kioslaverc):
+            return {}
+        settings = QtCore.QSettings(kioslaverc, QtCore.QSettings.IniFormat)
+        settings.beginGroup('Proxy Settings')
+        proxies = {}
+        # check for KProtocolManager::ManualProxy (the only one we support)
+        if settings.value('ProxyType').toInt()[0] == 1:
+            httpProxy = settings.value('httpProxy').toString()
+            if httpProxy != '':
+                proxies['http'] = httpProxy
+            ftpProxy = settings.value('ftpProxy').toString()
+            if ftpProxy != '':
+                proxies['ftp'] = ftpProxy
+        return proxies
+
 
 class WindowsLiveUSBCreator(LiveUSBCreator):
 
