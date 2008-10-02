@@ -64,7 +64,7 @@ rm -rf %{buildroot}
 %changelog
 * Fri Aug 29 2008 Luke Macken <lmacken@redhat.com> 3.0-1
 - Latest upstream release, containing various bugfixes
-- Add Fedora 10 Alpha support
+- Fedora 10 Beta support
 - Brazilian Portuguese translation (Igor Pires Soares)
 - Spanish translation (Domingo Becker)
 - Malay translation (Sharuzzaman Ahmat Raslan)

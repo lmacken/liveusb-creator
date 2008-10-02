@@ -1,5 +1,26 @@
 releases = (
     {
+        'name': 'Fedora 10 Beta (i686)',
+        'url': 'http://download.fedoraproject.org/pub/fedora/linux/releases/test/10-Beta/Live/i686/F10-Beta-i686-Live.iso',
+        'sha1': '76183cb5f0f15e9596e499b7712c77f784c234d0',
+    },
+    {
+        'name': 'Fedora 10 Beta KDE (i686)',
+        'url': 'http://download.fedoraproject.org/pub/fedora/linux/releases/test/10-Beta/Live/i686/F10-Beta-i686-Live-KDE.iso',
+        'sha1': '24b9f6adf6d2f3daf0a90c041c0b4afaf45e12d6',
+    },
+    {
+        'name': 'Fedora 10 Beta (x86_64)',
+        'url': 'http://download.fedoraproject.org/pub/fedora/linux/releases/test/10-Beta/Live/x86_64/F10-Beta-x86_64-Live.iso',
+        'sha1': 'f0ba4a28689375579d56dd8bf9d0e45ea26a6ced',
+    },
+    {
+        'name': 'Fedora 10 Beta KDE (x86_64)',
+        'url': 'http://download.fedoraproject.org/pub/fedora/linux/releases/test/10-Beta/Live/x86_64/F10-Beta-x86_64-Live-KDE.iso',
+        'sha1': '6f32b75c09838a407371aec211e1951d357baf03',
+    },
+
+    {
         'name': 'Fedora 9 (i686)',
         'url': 'http://download.fedoraproject.org/pub/fedora/linux/releases/9/Live/i686/Fedora-9-i686-Live.iso',
         'sha1': '3ea129ebce5fd55499a813aaa8a042735f2aad6d',
