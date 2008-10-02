@@ -218,8 +218,9 @@ class LiveUSBCreator(object):
 
     def delete_liveos(self):
         """ Delete the existing LiveOS """
-        for path in [self.get_liveos(), os.path.join(self.dest, 'syslinux'),
-                     os.path.join(self.dest, 'isolinux')]:
+        for path in [self.get_liveos(),
+                     os.path.join(self.dest + os.path.sep, 'syslinux'),
+                     os.path.join(self.dest + os.path.sep, 'isolinux')]:
             if os.path.exists(path):
                 self.log.info("Deleting " + path)
                 try:
