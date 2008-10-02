@@ -520,8 +520,13 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
     def extract_iso(self):
         """ Extract our ISO with 7-zip directly to the USB key """
         self.log.info("Extracting ISO to USB device")
+        start = datetime.now()
         self.popen('7z x "%s" -x![BOOT] -y -o%s' % (
                    self.iso, self.drive['device']))
+        delta = datetime.now() - start
+        if delta.seconds:
+            self.mb_per_sec = (self.isosize / delta.seconds) / 1024**2
+            self.log.info("Copied at %d MB/sec" % self.mb_per_sec)
 
     def install_bootloader(self):
         """ Run syslinux to install the bootloader on our device """
