@@ -32,7 +32,8 @@ if sys.platform == 'win32':
         ],
         options={
             "py2exe" : {
-                "includes" : ["sip", "PyQt4._qt"],
+                #"includes" : ["sip", "PyQt4._qt"],
+                "includes" : ["sip"],
                 'bundle_files': 1,
             }
         }, 
