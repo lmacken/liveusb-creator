@@ -159,7 +159,8 @@ class LiveUSBThread(QtCore.QThread):
 
             # If the ISO looks familar, verify it's SHA1SUM
             if not self.parent.opts.noverify:
-                if self.live.get_release_from_iso():
+                release = self.live.get_release_from_iso()
+                if release and release['sha1']:
                     self.status(_("Verifying SHA1 of LiveCD image..."))
                     if not self.live.verify_image(progress=self):
                         self.status(_("Error: The SHA1 of your Live CD is "
