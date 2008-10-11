@@ -1,5 +1,10 @@
 releases = (
     {
+        'name': 'Sugar Spin (i686)',
+        'url': 'http://sdz.fedorapeople.org/olpc/sugar-spin.iso',
+        'sha1': '',
+    },
+    {
         'name': 'Fedora 10 Beta (i686)',
         'url': 'http://download.fedoraproject.org/pub/fedora/linux/releases/test/10-Beta/Live/i686/F10-Beta-i686-Live.iso',
         'sha1': '76183cb5f0f15e9596e499b7712c77f784c234d0',
