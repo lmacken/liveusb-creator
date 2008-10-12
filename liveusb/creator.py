@@ -135,7 +135,7 @@ class LiveUSBCreator(object):
         @param cmd: The commandline to execute.  Either a string or a list.
         @param kwargs: Extra arguments to pass to subprocess.Popen
         """
-        self.log.info(cmd)
+        self.log.debug(cmd)
         self.output.write(cmd)
         proc = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE, stdin=subprocess.PIPE,
@@ -152,6 +152,7 @@ class LiveUSBCreator(object):
 
     def verify_image(self, progress=None):
         """ Verify the SHA1 checksum of our ISO if it is in our release list """
+        self.log.info(_("Verifying SHA1 of LiveCD image..."))
         if not progress:
             class DummyProgress:
                 def set_max_progress(self, value): pass
@@ -170,7 +171,16 @@ class LiveUSBCreator(object):
                 bytes = len(data)
                 total += bytes
                 progress.update_progress(total / 1024)
-            return checksum.hexdigest() == release['sha1']
+            if checksum.hexdigest() == release['sha1']:
+                return True
+            else:
+                self.log.info(_("Error: The SHA1 of your Live CD is "
+                                "invalid.  You can run this program with "
+                                "the --noverify argument to bypass this "
+                                "verification check."))
+                return False
+        else:
+            self.log.debug(_('Unknown ISO, skipping checksum verification'))
 
     def check_free_space(self):
         """ Make sure there is enough space for the LiveOS and overlay """
@@ -218,11 +228,12 @@ class LiveUSBCreator(object):
 
     def delete_liveos(self):
         """ Delete the existing LiveOS """
+        self.log.info(_('Removing existing Live OS'))
         for path in [self.get_liveos(),
                      os.path.join(self.dest + os.path.sep, 'syslinux'),
                      os.path.join(self.dest + os.path.sep, 'isolinux')]:
             if os.path.exists(path):
-                self.log.info("Deleting " + path)
+                self.log.debug("Deleting " + path)
                 try:
                     shutil.rmtree(path)
                 except OSError, e:
@@ -373,6 +384,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             self.dest = None
 
     def verify_filesystem(self):
+        self.log.info(_("Verifying filesystem..."))
         if self.fstype not in ('vfat', 'msdos', 'ext2', 'ext3'):
             if not self.fstype:
                 raise LiveUSBError(_("Unknown filesystem for %s.  Your device "
@@ -399,8 +411,8 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
     def extract_iso(self):
         """ Extract self.iso to self.dest """
+        self.log.info(_("Extracting live image to USB device..."))
         tmpdir = tempfile.mkdtemp()
-        self.log.info("Extracting ISO to device")
         self.popen('mount -o loop,ro %s %s' % (self.iso, tmpdir))
         tmpliveos = os.path.join(tmpdir, 'LiveOS')
         try:
@@ -416,7 +428,8 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 delta = datetime.now() - start
                 if delta.seconds:
                     self.mb_per_sec = (self.isosize / delta.seconds) / 1024**2
-                    self.log.info("Copied at %d MB/sec" % self.mb_per_sec)
+                    self.log.info(_("Wrote to device at") + " %d MB/sec" %
+                                  self.mb_per_sec)
             isolinux = os.path.join(self.dest, 'isolinux')
             if not os.path.exists(isolinux):
                 os.mkdir(isolinux)
@@ -427,7 +440,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
     def install_bootloader(self):
         """ Run syslinux to install the bootloader on our devices """
-        self.log.info("Installing bootloader")
+        self.log.info(_("Installing bootloader"))
         shutil.move(os.path.join(self.dest, "isolinux"),
                     os.path.join(self.dest, "syslinux"))
         os.unlink(os.path.join(self.dest, "syslinux", "isolinux.cfg"))
@@ -508,6 +521,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
 
     def verify_filesystem(self):
         import win32api, win32file, pywintypes
+        self.log.info(_("Verifying filesystem..."))
         try:
             vol = win32api.GetVolumeInformation(self.drive['device'])
         except Exception, e:
@@ -542,18 +556,19 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
 
     def extract_iso(self):
         """ Extract our ISO with 7-zip directly to the USB key """
-        self.log.info("Extracting ISO to USB device")
+        self.log.info(_("Extracting live image to USB device..."))
         start = datetime.now()
         self.popen('7z x "%s" -x![BOOT] -y -o%s' % (
                    self.iso, self.drive['device']))
         delta = datetime.now() - start
         if delta.seconds:
             self.mb_per_sec = (self.isosize / delta.seconds) / 1024**2
-            self.log.info("Copied at %d MB/sec" % self.mb_per_sec)
+            self.log.info(_("Wrote to device at") + " %d MB/sec" % 
+                          self.mb_per_sec)
 
     def install_bootloader(self):
         """ Run syslinux to install the bootloader on our device """
-        self.log.info("Installing bootloader")
+        self.log.info(_("Installing bootloader"))
         device = self.drive['device']
         if os.path.isdir(os.path.join(device + os.path.sep, "syslinux")):
             syslinuxdir = os.path.join(device + os.path.sep, "syslinux")

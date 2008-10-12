@@ -24,6 +24,7 @@ A cross-platform graphical interface for the LiveUSBCreator
 """
 
 import os
+import logging
 
 from time import sleep
 from datetime import datetime
@@ -146,9 +147,10 @@ class LiveUSBThread(QtCore.QThread):
         self.emit(QtCore.SIGNAL("status(PyQt_PyObject)"), text)
 
     def run(self):
+        handler = LiveUSBLogHandler(self.status)
+        self.live.log.addHandler(handler)
         now = datetime.now()
         try:
-            self.status(_("Verifying filesystem..."))
             self.live.verify_filesystem()
             if not self.live.drive['uuid'] and not self.live.label:
                 self.status(_("Error: Cannot set the label or obtain " 
@@ -161,29 +163,20 @@ class LiveUSBThread(QtCore.QThread):
             if not self.parent.opts.noverify:
                 release = self.live.get_release_from_iso()
                 if release and release['sha1']:
-                    self.status(_("Verifying SHA1 of LiveCD image..."))
                     if not self.live.verify_image(progress=self):
-                        self.status(_("Error: The SHA1 of your Live CD is "
-                                      "invalid.  You can run this program with "
-                                      "the --noverify argument to bypass this "
-                                      "verification check."))
                         return
 
+            # Setup the progress bar
             self.progress.set_data(size=self.live.totalsize,
                                    drive=self.live.drive['device'],
                                    freebytes=self.live.get_free_bytes)
             self.progress.start()
 
-            self.status(_("Extracting live image to USB device..."))
             self.live.extract_iso()
-            self.status(_("Wrote to device at %d MB/sec" % self.live.mb_per_sec))
-            if self.live.overlay:
-                self.status(_("Creating %d MB persistent overlay..." %
-                            self.live.overlay))
-                self.live.create_persistent_overlay()
-            self.status(_("Configuring and installing bootloader..."))
+            self.live.create_persistent_overlay()
             self.live.update_configs()
             self.live.install_bootloader()
+
             duration = str(datetime.now() - now).split('.')[0]
             self.status(_("Complete! (%s)" % duration))
         except LiveUSBError, e:
@@ -195,6 +188,7 @@ class LiveUSBThread(QtCore.QThread):
             import traceback
             traceback.print_exc()
 
+        self.live.log.removeHandler(handler)
         self.live.unmount_device()
         self.progress.terminate()
 
@@ -206,6 +200,17 @@ class LiveUSBThread(QtCore.QThread):
 
     def __del__(self):
         self.wait()
+
+
+class LiveUSBLogHandler(logging.Handler):
+
+    def __init__(self, cb):
+        logging.Handler.__init__(self)
+        self.cb = cb
+
+    def emit(self, record):
+        if record.levelname in ('INFO', 'ERROR'):
+            self.cb(record.msg.encode('utf8', 'replace'))
 
 
 class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
@@ -226,6 +231,10 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                                         parent=self)
         self.connect_slots()
         self.confirmed = False
+
+        # Intercept all liveusb INFO log messages, and display them in the gui
+        self.handler = LiveUSBLogHandler(lambda x: self.textEdit.append(x))
+        self.live.log.addHandler(self.handler)
 
     def populate_devices(self, *args, **kw):
         self.driveBox.clear()
@@ -349,7 +358,6 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                 # The user has confirmed that they wish to overwrite their
                 # existing Live OS.  Here we delete it first, in order to 
                 # accurately calculate progress.
-                self.status(_("Removing existing Live OS..."))
                 try:
                     self.live.delete_liveos()
                 except LiveUSBError, e:
@@ -357,6 +365,9 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                     self.live.unmount_device()
                     self.enable_widgets(True)
                     return
+
+        # Remove the log handler, because our live thread will register its own
+        self.live.log.removeHandler(self.handler)
 
         # If the user has selected an ISO, use it.  If not, download one.
         if self.live.iso:
@@ -404,8 +415,8 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                               "you move your ISO to the root of your drive "
                               "(ie: C:\)"))
 
-            self.live.log.info(_("ISO selected: %s" % repr(self.live.iso)))
-            self.textEdit.append(os.path.basename(self.live.iso) + ' selected')
+            self.live.log.info('%s ' % os.path.basename(self.live.iso) + 
+                               _("selected"))
 
     def terminate(self):
         """ Terminate any processes that we have spawned """
