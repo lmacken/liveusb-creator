@@ -106,12 +106,40 @@ class LiveUSBCreator(object):
         raise NotImplementedError
 
     def install_bootloader(self):
-        """ Install the bootloader to our device, using syslinux.
-
-        At this point, we can assume that extract_iso has already run, and
-        that there is an 'isolinux' directory on our device.
+        """ Install the bootloader to our device.
+        
+        Platform-specific classes inheriting from the LiveUSBCreator are
+        expected to implement this method to install the bootloader to the
+        specified device using syslinux.  This specific implemention is 
+        platform independent and performs sanity checking along with adding
+        OLPC support.
         """
-        raise NotImplementedError
+        if not os.path.exists(os.path.join(self.dest, 'isolinux')):
+            raise LiveUSBError('extract_iso must be run before '
+                               'install_bootloader')
+        if self.opts.xo:
+            self._setup_olpc()
+
+    def _setup_olpc(self):
+        self.log.info(_('Setting up OLPC boot file...'))
+        args = []
+
+        # Grab the kernel arguments from our syslinux configuration
+        cfg = file(os.path.join(self.dest, 'isolinux', 'syslinux.cfg'))
+        for line in cfg.readlines():
+            if 'append' in line:
+                args.extend([arg for arg in line.split()[1:]
+                             if not arg.startswith('initrd')])
+                break
+        cfg.close()
+
+        from liveusb.olpc import ofw_config
+        if not os.path.exists(os.path.join(self.dest, 'boot')):
+            os.mkdir(os.path.join(self.dest, 'boot'))
+        olpc_cfg = file(os.path.join(self.dest, 'boot', 'olpc.fth'), 'w')
+        olpc_cfg.write(ofw_config % ' '.join(args))
+        olpc_cfg.close()
+        self.log.debug('Wrote %s' % olpc_cfg.name)
 
     def terminate(self):
         """ Terminate any subprocesses that we have spawned """
@@ -568,6 +596,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
 
     def install_bootloader(self):
         """ Run syslinux to install the bootloader on our device """
+        LiveUSBCreator.install_bootloader(self)
         self.log.info(_("Installing bootloader"))
         device = self.drive['device']
         if os.path.isdir(os.path.join(device + os.path.sep, "syslinux")):
