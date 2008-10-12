@@ -251,6 +251,9 @@ class LiveUSBCreator(object):
             if self.overlay and "liveimg" in line:
                 line = line.replace("liveimg", "liveimg overlay=" + usblabel)
                 line = line.replace(" ro ", " rw ")
+            if self.opts.kernel_args:
+                line = line.replace("liveimg", "liveimg %s" %
+                                    ' '.join(self.opts.kernel_args.split(',')))
             syslinux.write(line)
         isolinux.close()
         syslinux.close()
