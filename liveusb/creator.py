@@ -227,7 +227,8 @@ class LiveUSBCreator(object):
 
     def create_persistent_overlay(self):
         if self.overlay:
-            self.log.info(_("Creating %sMB persistent overlay" % self.overlay))
+            self.log.info(_("Creating") + " %sMB " % self.overlay +
+                          _("persistent overlay"))
             if self.fstype == 'vfat':
                 # vfat apparently can't handle sparse files
                 self.popen('dd if=/dev/zero of=%s count=%d bs=1M'
@@ -468,7 +469,8 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
     def install_bootloader(self):
         """ Run syslinux to install the bootloader on our devices """
-        self.log.info(_("Installing bootloader"))
+        LiveUSBCreator.install_bootloader(self)
+        self.log.info(_("Installing bootloader..."))
         shutil.move(os.path.join(self.dest, "isolinux"),
                     os.path.join(self.dest, "syslinux"))
         os.unlink(os.path.join(self.dest, "syslinux", "isolinux.cfg"))

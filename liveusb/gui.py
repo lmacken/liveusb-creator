@@ -227,8 +227,8 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         self.progress_thread = ProgressThread()
         self.download_progress = DownloadProgress()
         self.live_thread = LiveUSBThread(live=self.live,
-                                        progress=self.progress_thread,
-                                        parent=self)
+                                         progress=self.progress_thread,
+                                         parent=self)
         self.connect_slots()
         self.confirmed = False
 
