@@ -1,10 +1,5 @@
 releases = (
     {
-        'name': 'Sugar Spin (i686)',
-        'url': 'http://sdz.fedorapeople.org/olpc/sugar-spin.iso',
-        'sha1': '',
-    },
-    {
         'name': 'Fedora 10 Beta (i686)',
         'url': 'http://download.fedoraproject.org/pub/fedora/linux/releases/test/10-Beta/Live/i686/F10-Beta-i686-Live.iso',
         'sha1': '76183cb5f0f15e9596e499b7712c77f784c234d0',
@@ -64,5 +59,14 @@ releases = (
         'name': 'Fedora 8 KDE (x86_64)',
         'url': 'http://download.fedoraproject.org/pub/fedora/linux/releases/8/Live/x86_64/Fedora-8-Live-KDE-x86_64.iso',
         'sha1':  '9b7e08afe5dc919be3ba8c146261d684b9327556',
+    },
+
+    ##
+    ## Custom spins
+    ##
+    {
+        'name': 'Sugar Spin (i686)',
+        'url': 'http://sdz.fedorapeople.org/olpc/sugar-spin.iso',
+        'sha1': '',
     },
 )
