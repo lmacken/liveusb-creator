@@ -508,6 +508,12 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         At the moment this implementation only works on KDE, and should
         eventually be expanded to support other platforms as well.
         """
+        try:
+            from PyQt4 import QtCore
+        except ImportError:
+            self.log.warning("PyQt4 module not installed; skipping KDE "
+                             "proxy detection")
+            return
         kioslaverc = QtCore.QDir.homePath() + '/.kde/share/config/kioslaverc'
         if not QtCore.QFile.exists(kioslaverc):
             return {}
