@@ -403,7 +403,11 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
     def unmount_device(self):
         """ Unmount our device if we mounted it to begin with """
         import dbus
-        if self.dest and self.drive.get('unmount'):
+        try:
+            unmount = self.drive.get('unmount')
+        except KeyError: # the device has been removed
+            return
+        if self.dest and unmount:
             self.log.debug("Unmounting %s from %s" % (self.drive['device'],
                                                       self.dest))
             try:
