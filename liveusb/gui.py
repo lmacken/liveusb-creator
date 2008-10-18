@@ -159,11 +159,15 @@ class LiveUSBThread(QtCore.QThread):
 
             self.live.check_free_space()
 
-            # If the ISO looks familar, verify it's SHA1SUM
             if not self.parent.opts.noverify:
+                # Verify the MD5 checksum inside of the ISO image
+                if not self.live.verify_iso_md5():
+                    return
+
+                # If we know about this ISO, and it's SHA1 -- verify it
                 release = self.live.get_release_from_iso()
                 if release and release['sha1']:
-                    if not self.live.verify_image(progress=self):
+                    if not self.live.verify_iso_sha1(progress=self):
                         return
 
             # Setup the progress bar

@@ -105,9 +105,13 @@ class LiveUSBCreator(object):
         """ Extract the LiveCD ISO to the USB drive """
         raise NotImplementedError
 
+    def verify_iso_md5(self):
+        """ Verify the MD5 checksum of the ISO """
+        raise NotImplementedError
+
     def install_bootloader(self):
         """ Install the bootloader to our device.
-        
+
         Platform-specific classes inheriting from the LiveUSBCreator are
         expected to implement this method to install the bootloader to the
         specified device using syslinux.  This specific implemention is 
@@ -178,7 +182,7 @@ class LiveUSBCreator(object):
                                  "been written to 'liveusb-creator.log'" % cmd))
         return proc
 
-    def verify_image(self, progress=None):
+    def verify_iso_sha1(self, progress=None):
         """ Verify the SHA1 checksum of our ISO if it is in our release list """
         self.log.info(_("Verifying SHA1 of LiveCD image..."))
         if not progress:
@@ -505,6 +509,19 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 pass
         self.unmount_device()
 
+    def verify_iso_md5(self):
+        """ Verify the ISO md5sum.
+
+        At the moment this is Linux specific, until we port checkisomd5 
+        to Windows.
+        """
+        self.log.info(_('Verifying ISO MD5 checksum'))
+        try:
+            self.popen('checkisomd5 "%s"' % self.iso)
+        except LiveUSBError:
+            return False
+        return True
+
     def get_proxies(self):
         """ Return the proxy settings.
 
@@ -699,3 +716,10 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
             self.log.warning('Unable to detect proxy settings: %s' % str(e))
         self.log.debug('Using proxies: %s' % proxies)
         return proxies
+
+    def verify_iso_md5(self):
+        """ Verify the ISO md5sum.
+
+        At the moment this is Linux-only, until we port checkisomd5 to Windows.
+        """
+        pass

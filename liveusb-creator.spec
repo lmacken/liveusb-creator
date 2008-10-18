@@ -13,7 +13,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
 BuildRequires:  python-devel, python-setuptools, PyQt4-devel, desktop-file-utils gettext
-Requires:       syslinux, PyQt4, usermode
+Requires:       syslinux, PyQt4, usermode, isomd5sum
 
 %description
 A liveusb creator from Live Fedora images
