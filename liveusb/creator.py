@@ -440,9 +440,12 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                                                       self.label))
             try:
                 if self.fstype in ('vfat', 'msdos'):
-                    # @@ Fix this, it doesn't seem to work...
-                    self.popen('/sbin/dosfslabel %s %s' % (self.drive['device'],
-                                                           self.label))
+                    try:
+                        self.popen('/sbin/dosfslabel %s %s' % (
+                                   self.drive['device'], self.label))
+                    except LiveUSBError:
+                        # dosfslabel returns an error code even upon success
+                        pass
                 else:
                     self.popen('/sbin/e2label %s %s' % (self.drive['device'],
                                                         self.label))
