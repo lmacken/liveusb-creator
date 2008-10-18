@@ -190,10 +190,9 @@ class LiveUSBThread(QtCore.QThread):
             self.status(e.message)
             self.status(_("LiveUSB creation failed!"))
             import traceback
-            traceback.print_exc()
+            self.live.log.debug(traceback.format_exc())
 
         self.live.log.removeHandler(handler)
-        self.live.unmount_device()
         self.progress.terminate()
 
     def set_max_progress(self, maximum):
