@@ -349,13 +349,13 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                     for child in children:
                         child = self._get_device(child)
                         if child.GetProperty("block.is_volume"):
-                            self._add_device(child)
+                            self._add_device(child, parent=dev)
                             break
 
         if not len(self.drives):
             raise LiveUSBError(_("Unable to find any USB drives"))
 
-    def _add_device(self, dev):
+    def _add_device(self, dev, parent=None):
         mount = str(dev.GetProperty('volume.mount_point'))
         device = str(dev.GetProperty('block.device'))
         self.drives[device] = {
@@ -367,6 +367,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             'unmount' : False,
             'free'    : mount and self.get_free_bytes(mount) / 1024**2 or None,
             'device'  : device,
+            'parent'  : parent.GetProperty('block.device')
         }
 
     def mount_device(self):
