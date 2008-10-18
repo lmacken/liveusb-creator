@@ -599,7 +599,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         if vol[0] == '':
             try:
                 win32file.SetVolumeLabel(self.drive['device'], self.label)
-                self.log.info("Set %s label to %s" % (self.drive['device'],
+                self.log.debug("Set %s label to %s" % (self.drive['device'],
                                                       self.label))
             except pywintypes.error, e:
                 self.log.warning("Unable to SetVolumeLabel: " + str(e))
