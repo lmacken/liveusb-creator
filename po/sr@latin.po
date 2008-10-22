@@ -1,26 +1,27 @@
-# Serbian(Latin) translations for liveusb-creator
-# Copyright (C) 2008 Red Hat, Inc.
-# This file is distributed under the same license as the liveusb-creator package.
-# Miloš Komarčević <kmilos@gmail.com>, 2008.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#  <>, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: liveusb-creator\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-09-03 02:54-0400\n"
-"PO-Revision-Date: 2008-10-13 22:25+0100\n"
-"Last-Translator: Miloš Komarčević <kmilos@gmail.com>\n"
+"PO-Revision-Date: 2008-10-21 23:18-0400\n"
+"Last-Translator:  <>\n"
 "Language-Team: Serbian (sr) <fedora-trans-sr@redhat.com>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: ../liveusb/gui.py:69
 #, python-format
 msgid "Unknown release: %s"
-msgstr "Nepoznato izdanje: %s"
+msgstr "Nepoznato izdanje %s"
 
 #: ../liveusb/gui.py:73
 #, python-format
@@ -36,94 +37,101 @@ msgid ""
 "Error: Cannot set the label or obtain the UUID of your device.  Unable to "
 "continue."
 msgstr ""
-"Greška: Ne mogu da postavim oznaku ili dobavim UUID uređaja.  Ne mogu da "
-"nastavim."
+"Greška: ne mogu da postavim oznaku ili dobavim UUID uređaja.  U nemogućnosti "
+"da nastavim dalje."
 
 #: ../liveusb/gui.py:164
 msgid "Verifying SHA1 of LiveCD image..."
-msgstr ""
+msgstr "Proveravam SHA1 ili otisak živog CD diska..."
 
 #: ../liveusb/gui.py:166
 msgid ""
 "Error: The SHA1 of your Live CD is invalid.  You can run this program with "
 "the --noverify argument to bypass this verification check."
 msgstr ""
+"Greška: SHA1 suma živog CD diska je neispravna. Možete pokrenuti ovaj "
+"program sa --noverify argumentom kako biste zaobišli proveru."
 
 #: ../liveusb/gui.py:177
 msgid "Extracting live image to USB device..."
-msgstr ""
+msgstr "Izdvajam živi na USB uređaj..."
 
 #: ../liveusb/gui.py:180
 #, python-format
 msgid "Creating %d Mb persistent overlay..."
-msgstr ""
+msgstr "Pravim %d MB trajni sloj..."
 
 #: ../liveusb/gui.py:183
 msgid "Configuring and installing bootloader..."
-msgstr ""
+msgstr "Podešavam i instaliram pokretački program..."
 
 #: ../liveusb/gui.py:187
 #, python-format
 msgid "Complete! (%s)"
-msgstr ""
+msgstr "Gotovo! (%s)"
 
 #: ../liveusb/gui.py:190 ../liveusb/gui.py:193
 msgid "LiveUSB creation failed!"
-msgstr ""
+msgstr "Pravljenje tivog USB sistema neuspelo!"
 
 #: ../liveusb/gui.py:316
 #, python-format
 msgid "Persistent Storage (%d Mb)"
-msgstr ""
+msgstr "Trajno skladište (%d Mb)"
 
 #: ../liveusb/gui.py:334
 msgid ""
 "Your device already contains a LiveOS.\n"
 "If you continue, this will be overwritten."
 msgstr ""
+"Vaš uređaj već sadrži živi OS.\n"
+"Ukoliko nastavite, biće prebrisan."
 
 #: ../liveusb/gui.py:337
 msgid ""
 "Warning: Creating a new persistent overlay will delete your existing one."
-msgstr ""
+msgstr "Upozorenje: pravljenjem novog trajnog sloja ćete obrisati postojeće."
 
 #: ../liveusb/gui.py:339
 msgid "Press 'Create Live USB' again if you wish to continue."
-msgstr ""
+msgstr "Pritisnite „Napravi živi USB“ ponovo ukoliko želite nastaviti."
 
 #. The user has confirmed that they wish to overwrite their
 #. existing Live OS.  Here we delete it first, in order to
 #. accurately calculate progress.
 #: ../liveusb/gui.py:349
 msgid "Removing existing Live OS..."
-msgstr ""
+msgstr "Uklanjam postojeći živi OS..."
 
 #: ../liveusb/gui.py:383
 msgid "Download complete!"
-msgstr ""
+msgstr "Preuzimanje završeno!"
 
 #: ../liveusb/gui.py:387
 msgid "Download failed: "
-msgstr ""
+msgstr "Preuzimanje neuspelo:"
 
 #: ../liveusb/gui.py:388
 msgid "You can try again to resume your download"
-msgstr ""
+msgstr "Možete pokušati opet da nastavite vaše preuzimanje"
 
 #: ../liveusb/gui.py:392
 msgid "Select Live ISO"
-msgstr ""
+msgstr "Izaberite živi ISO"
 
 #: ../liveusb/gui.py:399
 msgid ""
 "Sorry, I'm having trouble encoding the filename of your livecd.  You may "
 "have better luck if you move your ISO to the root of your drive (ie: C:\\)"
 msgstr ""
+"Žao mi je, ali postoje problemi pri kodiranju naziva datoteka datoteka živog "
+"CDa. Možda ćete imati više sreće ukoliko uklonite vaš ISO u koreni "
+"direktorijum vašeg uređaja (npr. C:\\)"
 
 #: ../liveusb/gui.py:404
 #, python-format
 msgid "ISO selected: %s"
-msgstr ""
+msgstr "Izabran ISO: %s"
 
 #: ../liveusb/creator.py:146
 #, python-format
@@ -131,62 +139,64 @@ msgid ""
 "There was a problem executing the following command: `%s`\n"
 "A more detailed error log has been written to 'liveusb-creator.log'"
 msgstr ""
+"Došlo je do problema prilikom izvršavanja sledeće naredbe: „%s“\n"
+"Dnevnik sa više detalja je zapisan u „liveusb-creator.log“"
 
 #: ../liveusb/creator.py:183
 msgid "Not enough free space on device."
-msgstr ""
+msgstr "Nedovoljno slobodnog prostora na uređaju."
 
 #: ../liveusb/creator.py:190
 #, python-format
 msgid "Creating %sMB persistent overlay"
-msgstr ""
+msgstr "Pravim %sMB trajni sloj"
 
 #: ../liveusb/creator.py:226
 #, python-format
 msgid "Unable to remove previous LiveOS: %s"
-msgstr ""
+msgstr "Ne mogu da uklonim prethodni živi OS: %s"
 
 #: ../liveusb/creator.py:257
 #, python-format
 msgid "Cannot find device %s"
-msgstr ""
+msgstr "Ne mogu da pronađem uređaj %s"
 
 #: ../liveusb/creator.py:306
 msgid "Unable to find any USB drives"
-msgstr ""
+msgstr "Ne mogu da pronađem nijedan USB uređaj"
 
 #: ../liveusb/creator.py:327
 #, python-format
 msgid "Filesystem for %s unknown!"
-msgstr ""
+msgstr "Sistem datoteka za %s nepoznat!"
 
 #: ../liveusb/creator.py:335
 #, python-format
 msgid "Unable to mount device: %s"
-msgstr ""
+msgstr "U nemogućnosti da montiram uređaj: %s"
 
 #: ../liveusb/creator.py:370
 #, python-format
 msgid "Unknown filesystem for %s.  Your device may need to be reformatted."
-msgstr ""
+msgstr "Nepoznat sistem datoteka za %s. Možda je uređaju potrebno formatiranje."
 
 #: ../liveusb/creator.py:373
 #, python-format
 msgid "Unsupported filesystem: %s"
-msgstr ""
+msgstr "Nepodržan sistem datoteka: %s"
 
 #: ../liveusb/creator.py:400
 msgid "Unable to find LiveOS on ISO"
-msgstr ""
+msgstr "Ne mogu da pronađem živi OS na ISO otisku"
 
 #: ../liveusb/creator.py:472
 msgid "Unable to find any removable devices"
-msgstr ""
+msgstr "Ne mogu da pronađem nijedan prenosivi uređaj"
 
 #: ../liveusb/creator.py:479
 msgid ""
 "Make sure your USB key is plugged in and formatted with the FAT filesystem"
-msgstr ""
+msgstr "Pobrinite se da je USB ubačen i formatiran sa FAT sistemom datoteka"
 
 #: ../liveusb/creator.py:482
 #, python-format
@@ -194,6 +204,9 @@ msgid ""
 "Unsupported filesystem: %s\n"
 "Please backup and format your USB key with the FAT filesystem."
 msgstr ""
+"Nepodržan sistem datoteka: %s\n"
+"Napravite rezervnu kopiju i potom formatirajte USB uređaj sa FAT sistemom "
+"datoteka."
 
 #: ../liveusb/creator.py:558
 #, python-format
@@ -201,10 +214,12 @@ msgid ""
 "Cannot find '%s'.  Make sure to extract the entire liveusb-creator zip file "
 "before running this program."
 msgstr ""
+"Ne mogu da pronađem „%s“. Pobrinite se da izdvojite liveusb-creator zip "
+"datoteku u celosti pre pokretanja programa."
 
 #: ../liveusb/dialog.py:123
 msgid "Fedora LiveUSB Creator"
-msgstr ""
+msgstr "Fedorin program za pravljenje živih USB diskova"
 
 #: ../liveusb/dialog.py:124
 msgid ""
@@ -213,34 +228,42 @@ msgid ""
 "extracting the ISO to the USB device, creating the persistent overlay, and "
 "installing the bootloader."
 msgstr ""
+"Ovo dugme pokreće postupak pravljenja živih USB sistema. To uključuje i izborno "
+"preuzimanje izdanja (ukoliko postojeći nije bio izabran), raspakivanje ISO "
+"otiska na USB uređaj, praveći trajni sloj, i instaliranje pokretačkog "
+"programa."
 
 #: ../liveusb/dialog.py:125
 msgid "Create Live USB"
-msgstr ""
+msgstr "Napravi živi USB"
 
 #: ../liveusb/dialog.py:126
 msgid "This is the status console, where all messages get written to."
-msgstr ""
+msgstr "Ovo je statusna konzola gde se sve poruke zapisuju."
 
 #: ../liveusb/dialog.py:127
 msgid ""
 "This is the progress bar that will indicate how far along in the LiveUSB "
 "creation process you are"
 msgstr ""
+"Ovo je linija progresa koja pokazuje dokle ste stigli u postupku pravljenja "
+"živog USB sistema"
 
 #: ../liveusb/dialog.py:128
 msgid ""
 "If you do not select an existing Live CD, the selected release will be "
 "downloaded for you."
 msgstr ""
+"Ukoliko ne odaberete postojeći živi CD, izabrano izdanje će biti preuzeto za "
+"vas."
 
 #: ../liveusb/dialog.py:129
 msgid "Download Fedora"
-msgstr ""
+msgstr "Preuzmite Fedoru"
 
 #: ../liveusb/dialog.py:130
 msgid "or"
-msgstr ""
+msgstr "ili"
 
 #: ../liveusb/dialog.py:131
 msgid ""
@@ -248,24 +271,29 @@ msgid ""
 "previously downloaded.  If you do not select one, a release will be "
 "downloaded for you automatically."
 msgstr ""
+"Ovo dugme vam dozvoljava da pretražujete postojeći živi CD ISO otisak koji "
+"ste prethodno preuzeli. Ukoliko ne odaberete jedan, određeno izdanje će biti "
+"preuzeto samostalno."
 
 #: ../liveusb/dialog.py:132
 msgid "Use existing Live CD"
-msgstr ""
+msgstr "Koristi postojeći živi CD"
 
 #: ../liveusb/dialog.py:133
 msgid "Browse"
-msgstr ""
+msgstr "Pregledaj"
 
 #: ../liveusb/dialog.py:135
 msgid ""
 "This is the USB stick that you want to install your Live CD on.  This device "
 "must be formatted with the FAT filesystem."
 msgstr ""
+"Ovo je USB uređaj na koji želite da instalirate živi CD. Ovaj uređaj mora "
+"biti formatiran sa FAT sistemom datoteka."
 
 #: ../liveusb/dialog.py:136
 msgid "Target Device"
-msgstr ""
+msgstr "Odredišni uređaj"
 
 #: ../liveusb/dialog.py:137
 msgid ""
@@ -274,7 +302,11 @@ msgid ""
 "operating system.  Without it, you will not be able to save data that will "
 "persist after a reboot."
 msgstr ""
+"Dodelom dodatnog prostora na USB uređaju za trajni sloj, bićete u mogućnosti "
+"da skladištite podatke i vršite trajne izmene u živom operativnom sistemu. "
+"Bez toga, nećete biti u mogućnosti da snimite podatke koji će ostati i nakon "
+"ponovnog dizanja sistema."
 
 #: ../liveusb/dialog.py:138
 msgid "Persistent Storage (0 Mb)"
-msgstr ""
+msgstr "Trajno skladište (0 Mb)"
