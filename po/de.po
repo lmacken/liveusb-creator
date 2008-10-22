@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liveusb-creator\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-14 02:27+0000\n"
-"PO-Revision-Date: 2008-10-15 09:34+0100\n"
+"POT-Creation-Date: 2008-10-22 01:44+0000\n"
+"PO-Revision-Date: 2008-10-22 14:06+0100\n"
 "Last-Translator: Fabian Affolter <fab@fedoraproject.org>\n"
 "Language-Team: German <fedora-trans-de@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -35,21 +35,21 @@ msgstr "Herunterladen %s..."
 msgid "Error: Cannot set the label or obtain the UUID of your device.  Unable to continue."
 msgstr "Fehler: Kann die Beschriftung nicht setzen oder die UUID Ihres Gerätes erhalten. Kann nicht fortfahren."
 
-#: ../liveusb/gui.py:181
+#: ../liveusb/gui.py:185
 #, python-format
 msgid "Complete! (%s)"
 msgstr "Komplett! (%s)"
 
-#: ../liveusb/gui.py:184
-#: ../liveusb/gui.py:187
+#: ../liveusb/gui.py:188
+#: ../liveusb/gui.py:191
 msgid "LiveUSB creation failed!"
 msgstr "LiveUSB-Erzeugung fehlgeschlagen!"
 
-#: ../liveusb/gui.py:328
+#: ../liveusb/gui.py:331
 msgid "Persistent Storage"
 msgstr "Persistenter Speicher"
 
-#: ../liveusb/gui.py:346
+#: ../liveusb/gui.py:349
 msgid ""
 "Your device already contains a LiveOS.\n"
 "If you continue, this will be overwritten."
@@ -57,43 +57,43 @@ msgstr ""
 "Ihr Gerät enthält ein LiveOS.\n"
 "Wenn Sie fortsetzen, wird es überschrieben."
 
-#: ../liveusb/gui.py:349
+#: ../liveusb/gui.py:352
 msgid "Warning: Creating a new persistent overlay will delete your existing one."
 msgstr "Warnung: Das Erzeugen eines neuen persistenten Overlay löscht ein vorhandenes."
 
-#: ../liveusb/gui.py:351
+#: ../liveusb/gui.py:354
 msgid "Press 'Create Live USB' again if you wish to continue."
 msgstr "Drücke Sie 'Create Live USB' nochmals, wenn Sie weiterfahren wollen."
 
-#: ../liveusb/gui.py:397
+#: ../liveusb/gui.py:400
 msgid "Download complete!"
 msgstr "Herunterladen abgeschlossen!"
 
-#: ../liveusb/gui.py:401
+#: ../liveusb/gui.py:404
 msgid "Download failed: "
 msgstr "Herunterladen fehlgeschlagen:"
 
-#: ../liveusb/gui.py:402
+#: ../liveusb/gui.py:405
 msgid "You can try again to resume your download"
 msgstr "Sie können versuchen das Herunterladen wieder aufzunehmen"
 
-#: ../liveusb/gui.py:406
+#: ../liveusb/gui.py:409
 msgid "Select Live ISO"
 msgstr "Live ISO-Abbild wählen"
 
-#: ../liveusb/gui.py:413
+#: ../liveusb/gui.py:416
 msgid "Sorry, I'm having trouble encoding the filename of your livecd.  You may have better luck if you move your ISO to the root of your drive (ie: C:\\)"
 msgstr "Entschuldigung, ich habe Probleme beim Codieren des Dateinamens Ihrer LiveCD. Vielleicht haben Sie mehr Glück, wenn Sie das ISO-Abbild in das Wurzelverzeichnis Ihres Laufwerkes verschieben (z. B.: C:\\)."
 
-#: ../liveusb/gui.py:419
+#: ../liveusb/gui.py:422
 msgid "selected"
 msgstr "ausgewählt"
 
-#: ../liveusb/creator.py:124
+#: ../liveusb/creator.py:128
 msgid "Setting up OLPC boot file..."
 msgstr "Richte OLPC-Boot-Datei ein..."
 
-#: ../liveusb/creator.py:176
+#: ../liveusb/creator.py:180
 #, python-format
 msgid ""
 "There was a problem executing the following command: `%s`\n"
@@ -102,23 +102,23 @@ msgstr ""
 "Es ist ein Fehler bei der Ausführung des folgenden Befehls aufgetreten: `%s`\n"
 "Ein detaillierter Fehler wurde in die Datei 'liveusb-creator.log' geschrieben"
 
-#: ../liveusb/creator.py:183
+#: ../liveusb/creator.py:187
 msgid "Verifying SHA1 of LiveCD image..."
 msgstr "Verifiziere SHA1 des LiveCD-Abbildes..."
 
-#: ../liveusb/creator.py:205
+#: ../liveusb/creator.py:209
 msgid "Error: The SHA1 of your Live CD is invalid.  You can run this program with the --noverify argument to bypass this verification check."
 msgstr "Fehler: Der SHA1 Ihrer Live CD ist ungültig. Sie können dieses Programm mit dem '--noverify'-Argument ausführen, um die Verifikationsprüfung zu umgehen."
 
-#: ../liveusb/creator.py:211
+#: ../liveusb/creator.py:215
 msgid "Unknown ISO, skipping checksum verification"
 msgstr "Unbekannte ISO-Datei, überspringe Checksummen-Überprüfung"
 
-#: ../liveusb/creator.py:223
+#: ../liveusb/creator.py:227
 msgid "Not enough free space on device."
 msgstr "Nicht genügend freier Platz auf den Gerät."
 
-#: ../liveusb/creator.py:224
+#: ../liveusb/creator.py:228
 #, python-format
 msgid ""
 "\n"
@@ -127,88 +127,92 @@ msgstr ""
 "\n"
 "%d MB ISO + %d MB Overlay > %d MB freier Platz"
 
-#: ../liveusb/creator.py:230
+#: ../liveusb/creator.py:234
 msgid "Creating"
 msgstr "Erzeuge"
 
-#: ../liveusb/creator.py:231
+#: ../liveusb/creator.py:235
 msgid "persistent overlay"
 msgstr "Persistenter Speicher"
 
-#: ../liveusb/creator.py:263
+#: ../liveusb/creator.py:267
 msgid "Removing existing Live OS"
 msgstr "Entferne vorhandenes Live-OS"
 
-#: ../liveusb/creator.py:272
+#: ../liveusb/creator.py:276
 #, python-format
 msgid "Unable to remove previous LiveOS: %s"
 msgstr "Kann vorheriges LiveOS nicht entfernen: %s"
 
-#: ../liveusb/creator.py:303
+#: ../liveusb/creator.py:307
 #, python-format
 msgid "Cannot find device %s"
 msgstr "Kann Gerät %s nicht finden"
 
-#: ../liveusb/creator.py:352
+#: ../liveusb/creator.py:356
 msgid "Unable to find any USB drives"
 msgstr "Kann keine USB-Geräte finden"
 
-#: ../liveusb/creator.py:374
+#: ../liveusb/creator.py:379
 #, python-format
 msgid "Filesystem for %s unknown!"
 msgstr "Dateisystem für %s ist unbekannt!"
 
-#: ../liveusb/creator.py:375
+#: ../liveusb/creator.py:380
 msgid "device"
 msgstr "Gerät"
 
-#: ../liveusb/creator.py:387
+#: ../liveusb/creator.py:392
 #, python-format
 msgid "Unable to mount device: %s"
 msgstr "Kann Gerät nicht einhängen: %s"
 
-#: ../liveusb/creator.py:419
-#: ../liveusb/creator.py:563
+#: ../liveusb/creator.py:428
+#: ../liveusb/creator.py:588
 msgid "Verifying filesystem..."
 msgstr "Überprüfe Dateisystem..."
 
-#: ../liveusb/creator.py:422
+#: ../liveusb/creator.py:431
 #, python-format
 msgid "Unknown filesystem for %s.  Your device may need to be reformatted."
 msgstr "Unbekanntes Dateisystem für %s. Ihr Gerät muss neu formatiert werden."
 
-#: ../liveusb/creator.py:425
+#: ../liveusb/creator.py:434
 #, python-format
 msgid "Unsupported filesystem: %s"
 msgstr "Nicht unterstütztes Dateisystem: %s"
 
-#: ../liveusb/creator.py:446
-#: ../liveusb/creator.py:598
+#: ../liveusb/creator.py:458
+#: ../liveusb/creator.py:623
 msgid "Extracting live image to USB device..."
 msgstr "Extrahiere Live-Abbild auf USB-Gerät..."
 
-#: ../liveusb/creator.py:452
+#: ../liveusb/creator.py:464
 msgid "Unable to find LiveOS on ISO"
 msgstr "Kann kein LiveOS auf ISO finden"
 
-#: ../liveusb/creator.py:463
-#: ../liveusb/creator.py:605
+#: ../liveusb/creator.py:475
+#: ../liveusb/creator.py:630
 msgid "Wrote to device at"
 msgstr "Schreibe auf Gerät unter"
 
-#: ../liveusb/creator.py:476
+#: ../liveusb/creator.py:488
 msgid "Installing bootloader..."
 msgstr "Installiere Bootloader..."
 
-#: ../liveusb/creator.py:559
+#: ../liveusb/creator.py:526
+msgid "Verifying ISO MD5 checksum"
+msgstr "Überprüfe ISO-MD5-Checksumme"
+
+#: ../liveusb/creator.py:584
 msgid "Unable to find any removable devices"
 msgstr "Kann keine Wechseldatenträger finden"
 
-#: ../liveusb/creator.py:567
+#: ../liveusb/creator.py:592
 msgid "Make sure your USB key is plugged in and formatted with the FAT filesystem"
 msgstr "Stellen Sie sicher, dass Ihr USB-Stick eingesteckt ist und formatiert mit einem FAT-Dateisystem"
 
-#: ../liveusb/creator.py:570
+#: ../liveusb/creator.py:595
 #, python-format
 msgid ""
 "Unsupported filesystem: %s\n"
@@ -217,15 +221,15 @@ msgstr ""
 "Nicht unterstütztes Dateisystem: %s\n"
 "Bitte erstellen Sie eine Daten-Sicherung und formatieren Sie Ihren USB-Stick mit einem FAT-Dateisystem."
 
-#: ../liveusb/creator.py:611
+#: ../liveusb/creator.py:636
 msgid "Installing bootloader"
 msgstr "Installiere Bootloader"
 
-#: ../liveusb/creator.py:653
+#: ../liveusb/creator.py:678
 msgid "Cannot find"
 msgstr "Kann nicht finden"
 
-#: ../liveusb/creator.py:654
+#: ../liveusb/creator.py:679
 msgid "Make sure to extract the entire liveusb-creator zip file before running this program."
 msgstr "Stellen Sie sicher, dass Sie das komplette liveusb-creator Zip-Archiv entpackt haben, bevor Sie das Programm laufen lassen."
 
