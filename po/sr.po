@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: liveusb-creator\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-09-03 02:54-0400\n"
-"PO-Revision-Date: 2008-10-21 23:18-0400\n"
+"PO-Revision-Date: 2008-10-21 23:21-0400\n"
 "Last-Translator:  <>\n"
 "Language-Team: Serbian (sr) <fedora-trans-sr@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -54,7 +54,7 @@ msgstr ""
 
 #: ../liveusb/gui.py:177
 msgid "Extracting live image to USB device..."
-msgstr "Издвајам живи на УСБ uređaj..."
+msgstr "Издвајам живи на УСБ уређај..."
 
 #: ../liveusb/gui.py:180
 #, python-format
