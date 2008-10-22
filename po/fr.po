@@ -1,92 +1,59 @@
 # Fedora French translation of liveusb-creator.
 # Copyright (C) 2008 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the liveusb-creator package.
+#
 # Michael Ughetto <telimektar1er@gmail.com>, 2008.
-# 
-# 
+# Pablo Martin-Gomez <pablo.martin-gomez@laposte.net>, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: liveusb-creator 2.7\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-27 07:44+0000\n"
-"PO-Revision-Date: 2008-09-27 16:54+0200\n"
-"Last-Translator: Michael Ughetto <telimektar1er@gmail.com>\n"
-"Language-Team: \n"
+"POT-Creation-Date: 2008-10-22 01:44+0000\n"
+"PO-Revision-Date: 2008-10-22 11:18+0200\n"
+"Last-Translator: Pablo Martin-Gomez <pablo.martin-gomez@laposte.net>\n"
+"Language-Team: Français <fedora-trans-fr@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n>1;"
+"Plural-Forms: nplurals=2; plural=n>1;\n"
+"X-Generator: Lokalize 0.2\n"
 
 #: ../liveusb/__init__.py:42
 msgid "You must run this application as root"
 msgstr "Vous devez exécuter cette application en tant que superutilisateur"
 
-#: ../liveusb/gui.py:68
+#: ../liveusb/gui.py:69
 #, python-format
 msgid "Unknown release: %s"
 msgstr "Version inconnue : %s"
 
-#: ../liveusb/gui.py:72
+#: ../liveusb/gui.py:73
 #, python-format
 msgid "Downloading %s..."
 msgstr "Téléchargement de %s..."
 
-#: ../liveusb/gui.py:151
-msgid "Verifying filesystem..."
-msgstr "Vérification du système de fichiers..."
-
-#: ../liveusb/gui.py:154
+#: ../liveusb/gui.py:156
 msgid ""
 "Error: Cannot set the label or obtain the UUID of your device.  Unable to "
 "continue."
 msgstr ""
-"Erreur : Impossible de configurer l'étiquette ou d'obtenir l'UUID du périphérique. Impossible de continuer."
+"Erreur : Impossible de configurer l'étiquette ou d'obtenir l'UUID du "
+"périphérique. Impossible de continuer."
 
-#: ../liveusb/gui.py:163
-msgid "Verifying SHA1 of LiveCD image..."
-msgstr "Vérification du SHA1 de l'image du Live CD..."
-
-#: ../liveusb/gui.py:165
-msgid ""
-"Error: The SHA1 of your Live CD is invalid.  You can run this program with "
-"the --noverify argument to bypass this verification check."
-msgstr ""
-"Erreur : le SHA1 de votre Live CD est invalide. Vous pouvez exécuter ce programme avec "
-"l'option --noverify pour éviter cette vérification."
-
-#: ../liveusb/gui.py:176
-msgid "Extracting live image to USB device..."
-msgstr "Extraction de l'image live vers le périphérique USB..."
-
-#: ../liveusb/gui.py:178
-#, python-format
-msgid "Wrote to device at %d MB/sec"
-msgstr "Écriture du périphérique à %d Mo/s"
-
-#: ../liveusb/gui.py:180
-#, python-format
-msgid "Creating %d Mb persistent overlay..."
-msgstr "Création de %d Mo de surcouche permanente..."
-
-#: ../liveusb/gui.py:183
-msgid "Configuring and installing bootloader..."
-msgstr "Configuration et installation du chargeur de démarrage..."
-
-#: ../liveusb/gui.py:187
+#: ../liveusb/gui.py:185
 #, python-format
 msgid "Complete! (%s)"
 msgstr "Terminé ! (%s)"
 
-#: ../liveusb/gui.py:190 ../liveusb/gui.py:193
+#: ../liveusb/gui.py:188 ../liveusb/gui.py:191
 msgid "LiveUSB creation failed!"
 msgstr "Échec lors de la création du Live USB !"
 
-#: ../liveusb/gui.py:318
-#, python-format
-msgid "Persistent Storage (%d Mb)"
-msgstr "Stockage permanent (%d Mo)"
+#: ../liveusb/gui.py:331
+msgid "Persistent Storage"
+msgstr "Stockage persistant"
 
-#: ../liveusb/gui.py:336
+#: ../liveusb/gui.py:349
 msgid ""
 "Your device already contains a LiveOS.\n"
 "If you continue, this will be overwritten."
@@ -94,65 +61,81 @@ msgstr ""
 "Votre périphérique contient déjà un système d'exploitation live.\n"
 "Si vous continuez, il sera écrasé."
 
-#: ../liveusb/gui.py:339
-msgid ""
-"Warning: Creating a new persistent overlay will delete your existing one."
-msgstr "Attention : la création d'une nouvelle surcouche permanente effacera celle existante."
+#: ../liveusb/gui.py:352
+msgid "Warning: Creating a new persistent overlay will delete your existing one."
+msgstr ""
+"Attention : la création d'une nouvelle surcouche permanente effacera celle "
+"existante."
 
-#: ../liveusb/gui.py:341
+#: ../liveusb/gui.py:354
 msgid "Press 'Create Live USB' again if you wish to continue."
 msgstr "Appuyez sur « Créez le Live USB » si vous voulez continuer."
 
-#. The user has confirmed that they wish to overwrite their
-#. existing Live OS.  Here we delete it first, in order to
-#. accurately calculate progress.
-#: ../liveusb/gui.py:351
-msgid "Removing existing Live OS..."
-msgstr "Suppression du système d'exploitation live existant..."
-
-#: ../liveusb/gui.py:385
+#: ../liveusb/gui.py:400
 msgid "Download complete!"
 msgstr "Téléchargement terminé."
 
-#: ../liveusb/gui.py:389
+#: ../liveusb/gui.py:404
 msgid "Download failed: "
 msgstr "Échec du téléchargement :"
 
-#: ../liveusb/gui.py:390
+#: ../liveusb/gui.py:405
 msgid "You can try again to resume your download"
 msgstr "Vous pouvez essayer à nouveau pour reprendre votre téléchargement"
 
-#: ../liveusb/gui.py:394
+#: ../liveusb/gui.py:409
 msgid "Select Live ISO"
 msgstr "Sélectionnez l'ISO live"
 
-#: ../liveusb/gui.py:401
+#: ../liveusb/gui.py:416
 msgid ""
 "Sorry, I'm having trouble encoding the filename of your livecd.  You may "
 "have better luck if you move your ISO to the root of your drive (ie: C:\\)"
 msgstr ""
-"Désolé, j'éprouve des difficultés à coder le nom de fichier de votre Live CD. Vous devriez "
-"avoir plus de chance en déplacant l'ISO à la racine de votre disque (par exemple : C:\\)"
+"Désolé, j'éprouve des difficultés à coder le nom de fichier de votre Live "
+"CD. Vous devriez avoir plus de chance en déplacant l'ISO à la racine de "
+"votre disque (par exemple : C:\\)"
 
-#: ../liveusb/gui.py:406
-#, python-format
-msgid "ISO selected: %s"
-msgstr "ISO sélectionnée : %s"
+#: ../liveusb/gui.py:422
+msgid "selected"
+msgstr "sélectionné"
 
-#: ../liveusb/creator.py:148
+#: ../liveusb/creator.py:128
+msgid "Setting up OLPC boot file..."
+msgstr "Configuration du fichier d'amorçage de l'OLPC..."
+
+#: ../liveusb/creator.py:180
 #, python-format
 msgid ""
 "There was a problem executing the following command: `%s`\n"
 "A more detailed error log has been written to 'liveusb-creator.log'"
 msgstr ""
-"Un problème est survenu lors de l'exécution de la commande suivante : « %s »\n"
-"Un journal d'erreur plus détaillé a été écrit dans le fichier « liveusb-creator.log »"
+"Un problème est survenu lors de l'exécution de la commande suivante : « %"
+"s »\n"
+"Un journal d'erreur plus détaillé a été écrit dans le fichier « liveusb-"
+"creator.log »"
 
-#: ../liveusb/creator.py:185
+#: ../liveusb/creator.py:187
+msgid "Verifying SHA1 of LiveCD image..."
+msgstr "Vérification du SHA1 de l'image du Live CD..."
+
+#: ../liveusb/creator.py:209
+msgid ""
+"Error: The SHA1 of your Live CD is invalid.  You can run this program with "
+"the --noverify argument to bypass this verification check."
+msgstr ""
+"Erreur : le SHA1 de votre Live CD est invalide. Vous pouvez exécuter ce "
+"programme avec l'option --noverify pour éviter cette vérification."
+
+#: ../liveusb/creator.py:215
+msgid "Unknown ISO, skipping checksum verification"
+msgstr "ISO inconnue, omission de la vérification de la somme de contrôle"
+
+#: ../liveusb/creator.py:227
 msgid "Not enough free space on device."
 msgstr "Espace libre insuffisant sur le périphérique."
 
-#: ../liveusb/creator.py:186
+#: ../liveusb/creator.py:228
 #, python-format
 msgid ""
 "\n"
@@ -161,80 +144,117 @@ msgstr ""
 "\n"
 "ISO %d Mo + surcouche %d Mo > espace libre %d Mo"
 
-#: ../liveusb/creator.py:192
-#, python-format
-msgid "Creating %sMB persistent overlay"
-msgstr "Création d'une surcouche permanente de %s Mo"
+#: ../liveusb/creator.py:234
+msgid "Creating"
+msgstr "Création"
 
-#: ../liveusb/creator.py:228
+#: ../liveusb/creator.py:235
+msgid "persistent overlay"
+msgstr "surcouche permanente"
+
+#: ../liveusb/creator.py:267
+msgid "Removing existing Live OS"
+msgstr "Suppression du système d'exploitation live existant"
+
+#: ../liveusb/creator.py:276
 #, python-format
 msgid "Unable to remove previous LiveOS: %s"
 msgstr "Impossible d'enlever le système d'exploitation live précédent : %s"
 
-#: ../liveusb/creator.py:259
+#: ../liveusb/creator.py:307
 #, python-format
 msgid "Cannot find device %s"
 msgstr "Impossible de trouver le périphérique %s"
 
-#: ../liveusb/creator.py:308
+#: ../liveusb/creator.py:356
 msgid "Unable to find any USB drives"
 msgstr "Impossible de trouver un lecteur USB"
 
-#: ../liveusb/creator.py:330
+#: ../liveusb/creator.py:379
 #, python-format
 msgid "Filesystem for %s unknown!"
 msgstr "Système de fichiers pour %s inconnu."
 
-#: ../liveusb/creator.py:331
+#: ../liveusb/creator.py:380
 msgid "device"
 msgstr "périphérique"
 
-#: ../liveusb/creator.py:343
+#: ../liveusb/creator.py:392
 #, python-format
 msgid "Unable to mount device: %s"
 msgstr "Impossible de monter le périphérique : %s"
 
-#: ../liveusb/creator.py:377
+#: ../liveusb/creator.py:428 ../liveusb/creator.py:588
+msgid "Verifying filesystem..."
+msgstr "Vérification du système de fichiers..."
+
+#: ../liveusb/creator.py:431
 #, python-format
 msgid "Unknown filesystem for %s.  Your device may need to be reformatted."
-msgstr "Système de fichiers inconnu pour %s. Votre périphérique doit être reformaté."
+msgstr ""
+"Système de fichiers inconnu pour %s. Votre périphérique doit être reformaté."
 
-#: ../liveusb/creator.py:380
+#: ../liveusb/creator.py:434
 #, python-format
 msgid "Unsupported filesystem: %s"
 msgstr "Système de fichiers non pris en charge : %s"
 
-#: ../liveusb/creator.py:407
+#: ../liveusb/creator.py:458 ../liveusb/creator.py:623
+msgid "Extracting live image to USB device..."
+msgstr "Extraction de l'image live vers le périphérique USB..."
+
+#: ../liveusb/creator.py:464
 msgid "Unable to find LiveOS on ISO"
 msgstr "Impossible de trouver un système d'exploitation live sur l'ISO"
 
-#: ../liveusb/creator.py:484
+#: ../liveusb/creator.py:475 ../liveusb/creator.py:630
+msgid "Wrote to device at"
+msgstr "Écriture du périphérique à "
+
+#: ../liveusb/creator.py:488
+msgid "Installing bootloader..."
+msgstr "Installation du chargeur de démarrage..."
+
+#: ../liveusb/creator.py:526
+msgid "Verifying ISO MD5 checksum"
+msgstr "Vérification de la somme de contrôle MD5 de l'ISO"
+
+#: ../liveusb/creator.py:584
 msgid "Unable to find any removable devices"
 msgstr "Impossible de trouver un périphérique amovible"
 
-#: ../liveusb/creator.py:491
+#: ../liveusb/creator.py:592
 msgid ""
 "Make sure your USB key is plugged in and formatted with the FAT filesystem"
 msgstr ""
-"Assurez-vous que votre clé USB est branchée et qu'elle est formatée avec le système de fichiers FAT"
+"Assurez-vous que votre clé USB est branchée et qu'elle est formatée avec le "
+"système de fichiers FAT"
 
-#: ../liveusb/creator.py:494
+#: ../liveusb/creator.py:595
 #, python-format
 msgid ""
 "Unsupported filesystem: %s\n"
 "Please backup and format your USB key with the FAT filesystem."
 msgstr ""
 "Système de fichiers non pris en charge : %s\n"
-"Veuillez sauvegarder le contenu de votre clé USB et la formater avec le système de fichiers FAT."
+"Veuillez sauvegarder le contenu de votre clé USB et la formater avec le "
+"système de fichiers FAT."
 
-#: ../liveusb/creator.py:570
-#, python-format
+#: ../liveusb/creator.py:636
+msgid "Installing bootloader"
+msgstr "Installation du chargeur de démarrage"
+
+#: ../liveusb/creator.py:678
+msgid "Cannot find"
+msgstr "Impossible de trouver "
+
+#: ../liveusb/creator.py:679
 msgid ""
-"Cannot find '%s'.  Make sure to extract the entire liveusb-creator zip file "
-"before running this program."
+"Make sure to extract the entire liveusb-creator zip file before running this "
+"program."
 msgstr ""
-"Impossible de trouver « %s ». Assurez-vous d'extraire complètement l'archive zip de liveusb-creator "
-"avant d'exécuter ce programme."
+"Assurez-vous d'extraire complètement l'archive "
+"zip de liveusb-creator avant d'exécuter ce programme."
 
 #: ../liveusb/linux_dialog.py:98 ../liveusb/windows_dialog.py:104
 msgid "Fedora LiveUSB Creator"
@@ -247,10 +267,10 @@ msgid ""
 "extracting the ISO to the USB device, creating the persistent overlay, and "
 "installing the bootloader."
 msgstr ""
-"Ce bouton lancera le processus de création du Live USB. Cela implique "
-"le téléchargement optionnel d'une version (si aucune existante n'a été sélectionnée), "
-"l'extraction de l'ISO vers le périphérique USB, la création d'une surcouche permanente, et "
-"l'installation du chargeur de démarrage."
+"Ce bouton lancera le processus de création du Live USB. Cela implique le "
+"téléchargement optionnel d'une version (si aucune existante n'a été "
+"sélectionnée), l'extraction de l'ISO vers le périphérique USB, la création "
+"d'une surcouche permanente, et l'installation du chargeur de démarrage."
 
 #: ../liveusb/linux_dialog.py:100 ../liveusb/windows_dialog.py:106
 msgid "Create Live USB"
@@ -273,7 +293,8 @@ msgid ""
 "If you do not select an existing Live CD, the selected release will be "
 "downloaded for you."
 msgstr ""
-"Si vous ne choisissez pas un Live CD existant, la version sélectionnée sera téléchargée pour vous."
+"Si vous ne choisissez pas un Live CD existant, la version sélectionnée sera "
+"téléchargée pour vous."
 
 #: ../liveusb/linux_dialog.py:104 ../liveusb/windows_dialog.py:110
 msgid "Download Fedora"
@@ -289,9 +310,9 @@ msgid ""
 "previously downloaded.  If you do not select one, a release will be "
 "downloaded for you automatically."
 msgstr ""
-"Ce bouton vous permet de naviguer jusqu'à une ISO de Live CD que avez téléchargé "
-"précédemment. Si vous n'en sélectionnez aucune, une version sera automatiquement "
-"téléchargée pour vous."
+"Ce bouton vous permet de naviguer jusqu'à une ISO de Live CD que avez "
+"téléchargé précédemment. Si vous n'en sélectionnez aucune, une version sera "
+"automatiquement téléchargée pour vous."
 
 #: ../liveusb/linux_dialog.py:107 ../liveusb/windows_dialog.py:113
 msgid "Use existing Live CD"
@@ -306,8 +327,8 @@ msgid ""
 "This is the USB stick that you want to install your Live CD on.  This device "
 "must be formatted with the FAT filesystem."
 msgstr ""
-"Il s'agit de la clé USB sur laquelle vous allez installer le Live CD. Ce périphérique "
-"doit être formaté avec le système de fichiers FAT."
+"Il s'agit de la clé USB sur laquelle vous allez installer le Live CD. Ce "
+"périphérique doit être formaté avec le système de fichiers FAT."
 
 #: ../liveusb/linux_dialog.py:112 ../liveusb/windows_dialog.py:118
 msgid ""
@@ -316,15 +337,23 @@ msgid ""
 "operating system.  Without it, you will not be able to save data that will "
 "persist after a reboot."
 msgstr ""
-"En allouant de l'espace supplémentaire sur votre clé USB pour une surcouche permanente, vous "
-"pourrez stocker des fichiers et faire des modifications permanentes sur votre système d'exploitation live. "
-"Sans cela, vous ne pourrez pas enregistrer de données pour qu'elles soient disponibles après un redémarrage."
+"En allouant de l'espace supplémentaire sur votre clé USB pour une surcouche "
+"permanente, vous pourrez stocker des fichiers et faire des modifications "
+"permanentes sur votre système d'exploitation live. Sans cela, vous ne "
+"pourrez pas enregistrer de données pour qu'elles soient disponibles après un "
+"redémarrage."
 
 #: ../liveusb/linux_dialog.py:113 ../liveusb/windows_dialog.py:119
-msgid "Persistent Storage (0Mb)"
-msgstr "Stockage permanent (0 Mo)"
+msgid "Persistent Storage (0 Mb)"
+msgstr "Stockage persistant (0 Mo)"
 
 #: ../liveusb/windows_dialog.py:117
 msgid "Target Device"
 msgstr "Périphérique cible"
+
+#~ msgid "Creating %d Mb persistent overlay..."
+#~ msgstr "Création de %d Mo de surcouche permanente..."
+
+#~ msgid "Persistent Storage (%d Mb)"
+#~ msgstr "Stockage permanent (%d Mo)"
 
