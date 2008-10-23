@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liveusb-creator\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-22 01:44+0000\n"
-"PO-Revision-Date: 2008-10-22 14:06+0100\n"
-"Last-Translator: Fabian Affolter <fab@fedoraproject.org>\n"
+"POT-Creation-Date: 2008-10-22 13:43+0000\n"
+"PO-Revision-Date: 2008-10-23 19:50+0100\n"
+"Last-Translator: Marcus Nitzschke <marcusni@gmx.de>\n"
 "Language-Team: German <fedora-trans-de@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -63,7 +63,7 @@ msgstr "Warnung: Das Erzeugen eines neuen persistenten Overlay löscht ein vorha
 
 #: ../liveusb/gui.py:354
 msgid "Press 'Create Live USB' again if you wish to continue."
-msgstr "Drücke Sie 'Create Live USB' nochmals, wenn Sie weiterfahren wollen."
+msgstr "Drücken Sie 'Create Live USB' nochmals, wenn Sie fortfahren wollen."
 
 #: ../liveusb/gui.py:400
 msgid "Download complete!"
@@ -116,7 +116,7 @@ msgstr "Unbekannte ISO-Datei, überspringe Checksummen-Überprüfung"
 
 #: ../liveusb/creator.py:227
 msgid "Not enough free space on device."
-msgstr "Nicht genügend freier Platz auf den Gerät."
+msgstr "Nicht genügend freier Platz auf dem Gerät."
 
 #: ../liveusb/creator.py:228
 #, python-format
@@ -210,7 +210,7 @@ msgstr "Kann keine Wechseldatenträger finden"
 
 #: ../liveusb/creator.py:592
 msgid "Make sure your USB key is plugged in and formatted with the FAT filesystem"
-msgstr "Stellen Sie sicher, dass Ihr USB-Stick eingesteckt ist und formatiert mit einem FAT-Dateisystem"
+msgstr "Stellen Sie sicher, dass Ihr USB-Stick eingesteckt und mit einem FAT-Dateisystem formatiert ist"
 
 #: ../liveusb/creator.py:595
 #, python-format
@@ -231,7 +231,7 @@ msgstr "Kann nicht finden"
 
 #: ../liveusb/creator.py:679
 msgid "Make sure to extract the entire liveusb-creator zip file before running this program."
-msgstr "Stellen Sie sicher, dass Sie das komplette liveusb-creator Zip-Archiv entpackt haben, bevor Sie das Programm laufen lassen."
+msgstr "Stellen Sie sicher, dass Sie das komplette liveusb-creator Zip-Archiv entpackt haben, bevor Sie das Programm ausführen."
 
 #: ../liveusb/linux_dialog.py:98
 #: ../liveusb/windows_dialog.py:104
@@ -276,7 +276,7 @@ msgstr "oder"
 #: ../liveusb/linux_dialog.py:106
 #: ../liveusb/windows_dialog.py:112
 msgid "This button allows you to browse for an existing Live CD ISO that you have previously downloaded.  If you do not select one, a release will be downloaded for you automatically."
-msgstr "Diese Schaltfläche erlaubt Ihnen das Suchen nach einer vorhandenen Live-CD ISO-Datei zu suchen, welche früher heruntergeladen wurde. Wenn Sie keine wählen, wird automatisch eine Version für Sie herunterladen."
+msgstr "Diese Schaltfläche erlaubt Ihnen das Suchen nach einer vorhandenen Live-CD ISO-Datei, welche früher heruntergeladen wurde. Wenn Sie keine wählen, wird automatisch eine Version für Sie heruntergeladen."
 
 #: ../liveusb/linux_dialog.py:107
 #: ../liveusb/windows_dialog.py:113
@@ -291,12 +291,12 @@ msgstr "Durchsuchen"
 #: ../liveusb/linux_dialog.py:110
 #: ../liveusb/windows_dialog.py:116
 msgid "This is the USB stick that you want to install your Live CD on.  This device must be formatted with the FAT filesystem."
-msgstr "Dies ist der USB-Stick auf welchem Sie Ihre Live-CD isntallieren wollen. Das Gerät muss mit einem FAT-DAteisystem formatiert sein."
+msgstr "Dies ist der USB-Stick auf welchem Sie Ihre Live-CD installieren wollen. Das Gerät muss mit einem FAT-Dateisystem formatiert sein."
 
 #: ../liveusb/linux_dialog.py:112
 #: ../liveusb/windows_dialog.py:118
 msgid "By allocating extra space on your USB stick for a persistent overlay, you will be able to store data and make permanent modifications to your live operating system.  Without it, you will not be able to save data that will persist after a reboot."
-msgstr "Durch das Hinzufügen von weiterem Speicherplatz für das persistente Overlay auf Ihrem USB-Stick,wird es Ihnen möglich sein, Daten und Änderungen permanent für Ihr Live-Betriebssystem zu speichern. Ohne wird es Ihnen nicht möglich sein Daten zu speichern, welche nach den Neustart noch verfügbar sind. "
+msgstr "Durch das Hinzufügen von weiterem Speicherplatz für das persistente Overlay auf Ihrem USB-Stick,wird es Ihnen möglich sein, Daten und Änderungen permanent für Ihr Live-Betriebssystem zu speichern. Ohne wird es Ihnen nicht möglich sein Daten zu speichern, welche nach einem Neustart noch verfügbar sind. "
 
 #: ../liveusb/linux_dialog.py:113
 #: ../liveusb/windows_dialog.py:119
