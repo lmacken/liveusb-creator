@@ -457,7 +457,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         """ Extract self.iso to self.dest """
         self.log.info(_("Extracting live image to USB device..."))
         tmpdir = tempfile.mkdtemp()
-        self.popen('mount -o loop,ro %s %s' % (self.iso, tmpdir))
+        self.popen('mount -o loop,ro "%s" %s' % (self.iso, tmpdir))
         tmpliveos = os.path.join(tmpdir, 'LiveOS')
         try:
             if not os.path.isdir(tmpliveos):
