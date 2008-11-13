@@ -320,6 +320,21 @@ class LiveUSBCreator(object):
         """ Return a dictionary of proxy settings """
         return None
 
+    def blank_mbr(self):
+        """ Return whether the MBR is empty or not """
+        drive = open(self._drive, 'rb')
+        mbr = ''.join(['%02X' % ord(x) for x in drive.read(2)])
+        drive.close()
+        self.log.debug('mbr = %r' % mbr)
+        return mbr == '0000'
+
+    def reset_mbr(self):
+        self.log.info(_('Resetting MBR...'))
+        if '/dev/loop' in self.drive:
+            self.log.warning('Cannot reset MBR on loopback device')
+            return
+        self.popen('cat /usr/lib/syslinux/mbr.bin > %s' % self._drive)
+
 
 class LinuxLiveUSBCreator(LiveUSBCreator):
 
@@ -458,6 +473,11 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             except LiveUSBError, e:
                 self.log.error("Unable to change volume label: %s" % str(e))
                 self.label = None
+
+        # Ensure our master boot record is not empty
+        if self.blank_mbr():
+            self.log.debug(_('Your MBR appears to be blank'))
+            self.reset_mbr()
 
     def extract_iso(self):
         """ Extract self.iso to self.dest """
