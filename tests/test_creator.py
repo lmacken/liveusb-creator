@@ -112,3 +112,21 @@ class TestLiveUSBCreator:
                 live.get_liveos()), 'isolinux', 'isolinux.cfg'))
             assert os.path.exists(os.path.join(os.path.dirname(
                 live.get_liveos()), 'isolinux', 'vmlinuz0'))
+
+    def test_mbr(self):
+        """ Ensure that we can properly detect and reset a blank MBR """
+        live = self._get_creator()
+        live.detect_removable_drives()
+
+        # wipe out mbr
+        for drive in live.drives:
+            live.drive = drive
+
+            # Wipe out our MBR
+            print "Zeroing the MBR on %s" % drive
+            live.popen('dd if=/dev/zero of=%s bs=2 count=1' % drive)
+            assert live.blank_mbr()
+
+            # Reset the MBR
+            live.reset_mbr()
+            assert not live.blank_mbr()
