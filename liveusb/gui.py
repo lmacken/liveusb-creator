@@ -181,8 +181,18 @@ class LiveUSBThread(QtCore.QThread):
             self.live.update_configs()
             self.live.install_bootloader()
 
+            try:
+                self.live.unmount_device()
+            except Exception, e:
+                import traceback
+                self.live.log.error('Problem unmounting device')
+                self.live.log.error(traceback.format_exc())
+
+            self.live.bootable_partition()
+
             duration = str(datetime.now() - now).split('.')[0]
             self.status(_("Complete! (%s)" % duration))
+
         except LiveUSBError, e:
             self.status(e.message)
             self.status(_("LiveUSB creation failed!"))
@@ -202,7 +212,9 @@ class LiveUSBThread(QtCore.QThread):
         self.emit(QtCore.SIGNAL("progress(int)"), value)
 
     def __del__(self):
+        self.live.log.debug('LiveUSBThread.__del__.  Waiting...')
         self.wait()
+        self.live.log.debug('Done waiting')
 
 
 class LiveUSBLogHandler(logging.Handler):
