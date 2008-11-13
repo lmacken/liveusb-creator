@@ -756,4 +756,4 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
 
         At the moment this is Linux-only, until we port checkisomd5 to Windows.
         """
-        pass
+        return True
