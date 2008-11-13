@@ -125,6 +125,12 @@ class LiveUSBCreator(object):
             self._setup_olpc()
 
     def _setup_olpc(self):
+        """ Install the Open Firmware configuration for the OLPC.
+
+        This method will make the selected device bootable on the OLPC.  It
+        does this by installing a /boot/olpc.fth open firmware configuration
+        file that enables booting off of USB and SD cards on the XO.
+        """
         self.log.info(_('Setting up OLPC boot file...'))
         args = []
 
