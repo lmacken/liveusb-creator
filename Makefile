@@ -36,3 +36,6 @@ clean:
 	rm -f *.py{c,o} */*.py{c,o} */*/*.py{c,o}
 	rm -fr po/${PKGNAME}*.po{,.new} po/locale
 	rm -fr build
+
+docs:
+		epydoc --name liveusb-creator -u http://liveusb-creator.fedorahosted.org -o docs --exclude urlgrabber liveusb
