@@ -123,7 +123,6 @@ class TestLiveUSBCreator:
             live.drive = drive
 
             # Wipe out our MBR
-            print "Zeroing the MBR on %s" % drive
             live.popen('dd if=/dev/zero of=%s bs=2 count=1' % drive)
             assert live.blank_mbr()
 
