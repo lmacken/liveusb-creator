@@ -2,7 +2,7 @@
 
 Name:           liveusb-creator
 Version:        3.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A liveusb creator
 
 Group:          Applications/System
@@ -12,6 +12,9 @@ Source0:        https://fedorahosted.org/releases/l/i/liveusb-creator/%{name}-%{
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
+ExcludeArch:    ppc
+ExcludeArch:    ppc64
+
 BuildRequires:  python-devel, python-setuptools, PyQt4-devel, desktop-file-utils gettext
 Requires:       syslinux, PyQt4, usermode, isomd5sum
 
@@ -61,6 +64,9 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/security/console.apps/%{name}
 
 %changelog
+* Fri Oct 03 2008 Luke Macken <lmacken@redhat.com> 3.0-2
+- Exclude ppc and ppc64, as syslinux will not work on those architectures.
+
 * Fri Aug 29 2008 Luke Macken <lmacken@redhat.com> 3.0-1
 - Latest upstream release, containing various bugfixes
 - Fedora 10 Beta support
