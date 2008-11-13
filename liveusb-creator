@@ -32,18 +32,6 @@ def parse_args():
                       help='Use the "safe, slow and stupid" bootloader')
     parser.add_option('-n', '--noverify', dest='noverify', action='store_true',
                       help='Skip checksum verification')
-    parser.add_option('-o', '--overlay-size-mb', dest='overlay_size',
-                      action='store', type='int', metavar='MB', 
-                      help='Create a persistent overlay with a given size')
-    parser.add_option('-H', '--home-size-mb', dest='home_size',
-                      action='store', type='int', metavar='MB', 
-                      help='Specify the home directory size')
-    parser.add_option('-C', '--crypted-home', dest='crypted_home',
-                      action='store_true', default=True,
-                      help='Encrypt the home directory (default: True)')
-    parser.add_option('-d', '--delete-home', dest='delete_home',
-                      action='store_true', default=False,
-                      help='Delete the existing homedirectory')
     parser.add_option('-v', '--verbose', dest='verbose', action='store_true',
                       help='Output extra debugging messages')
     parser.add_option('-k', '--extra-kernel-args', dest='kernel_args',

@@ -40,51 +40,6 @@ from stat import ST_SIZE
 from liveusb.releases import releases
 from liveusb import _
 
-"""
-TODO:
-
-    Home directory support
-
-    Encrypted home!!!
-        do it with command line arguments to begin with
-
-    - getmbr.. make sure the MBR is not blank (in our test cases as well)
-    # if we're installing to whole-disk and not a partition, then we 
-    # don't need to worry about being active
-    if [ "$dev" = "$device" ]; then
-	return
-    fi
-    if [[ "$dev" =~ "/dev/loop*" ]]; then
-        return
-    fi
-
-    if [ "$(/sbin/fdisk -l $device 2>/dev/null |grep $dev |awk {'print $2;'})" != "*" ]; then
-	echo "Partition isn't marked bootable!"
-	echo "You can mark the partition as bootable with "
-        echo "    # /sbin/parted $device"
-	echo "    (parted) toggle N boot"
-	echo "    (parted) quit"
-	exitclean
-    fi
-
-    Run these sanity checks after the process is complete!
-
-
-    --mactel support
-
-    EFI Support! 
-        createGPTLayout
-        checkGPT
-
-    Make sure we support vfat, msdos, ext2, and ext3 in Linux
-        if [ "$USBFS" = "vfat" -o "$USBFS" = "msdos" ]; then
-        mountopts="-o shortname=winnt,umask=0077"
-        fi
-    Fix label setting ?
-
-    Create a custom logger handler in the gui, so the gui doesn't have to duplicate the info messages in the creator module
-
-"""
 
 class LiveUSBError(Exception):
     """ A generic error message that is thrown by the LiveUSBCreator """
@@ -93,21 +48,20 @@ class LiveUSBError(Exception):
 class LiveUSBCreator(object):
     """ An OS-independent parent class for Live USB Creators """
 
-    iso = None            # the path to our live image
-    label = "FEDORA"      # if one doesn't already exist
-    fstype = None         # the format of our usb stick
-    drives = {}           # {device: {'label': label, 'mount': mountpoint}}
-    overlay = 0           # size in mb of our persisten overlay
-    dest = None           # the mount point of of our selected drive
-    uuid = None           # the uuid of our selected drive
-    pids = []             # a list of pids of all of our subprocesses
-    output = StringIO()   # log subprocess output in case of errors
-    totalsize = 0         # the total size of our overlay + iso
-    isosize = 0           # the size of the selected iso
-    _drive = None         # mountpoint of the currently selected drive
-    mb_per_sec = 0        # how many megabytes per second we can write
-    log = None            # our main logging.Logger object
-    homefile = 'home.img' # 
+    iso = None          # the path to our live image
+    label = "FEDORA"    # if one doesn't already exist
+    fstype = None       # the format of our usb stick
+    drives = {}         # {device: {'label': label, 'mount': mountpoint}}
+    overlay = 0         # size in mb of our persisten overlay
+    dest = None         # the mount point of of our selected drive
+    uuid = None         # the uuid of our selected drive
+    pids = []           # a list of pids of all of our subprocesses
+    output = StringIO() # log subprocess output in case of errors
+    totalsize = 0       # the total size of our overlay + iso
+    isosize = 0         # the size of the selected iso
+    _drive = None       # mountpoint of the currently selected drive
+    mb_per_sec = 0      # how many megabytes per second we can write
+    log = None
 
     drive = property(fget=lambda self: self.drives[self._drive],
                      fset=lambda self, d: self._set_drive(d))
@@ -366,21 +320,6 @@ class LiveUSBCreator(object):
         """ Return a dictionary of proxy settings """
         return None
 
-    def blank_mbr(self):
-        """ Return whether the MBR is empty or not """
-        drive = open(self._drive, 'rb')
-        mbr = ''.join(['%02X' % ord(x) for x in drive.read(2)])
-        drive.close()
-        self.log.debug('mbr = %r' % mbr)
-        return mbr == '0000'
-
-    def reset_mbr(self):
-        self.log.info(_('Resetting MBR...'))
-        if '/dev/loop' in self.drive:
-            self.log.warning('Cannot reset MBR on loopback device')
-            return
-        self.popen('cat /usr/lib/syslinux/mbr.bin > %s' % self._drive)
-
 
 class LinuxLiveUSBCreator(LiveUSBCreator):
 
@@ -520,11 +459,6 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 self.log.error("Unable to change volume label: %s" % str(e))
                 self.label = None
 
-        # Ensure our master boot record is not empty
-        if self.blank_mbr():
-            self.log.debug(_('Your MBR appears to be blank'))
-            self.reset_mbr()
-
     def extract_iso(self):
         """ Extract self.iso to self.dest """
         self.log.info(_("Extracting live image to USB device..."))
@@ -629,58 +563,6 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             if ftpProxy != '':
                 proxies['ftp'] = ftpProxy
         return proxies
-
-    def initialize_zip_geometry(self):
-        """ This method initializes the selected device in a zip-like fashon.
-
-        More details on this can be found here:
-            http://syslinux.zytor.com/doc/usbkey.txt
-        """
-        self.log.debug('Initializing %s in a zip-like fashon' % self._drive)
-        return
-        from parted import PedDevice
-        device = PedDevice.get(self._drive) # not the partition?!
-        cylinders = int(device.cylinders / (64 * 32))
-        self.popen('/usr/lib/syslinux/mkdiskimage -4 %s 0 64 32' % self._drive)
-        # TODO -- figure out where the cylinders come into play... the 
-        # example calculates 31, but uses 32 anyway?
-
-    def bootable_partition(self):
-        """ Return whether or not the selected partition is bootable """
-        import parted
-        parent = self.drives[self._drive]['parent']
-        if not parent:
-            self.log.warning('%s has no parent device' % self._drive)
-            return
-        dev = parted.PedDevice.get(parent)
-        disk = parted.PedDisk.new(dev)
-        partitions = self._get_partitions(disk)
-        for part in partitions:
-            name = '%s%d' % (parent, part.num)
-            if name == self._drive:
-                if part.is_flag_available(parted.PARTITION_BOOT):
-                    if part.get_flag(parted.PARTITION_BOOT):
-                        self.log.debug('%s already bootable' % name)
-                    else:
-                        self.log.debug('%s not bootable' % name)
-                        part.set_flag(parted.PARTITION_BOOT, 1)
-                        disk.commit()
-                        self.log.info('Marked %s as bootable' % name)
-                        return
-                else:
-                    self.log.warning('%s does not have boot flag' % name)
-
-    def _get_partitions(self, disk):
-        """ Return a list of partitions on a given parted.PedDisk """
-        partitions = []
-        part = disk.next_partition()
-        while part:
-            if part.type_name in ("metadata", "free"):
-                part = disk.next_partition(part)
-                continue
-            partitions.append(part)
-            part = disk.next_partition(part)
-        return partitions
 
 
 class WindowsLiveUSBCreator(LiveUSBCreator):
