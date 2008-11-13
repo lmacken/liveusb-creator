@@ -213,7 +213,7 @@ class LiveUSBLogHandler(logging.Handler):
 
     def emit(self, record):
         if record.levelname in ('INFO', 'ERROR'):
-            self.cb(record.msg.encode('utf8', 'replace'))
+            self.cb(record.msg)
 
 
 class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
@@ -316,7 +316,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         self.progressBar.setMaximum(value)
 
     def status(self, text):
-        self.textEdit.append(text.encode('utf8', 'replace'))
+        self.textEdit.append(text)
 
     def enable_widgets(self, enabled=True):
         self.startButton.setEnabled(enabled)
