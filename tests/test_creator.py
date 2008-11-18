@@ -118,7 +118,6 @@ class TestLiveUSBCreator:
         live = self._get_creator()
         live.detect_removable_drives()
 
-        # wipe out mbr
         for drive in live.drives:
             live.drive = drive
 
