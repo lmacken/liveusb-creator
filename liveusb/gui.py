@@ -180,9 +180,11 @@ class LiveUSBThread(QtCore.QThread):
             self.live.create_persistent_overlay()
             self.live.update_configs()
             self.live.install_bootloader()
+            self.live.bootable_partition()
 
             duration = str(datetime.now() - now).split('.')[0]
             self.status(_("Complete! (%s)" % duration))
+
         except LiveUSBError, e:
             self.status(e.message)
             self.status(_("LiveUSB creation failed!"))

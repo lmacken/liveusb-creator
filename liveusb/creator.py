@@ -586,6 +586,42 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 proxies['ftp'] = ftpProxy
         return proxies
 
+    def bootable_partition(self):
+        """ Ensure that the selected partition is flagged as bootable """
+        import parted
+        parent = self.drives[self._drive]['parent']
+        if not parent:
+            self.log.warning('%s has no parent device' % self._drive)
+            return
+        dev = parted.PedDevice.get(parent)
+        disk = parted.PedDisk.new(dev)
+        partitions = self.get_partitions(disk)
+        for part in partitions:
+            name = '%s%d' % (parent, part.num)
+            if name == self._drive:
+                if part.is_flag_available(parted.PARTITION_BOOT):
+                    if part.get_flag(parted.PARTITION_BOOT):
+                        self.log.debug('%s already bootable' % name)
+                    else:
+                        part.set_flag(parted.PARTITION_BOOT, 1)
+                        disk.commit()
+                        self.log.info('Marked %s as bootable' % name)
+                        return
+                else:
+                    self.log.warning('%s does not have boot flag' % name)
+
+    def get_partitions(self, disk):
+        """ Return a list of partitions on a given parted.PedDisk """
+        partitions = []
+        part = disk.next_partition()
+        while part:
+            if part.type_name in ("metadata", "free"):
+                part = disk.next_partition(part)
+                continue
+            partitions.append(part)
+            part = disk.next_partition(part)
+        return partitions
+
 
 class WindowsLiveUSBCreator(LiveUSBCreator):
 
