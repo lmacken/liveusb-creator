@@ -122,19 +122,28 @@ class LiveUSBCreator(object):
             raise LiveUSBError('extract_iso must be run before '
                                'install_bootloader')
         if self.opts.xo:
-            self._setup_olpc()
+            self.setup_olpc()
 
-    def _setup_olpc(self):
+    def setup_olpc(self):
         """ Install the Open Firmware configuration for the OLPC.
 
         This method will make the selected device bootable on the OLPC.  It
         does this by installing a /boot/olpc.fth open firmware configuration
         file that enables booting off of USB and SD cards on the XO.
         """
+        from liveusb.olpc import ofw_config
         self.log.info(_('Setting up OLPC boot file...'))
-        args = []
+        args = self.get_kernel_args()
+        if not os.path.exists(os.path.join(self.dest, 'boot')):
+            os.mkdir(os.path.join(self.dest, 'boot'))
+        olpc_cfg = file(os.path.join(self.dest, 'boot', 'olpc.fth'), 'w')
+        olpc_cfg.write(ofw_config % ' '.join(args))
+        olpc_cfg.close()
+        self.log.debug('Wrote %s' % olpc_cfg.name)
 
-        # Grab the kernel arguments from our syslinux configuration
+    def get_kernel_args(self):
+        """ Grab the kernel arguments from our syslinux configuration """
+        args = []
         cfg = file(os.path.join(self.dest, 'isolinux', 'syslinux.cfg'))
         for line in cfg.readlines():
             if 'append' in line:
@@ -142,14 +151,7 @@ class LiveUSBCreator(object):
                              if not arg.startswith('initrd')])
                 break
         cfg.close()
-
-        from liveusb.olpc import ofw_config
-        if not os.path.exists(os.path.join(self.dest, 'boot')):
-            os.mkdir(os.path.join(self.dest, 'boot'))
-        olpc_cfg = file(os.path.join(self.dest, 'boot', 'olpc.fth'), 'w')
-        olpc_cfg.write(ofw_config % ' '.join(args))
-        olpc_cfg.close()
-        self.log.debug('Wrote %s' % olpc_cfg.name)
+        return args
 
     def terminate(self):
         """ Terminate any subprocesses that we have spawned """
