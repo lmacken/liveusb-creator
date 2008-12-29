@@ -747,7 +747,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                          .ExecQuery("Select VolumeSerialNumber from "
                                     "Win32_LogicalDisk where Name = '%s'" %
                                     drive)[0].VolumeSerialNumber
-            if uuid == 'None':
+            if uuid in (None, 'None', ''):
                 uuid = None
             else:
                 uuid = uuid[:4] + '-' + uuid[4:]
