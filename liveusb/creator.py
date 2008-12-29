@@ -624,6 +624,11 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             if name == self._drive:
                 return disk, part, name
 
+    def format_device(self):
+        """ Format the selected partition as FAT32 """
+        self.log.info('Formatting %s as FAT32' % self._drive)
+        self.popen('mkfs.vfat -F 32 %s' % self._drive)
+
 
 class WindowsLiveUSBCreator(LiveUSBCreator):
 
