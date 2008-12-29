@@ -426,10 +426,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
     def unmount_device(self):
         """ Unmount our device if we mounted it to begin with """
         import dbus
-        try:
-            unmount = self.drive.get('unmount')
-        except KeyError: # the device has been removed
-            return
+        unmount = self.drive.get('unmount', None)
         if self.dest and unmount:
             self.log.debug("Unmounting %s from %s" % (self.drive['device'],
                                                       self.dest))
@@ -444,7 +441,6 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             self.drive['mount'] = None
             if os.path.exists(self.dest):
                 self.log.error("Mount %s exists after unmounting" % self.dest)
-                #shutil.rmtree(self.dest) too agressive?
             self.dest = None
 
     def verify_filesystem(self):
