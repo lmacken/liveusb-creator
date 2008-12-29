@@ -185,9 +185,6 @@ class LiveUSBThread(QtCore.QThread):
             duration = str(datetime.now() - now).split('.')[0]
             self.status(_("Complete! (%s)" % duration))
 
-        except LiveUSBError, e:
-            self.status(e.message)
-            self.status(_("LiveUSB creation failed!"))
         except Exception, e:
             self.status(e.message)
             self.status(_("LiveUSB creation failed!"))
