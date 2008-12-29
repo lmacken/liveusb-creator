@@ -424,10 +424,10 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             self.log.debug("Using existing mount: %s" % self.dest)
 
     def unmount_device(self):
-        """ Unmount our device if we mounted it to begin with """
+        """ Unmount our device """
         import dbus
         unmount = self.drive.get('unmount', None)
-        if self.dest and unmount:
+        if self.dest:
             self.log.debug("Unmounting %s from %s" % (self.drive['device'],
                                                       self.dest))
             try:
