@@ -341,7 +341,7 @@ class LiveUSBCreator(object):
 class LinuxLiveUSBCreator(LiveUSBCreator):
 
     bus = None # the dbus.SystemBus
-    hal = None # an org.freedesktop.Hal.Manager dbus.Interface
+    hal = None # the org.freedesktop.Hal.Manager dbus.Interface
 
     def detect_removable_drives(self):
         """ Detect all removable USB storage devices using HAL via D-Bus """

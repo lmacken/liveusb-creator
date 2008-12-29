@@ -341,15 +341,20 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         return str(self.driveBox.currentText()).split()[0]
 
     def begin(self):
+        """ Begin the liveusb creation process.
+
+        This method is called when the "Create LiveUSB" button is clicked.
+        """
         self.enable_widgets(False)
         self.live.overlay = self.overlaySlider.value()
         self.live.drive = self.get_selected_drive()
+
         try:
             self.live.mount_device()
         except LiveUSBError, e:
             self.status(e.message)
             self.enable_widgets(True)
-            return 
+            return
 
         if self.live.existing_liveos():
             if not self.confirmed:
