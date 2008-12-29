@@ -737,6 +737,8 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
 
     def _get_device_uuid(self, drive):
         """ Return the UUID of our selected drive """
+        if self.uuid:
+            return self.uuid
         uuid = None
         try:
             import win32com.client
