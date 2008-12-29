@@ -220,7 +220,9 @@ class LiveUSBLogHandler(logging.Handler):
 
 class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
     """ Our main dialog class """
+
     def __init__(self, opts):
+        self.in_process = False
         QtGui.QDialog.__init__(self)
         LiveUSBInterface.__init__(self)
         self.opts = opts
@@ -242,6 +244,8 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         self.live.log.addHandler(self.handler)
 
     def populate_devices(self, *args, **kw):
+        if self.in_process:
+            return
         self.driveBox.clear()
         self.textEdit.clear()
         try:
@@ -328,6 +332,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         self.downloadCombo.setEnabled(enabled)
         if hasattr(self, 'refreshDevicesButton'):
             self.refreshDevicesButton.setEnabled(enabled)
+        self.in_process = not enabled
 
     def overlay_value(self, value):
         self.overlayTitle.setTitle(_("Persistent Storage") + " (%d MB)" % value)
