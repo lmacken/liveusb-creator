@@ -589,26 +589,16 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
     def bootable_partition(self):
         """ Ensure that the selected partition is flagged as bootable """
         import parted
-        parent = self.drives[self._drive]['parent']
-        if not parent:
-            self.log.warning('%s has no parent device' % self._drive)
-            return
-        dev = parted.PedDevice.get(parent)
-        disk = parted.PedDisk.new(dev)
-        partitions = self.get_partitions(disk)
-        for part in partitions:
-            name = '%s%d' % (parent, part.num)
-            if name == self._drive:
-                if part.is_flag_available(parted.PARTITION_BOOT):
-                    if part.get_flag(parted.PARTITION_BOOT):
-                        self.log.debug('%s already bootable' % name)
-                    else:
-                        part.set_flag(parted.PARTITION_BOOT, 1)
-                        disk.commit()
-                        self.log.info('Marked %s as bootable' % name)
-                        return
-                else:
-                    self.log.warning('%s does not have boot flag' % name)
+        disk, partition, name = self.get_disk_partition()
+        if partition.is_flag_available(parted.PARTITION_BOOT):
+            if partition.get_flag(parted.PARTITION_BOOT):
+                self.log.debug('%s already bootable' % name)
+            else:
+                partition.set_flag(parted.PARTITION_BOOT, 1)
+                disk.commit()
+                self.log.info('Marked %s as bootable' % name)
+        else:
+            self.log.warning('%s does not have boot flag' % name)
 
     def get_partitions(self, disk):
         """ Return a list of partitions on a given parted.PedDisk """
@@ -621,6 +611,18 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             partitions.append(part)
             part = disk.next_partition(part)
         return partitions
+
+    def get_disk_partition(self):
+        """ Return the PedDisk and partition of the selected device """
+        import parted
+        parent = self.drives[self._drive]['parent']
+        dev = parted.PedDevice.get(parent)
+        disk = parted.PedDisk.new(dev)
+        partitions = self.get_partitions(disk)
+        for part in partitions:
+            name = '%s%d' % (parent, part.num)
+            if name == self._drive:
+                return disk, part, name
 
 
 class WindowsLiveUSBCreator(LiveUSBCreator):
