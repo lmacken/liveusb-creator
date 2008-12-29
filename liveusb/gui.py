@@ -382,6 +382,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                 # The user has confirmed that they wish to overwrite their
                 # existing Live OS.  Here we delete it first, in order to 
                 # accurately calculate progress.
+                self.confirmed = False
                 try:
                     self.live.delete_liveos()
                 except LiveUSBError, e:
