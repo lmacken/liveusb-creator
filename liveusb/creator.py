@@ -620,6 +620,25 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             if name == self._drive:
                 return disk, part, name
 
+    def initialize_zip_geometry(self):
+        """ This method initializes the selected device in a zip-like fashion.
+
+        :Note: This feature is currently experimental, and will DESTROY ALL DATA
+               on your device!
+
+        More details on this can be found here:
+            http://syslinux.zytor.com/doc/usbkey.txt
+        """
+        from parted import PedDevice
+        self.log.info('Initializing %s in a zip-like fashon' % self._drive)
+        heads = 64
+        cylinders = 32
+        # Is this part even necessary?
+        #device = PedDevice.get(self._drive[:-1])
+        #cylinders = int(device.cylinders / (64 * 32))
+        self.popen('/usr/lib/syslinux/mkdiskimage -4 %s 0 %d %d' % (
+                   self._drive[:-1], heads, cylinders))
+
     def format_device(self):
         """ Format the selected partition as FAT32 """
         self.log.info('Formatting %s as FAT32' % self._drive)

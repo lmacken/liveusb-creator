@@ -151,6 +151,18 @@ class LiveUSBThread(QtCore.QThread):
         self.live.log.addHandler(handler)
         now = datetime.now()
         try:
+            # Initialize zip-drive-compatible geometry
+            if self.parent.opts.zip:
+                self.live.dest = self.live.drive['mount']
+                self.live.drive['unmount'] = True
+                self.live.unmount_device()
+                self.live.initialize_zip_geometry()
+                self.live.drive = self.parent.get_selected_drive()
+                self.live.dest = self.live.drive['mount']
+                self.live.drive['unmount'] = True
+                self.live.unmount_device()
+                self.live.format_device()
+
             self.live.verify_filesystem()
             if not self.live.drive['uuid'] and not self.live.label:
                 self.status(_("Error: Cannot set the label or obtain " 
