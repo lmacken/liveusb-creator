@@ -2,7 +2,7 @@
 
 Name:           liveusb-creator
 Version:        3.0
-Release:        2%{?dist}
+Release:        4%{?dist}
 Summary:        A liveusb creator
 
 Group:          Applications/System
@@ -64,6 +64,19 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/security/console.apps/%{name}
 
 %changelog
+* Mon Dec 29 2008 Luke Macken <lmacken@redhat.com> 3.0-4
+- Latest upstream release.
+- Fedora 10 support
+- Update to the latest sugar spin
+- Lots of bug fixes and code improvements
+- Translation improvements
+    - Greek translation (Nikos Charonitakis)
+    - Slovak translation (Ondrej Sulek)
+    - Catalan translation (Xavier Conde)
+    - French translation (PabloMartin-Gomez)
+    - Serbian (Milos Komarcevic)
+    - Chinese (sainrysec)
+
 * Fri Oct 03 2008 Luke Macken <lmacken@redhat.com> 3.0-2
 - Exclude ppc and ppc64, as syslinux will not work on those architectures.
 
