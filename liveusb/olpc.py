@@ -36,4 +36,4 @@ set-bootpath-dev
 " \${BOOTPATHDEV}\syslinux\vmlinuz0" expand$ to boot-device
 unfreeze
 boot
-"""
+
