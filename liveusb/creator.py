@@ -337,6 +337,10 @@ class LiveUSBCreator(object):
             return
         self.popen('cat /usr/lib/syslinux/mbr.bin > %s' % self._drive)
 
+    def bootable_partition(self):
+        """ Ensure that the selected partition is flagged as bootable """
+        pass
+
 
 class LinuxLiveUSBCreator(LiveUSBCreator):
 
