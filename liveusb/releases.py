@@ -65,8 +65,8 @@ releases = (
     ## Custom spins
     ##
     {
-        'name': 'Sugar Spin (i686)',
-        'url': 'http://sdz.fedorapeople.org/olpc/sugar-spin.iso',
-        'sha1': '',
+        'name': 'Sugar Spin 0.82-2 (i686)',
+        'url': 'http://alt.fedoraproject.org/pub/alt/olpc/0.82-2/i686/sugar-spin.iso',
+        'sha1': '5f51daf59a303036858905c18a95c8270f19559d',
     },
 )
