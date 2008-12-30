@@ -69,6 +69,7 @@ rm -rf %{buildroot}
 - Fedora 10 support
 - Update to the latest sugar spin
 - Lots of bug fixes and code improvements
+- Improved OLPC support with the --xo flag
 - Translation improvements
     - Greek translation (Nikos Charonitakis)
     - Slovak translation (Ondrej Sulek)
