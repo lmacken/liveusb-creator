@@ -33,7 +33,7 @@ hex  rom-pa fffc7 + 4 \$number drop  h# 2e19 < [if]
 set-bootpath-dev
 " %s" to boot-file
 " \${BOOTPATHDEV}\syslinux\initrd0.img" expand$ to ramdisk
-" \${BOOTPATHDEV}\syslinux\vmlinuz0" expand$ to boot-device
+" \${BOOTPATHDEV}\syslinux\\vmlinuz0" expand$ to boot-device
 unfreeze
 boot
 """
