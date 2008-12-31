@@ -500,8 +500,9 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 delta = datetime.now() - start
                 if delta.seconds:
                     self.mb_per_sec = (self.isosize / delta.seconds) / 1024**2
-                    self.log.info(_("Wrote to device at") + " %d MB/sec" %
-                                  self.mb_per_sec)
+                    if self.mb_per_sec:
+                        self.log.info(_("Wrote to device at") + " %d MB/sec" %
+                                      self.mb_per_sec)
             isolinux = os.path.join(self.dest, 'isolinux')
             if not os.path.exists(isolinux):
                 os.mkdir(isolinux)
@@ -716,8 +717,9 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         delta = datetime.now() - start
         if delta.seconds:
             self.mb_per_sec = (self.isosize / delta.seconds) / 1024**2
-            self.log.info(_("Wrote to device at") + " %d MB/sec" % 
-                          self.mb_per_sec)
+            if self.mb_per_sec:
+                self.log.info(_("Wrote to device at") + " %d MB/sec" % 
+                              self.mb_per_sec)
 
     def install_bootloader(self):
         """ Run syslinux to install the bootloader on our device """
