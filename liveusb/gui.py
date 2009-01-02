@@ -251,6 +251,8 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         # Intercept all liveusb INFO log messages, and display them in the gui
         self.handler = LiveUSBLogHandler(lambda x: self.textEdit.append(x))
         self.live.log.addHandler(self.handler)
+        if not self.opts.verbose:
+            self.live.log.removeHandler(self.live.handler)
 
     def populate_devices(self, *args, **kw):
         if self.in_process:

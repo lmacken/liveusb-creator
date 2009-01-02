@@ -76,11 +76,11 @@ class LiveUSBCreator(object):
         if self.opts.verbose:
             level = logging.DEBUG
         self.log.setLevel(level)
-        handler = logging.StreamHandler()
-        handler.setLevel(level)
+        self.handler = logging.StreamHandler()
+        self.handler.setLevel(level)
         formatter = logging.Formatter("[%(module)s:%(lineno)s] %(message)s")
-        handler.setFormatter(formatter)
-        self.log.addHandler(handler)
+        self.handler.setFormatter(formatter)
+        self.log.addHandler(self.handler)
 
     def detect_removable_drives(self):
         """ This method should populate self.drives with removable devices """
@@ -650,18 +650,6 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
 
 class WindowsLiveUSBCreator(LiveUSBCreator):
-
-    def _setup_logger(self):
-        self.log = logging.getLogger(__name__)
-        level = logging.INFO
-        if self.opts.verbose:
-            level = logging.DEBUG
-            handler = logging.StreamHandler()
-            handler.setLevel(level)
-            formatter = logging.Formatter("[%(module)s:%(lineno)s] %(message)s")
-            handler.setFormatter(formatter)
-            self.log.addHandler(handler)
-        self.log.setLevel(level)
 
     def detect_removable_drives(self):
         import win32file, win32api
