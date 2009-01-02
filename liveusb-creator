@@ -40,11 +40,11 @@ def parse_args():
                            ' (eg: -k noswap,selinux=0,elevator=noop)')
     parser.add_option('-x', '--xo', dest='xo', action='store_true',
                       help='Make it bootable on the OLPC')
-    parser.add_option('-z', '--usb-zip', dest='zip', action='store_true',
-                      help='Initialize device with zipdrive-compatible geometry'
-                            ' for booting in USB-ZIP mode with legacy BIOSes. '
-                            'WARNING:  This will erase everything on your '
-                            'device!')
+    #parser.add_option('-z', '--usb-zip', dest='zip', action='store_true',
+    #                  help='Initialize device with zipdrive-compatible geometry'
+    #                        ' for booting in USB-ZIP mode with legacy BIOSes. '
+    #                        'WARNING:  This will erase everything on your '
+    #                        'device!')
     return parser.parse_args() # (opts, args)
 
 
