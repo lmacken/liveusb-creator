@@ -28,6 +28,7 @@ if sys.platform == 'win32':
             {
                 "script" : "liveusb-creator",
                 "icon_resources" : [(0, "data/fedora.ico")],
+		"uac_info": "requireAdministrator",
             }
         ],
         options={
