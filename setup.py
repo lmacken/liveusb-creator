@@ -14,7 +14,7 @@ if sys.platform == 'win32':
 
     setup(
         name = 'liveusb-creator',
-        version = '3.0',
+        version = '3.1',
         packages = ['liveusb', 'liveusb/urlgrabber'],
         scripts = ['liveusb-creator'], 
         license = 'GNU General Public License (GPL)',
@@ -28,7 +28,6 @@ if sys.platform == 'win32':
             {
                 "script" : "liveusb-creator",
                 "icon_resources" : [(0, "data/fedora.ico")],
-		"uac_info": "requireAdministrator",
             }
         ],
         options={
@@ -36,8 +35,6 @@ if sys.platform == 'win32':
                 #"includes" : ["sip", "PyQt4._qt"],
                 "includes" : ["sip"],
                 'bundle_files': 1,
-		'optimize': 2,
-		'compressed': True,
             }
         }, 
         zipfile=None,
@@ -58,7 +55,7 @@ if sys.platform == 'win32':
 else:
     setup(
         name = 'liveusb-creator',
-        version = '3.0',
+        version = '3.1',
         packages = ['liveusb', 'liveusb/urlgrabber'],
         scripts = ['liveusb-creator'],
         license = 'GNU General Public License (GPL)',

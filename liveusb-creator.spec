@@ -1,8 +1,8 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           liveusb-creator
-Version:        3.0
-Release:        4%{?dist}
+Version:        3.1
+Release:        1%{?dist}
 Summary:        A liveusb creator
 
 Group:          Applications/System
@@ -64,6 +64,10 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/security/console.apps/%{name}
 
 %changelog
+* Thu Jan 01 2009 Luke Macken <lmacken@redhat.com> 3.1-1
+- Latest upstream release, containing some windows-specific
+  optimizations and fixes.
+
 * Mon Dec 29 2008 Luke Macken <lmacken@redhat.com> 3.0-4
 - Latest upstream release.
 - Fedora 10 support
