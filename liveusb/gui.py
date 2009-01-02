@@ -199,7 +199,7 @@ class LiveUSBThread(QtCore.QThread):
             self.status(_("Complete! (%s)" % duration))
 
         except Exception, e:
-            self.status(e.message)
+            self.status(str(e))
             self.status(_("LiveUSB creation failed!"))
             self.live.log.exception(e)
 
@@ -266,7 +266,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                     self.driveBox.addItem(device)
             self.startButton.setEnabled(True)
         except LiveUSBError, e:
-            self.textEdit.setPlainText(e.message.encode('utf8'))
+            self.textEdit.setPlainText(str(e).encode('utf8'))
             self.startButton.setEnabled(False)
 
     def populate_releases(self):
@@ -361,7 +361,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         try:
             self.live.mount_device()
         except LiveUSBError, e:
-            self.status(e.message)
+            self.status(str(e))
             self.enable_widgets(True)
             return
 
@@ -386,7 +386,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                 try:
                     self.live.delete_liveos()
                 except LiveUSBError, e:
-                    self.status(e.message)
+                    self.status(str(e))
                     self.live.unmount_device()
                     self.enable_widgets(True)
                     return
@@ -434,7 +434,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
             try:
                 self.live.iso = self._to_unicode(isofile)
             except Exception, e:
-                self.live.log.error(e.message.encode('utf8'))
+                self.live.log.error(str(e).encode('utf8'))
                 self.status(_("Sorry, I'm having trouble encoding the filename "
                               "of your livecd.  You may have better luck if "
                               "you move your ISO to the root of your drive "
