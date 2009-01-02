@@ -28,8 +28,8 @@ include the LinuxLiveUSBCreator and the WindowsLiveUSBCreator.
 import subprocess
 import tempfile
 import logging
+import hashlib
 import shutil
-import sha
 import os
 import re
 
@@ -201,7 +201,7 @@ class LiveUSBCreator(object):
         release = self.get_release_from_iso()
         if release:
             progress.set_max_progress(self.isosize / 1024)
-            checksum = sha.new()
+            checksum = hashlib.sha1()
             isofile = file(self.iso, 'rb')
             bytes = 1024**2
             total = 0
