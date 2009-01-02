@@ -36,6 +36,8 @@ if sys.platform == 'win32':
                 #"includes" : ["sip", "PyQt4._qt"],
                 "includes" : ["sip"],
                 'bundle_files': 1,
+		'optimize': 2,
+		'compressed': True,
             }
         }, 
         zipfile=None,
