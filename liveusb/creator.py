@@ -431,7 +431,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         """ Unmount our device """
         import dbus
         unmount = self.drive.get('unmount', None)
-        if self.dest:
+        if self.dest and unmount:
             self.log.debug("Unmounting %s from %s" % (self.drive['device'],
                                                       self.dest))
             try:
@@ -537,13 +537,13 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
     def terminate(self):
         import signal
-        self.log.info("Cleaning up...")
         for pid in self.pids:
             try:
                 os.kill(pid, signal.SIGHUP)
                 self.log.debug("Killed process %d" % pid)
             except OSError:
                 pass
+        self.unmount_device()
 
     def verify_iso_md5(self):
         """ Verify the ISO md5sum.
