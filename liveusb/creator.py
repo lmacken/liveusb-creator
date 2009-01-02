@@ -738,8 +738,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         os.unlink(os.path.join(device + os.path.sep, "syslinux",
                                "isolinux.cfg"))
         self.popen('syslinux%s%s -m -a -d %s %s' %  (self.opts.force and ' -f'
-                   or ' ', self.opts.safe and ' -s' or ' ',
-                   os.path.join(device + os.path.sep, 'syslinux'), device))
+                   or ' ', self.opts.safe and ' -s' or ' ', 'syslinux', device))
 
     def _get_device_uuid(self, drive):
         """ Return the UUID of our selected drive """
