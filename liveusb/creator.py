@@ -520,7 +520,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         os.unlink(os.path.join(self.dest, "syslinux", "isolinux.cfg"))
         self.popen('syslinux%s%s -d %s %s' %  (self.opts.force and ' -f' or ' ',
                    self.opts.safe and ' -s' or ' ',
-                   os.path.join(self.dest, 'syslinux'), self.drive['device']))
+                   'syslinux', self.drive['device']))
 
     def get_free_bytes(self, device=None):
         """ Return the number of available bytes on our device """
