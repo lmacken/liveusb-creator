@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           liveusb-creator
-Version:        3.1
+Version:        3.2
 Release:        1%{?dist}
 Summary:        A liveusb creator
 
@@ -64,6 +64,11 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/security/console.apps/%{name}
 
 %changelog
+* Fri Jan 02 2009 Luke Macken <lmacken@redhat.com> 3.2-1
+- Fixed some syslinux-related issues (#167)
+- Fixed some windows-related logging problems (#337)
+- Mitigate a DBus/HAL-related segfault by unmounting upon termination
+
 * Thu Jan 01 2009 Luke Macken <lmacken@redhat.com> 3.1-1
 - Latest upstream release, containing some windows-specific
   optimizations and fixes.
