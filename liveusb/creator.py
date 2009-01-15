@@ -365,8 +365,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
         for device in devices:
             dev = self._get_device(device)
-            if self.opts.force or dev.GetProperty("storage.bus") == "usb" and \
-               dev.GetProperty("storage.removable"):
+            if self.opts.force or dev.GetProperty("storage.bus") == "usb":
                 if dev.GetProperty("block.is_volume"):
                     self._add_device(dev)
                     continue
