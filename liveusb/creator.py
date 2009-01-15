@@ -376,7 +376,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                         child = self._get_device(child)
                         if child.GetProperty("block.is_volume"):
                             self._add_device(child, parent=dev)
-                            break
+                            #break      # don't break, allow all partitions
 
         if not len(self.drives):
             raise LiveUSBError(_("Unable to find any USB drives"))
