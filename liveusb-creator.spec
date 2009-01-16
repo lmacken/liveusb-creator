@@ -17,6 +17,7 @@ ExcludeArch:    ppc64
 
 BuildRequires:  python-devel, python-setuptools, PyQt4-devel, desktop-file-utils gettext
 Requires:       syslinux, PyQt4, usermode, isomd5sum
+Requires:       python-urlgrabber
 
 %description
 A liveusb creator from Live Fedora images
@@ -64,6 +65,9 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/security/console.apps/%{name}
 
 %changelog
+* Fri Jan 16 2009 Luke Macken <lmacken@redhat.com> 3.3-2
+- Require python-urlgrabber
+
 * Fri Jan 15 2009 Luke Macken <lmacken@redhat.com> 3.3-1
 - Update to 3.3
 
