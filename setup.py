@@ -56,7 +56,7 @@ else:
     setup(
         name = 'liveusb-creator',
         version = '3.3',
-        packages = ['liveusb', 'liveusb/urlgrabber'],
+        packages = ['liveusb'],
         scripts = ['liveusb-creator'],
         license = 'GNU General Public License (GPL)',
         url = 'https://fedorahosted.org/liveusb-creator',

@@ -24,6 +24,7 @@ A cross-platform graphical interface for the LiveUSBCreator
 """
 
 import os
+import sys
 import logging
 
 from time import sleep
@@ -32,8 +33,12 @@ from PyQt4 import QtCore, QtGui
 
 from liveusb import LiveUSBCreator, LiveUSBError, LiveUSBInterface, _
 from liveusb.releases import releases
-from liveusb.urlgrabber.grabber import URLGrabber, URLGrabError
-from liveusb.urlgrabber.progress import BaseMeter
+if sys.platform == 'win32':
+    from liveusb.urlgrabber.grabber import URLGrabber, URLGrabError
+    from liveusb.urlgrabber.progress import BaseMeter
+else:
+    from urlgrabber.grabber import URLGrabber, URLGrabError
+    from urlgrabber.progress import BaseMeter
 
 try:
     import dbus.mainloop.qt
