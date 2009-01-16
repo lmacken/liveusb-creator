@@ -1,4 +1,1091 @@
-commit 25edbbd2db11199afb9f6dd5b7044b87fd0ec188
+commit 7ca56b67cf69d9b9440d63102942d07794bc9ab8
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Jan 15 10:52:49 2009 -0500
+
+    Support detection of all partitions.  Thanks to Horst from the Sidux project for the patch.
+
+ liveusb/creator.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 363f20f11b2fc2a5d2d06cba5872726711b66e95
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Jan 15 10:45:49 2009 -0500
+
+    Support USB hard drives, which don't have the `storage.removable` property.
+    Thanks to Horst from the Sidux project for the patch.
+
+ liveusb/creator.py |    3 +--
+ 1 files changed, 1 insertions(+), 2 deletions(-)
+
+commit 69602728c0b169bceaa1bebda5097f90f456b3bf
+Author: Fabian Affolter <fabian@bernewireless.net>
+Date:   Sat Jan 10 23:44:55 2009 +0000
+
+    Updated German translation
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/de.po | 2048 +++++++++-----------------------------------------------------
+ 1 files changed, 274 insertions(+), 1774 deletions(-)
+
+commit acb0e7f7a71f325fa69f648ee113ebfa2d5bdd1a
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Jan 2 19:03:19 2009 -0500
+
+    v3.2
+
+ liveusb-creator.spec |    7 ++++++-
+ setup.py             |    4 ++--
+ 2 files changed, 8 insertions(+), 3 deletions(-)
+
+commit 32a592aace66cc318ce920dcf1340d9c4580f2e6
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Jan 2 18:55:03 2009 -0500
+
+    Fix our syslinux -d flag for linux
+
+ liveusb/creator.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 0e78c9e6de065133f83a99077c7556463c1a8a64
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Jan 2 18:54:36 2009 -0500
+
+    Revert our unmount change, as this sometimes causes random segfaults.
+
+ liveusb/creator.py |    4 ++--
+ liveusb/gui.py     |    1 -
+ 2 files changed, 2 insertions(+), 3 deletions(-)
+
+commit 15b403f5bc583381bf6c470889dcfe96575a3b55
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Jan 2 18:17:09 2009 -0500
+
+    Actually disable the usb-zip feature, for now
+
+ liveusb/gui.py |   20 ++++++++++----------
+ 1 files changed, 10 insertions(+), 10 deletions(-)
+
+commit 051a346c7979263980b9e910f69e87ec2d69fe24
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Jan 2 18:16:51 2009 -0500
+
+    Fix our syslinux directory path for Windows
+
+ liveusb/creator.py |    3 +--
+ 1 files changed, 1 insertions(+), 2 deletions(-)
+
+commit c2bedae94db4b4b46e4eb62bf074628eeedf357d
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Jan 2 18:16:23 2009 -0500
+
+    Fix some windows logger issues.  If we're not in verbose mode, then remove the StreamHandler, as this will cause extra noise in windows.
+
+ liveusb/creator.py |   20 ++++----------------
+ liveusb/gui.py     |    2 ++
+ 2 files changed, 6 insertions(+), 16 deletions(-)
+
+commit aef62ee80ce792f740b67988af57c454bd27d59a
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Jan 1 23:37:08 2009 -0500
+
+    3.1
+
+ liveusb-creator.spec |    8 ++++++--
+ setup.py             |    7 ++-----
+ 2 files changed, 8 insertions(+), 7 deletions(-)
+
+commit f059b36f0d69dc962facfe75b4bdc31514e10f45
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Jan 1 23:35:02 2009 -0500
+
+    Disable the --usb-zip experimental feature, for now.
+
+ liveusb-creator |   10 +++++-----
+ 1 files changed, 5 insertions(+), 5 deletions(-)
+
+commit 9afdb71c4b17f91417aedfa889a6bba38753b745
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Jan 1 22:00:20 2009 -0500
+
+    Some py2exe optimizations
+
+ setup.py |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+commit 2d533389268c7959e48360d421120275ac5d75c5
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Jan 1 21:59:44 2009 -0500
+
+    Use the new uac_info=requireAdministrator py2exe flag to ensure that the liveusb-creator is being run as an admin
+
+ setup.py |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+commit e872c822b1363bcfe70bb8049d96552627a4e14f
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Jan 1 21:29:40 2009 -0500
+
+    Fix some Python2.6 deprecation warnings with regard to the BaseException.message
+
+ liveusb/gui.py |   10 +++++-----
+ 1 files changed, 5 insertions(+), 5 deletions(-)
+
+commit 368f44d16f9fc7156931af886bff2f97cbab7d6e
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Jan 1 21:28:26 2009 -0500
+
+    Use hashlib instead of the sha module.
+
+ liveusb/creator.py |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 2145e75e69af4da212f888cca8a91fe720e231af
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Dec 31 16:29:43 2008 -0500
+
+    Escape part of the path in the OLPC boot file.
+
+ liveusb/olpc.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 3225dd4dd622e7c51b22d8c7ed99d7ec94cbc5a9
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Dec 31 15:53:48 2008 -0500
+
+    Setup the logger a bit differently for windows.
+    
+    Only create the StreamHandler if we are in verbose mode.  If we don't do this,
+    closing the liveusb-creator, even after a successful run, will display a popup
+    telling the user that stdout log output has been written to
+    liveusb-creator.exe.log.
+
+ liveusb/creator.py |   12 ++++++++++++
+ 1 files changed, 12 insertions(+), 0 deletions(-)
+
+commit 9bfa12c35530cc5756819dcce0f20b16f6002658
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Dec 31 15:53:28 2008 -0500
+
+    Add a hack to not display 0mb/sec, until we can do this properly.
+
+ liveusb/creator.py |   10 ++++++----
+ 1 files changed, 6 insertions(+), 4 deletions(-)
+
+commit 5d656603c7757122d5534a0917a9647c2ff9db8a
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue Dec 30 18:35:26 2008 -0500
+
+    Add a noop bootable_partition method to the parent LiveUSBCreator class
+
+ liveusb/creator.py |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
+
+commit 2ef586a9352937a0d151b910079753b298818719
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue Dec 30 15:20:58 2008 -0500
+
+    Fix a typo
+
+ liveusb/olpc.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit c02320e711256fcc591c9ee13e357a26caa7abe2
+Merge: cdd206f... 3a28698...
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon Dec 29 19:54:28 2008 -0500
+
+    Merge branch 'master' of ssh://git.fedorahosted.org/git/liveusb-creator
+
+commit cdd206f786425674b43e017dc028dba4e7c592e0
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon Dec 29 19:50:35 2008 -0500
+
+    Update our spec file again
+
+ liveusb-creator.spec |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+commit 7b531ae69f77ef3ebe2144c060abbc9c1d9658dc
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon Dec 29 19:49:36 2008 -0500
+
+    Rebase our olpc.py with the latest OLPC boot script from the livecd-iso-to-disk.sh
+
+ liveusb/olpc.py |   48 +++++++++++++++++++++++++-----------------------
+ 1 files changed, 25 insertions(+), 23 deletions(-)
+
+commit 3a28698144ed9b7640b34215858c85407c9e7ec5
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon Dec 29 19:49:36 2008 -0500
+
+    Rebase our olpc.py with the latest OLPC boot script from the livecd-iso-to-disk.sh
+
+ liveusb/olpc.py |   50 ++++++++++++++++++++++++++------------------------
+ 1 files changed, 26 insertions(+), 24 deletions(-)
+
+commit e9dac17e805b9320bd70a722d591377f971b9440
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon Dec 29 19:46:08 2008 -0500
+
+    Update our spec file for the 3.0 release
+
+ liveusb-creator.spec |   15 ++++++++++++++-
+ 1 files changed, 14 insertions(+), 1 deletions(-)
+
+commit b9bea9f58fec5a751eef08c3c217196c031d6395
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon Dec 29 19:44:07 2008 -0500
+
+    Update our Translators list
+
+ AUTHORS |    7 ++++++-
+ 1 files changed, 6 insertions(+), 1 deletions(-)
+
+commit df73b2d7180df1dc97789d08d64806512dffc657
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon Dec 29 19:25:44 2008 -0500
+
+    Add a new logo, and update our PyQt4 resources
+
+ data/liveusb-creator-linux.ui |    6 +-
+ data/liveusb-header-old.png   |  Bin 0 -> 15736 bytes
+ data/liveusb-header.png       |  Bin 15736 -> 15930 bytes
+ liveusb/linux_dialog.py       |   65 +-
+ liveusb/resources_rc.py       | 1978 +++++++++++++++++++++--------------------
+ 5 files changed, 1030 insertions(+), 1019 deletions(-)
+
+commit 51e273d32b37610c3cf4d0bd60fc5eab69b2d1de
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon Dec 29 19:24:56 2008 -0500
+
+    Update the Sugar Spin to 0.82-2
+
+ liveusb/releases.py |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
+
+commit e46f7a5cde1aaebe036b3203bbdbdd3fbf6d9462
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon Dec 29 18:49:40 2008 -0500
+
+    reset the 'confirmed' boolean after we've confirmed
+
+ liveusb/gui.py |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+commit 5d60b4e851766d4da1447b0384c7976039357892
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon Dec 29 18:47:46 2008 -0500
+
+    Handle None/'None'/'' uuids
+
+ liveusb/creator.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 927ea555fe4d5ad49029e0d45c82bea2c9c4d6c2
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon Dec 29 18:47:23 2008 -0500
+
+    If we've already acquired the uuid, then don't do it again
+
+ liveusb/creator.py |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+commit f53e5fdfce0e6e654162f3592592046fcbd5f3a1
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon Dec 29 18:45:37 2008 -0500
+
+    Use log.exception in a couple of places.
+
+ liveusb/creator.py |    1 +
+ liveusb/gui.py     |    3 +--
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+commit b65b11f5b57cf1e33eb1dfb5bd5118ad28dd90dc
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon Dec 29 18:31:01 2008 -0500
+
+    Unmount the device upon completion, not termination
+
+ liveusb/creator.py |    1 -
+ liveusb/gui.py     |    1 +
+ 2 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 9d2c855c76e78ec7c6f8566709864d354574d2aa
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon Dec 29 18:30:33 2008 -0500
+
+    Always try to unmount the device when we call unmount_device, regardless of if we mounted it or not
+
+ liveusb/creator.py |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 939253c0524950136c305083d23d5465afeeca01
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Dec 28 23:27:23 2008 -0500
+
+    Add a --usb-zip flag to format the device with zip-like geometry.
+    
+    This will initialize your device in a zipdrive-like fashion.  Note: This
+    feature is currently experimental, and will DESTROY ALL DATA on your device!
+    More details on this can be found here:
+    http://syslinux.zytor.com/doc/usbkey.txt
+
+ liveusb-creator    |    5 +++++
+ liveusb/creator.py |   19 +++++++++++++++++++
+ liveusb/gui.py     |   12 ++++++++++++
+ 3 files changed, 36 insertions(+), 0 deletions(-)
+
+commit aad42fe3f608738cc9234493ff479cb1bff8d719
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Dec 28 23:18:41 2008 -0500
+
+    No need to catch LiveUSBError if we are doing the same thing with Exception
+
+ liveusb/gui.py |    3 ---
+ 1 files changed, 0 insertions(+), 3 deletions(-)
+
+commit efa5669db3dd4163ec37cee9fa801fdb791dd70b
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Dec 28 23:18:20 2008 -0500
+
+    Some trivial comment updates
+
+ liveusb/creator.py |    2 +-
+ liveusb/gui.py     |    7 ++++++-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
+
+commit 4c7b09a7909bbe6273a0906eb97eeb1ec87b0e93
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Dec 28 23:17:49 2008 -0500
+
+    Clean up some of the unmount_device exception handling
+
+ liveusb/creator.py |    6 +-----
+ 1 files changed, 1 insertions(+), 5 deletions(-)
+
+commit 7af72c2fda77ac31ffe37301e3e5757a59f47481
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Dec 28 23:12:45 2008 -0500
+
+    Keep track of if we are currently in the process of creating a liveusb key,
+    and do not update our device list when a new device is inserted if we are
+    in the middle of it.
+
+ liveusb/gui.py |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+commit bd72b6fef6a52d23de056b8424f0ac65636d52db
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Dec 28 23:11:04 2008 -0500
+
+    Add a LinuxLiveUSBCreator.format_device method.
+
+ liveusb/creator.py |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+commit 8b63513c9a6857b40bc327f86f64a4c523886b13
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Dec 28 23:07:21 2008 -0500
+
+    Pull some logic from bootable_partition() into a get_disk_partition() method
+
+ liveusb/creator.py |   42 ++++++++++++++++++++++--------------------
+ 1 files changed, 22 insertions(+), 20 deletions(-)
+
+commit bbb360ab9e825c1fdbca2921d2c0baae2be67a33
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Nov 30 21:01:43 2008 -0500
+
+    Add Fedora 10 release
+
+ liveusb/releases.py |   24 ++++++++++++------------
+ 1 files changed, 12 insertions(+), 12 deletions(-)
+
+commit 9c1a52a096beb80167e2e106c540fa8ac3917519
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Nov 30 13:46:16 2008 -0500
+
+    Ensure that the selected partition is flagged as bootable.
+
+ liveusb/creator.py |   36 ++++++++++++++++++++++++++++++++++++
+ liveusb/gui.py     |    2 ++
+ 2 files changed, 38 insertions(+), 0 deletions(-)
+
+commit 19878d4ab77e90fc8905573c118e8493bf44ea77
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Nov 30 13:13:44 2008 -0500
+
+    Refactor the olpc installation method, pulling some of it out into a
+    get_kernel_args method.
+
+ liveusb/creator.py |   26 ++++++++++++++------------
+ 1 files changed, 14 insertions(+), 12 deletions(-)
+
+commit e4d1ece80fc405e9dccc62f130320ae707d21399
+Author: sainrysec <sainrysec@gmail.com>
+Date:   Sun Nov 23 10:52:59 2008 +0000
+
+    finish zh_CN.po
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/zh_CN.po |  193 ++++++++++++++++++++++++++++++++++-------------------------
+ 1 files changed, 111 insertions(+), 82 deletions(-)
+
+commit d5b4a071168aead5e871ccc5bad1c25c601216b7
+Merge: b739359... 798ab0d...
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Nov 21 20:17:08 2008 -0500
+
+    Merge branch 'master' of ssh://git.fedorahosted.org/git/liveusb-creator
+
+commit b73935910cdbba0561c65b265fb30c34e41ec853
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Fri Nov 21 20:16:57 2008 -0500
+
+    Add a HACKING file
+
+ HACKING |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+commit 798ab0d736e2cdeb55b00b6b42b213d7f3d6a2e9
+Author: Igor Pires Soares <igorsoares@gmail.com>
+Date:   Thu Nov 20 13:37:55 2008 +0000
+
+    Updated Brazilian Portuguese translation
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/pt_BR.po |  248 ++++++++++++++++++++++++++++++++++++----------------------
+ 1 files changed, 154 insertions(+), 94 deletions(-)
+
+commit 0e5b27cfa7b9cb1bcbe83251ae36077bd229ea76
+Author: Fabian Affolter <fabian@bernewireless.net>
+Date:   Thu Nov 20 12:23:28 2008 +0000
+
+        2008-11-20  Fabian Affolter <fabian@bernewireless.net> (via
+    fab@fedoraproject.org)
+    
+          * po/de.po: Initial German translation
+
+ po/ChangeLog |   17 +
+ po/de.po     | 2047 ++++++++++++++++++++++++++++++++++++++++++++++++++--------
+ 2 files changed, 1791 insertions(+), 273 deletions(-)
+
+commit 46498b66998a919fc08d2d59b348756e49fbbec0
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Tue Nov 18 16:48:31 2008 -0500
+
+    Trivial test case change
+
+ tests/test_creator.py |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
+
+commit 38239e2788fcb6f95763aaaa97f6cdca282f284c
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Nov 13 18:52:07 2008 -0500
+
+    Always return True from the WindowsLiveUSBCreator.verify_iso_md5.
+    
+    This fixes a silent error on Windows.
+
+ liveusb/creator.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit cf309bf1a51a349240c8b3ac3ab95611bef5a403
+Merge: e62709a... 67326c8...
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Nov 13 18:33:18 2008 -0500
+
+    Merge branch 'master' of ssh://git.fedorahosted.org/git/liveusb-creator
+
+commit e62709af2c776193b0f83ac6d9579647d83c036d
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Nov 13 18:31:13 2008 -0500
+
+    Do not encode our unicode strings back to UTF-8 before rendering in QTextArea.
+    This fixes the UTF-8 rendering issues mentioned in Bug #471367.
+
+ liveusb/gui.py |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit 67326c889dbc4357c516e8d2daeff2877079f351
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:   Thu Nov 13 22:47:29 2008 +0000
+
+    Updated Polish translation
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/pl.po |   68 ++++++++++++++++++++++++++++++++++---------------------------
+ 1 files changed, 38 insertions(+), 30 deletions(-)
+
+commit f60f77ed6f5862953d17ad7d604505aa308401c8
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Nov 13 01:14:37 2008 -0500
+
+    Add reset_mbr and blank_mbr methods, and use them.
+
+ liveusb/creator.py |   20 ++++++++++++++++++++
+ 1 files changed, 20 insertions(+), 0 deletions(-)
+
+commit 9cfe5f7223bd9ac6320f91d2a913246fbfac208c
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Nov 13 01:11:57 2008 -0500
+
+    Update our test_mbr unit test
+
+ tests/test_creator.py |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
+
+commit 717fa20458d9c1fb287bb58c69a726552b27c9b2
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Nov 13 01:10:55 2008 -0500
+
+    Revert "Add reset_mbr and blank_mbr methods"
+    
+    This reverts commit bad8622dadfe281f424b66985b2b436341ee37f8.
+
+ liveusb-creator    |   12 ----
+ liveusb/creator.py |  146 +++++-----------------------------------------------
+ liveusb/gui.py     |   12 ----
+ 3 files changed, 14 insertions(+), 156 deletions(-)
+
+commit bad8622dadfe281f424b66985b2b436341ee37f8
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Nov 13 01:08:57 2008 -0500
+
+    Add reset_mbr and blank_mbr methods
+
+ liveusb-creator    |   12 ++++
+ liveusb/creator.py |  146 +++++++++++++++++++++++++++++++++++++++++++++++-----
+ liveusb/gui.py     |   12 ++++
+ 3 files changed, 156 insertions(+), 14 deletions(-)
+
+commit ae0bcd0f74fad4304f3a670b2ca5781d9709d113
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Nov 13 01:08:06 2008 -0500
+
+    Fix our Master Boot Record unit test.
+    
+    Ensure that we can properly detect and reset blank MBRs.
+
+ tests/test_creator.py |   18 ++++++++++++++++++
+ 1 files changed, 18 insertions(+), 0 deletions(-)
+
+commit 5c9ed52a6b880cea01f07cb1604b2c78157d54ba
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Nov 13 01:01:04 2008 -0500
+
+    Update a docstring
+
+ liveusb/creator.py |    6 ++++++
+ 1 files changed, 6 insertions(+), 0 deletions(-)
+
+commit 7e31a9d8c3e42d0bf1a694317f6ccb26ec5beeaf
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Nov 13 01:00:33 2008 -0500
+
+    Exclude ppc and ppc64
+
+ liveusb-creator.spec |    8 +++++++-
+ 1 files changed, 7 insertions(+), 1 deletions(-)
+
+commit 60656d43dc88bc35ed8fba517f5eee44f04bf817
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Nov 12 23:32:50 2008 -0500
+
+    Add a new shiny tabbed-gui layout.
+    
+    Now it's time to bring the features up to speed with the interface.
+
+ data/liveusb-creator-linux-tabbed.ui |  413 ++++++++++++++++++++++++++++++++++
+ 1 files changed, 413 insertions(+), 0 deletions(-)
+
+commit d03c4d1c8da43df4b8691d8c45fdad87deefe3c9
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Nov 12 21:58:03 2008 -0500
+
+    Add a 'docs' Makefile target
+
+ Makefile |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+commit 1671a542d4b049dcaa4b733b2e7913efa37081b8
+Author: 甘露(Gan Lu) <rhythm.gan@gmail.com>
+Date:   Sat Nov 8 15:27:28 2008 +0000
+
+    Add zh_CN.po
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/zh_CN.po |  307 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 307 insertions(+), 0 deletions(-)
+
+commit 2c6b0f3f0b4f116b513858503a8d62b7bb1b812b
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Nov 6 22:32:30 2008 -0500
+
+    Make sure to quote our ISO path to support spaces (#470402)
+
+ liveusb/creator.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit a662507fdeeb6e7e02df65498731852c7f1404b8
+Author: Xavier Conde <xavi.conde@gmail.com>
+Date:   Sat Nov 1 18:15:10 2008 +0000
+
+    Updated catalan po
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/ca.po |  322 +++++++++++++++++++++++++++++++-------------------------------
+ 1 files changed, 163 insertions(+), 159 deletions(-)
+
+commit 960a3ac94e73f379009130b18fcd3942b3e1bd32
+Author: Igor Miletic <grejigl-gnomeprevod@yahoo.ca>
+Date:   Fri Oct 24 16:00:56 2008 +0000
+
+    Updated sr@latin
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/sr@latin.po |  235 ++++++++++++++++++++++++++++++++-----------------------
+ 1 files changed, 137 insertions(+), 98 deletions(-)
+
+commit b9a176d8374bc08c8417f2d0e78f8bb9b9ba39d0
+Author: Igor Miletic <grejigl-gnomeprevod@yahoo.ca>
+Date:   Fri Oct 24 16:00:01 2008 +0000
+
+    Updated sr
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/sr.po |  235 ++++++++++++++++++++++++++++++++++++--------------------------
+ 1 files changed, 137 insertions(+), 98 deletions(-)
+
+commit aba5f303083f46bdc781a275d6984c4f5cef7c06
+Author: Marcus Nitzschke <marcusni@gmx.de>
+Date:   Thu Oct 23 17:52:17 2008 +0000
+
+    Updated German translation
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/de.po |   20 ++++++++++----------
+ 1 files changed, 10 insertions(+), 10 deletions(-)
+
+commit f77bfda398a211632096f0396a83ad08ed3b6d43
+Author: Fabian Affolter <fabian@bernewireless.net>
+Date:   Wed Oct 22 12:29:43 2008 +0000
+
+    Updated German translation
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/de.po |   98 ++++++++++++++++++++++++++++++++-----------------------------
+ 1 files changed, 51 insertions(+), 47 deletions(-)
+
+commit d87a0faada21c74a1fe5ff9eea844af1e377784f
+Author: PabloMartin-Gomez <pablo.martin-gomez@laposte.net>
+Date:   Wed Oct 22 09:43:08 2008 +0000
+
+    Updated French translation
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/fr.po |  269 ++++++++++++++++++++++++++++++++++----------------------------
+ 1 files changed, 149 insertions(+), 120 deletions(-)
+
+commit 0e33c4231a26f6d64f9959613c9c9087863cbebb
+Author: Igor Miletic <grejigl-gnomeprevod@yahoo.ca>
+Date:   Wed Oct 22 03:22:39 2008 +0000
+
+    Updated sr@latin
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/sr@latin.po |  128 +++++++++++++++++++++++++++++++++++---------------------
+ 1 files changed, 80 insertions(+), 48 deletions(-)
+
+commit ea93159e44d34a473aa36b12b3646726247981cf
+Author: Igor Miletic <grejigl-gnomeprevod@yahoo.ca>
+Date:   Wed Oct 22 03:21:45 2008 +0000
+
+    Updated sr translation
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/sr.po |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+commit e706e0b60e7146043a3ed99fbbd5e1100143326f
+Author: Igor Miletic <grejigl-gnomeprevod@yahoo.ca>
+Date:   Wed Oct 22 03:20:43 2008 +0000
+
+    Updated sr translation
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/sr.po |  128 ++++++++++++++++++++++++++++++++++++++-----------------------
+ 1 files changed, 80 insertions(+), 48 deletions(-)
+
+commit d44d9e7f828c840c7376d73709b0fb40ae418bb9
+Author: Adam Pribyl <covex@lowlevel.cz>
+Date:   Tue Oct 21 08:16:24 2008 +0000
+
+    czech translation update
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/cs.po |  226 +++++++++++++++++++++++++++++++++++---------------------------
+ 1 files changed, 129 insertions(+), 97 deletions(-)
+
+commit 8b092bc07bd5c2ac7e3441016c750ba18887e4dd
+Author: Ondrej Sulek <feonsu@gmail.com>
+Date:   Mon Oct 20 07:12:09 2008 +0000
+
+    Updated Slovak translation
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/sk.po |  188 +++++++++++++++++++++++++++++++++-----------------------------
+ 1 files changed, 101 insertions(+), 87 deletions(-)
+
+commit 8c80fc69f80bf400e6d0397f769a27f597da5428
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:   Sun Oct 19 12:42:26 2008 +0000
+
+    Updated Polish translation
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/pl.po |   86 ++++++++++++++++++++++++++++++++-----------------------------
+ 1 files changed, 45 insertions(+), 41 deletions(-)
+
+commit e954e67c823fac185f3254fdab15fe76e71f3735
+Author: Xavier Conde <xavi.conde@gmail.com>
+Date:   Sat Oct 18 22:06:29 2008 +0000
+
+    Added catalan po
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/ca.po |  315 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 315 insertions(+), 0 deletions(-)
+
+commit 534194823e7826e917e57af9c31b06d4593d268b
+Merge: ad99c5f... a21a482...
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Oct 18 11:24:48 2008 -0400
+
+    Merge branch 'master' of ssh://git.fedorahosted.org/git/liveusb-creator
+
+commit ad99c5fd502bcde6203be6813be2735dfa320de8
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Oct 18 11:24:30 2008 -0400
+
+    Make our final unmount a bit more robust with regard to traceback handling
+
+ liveusb/gui.py |    3 +--
+ 1 files changed, 1 insertions(+), 2 deletions(-)
+
+commit 459645fe2ba48bfb419bec02b9bd057eb82e335b
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Oct 18 11:23:51 2008 -0400
+
+    Change an info message to a debug
+
+ liveusb/creator.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit 90862c058786d7c655c0d0e11bd13c91357f4486
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Oct 18 11:23:07 2008 -0400
+
+    Hack around dosfslabel's return codes
+
+ liveusb/creator.py |    9 ++++++---
+ 1 files changed, 6 insertions(+), 3 deletions(-)
+
+commit 69d0693b4f8583748964da87847af719328eceb3
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Oct 18 11:22:38 2008 -0400
+
+    Handle devices that are prematurely unmounted
+
+ liveusb/creator.py |    6 +++++-
+ 1 files changed, 5 insertions(+), 1 deletions(-)
+
+commit 62a70bf912d94cbd5fafe5b429118d6469d7f9f0
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Oct 18 11:21:59 2008 -0400
+
+    Store our 'info.parent' device interface in self.drives
+
+ liveusb/creator.py |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
+
+commit cabcbefccb4264d30593ac5b5847ceabcf701780
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Oct 18 11:19:57 2008 -0400
+
+    Add a verify_iso_md5 method to call checkisomd5 on our ISO.
+    
+    At the moment this is supported in Linux only.
+
+ liveusb-creator.spec |    2 +-
+ liveusb/creator.py   |   28 ++++++++++++++++++++++++++--
+ liveusb/gui.py       |    8 ++++++--
+ 3 files changed, 33 insertions(+), 5 deletions(-)
+
+commit a21a4820b5b0d14f89c9f888cd24ecd5cf804285
+Author: Fabian Affolter <fabian@bernewireless.net>
+Date:   Wed Oct 15 07:35:00 2008 +0000
+
+    Updated German translation
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/de.po |  170 +++++++++++++++++++++++++++++++++-----------------------------
+ 1 files changed, 91 insertions(+), 79 deletions(-)
+
+commit 6d2da4cdd0c8aa7cc08cdf422e4f0ed84c754501
+Author: Piotr Drąg <piotrdrag@gmail.com>
+Date:   Tue Oct 14 22:03:00 2008 +0000
+
+    Updated Polish translation
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/pl.po |  210 +++++++++++++++++++++++++++++++++-----------------------------
+ 1 files changed, 113 insertions(+), 97 deletions(-)
+
+commit cda0b9eee645e9978ad05156b575db35e935e26c
+Author: Milos Komarcevic <kmilos@gmail.com>
+Date:   Mon Oct 13 21:37:40 2008 +0000
+
+    Initial Serbian Latin translation
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/sr@latin.po |  280 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 280 insertions(+), 0 deletions(-)
+
+commit 43b1df33aeb5a49d40bd86acdab99703d5931705
+Author: Milos Komarcevic <kmilos@gmail.com>
+Date:   Mon Oct 13 21:36:18 2008 +0000
+
+    Initial Serbian translation
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/sr.po |  280 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 280 insertions(+), 0 deletions(-)
+
+commit 9e2fe206df9c03d02e57d6b633931ae0142787de
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Mon Oct 13 03:26:48 2008 -0400
+
+    Update our win32 syslinux.exe to version 3.72
+
+ tools/syslinux.exe |  Bin 24576 -> 27136 bytes
+ 1 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 3f08445783194ef85a5af4b15cb446c4e8e9adc7
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Oct 12 05:16:06 2008 -0400
+
+    Add an '--extra-kernel-args' argument
+
+ liveusb-creator    |    4 ++++
+ liveusb/creator.py |    3 +++
+ 2 files changed, 7 insertions(+), 0 deletions(-)
+
+commit 02f5f9a1a118b4580e5204f498d5701702e0e29b
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Oct 12 02:24:20 2008 -0400
+
+    Update our test suite to allow empty sha1's in our release list
+
+ tests/test_creator.py |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+commit 25c01ac7670930275e71e7b9c7dd4953857529e4
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Oct 12 02:03:21 2008 -0400
+
+    Organize the release list
+
+ liveusb/releases.py |   14 +++++++++-----
+ 1 files changed, 9 insertions(+), 5 deletions(-)
+
+commit 034f52880f2c9177a99e44abd6b066863e9008fa
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Oct 12 02:03:05 2008 -0400
+
+    Add a soft dependency on PyQt4 for KDE proxy detection.
+
+ liveusb/creator.py |    6 ++++++
+ 1 files changed, 6 insertions(+), 0 deletions(-)
+
+commit 2d66b75ad492dae9948bd6a9f05d4e61c6c43d18
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Oct 12 02:02:21 2008 -0400
+
+    Clean up some translatable strings
+
+ liveusb/creator.py |    6 ++++--
+ liveusb/gui.py     |    4 ++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
+
+commit 82f460fc78685ef136011425234ff67444f2fb28
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sun Oct 12 02:01:44 2008 -0400
+
+    Add support for creating OLPC-bootable LiveUSB sticks / SD cards.
+    
+    This creates a new '--xo' option that will add a /boot/olpc.fth Open Firmware
+    configuration to your device. Upon completion, you can then boot off of your
+    USB stick/SD card by running the following at the Open Firmware prompt:
+    
+      boot u:\boot\olpc.fth
+    
+    for USB sticks or
+    
+      boot sd:\boot\olpc.fth
+    
+    for SD cards
+    
+    Thanks to Mitch Bradley for understanding forth so we don't have to :)  Also
+    thanks for Jeremy Katz for getting this to work initially within the
+    livecd-iso-to-disk script.
+
+ liveusb-creator    |    2 ++
+ liveusb/creator.py |   39 ++++++++++++++++++++++++++++++++++-----
+ liveusb/olpc.py    |   37 +++++++++++++++++++++++++++++++++++++
+ 3 files changed, 73 insertions(+), 5 deletions(-)
+
+commit 9cfbc8b97408198c32650d53046dd888675ba72f
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Oct 11 22:06:51 2008 -0400
+
+    Improve our liveusb.gui status message architechure.
+    
+    Create an inject a custom LiveUSBLogHandler that intercepts INFO and ERROR
+    messages from our liveusb.creator module, and displays them in our GUI.  This
+    allows us to remove a lot of duplicate status messages that were scattered
+    throughout the graphical interface.
+
+ liveusb/creator.py |   33 ++++++++++++++++++++++++---------
+ liveusb/gui.py     |   43 +++++++++++++++++++++++++++----------------
+ 2 files changed, 51 insertions(+), 25 deletions(-)
+
+commit 8a5cf2ebb070f910e0651ba36220c030e6f5d72e
+Author: Sebastian Dziallas <sebastian@localhost.localdomain>
+Date:   Sat Oct 11 14:19:57 2008 +0200
+
+    Add support for Sugar Spin
+
+ liveusb/releases.py |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+commit 9f1cd067f0b32318452aee32b274ece8a09e90bb
+Author: Ondrej Sulek <feonsu@gmail.com>
+Date:   Fri Oct 10 08:55:36 2008 +0000
+
+    Added Slovak translation.
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/sk.po |  336 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 336 insertions(+), 0 deletions(-)
+
+commit 87d2cba6a7257898bf4c4bc5ea68e04eaca03ba0
+Merge: 5f1579c... c8e66e3...
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Oct 8 21:54:49 2008 -0400
+
+    Merge branch 'master' of ssh://git.fedorahosted.org/git/liveusb-creator
+
+commit 5f1579c1d68c709e81022dcf30658e15fdce169a
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Wed Oct 8 21:54:34 2008 -0400
+
+    Ensure the release sha1 exists before attempting to verify it.
+
+ liveusb/gui.py |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+commit c8e66e3f7fe04edd5d76a16ee0540e98c103b6f8
+Author: Michael Ughetto <telimektar1er@gmail.com>
+Date:   Tue Oct 7 10:38:09 2008 +0000
+
+    First french translation (100%)
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/fr.po |  330 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 330 insertions(+), 0 deletions(-)
+
+commit 17efcee03697d93adda36f64a0595f46237bdb1f
+Author: Nikos Charonitakis <nikosx@gmail.com>
+Date:   Mon Oct 6 13:52:11 2008 +0000
+
+    Added Greek translation
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/el.po |  287 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 287 insertions(+), 0 deletions(-)
+
+commit fcc2911fb61ad0d53850c6067b26404c69ff45b7
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Sat Oct 4 12:13:31 2008 -0400
+
+    Remove our PyQt4._qt py2exe include, as it no longer seems to be necessary.
+
+ setup.py |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+commit 7a74843e42182e923d29aeaa4322aa04edbcb670
+Merge: 8583314... a8cbf92...
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Oct 2 19:40:49 2008 -0400
+
+    Merge branch 'master' of ssh://git.fedorahosted.org/git/liveusb-creator
+
+commit a8cbf920753ba484c21615c922718b680a97ffa4
+Author: Fabian Affolter <fabian@bernewireless.net>
+Date:   Thu Oct 2 14:07:08 2008 +0000
+
+    Updated German translation
+    
+    Transmitted-via: Transifex (translate.fedoraproject.org)
+
+ po/de.po |   33 +++++++++++++++++++--------------
+ 1 files changed, 19 insertions(+), 14 deletions(-)
+
+commit 8583314df44778a62b34adfcf22793007829bafc
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Oct 2 07:25:59 2008 -0400
+
+    v3.0
+
+ setup.py |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit d3b3c6e9edcf99cab9a3659538704cd97469407d
+Author: Luke Macken <lmacken@redhat.com>
+Date:   Thu Oct 2 07:33:45 2008 -0400
+
+    Update our ChangeLog
+
+ ChangeLog |  688 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 688 insertions(+), 0 deletions(-)
+
+commit bc1ef7e6126b3ecfcf2363de71bd0525f30ae4f8
 Author: Luke Macken <lmacken@redhat.com>
 Date:   Thu Oct 2 07:33:02 2008 -0400
 
@@ -8,7 +1095,7 @@ Date:   Thu Oct 2 07:33:02 2008 -0400
  liveusb-creator.spec |    1 +
  2 files changed, 18 insertions(+), 2 deletions(-)
 
-commit b1e1da8fc77ff9251bfae78b4e78878633002017
+commit 532a8e3a25c9e8b55ac7b4b325599fa3d8041135
 Author: Luke Macken <lmacken@redhat.com>
 Date:   Thu Oct 2 07:26:38 2008 -0400
 
@@ -16,15 +1103,6 @@ Date:   Thu Oct 2 07:26:38 2008 -0400
 
  liveusb/creator.py |    5 +++--
  1 files changed, 3 insertions(+), 2 deletions(-)
-
-commit d32c086a6e00300a6ec0e63095dce77af6ff83e7
-Author: Luke Macken <lmacken@redhat.com>
-Date:   Thu Oct 2 07:25:59 2008 -0400
-
-    v3.0
-
- setup.py |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
 
 commit f52d1e6fb055e7f227ab42078caede7cd7e02800
 Author: Luke Macken <lmacken@redhat.com>
