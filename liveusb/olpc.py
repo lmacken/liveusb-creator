@@ -2,7 +2,7 @@
 ofw_config = """\
 \ Boot script for USB boot
 \ Authors: Mitch Bradley <wmb AT laptop DOT org>
-hex  rom-pa fffc7 + 4 \$number drop  h# 2e19 < [if]
+hex  rom-pa fffc7 + 4 $number drop  h# 2e19 < [if]
   patch 2drop erase claim-params
   : high-ramdisk  ( -- )
      cv-load-ramdisk
@@ -27,13 +27,13 @@ hex  rom-pa fffc7 + 4 \$number drop  h# 2e19 < [if]
    else
           " u:"
    then
-   " BOOTPATHDEV" \$set-macro
+   " BOOTPATHDEV" $set-macro
 ;
 
 set-bootpath-dev
 " %s" to boot-file
-" \${BOOTPATHDEV}\syslinux\initrd0.img" expand$ to ramdisk
-" \${BOOTPATHDEV}\syslinux\\vmlinuz0" expand$ to boot-device
+" ${BOOTPATHDEV}\syslinux\initrd0.img" expand$ to ramdisk
+" ${BOOTPATHDEV}\syslinux\\vmlinuz0" expand$ to boot-device
 unfreeze
 boot
 """
