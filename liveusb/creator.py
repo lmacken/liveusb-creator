@@ -429,7 +429,10 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
     def unmount_device(self):
         """ Unmount our device """
         import dbus
-        unmount = self.drive.get('unmount', None)
+        try:
+            unmount = self.drive.get('unmount', None)
+        except KeyError:
+            return
         if self.dest and unmount:
             self.log.debug("Unmounting %s from %s" % (self.drive['device'],
                                                       self.dest))
