@@ -440,8 +440,9 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 self.drive['udi'].Unmount([],
                         dbus_interface='org.freedesktop.Hal.Device.Volume')
             except dbus.exceptions.DBusException, e:
-                raise
+                import traceback
                 self.log.warning("Unable to unmount device: %s" % str(e))
+                self.log.debug(traceback.format_exc())
                 return
             self.drive['unmount'] = False
             self.drive['mount'] = None
