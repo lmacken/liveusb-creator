@@ -2,7 +2,7 @@
 
 Name:           liveusb-creator
 Version:        3.5
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A liveusb creator
 
 Group:          Applications/System
@@ -18,6 +18,7 @@ ExcludeArch:    ppc64
 BuildRequires:  python-devel, python-setuptools, PyQt4-devel, desktop-file-utils gettext
 Requires:       syslinux, PyQt4, usermode, isomd5sum
 Requires:       python-urlgrabber
+Requires:       pyparted
 
 %description
 A liveusb creator from Live Fedora images
@@ -66,6 +67,9 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/security/console.apps/%{name}
 
 %changelog
+* Mon Feb 02 2009 Luke Macken <lmacken@redhat.com> 3.5-2
+- Require pyparted
+
 * Fri Jan 16 2009 Luke Macken <lmacken@redhat.com> 3.5-1
 - Update to v3.5
 
