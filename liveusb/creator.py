@@ -243,10 +243,10 @@ class LiveUSBCreator(object):
                           _("persistent overlay"))
             if self.fstype == 'vfat':
                 # vfat apparently can't handle sparse files
-                self.popen('dd if=/dev/zero of=%s count=%d bs=1M'
+                self.popen('dd if=/dev/zero of="%s" count=%d bs=1M'
                            % (self.get_overlay(), self.overlay))
             else:
-                self.popen('dd if=/dev/zero of=%s count=1 bs=1M seek=%d'
+                self.popen('dd if=/dev/zero of="%s" count=1 bs=1M seek=%d'
                            % (self.get_overlay(), self.overlay))
 
     def update_configs(self):

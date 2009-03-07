@@ -2,7 +2,7 @@
 
 Name:           liveusb-creator
 Version:        3.5
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        A liveusb creator
 
 Group:          Applications/System
@@ -28,6 +28,7 @@ A liveusb creator from Live Fedora images
 
 %build
 %{__python} setup.py build
+make mo
 make mo
 
 %install
@@ -67,8 +68,11 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/security/console.apps/%{name}
 
 %changelog
-* Mon Feb 02 2009 Luke Macken <lmacken@redhat.com> 3.5-2
+* Mon Feb 07 2009 Luke Macken <lmacken@redhat.com> 3.5-3
 - Require pyparted
+
+* Fri Mar 06 2009 wwp <subscript@free.fr> 3.5-2
+- Fix dd commands when output path contain whitespaces
 
 * Fri Jan 16 2009 Luke Macken <lmacken@redhat.com> 3.5-1
 - Update to v3.5
