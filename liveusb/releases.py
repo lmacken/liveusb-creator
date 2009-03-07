@@ -20,6 +20,28 @@ releases = (
         'sha1': 'a58634cf8dbd9e27db2b9cbf48d18c2e0dfe941e',
     },
 
+    ## F11 Alpha
+    {
+        'name': 'Fedora 11 Alpha (i686)',
+        'url': 'http://download.fedoraproject.org/pub/fedora/linux/releases/test/11-Alpha/Live/i686/F11-Alpha-i686-Live.iso',
+        'sha1': '6eb44cd56b041ed683a898cf690b468177f3e3f5',
+    },
+    {
+        'name': 'Fedora 11 Alpha KDE (i686)',
+        'url': 'http://download.fedoraproject.org/pub/fedora/linux/releases/test/11-Alpha/Live/i686/F11-Alpha-i686-Live-KDE.iso',
+        'sha1': '64851662f7b11e230c875e066519e49211ac8ad0',
+    },
+    {
+        'name': 'Fedora 11 Alpha (x86_64)',
+        'url': 'http://download.fedoraproject.org/pub/fedora/linux/releases/test/11-Alpha/Live/x86_64/F11-Alpha-x86_64-Live.iso',
+        'sha1': 'd499f6c85b6e76967b7161c634539d9077b30cb8',
+    },
+    {
+        'name': 'Fedora 11 Alpha KDE (x86_64)',
+        'url': 'http://download.fedoraproject.org/pub/fedora/linux/releases/test/11-Alpha/Live/x86_64/F11-Alpha-x86_64-Live-KDE.iso',
+        'sha1': 'fefb6d261cfb547c7b8a99db9452ac7469cac778',
+    },
+
     {
         'name': 'Fedora 9 (i686)',
         'url': 'http://download.fedoraproject.org/pub/fedora/linux/releases/9/Live/i686/Fedora-9-i686-Live.iso',
