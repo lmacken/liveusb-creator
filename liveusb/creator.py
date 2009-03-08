@@ -494,7 +494,12 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         # Ensure our master boot record is not empty
         if self.blank_mbr():
             self.log.debug(_('Your MBR appears to be blank'))
-            self.reset_mbr()
+            # @@ FIXME:  To do this properly, we first need to unmount the device,
+            # then reset the mbr, then remount.  However, for some reason we
+            # are unable to re-mount the drive after resetting the MBR, and it
+            # tends to hose the USB stick as well.  Maybe we need to rescan/reprobe
+            # the device with DBus/Hal? -luke
+            #    self.live.reset_mbr()
 
     def extract_iso(self):
         """ Extract self.iso to self.dest """
