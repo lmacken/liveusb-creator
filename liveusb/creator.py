@@ -452,7 +452,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
     def verify_filesystem(self):
         self.log.info(_("Verifying filesystem..."))
-        if self.fstype not in ('vfat', 'msdos', 'ext2', 'ext3'):
+        if self.fstype not in ('vfat', 'msdos', 'ext2', 'ext3', 'ext4'):
             if not self.fstype:
                 raise LiveUSBError(_("Unknown filesystem for %s.  Your device "
                                      "may need to be reformatted."))
