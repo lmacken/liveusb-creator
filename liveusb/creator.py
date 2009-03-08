@@ -226,7 +226,6 @@ class LiveUSBCreator(object):
         """ Make sure there is enough space for the LiveOS and overlay """
         freebytes = self.get_free_bytes()
         self.log.debug('freebytes = %d' % freebytes)
-        self.isosize = os.stat(self.iso)[ST_SIZE]
         self.log.debug('isosize = %d' % self.isosize)
         overlaysize = self.overlay * 1024**2
         self.log.debug('overlaysize = %d' % overlaysize)
@@ -340,6 +339,19 @@ class LiveUSBCreator(object):
     def bootable_partition(self):
         """ Ensure that the selected partition is flagged as bootable """
         pass
+
+    def set_iso(self, iso):
+        """ Select the given ISO """
+        self.iso = self._to_unicode(iso)
+        self.isosize = os.stat(self.iso)[ST_SIZE]
+
+    def _to_unicode(self, obj, encoding='utf-8'):
+        if hasattr(obj, 'toUtf8'): # PyQt4.QtCore.QString
+            obj = str(obj.toUtf8())
+        if isinstance(obj, basestring):
+            if not isinstance(obj, unicode):
+                obj = unicode(obj, encoding, 'replace')
+        return obj
 
 
 class LinuxLiveUSBCreator(LiveUSBCreator):
