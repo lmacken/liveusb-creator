@@ -330,11 +330,9 @@ class LiveUSBCreator(object):
         return mbr == '0000'
 
     def reset_mbr(self):
-        self.log.info(_('Resetting MBR...'))
-        if '/dev/loop' in self.drive:
-            self.log.warning('Cannot reset MBR on loopback device')
-            return
-        self.popen('cat /usr/lib/syslinux/mbr.bin > %s' % self._drive)
+        if '/dev/loop' not in self.drive:
+            self.log.info(_('Resetting MBR...'))
+            self.popen('cat /usr/lib/syslinux/mbr.bin > %s' % self._drive)
 
     def bootable_partition(self):
         """ Ensure that the selected partition is flagged as bootable """
