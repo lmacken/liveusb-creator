@@ -357,6 +357,8 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         if self.live.isosize:
             freespace -= self.live.isosize / 1024**2
 
+        freespace -= 1 # Don't fill the device 100%
+
         if freespace < current_overlay:
             self.overlaySlider.setValue(freespace)
             self.live.overlay = self.overlaySlider.value()
