@@ -397,6 +397,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         self.drives[device] = {
             'label'   : str(dev.GetProperty('volume.label')).replace(' ', '_'),
             'fstype'  : str(dev.GetProperty('volume.fstype')),
+            'fsversion': str(dev.GetProperty('volume.fsversion')),
             'uuid'    : str(dev.GetProperty('volume.uuid')),
             'mount'   : mount,
             'udi'     : dev,
@@ -682,6 +683,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                     'free': self.get_free_bytes(drive) / 1024**2,
                     'fstype': 'vfat',
                     'device': drive,
+                    'fsversion': vol[-1],
                 }
         if not len(self.drives):
             raise LiveUSBError(_("Unable to find any removable devices"))

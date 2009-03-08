@@ -70,6 +70,7 @@ rm -rf %{buildroot}
 %changelog
 * Mon Feb 07 2009 Luke Macken <lmacken@redhat.com> 3.5-3
 - Require pyparted
+- Allow for ext4 formatted devices
 
 * Fri Mar 06 2009 wwp <subscript@free.fr> 3.5-2
 - Fix dd commands when output path contain whitespaces
