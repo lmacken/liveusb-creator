@@ -337,6 +337,8 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         self.progressBar.setMaximum(value)
 
     def status(self, text):
+        if isinstance(text, LiveUSBError):
+            text = text.message
         self.textEdit.append(text)
 
     def enable_widgets(self, enabled=True):
