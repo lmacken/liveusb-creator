@@ -434,6 +434,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             self.log.debug("Mounted %s to %s " % (self.drive['device'],
                                                   self.dest))
             self.drive['mount'] = self.dest
+            self.drive['free'] = self.get_free_bytes(self.dest) / 1024**2
         else:
             self.log.debug("Using existing mount: %s" % self.dest)
 
