@@ -325,9 +325,42 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         """
         if not str(drive):
             return
-        freespace = self.live.drives[str(drive).split()[0]]['free']
-        if not freespace or freespace > 2047:
-            freespace = 2047
+        self._refresh_overlay_slider(str(drive).split()[0])
+
+    def _refresh_overlay_slider(self, drive=None):
+        """
+        Reset the persistent storage slider based on the amount of free space
+        on the device and the ISO size.
+        """
+        if not drive:
+            drive = self.get_selected_drive()
+
+        device = self.live.drives[drive]
+        freespace = device['free']
+        current_overlay = self.overlaySlider.value()
+
+        if not freespace:
+            self.live.log.warning(_('Device is not yet mounted, so we cannot '
+                                    'determine the amount of free space.  '
+                                    'Setting a maximum limit of 8G for the '
+                                    'persistent storage.'))
+            freespace = 8192
+
+        # FAT16 cannot handle files greater than 2G
+        if device['fsversion'] == 'FAT16':
+            self.live.log.warning(_('Partition is FAT16; Restricting overlay '
+                                    'size to 2G'))
+            if freespace > 2047:
+                freespace = 2047
+
+        # Subtract the size of the ISO from our maximum overlay size
+        if self.live.isosize:
+            freespace -= self.live.isosize / 1024**2
+
+        if freespace < current_overlay:
+            self.overlaySlider.setValue(freespace)
+            self.live.overlay = self.overlaySlider.value()
+
         self.overlaySlider.setMaximum(freespace)
 
     def progress(self, value):
@@ -368,6 +401,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
 
         try:
             self.live.mount_device()
+            self._refresh_overlay_slider() # To reflect the drives free space
         except LiveUSBError, e:
             self.status(e.message)
             self.enable_widgets(True)
@@ -449,6 +483,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
 
             self.live.log.info('%s ' % os.path.basename(self.live.iso) + 
                                _("selected"))
+            self._refresh_overlay_slider()
 
     def terminate(self):
         """ Terminate any processes that we have spawned """
