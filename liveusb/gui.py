@@ -408,6 +408,10 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
             self.status(e.message)
             self.enable_widgets(True)
             return
+        except OSError, e:
+            self.status(_('Unable to mount device'))
+            self.enable_widgets(True)
+            return
 
         if self.live.existing_liveos():
             if not self.confirmed:
