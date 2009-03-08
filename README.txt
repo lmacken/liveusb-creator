@@ -17,9 +17,12 @@ See the Developers Guide on the wiki for details,
 
         https://fedorahosted.org/liveusb-creator/wiki/Development
 
-================================================================================
+License
+-------
 
-This tool is distributed with the following open source software
+The liveusb-creator is licensed under the GPLv2.
+
+This tool is distributed with the following open source software::
 
    Python
    http://python.org
