@@ -464,7 +464,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
     def verify_filesystem(self):
         self.log.info(_("Verifying filesystem..."))
-        if self.fstype not in ('vfat', 'msdos', 'ext2', 'ext3', 'ext4'):
+        if self.fstype not in ('vfat', 'msdos', 'ext2', 'ext3'):
             if not self.fstype:
                 raise LiveUSBError(_("Unknown filesystem for %s.  Your device "
                                      "may need to be reformatted."))
@@ -530,12 +530,17 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         """ Run syslinux to install the bootloader on our devices """
         LiveUSBCreator.install_bootloader(self)
         self.log.info(_("Installing bootloader..."))
-        shutil.move(os.path.join(self.dest, "isolinux"),
-                    os.path.join(self.dest, "syslinux"))
-        os.unlink(os.path.join(self.dest, "syslinux", "isolinux.cfg"))
-        self.popen('syslinux%s%s -d %s %s' %  (self.opts.force and ' -f' or ' ',
-                   self.opts.safe and ' -s' or ' ',
-                   'syslinux', self.drive['device']))
+        syslinux_path = os.path.join(self.dest, "syslinux")
+        shutil.move(os.path.join(self.dest, "isolinux"), syslinux_path)
+        os.unlink(os.path.join(syslinux_path, "isolinux.cfg"))
+        if self.drive['fstype'] in ('ext2', 'ext3'):
+            shutil.move(os.path.join(syslinux_path, "syslinux.cfg"),
+                        os.path.join(syslinux_path, "extlinux.cfg"))
+            self.popen('extlinux -i %s' % syslinux_path)
+        else: # FAT
+            self.popen('syslinux%s%s -d %s %s' %  (self.opts.force and ' -f' or ' ',
+                       self.opts.safe and ' -s' or ' ',
+                       'syslinux', self.drive['device']))
 
     def get_free_bytes(self, device=None):
         """ Return the number of available bytes on our device """
@@ -675,7 +680,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                 try:
                     vol = win32api.GetVolumeInformation(drive)
                     label = vol[0]
-                except:
+                except pywintypes.error, e:
                     label = None
                 self.drives[drive] = {
                     'label': label,
