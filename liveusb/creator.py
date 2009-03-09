@@ -682,13 +682,13 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         for drive in [l + ':' for l in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ']:
             if win32file.GetDriveType(drive) == win32file.DRIVE_REMOVABLE or \
                drive == self.opts.force:
+                vol = [None]
                 try:
                     vol = win32api.GetVolumeInformation(drive)
-                    label = vol[0]
                 except pywintypes.error, e:
-                    label = None
+                    self.log.error('Unable to get GetVolumeInformation(%s): %s' % (drive, str(e)))
                 self.drives[drive] = {
-                    'label': label,
+                    'label': vol[0],
                     'mount': drive,
                     'uuid': self._get_device_uuid(drive),
                     'free': self.get_free_bytes(drive) / 1024**2,
