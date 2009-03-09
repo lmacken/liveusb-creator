@@ -687,6 +687,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                     vol = win32api.GetVolumeInformation(drive)
                 except pywintypes.error, e:
                     self.log.error('Unable to get GetVolumeInformation(%s): %s' % (drive, str(e)))
+                    continue
                 self.drives[drive] = {
                     'label': vol[0],
                     'mount': drive,
