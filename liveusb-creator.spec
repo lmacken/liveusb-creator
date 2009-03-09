@@ -1,8 +1,8 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           liveusb-creator
-Version:        3.5
-Release:        3%{?dist}
+Version:        3.6
+Release:        1%{?dist}
 Summary:        A liveusb creator
 
 Group:          Applications/System
@@ -68,9 +68,9 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/security/console.apps/%{name}
 
 %changelog
-* Mon Feb 07 2009 Luke Macken <lmacken@redhat.com> 3.5-3
+* Mon Mar 07 2009 Luke Macken <lmacken@redhat.com> 3.6-1
 - Require pyparted
-- Allow for ext4 formatted devices
+- Update to v3.6
 
 * Fri Mar 06 2009 wwp <subscript@free.fr> 3.5-2
 - Fix dd commands when output path contain whitespaces
