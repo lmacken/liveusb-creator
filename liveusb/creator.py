@@ -677,7 +677,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 class WindowsLiveUSBCreator(LiveUSBCreator):
 
     def detect_removable_drives(self):
-        import win32file, win32api
+        import win32file, win32api, pywintypes
         self.drives = {}
         for drive in [l + ':' for l in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ']:
             if win32file.GetDriveType(drive) == win32file.DRIVE_REMOVABLE or \
