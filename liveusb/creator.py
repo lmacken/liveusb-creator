@@ -614,40 +614,29 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
     def bootable_partition(self):
         """ Ensure that the selected partition is flagged as bootable """
         import parted
-        disk, partition, name = self.get_disk_partition()
-        if partition.is_flag_available(parted.PARTITION_BOOT):
-            if partition.get_flag(parted.PARTITION_BOOT):
-                self.log.debug('%s already bootable' % name)
+        disk, partition = self.get_disk_partition()
+        if partition.isFlagAvailable(parted.PARTITION_BOOT):
+            if partition.getFlag(parted.PARTITION_BOOT):
+                self.log.debug('%s already bootable' % self._drive)
             else:
-                partition.set_flag(parted.PARTITION_BOOT, 1)
+                partition.setFlag(parted.PARTITION_BOOT)
                 disk.commit()
-                self.log.info('Marked %s as bootable' % name)
+                self.log.info('Marked %s as bootable' % self._drive)
         else:
-            self.log.warning('%s does not have boot flag' % name)
-
-    def get_partitions(self, disk):
-        """ Return a list of partitions on a given parted.PedDisk """
-        partitions = []
-        part = disk.next_partition()
-        while part:
-            if part.type_name in ("metadata", "free"):
-                part = disk.next_partition(part)
-                continue
-            partitions.append(part)
-            part = disk.next_partition(part)
-        return partitions
+            self.log.warning('%s does not have boot flag' % self._drive)
 
     def get_disk_partition(self):
         """ Return the PedDisk and partition of the selected device """
         import parted
         parent = self.drives[self._drive]['parent']
-        dev = parted.PedDevice.get(parent)
-        disk = parted.PedDisk.new(dev)
-        partitions = self.get_partitions(disk)
-        for part in partitions:
-            name = '%s%d' % (parent, part.num)
-            if name == self._drive:
-                return disk, part, name
+        dev = parted.Device(path = parent)
+        disk = parted.Disk(device = dev)
+        print self._drive
+        for part in disk.partitions:
+            print part.getDeviceNodeName()
+            if self._drive == "/dev/%s" %(part.getDeviceNodeName(),):
+                return disk, part
+        raise LiveUSBError(_("Unable to find partition"))
 
     def initialize_zip_geometry(self):
         """ This method initializes the selected device in a zip-like fashion.
@@ -658,7 +647,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         More details on this can be found here:
             http://syslinux.zytor.com/doc/usbkey.txt
         """
-        from parted import PedDevice
+        #from parted import PedDevice
         self.log.info('Initializing %s in a zip-like fashon' % self._drive)
         heads = 64
         cylinders = 32

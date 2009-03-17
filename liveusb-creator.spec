@@ -18,7 +18,7 @@ ExcludeArch:    ppc64
 BuildRequires:  python-devel, python-setuptools, PyQt4-devel, desktop-file-utils gettext
 Requires:       syslinux, PyQt4, usermode, isomd5sum
 Requires:       python-urlgrabber
-Requires:       pyparted
+Requires:       pyparted >= 2.0
 
 %description
 A liveusb creator from Live Fedora images
