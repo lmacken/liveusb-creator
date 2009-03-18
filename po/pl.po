@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-09 22:26+0100\n"
-"PO-Revision-Date: 2009-03-09 22:35+0100\n"
+"POT-Creation-Date: 2009-03-18 23:24+0100\n"
+"PO-Revision-Date: 2009-03-18 23:25+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -184,7 +184,7 @@ msgstr "System plików %s jest nieznany!"
 msgid "Unable to mount device: %s"
 msgstr "Nie można zamontować urządzenia: %s"
 
-#: ../liveusb/creator.py:466 ../liveusb/creator.py:704
+#: ../liveusb/creator.py:466 ../liveusb/creator.py:694
 msgid "Verifying filesystem..."
 msgstr "Sprawdzanie systemu plików..."
 
@@ -203,7 +203,7 @@ msgstr "Nieobsługiwany system plików: %s"
 msgid "Your MBR appears to be blank"
 msgstr "MBR wydaje się być pusty"
 
-#: ../liveusb/creator.py:506 ../liveusb/creator.py:739
+#: ../liveusb/creator.py:506 ../liveusb/creator.py:729
 msgid "Extracting live image to USB device..."
 msgstr "Rozpakowywanie obrazu Live na urządzenie USB..."
 
@@ -211,7 +211,7 @@ msgstr "Rozpakowywanie obrazu Live na urządzenie USB..."
 msgid "Unable to find LiveOS on ISO"
 msgstr "Nie można znaleźć systemu operacyjnego Live w pliku ISO"
 
-#: ../liveusb/creator.py:524 ../liveusb/creator.py:747
+#: ../liveusb/creator.py:524 ../liveusb/creator.py:737
 msgid "Wrote to device at"
 msgstr "Zapisano do urządzenia na"
 
@@ -223,18 +223,22 @@ msgstr "Instalowanie programu startowego..."
 msgid "Verifying ISO MD5 checksum"
 msgstr "Sprawdzanie sumy kontrolnej MD5 pliku ISO"
 
-#: ../liveusb/creator.py:700
+#: ../liveusb/creator.py:639
+msgid "Unable to find partition"
+msgstr "Nie można znaleźć partycji"
+
+#: ../liveusb/creator.py:690
 msgid "Unable to find any removable devices"
 msgstr "Nie można znaleźć żadnych urządzeń wymiennych"
 
-#: ../liveusb/creator.py:708
+#: ../liveusb/creator.py:698
 msgid ""
 "Make sure your USB key is plugged in and formatted with the FAT filesystem"
 msgstr ""
 "Upewnij się, że klucz USB jest podłączony i sformatowany w systemie plików "
 "FAT"
 
-#: ../liveusb/creator.py:711
+#: ../liveusb/creator.py:701
 #, python-format
 msgid ""
 "Unsupported filesystem: %s\n"
@@ -243,15 +247,15 @@ msgstr ""
 "Nieobsługiwany system plików: %s\n"
 "Wykonaj kopię zapasową i sformatuj klucz USB w systemie plików FAT."
 
-#: ../liveusb/creator.py:753
+#: ../liveusb/creator.py:743
 msgid "Installing bootloader"
 msgstr "Instalowanie programu startowego"
 
-#: ../liveusb/creator.py:797
+#: ../liveusb/creator.py:787
 msgid "Cannot find"
 msgstr "Nie można znaleźć"
 
-#: ../liveusb/creator.py:798
+#: ../liveusb/creator.py:788
 msgid ""
 "Make sure to extract the entire liveusb-creator zip file before running this "
 "program."
