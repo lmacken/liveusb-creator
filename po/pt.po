@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liveusb-creator\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-03-11 13:52+0000\n"
-"PO-Revision-Date: 2009-03-12 00:09+0100\n"
+"POT-Creation-Date: 2009-03-19 09:55+0000\n"
+"PO-Revision-Date: 2009-03-19 11:53+0100\n"
 "Last-Translator: Rui Gouveia <rui.gouveia@globaltek.pt>\n"
 "Language-Team: PT <fedora-trans-pt@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-Country: PORTUGAL\n"
-"X-Poedit-Basepath: /home/ruigo/src/liveusb-creator-3.6/po/\n"
+"X-Poedit-Basepath: /home/ruigo/src/liveusb-creator/po/\n"
 "X-Poedit-SearchPath-0: \n"
 
 #: ../liveusb/__init__.py:42
@@ -185,7 +185,7 @@ msgid "Unable to mount device: %s"
 msgstr "Não foi possível montar o dispositivo: %s"
 
 #: ../liveusb/creator.py:466
-#: ../liveusb/creator.py:705
+#: ../liveusb/creator.py:694
 msgid "Verifying filesystem..."
 msgstr "A verificar o sistema de ficheiros..."
 
@@ -204,7 +204,7 @@ msgid "Your MBR appears to be blank"
 msgstr "O seu MBR parece estar em branco"
 
 #: ../liveusb/creator.py:506
-#: ../liveusb/creator.py:740
+#: ../liveusb/creator.py:729
 msgid "Extracting live image to USB device..."
 msgstr "A extrair a imagem Live para o dispositivo USB..."
 
@@ -213,7 +213,7 @@ msgid "Unable to find LiveOS on ISO"
 msgstr "Não foi possível encontrar um sistema Live no ficheiro ISO"
 
 #: ../liveusb/creator.py:524
-#: ../liveusb/creator.py:748
+#: ../liveusb/creator.py:737
 msgid "Wrote to device at"
 msgstr "Gravado no dispositivo em"
 
@@ -225,15 +225,19 @@ msgstr "A instalar o gestor de arranque..."
 msgid "Verifying ISO MD5 checksum"
 msgstr "A verificar a assinatura digital MD5 do ficheiro ISO"
 
-#: ../liveusb/creator.py:701
+#: ../liveusb/creator.py:639
+msgid "Unable to find partition"
+msgstr "Incapaz de encontrar a partição"
+
+#: ../liveusb/creator.py:690
 msgid "Unable to find any removable devices"
 msgstr "Não foi possível encontrar nenhuns dispositivos de disco removíveis"
 
-#: ../liveusb/creator.py:709
+#: ../liveusb/creator.py:698
 msgid "Make sure your USB key is plugged in and formatted with the FAT filesystem"
 msgstr "Certifique-se de que a caneta USB está bem ligada e formatada com o sistema de ficheiros FAT"
 
-#: ../liveusb/creator.py:712
+#: ../liveusb/creator.py:701
 #, python-format
 msgid ""
 "Unsupported filesystem: %s\n"
@@ -242,15 +246,15 @@ msgstr ""
 "Sistema de ficheiros não suportado: %s\n"
 "Por favor, faça um backup e formate a sua caneta USB com sistema de ficheiros FAT."
 
-#: ../liveusb/creator.py:754
+#: ../liveusb/creator.py:743
 msgid "Installing bootloader"
 msgstr "A instalar o gestor de arranque"
 
-#: ../liveusb/creator.py:798
+#: ../liveusb/creator.py:787
 msgid "Cannot find"
 msgstr "Não foi possível encontrar"
 
-#: ../liveusb/creator.py:799
+#: ../liveusb/creator.py:788
 msgid "Make sure to extract the entire liveusb-creator zip file before running this program."
 msgstr "Certifique-se de extrair completamente o ficheiro zip do liveusb-creator antes de executar este programa."
 
