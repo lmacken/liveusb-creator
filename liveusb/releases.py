@@ -1,4 +1,26 @@
 releases = (
+    ## F11 Beta
+    {
+        'name': 'Fedora 11 Beta (i686)',
+        'url': 'http://download.fedoraproject.org/pub/fedora/linux//releases/test/11-Beta/Live/i686/F11-Beta-i686-Live.iso',
+        'sha1': '46b3251533402acb0b20b4d0df323e6783c32ec717921133b6c557e5cd091d0a',
+    },
+    {
+        'name': 'Fedora 11 Beta KDE (i686)',
+        'url': 'http://download.fedoraproject.org/pub/fedora/linux//releases/test/11-Beta/Live/i686/F11-Beta-i686-Live-KDE.iso',
+        'sha1': '149257a5283053dcde2b0525d46ba18fe9fe07484c6c5c8c58949877dafd201d',
+    },
+    {
+        'name': 'Fedora 11 Beta (x86_64)',
+        'url': 'http://download.fedoraproject.org/pub/fedora/linux//releases/test/11-Beta/Live/x86_64/F11-Beta-x86_64-Live.iso',
+        'sha1': 'fdc068688f302decef00bdfc95f474a9612fddf505eec0840f0345f112ddd055',
+    },
+    {
+        'name': 'Fedora 11 Beta KDE (x86_64)',
+        'url': 'http://download.fedoraproject.org/pub/fedora/linux//releases/test/11-Beta/Live/x86_64/F11-Beta-x86_64-Live-KDE.iso',
+        'sha1': '4ca6dd4be116789d3c3b50b742cc9f8c07c0adc5e314fd4c144e0d08ecff0b44',
+    },
+
     {
         'name': 'Fedora 10 (i686)',
         'url': 'http://download.fedoraproject.org/pub/fedora/linux/releases/10/Live/i686/F10-i686-Live.iso',
@@ -18,28 +40,6 @@ releases = (
         'name': 'Fedora 10 KDE (x86_64)',
         'url': 'http://download.fedoraproject.org/pub/fedora/linux/releases/10/Live/x86_64/F10-x86_64-Live-KDE.iso',
         'sha1': 'a58634cf8dbd9e27db2b9cbf48d18c2e0dfe941e',
-    },
-
-    ## F11 Alpha
-    {
-        'name': 'Fedora 11 Alpha (i686)',
-        'url': 'http://download.fedoraproject.org/pub/fedora/linux/releases/test/11-Alpha/Live/i686/F11-Alpha-i686-Live.iso',
-        'sha1': '6eb44cd56b041ed683a898cf690b468177f3e3f5',
-    },
-    {
-        'name': 'Fedora 11 Alpha KDE (i686)',
-        'url': 'http://download.fedoraproject.org/pub/fedora/linux/releases/test/11-Alpha/Live/i686/F11-Alpha-i686-Live-KDE.iso',
-        'sha1': '64851662f7b11e230c875e066519e49211ac8ad0',
-    },
-    {
-        'name': 'Fedora 11 Alpha (x86_64)',
-        'url': 'http://download.fedoraproject.org/pub/fedora/linux/releases/test/11-Alpha/Live/x86_64/F11-Alpha-x86_64-Live.iso',
-        'sha1': 'd499f6c85b6e76967b7161c634539d9077b30cb8',
-    },
-    {
-        'name': 'Fedora 11 Alpha KDE (x86_64)',
-        'url': 'http://download.fedoraproject.org/pub/fedora/linux/releases/test/11-Alpha/Live/x86_64/F11-Alpha-x86_64-Live-KDE.iso',
-        'sha1': 'fefb6d261cfb547c7b8a99db9452ac7469cac778',
     },
 
     {
@@ -87,8 +87,8 @@ releases = (
     ## Custom spins
     ##
     {
-        'name': 'Sugar Spin 0.82-2 (i686)',
-        'url': 'http://alt.fedoraproject.org/pub/alt/olpc/0.82-2/i686/sugar-spin.iso',
-        'sha1': '5f51daf59a303036858905c18a95c8270f19559d',
+        'name': 'Sugar on a Stick (beta)',
+        'url': 'http://download.sugarlabs.org/soas/releases/soas-beta.iso',
+        #'sha1': '',
     },
 )
