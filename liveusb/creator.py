@@ -201,7 +201,12 @@ class LiveUSBCreator(object):
         release = self.get_release_from_iso()
         if release:
             progress.set_max_progress(self.isosize / 1024)
-            checksum = hashlib.sha1()
+            if 'sha1' in release:
+                hash = 'sha1'
+                checksum = hashlib.sha1()
+            elif 'sha256' in release:
+                hash = 'sha256'
+                checksum = hashlib.sha256()
             isofile = file(self.iso, 'rb')
             bytes = 1024**2
             total = 0
@@ -211,7 +216,7 @@ class LiveUSBCreator(object):
                 bytes = len(data)
                 total += bytes
                 progress.update_progress(total / 1024)
-            if checksum.hexdigest() == release['sha1']:
+            if checksum.hexdigest() == release[hash]:
                 return True
             else:
                 self.log.info(_("Error: The SHA1 of your Live CD is "

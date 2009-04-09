@@ -3,22 +3,22 @@ releases = (
     {
         'name': 'Fedora 11 Beta (i686)',
         'url': 'http://download.fedoraproject.org/pub/fedora/linux//releases/test/11-Beta/Live/i686/F11-Beta-i686-Live.iso',
-        'sha1': '46b3251533402acb0b20b4d0df323e6783c32ec717921133b6c557e5cd091d0a',
+        'sha256': '46b3251533402acb0b20b4d0df323e6783c32ec717921133b6c557e5cd091d0a',
     },
     {
         'name': 'Fedora 11 Beta KDE (i686)',
         'url': 'http://download.fedoraproject.org/pub/fedora/linux//releases/test/11-Beta/Live/i686/F11-Beta-i686-Live-KDE.iso',
-        'sha1': '149257a5283053dcde2b0525d46ba18fe9fe07484c6c5c8c58949877dafd201d',
+        'sha256': '149257a5283053dcde2b0525d46ba18fe9fe07484c6c5c8c58949877dafd201d',
     },
     {
         'name': 'Fedora 11 Beta (x86_64)',
         'url': 'http://download.fedoraproject.org/pub/fedora/linux//releases/test/11-Beta/Live/x86_64/F11-Beta-x86_64-Live.iso',
-        'sha1': 'fdc068688f302decef00bdfc95f474a9612fddf505eec0840f0345f112ddd055',
+        'sha256': 'fdc068688f302decef00bdfc95f474a9612fddf505eec0840f0345f112ddd055',
     },
     {
         'name': 'Fedora 11 Beta KDE (x86_64)',
         'url': 'http://download.fedoraproject.org/pub/fedora/linux//releases/test/11-Beta/Live/x86_64/F11-Beta-x86_64-Live-KDE.iso',
-        'sha1': '4ca6dd4be116789d3c3b50b742cc9f8c07c0adc5e314fd4c144e0d08ecff0b44',
+        'sha256': '4ca6dd4be116789d3c3b50b742cc9f8c07c0adc5e314fd4c144e0d08ecff0b44',
     },
 
     {

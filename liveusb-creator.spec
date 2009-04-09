@@ -2,7 +2,7 @@
 
 Name:           liveusb-creator
 Version:        3.6.5
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A liveusb creator
 
 Group:          Applications/System
