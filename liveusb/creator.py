@@ -192,7 +192,6 @@ class LiveUSBCreator(object):
 
     def verify_iso_sha1(self, progress=None):
         """ Verify the SHA1 checksum of our ISO if it is in our release list """
-        self.log.info(_("Verifying SHA1 of LiveCD image..."))
         if not progress:
             class DummyProgress:
                 def set_max_progress(self, value): pass
@@ -202,9 +201,11 @@ class LiveUSBCreator(object):
         if release:
             progress.set_max_progress(self.isosize / 1024)
             if 'sha1' in release:
+                self.log.info(_("Verifying SHA1 checksum of LiveCD image..."))
                 hash = 'sha1'
                 checksum = hashlib.sha1()
             elif 'sha256' in release:
+                self.log.info(_("Verifying SHA256 checksum of LiveCD image..."))
                 hash = 'sha256'
                 checksum = hashlib.sha256()
             isofile = file(self.iso, 'rb')
