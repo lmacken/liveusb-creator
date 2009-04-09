@@ -183,7 +183,7 @@ class LiveUSBThread(QtCore.QThread):
 
                 # If we know about this ISO, and it's SHA1 -- verify it
                 release = self.live.get_release_from_iso()
-                if release and release['sha1']:
+                if release and 'sha1' in release and release['sha1']:
                     if not self.live.verify_iso_sha1(progress=self):
                         return
 
