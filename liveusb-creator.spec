@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           liveusb-creator
-Version:        3.6.4
+Version:        3.6.5
 Release:        1%{?dist}
 Summary:        A liveusb creator
 
@@ -68,6 +68,9 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/security/console.apps/%{name}
 
 %changelog
+* Thu Apr 09 2009 Luke Macken <lmacken@redhat.com> 3.6.5-1
+- Update to v3.6.5, which supports F11 beta, and the latest SoaS releases
+
 * Wed Mar 18 2009 Luke Macken <lmacken@redhat.com> 3.6.4-1
 - Update to v3.6.4, which works with the PyParted 2.0 API
 
