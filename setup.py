@@ -1,4 +1,3 @@
-from liveusb import __version__
 from distutils.core import setup
 import sys, os
 
@@ -15,7 +14,7 @@ if sys.platform == 'win32':
 
     setup(
         name = 'liveusb-creator',
-        version = __version__,
+        version = '3.6.5',
         packages = ['liveusb', 'liveusb/urlgrabber'],
         scripts = ['liveusb-creator'], 
         license = 'GNU General Public License (GPL)',
@@ -56,7 +55,7 @@ if sys.platform == 'win32':
 else:
     setup(
         name = 'liveusb-creator',
-        version = __version__,
+        version = '3.6.5',
         packages = ['liveusb'],
         scripts = ['liveusb-creator'],
         license = 'GNU General Public License (GPL)',

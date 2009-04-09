@@ -17,8 +17,6 @@
 #
 # Author(s): Luke Macken <lmacken@redhat.com>
 
-__version__ = '3.6.5'
-
 import os
 import sys
 import gettext

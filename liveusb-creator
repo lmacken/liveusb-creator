@@ -18,10 +18,10 @@
 #
 # Author(s): Luke Macken <lmacken@redhat.com>
 
+__version__ = '3.6.5'
 
 def parse_args():
     from optparse import OptionParser
-    from liveusb import __version__
     parser = OptionParser(version=__version__)
     parser.add_option('-c', '--console', dest='console', action='store_true',
                       help='Use console mode instead of the GUI')
