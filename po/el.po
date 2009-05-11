@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-09-03 02:54-0400\n"
-"PO-Revision-Date: 2009-05-11 14:10+0200\n"
+"PO-Revision-Date: 2009-05-11 14:44+0200\n"
 "Last-Translator: Pierros Papadeas <ppapadeas@gmail.com>\n"
 "Language-Team: Greek <team@gnome.gr>\n"
 "MIME-Version: 1.0\n"
@@ -36,7 +36,7 @@ msgstr ""
 
 #: ../liveusb/gui.py:164
 msgid "Verifying SHA1 of LiveCD image..."
-msgstr ""
+msgstr "Επιβεβαίωση SHA1 της ζωντανής εικόνας CD..."
 
 #: ../liveusb/gui.py:166
 msgid "Error: The SHA1 of your Live CD is invalid.  You can run this program with the --noverify argument to bypass this verification check."
@@ -49,7 +49,7 @@ msgstr "Εξαγωγή ζωντανής εικόνας στην συσκευή U
 #: ../liveusb/gui.py:180
 #, python-format
 msgid "Creating %d Mb persistent overlay..."
-msgstr ""
+msgstr "Δημιουργία %d Mb μόνιμου χώρου..."
 
 #: ../liveusb/gui.py:183
 msgid "Configuring and installing bootloader..."
@@ -78,11 +78,11 @@ msgstr ""
 
 #: ../liveusb/gui.py:337
 msgid "Warning: Creating a new persistent overlay will delete your existing one."
-msgstr ""
+msgstr "Προσοχή: Η δημιουργία μόνιμου χώρου θα διαγράψει τον ήδη υπάρχοντα."
 
 #: ../liveusb/gui.py:339
 msgid "Press 'Create Live USB' again if you wish to continue."
-msgstr ""
+msgstr "Πατήστε 'Δημιουργία Ζωντανού USB' ξανά αν επιθυμείτε να συνεχίσετε."
 
 #. The user has confirmed that they wish to overwrite their
 #. existing Live OS.  Here we delete it first, in order to
@@ -101,7 +101,7 @@ msgstr "Η λήψη απέτυχε:"
 
 #: ../liveusb/gui.py:388
 msgid "You can try again to resume your download"
-msgstr ""
+msgstr "Μπορείτε να δοκιμάσετε να ξαναξεκινήσετε την λήψη σας"
 
 #: ../liveusb/gui.py:392
 msgid "Select Live ISO"
@@ -130,12 +130,12 @@ msgstr "Δεν υπάρχει αρκετός διαθέσιμος χώρος σ�
 #: ../liveusb/creator.py:190
 #, python-format
 msgid "Creating %sMB persistent overlay"
-msgstr ""
+msgstr "Δημιουργία %sΜΒ μόνιμης μνήμης"
 
 #: ../liveusb/creator.py:226
 #, python-format
 msgid "Unable to remove previous LiveOS: %s"
-msgstr ""
+msgstr "Αδυναμία αφαίρεσης προηγούμενου ζωντανού ΛΣ: %s"
 
 #: ../liveusb/creator.py:257
 #, python-format
@@ -176,7 +176,7 @@ msgstr "Αδυναμία εύρεσης αφαιρούμενων συσκευώ�
 
 #: ../liveusb/creator.py:479
 msgid "Make sure your USB key is plugged in and formatted with the FAT filesystem"
-msgstr ""
+msgstr "Σιγουρευτείτε ότι το USB stick σας είναι συνδεδεμένο και διαμορφωμένο σε σύστημα αρχείων FAT"
 
 #: ../liveusb/creator.py:482
 #, python-format
@@ -204,7 +204,7 @@ msgstr "Δημιουργία Ζωντανού USB"
 
 #: ../liveusb/dialog.py:126
 msgid "This is the status console, where all messages get written to."
-msgstr ""
+msgstr "Αυτή είναι η κονσόλα κατάστασης, όπου γράφονται όλα τα μηνύματα."
 
 #: ../liveusb/dialog.py:127
 msgid "This is the progress bar that will indicate how far along in the LiveUSB creation process you are"
