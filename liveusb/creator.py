@@ -544,6 +544,20 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         syslinux_path = os.path.join(self.dest, "syslinux")
         shutil.move(os.path.join(self.dest, "isolinux"), syslinux_path)
         os.unlink(os.path.join(syslinux_path, "isolinux.cfg"))
+
+        # Syslinux doesn't guarantee the API for its com32 modules (#492370)
+        for com32mod in ('vesamenu.c32', 'menu.c32'):
+            copied = False
+            for path in ('/usr/share', '/usr/lib'):
+                com32path = os.path.join(path, 'syslinux', com32mod)
+                if os.path.isfile(com32path):
+                    self.log.debug('Copying %s on to stick' % com32path)
+                    shutil.copyfile(com32path, os.path.join(syslinux_path, com32mod))
+                    copied = True
+                    break
+            if copied:
+                break
+
         if self.drive['fstype'] in ('ext2', 'ext3'):
             shutil.move(os.path.join(syslinux_path, "syslinux.cfg"),
                         os.path.join(syslinux_path, "extlinux.cfg"))
