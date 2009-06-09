@@ -560,7 +560,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
         if self.drive['fstype'] in ('ext2', 'ext3'):
             shutil.move(os.path.join(syslinux_path, "syslinux.cfg"),
-                        os.path.join(syslinux_path, "extlinux.cfg"))
+                        os.path.join(syslinux_path, "extlinux.conf"))
             self.popen('extlinux -i %s' % syslinux_path)
         else: # FAT
             self.popen('syslinux%s%s -d %s %s' %  (self.opts.force and ' -f' or ' ',
