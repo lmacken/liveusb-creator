@@ -35,5 +35,6 @@ set-bootpath-dev
 " ${BOOTPATHDEV}\syslinux\initrd0.img" expand$ to ramdisk
 " ${BOOTPATHDEV}\syslinux\\vmlinuz0" expand$ to boot-device
 unfreeze
+dcon-unfreeze
 boot
 """
