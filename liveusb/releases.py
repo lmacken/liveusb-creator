@@ -1,24 +1,23 @@
 releases = (
-    ## F11 Beta
     {
-        'name': 'Fedora 11 Beta (i686)',
-        'url': 'http://download.fedoraproject.org/pub/fedora/linux//releases/test/11-Beta/Live/i686/F11-Beta-i686-Live.iso',
-        'sha256': '46b3251533402acb0b20b4d0df323e6783c32ec717921133b6c557e5cd091d0a',
+        'name': 'Fedora 11 (i686)',
+        'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/11/Live/i686/Fedora-11-i686-Live.iso',
+        'sha256': '6bbb8842bfd64e948cccd4046394a1ab67a18f62e97c36133a8fe1a10c40cfcb',
     },
     {
-        'name': 'Fedora 11 Beta KDE (i686)',
-        'url': 'http://download.fedoraproject.org/pub/fedora/linux//releases/test/11-Beta/Live/i686/F11-Beta-i686-Live-KDE.iso',
-        'sha256': '149257a5283053dcde2b0525d46ba18fe9fe07484c6c5c8c58949877dafd201d',
+        'name': 'Fedora 11 KDE (i686)',
+        'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/11/Live/i686/Fedora-11-i686-Live-KDE.iso',
+        'sha256': '543bb77cc3e2618f6d445ac346b046d0520df35cd6444c5040aebb85ca7fa2eb',
     },
     {
-        'name': 'Fedora 11 Beta (x86_64)',
-        'url': 'http://download.fedoraproject.org/pub/fedora/linux//releases/test/11-Beta/Live/x86_64/F11-Beta-x86_64-Live.iso',
-        'sha256': 'fdc068688f302decef00bdfc95f474a9612fddf505eec0840f0345f112ddd055',
+        'name': 'Fedora 11 (x86_64)',
+        'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/11/Live/x86_64/Fedora-11-x86_64-Live.iso',
+        'sha256': 'f1ca7029c35dbbcbbfd16b959bf6c2c5de6c309d60a6e87a113ee4dba4124c26',
     },
     {
-        'name': 'Fedora 11 Beta KDE (x86_64)',
-        'url': 'http://download.fedoraproject.org/pub/fedora/linux//releases/test/11-Beta/Live/x86_64/F11-Beta-x86_64-Live-KDE.iso',
-        'sha256': '4ca6dd4be116789d3c3b50b742cc9f8c07c0adc5e314fd4c144e0d08ecff0b44',
+        'name': 'Fedora 11 KDE (x86_64)',
+        'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/11/Live/x86_64/Fedora-11-x86_64-Live-KDE.iso',
+        'sha256': '4fdf952afb0d27887639140f6921ff58ba74f8d633b14414b095eb54b55df405',
     },
 
     {
