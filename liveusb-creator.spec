@@ -69,7 +69,15 @@ rm -rf %{buildroot}
 
 %changelog
 * Tue Jun 09 2009 Luke Macken <lmacken@redhat.com> - 3.6.6-1
-- Update to v3.6.6, which supports Fedora 11
+- Update to v3.6.6
+- Merge the dcon-unfreeze patch upstream
+- Add Fedora 11 to the release list
+
+* Wed May 20 2009 Christoph Wickert <cwickert@fedoraproject.org> - 3.6.5-3
+- Make olpc.fth unfreeze disply for newer BIOSes than Q2E30 (#501688)
+
+* Thu Apr 09 2009 Luke Macken <lmacken@redhat.com> 3.6.5-2
+- Fix the checksum verification to support sha256
 
 * Thu Apr 09 2009 Luke Macken <lmacken@redhat.com> 3.6.5-1
 - Update to v3.6.5, which supports F11 beta, and the latest SoaS releases
@@ -86,6 +94,9 @@ rm -rf %{buildroot}
 
 * Fri Mar 06 2009 wwp <subscript@free.fr> 3.5-2
 - Fix dd commands when output path contain whitespaces
+
+* Wed Feb 25 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> 3.5-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_11_Mass_Rebuild
 
 * Fri Jan 16 2009 Luke Macken <lmacken@redhat.com> 3.5-1
 - Update to v3.5
