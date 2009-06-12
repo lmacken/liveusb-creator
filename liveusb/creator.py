@@ -660,9 +660,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         parent = self.drives[self._drive]['parent']
         dev = parted.Device(path = parent)
         disk = parted.Disk(device = dev)
-        print self._drive
         for part in disk.partitions:
-            print part.getDeviceNodeName()
             if self._drive == "/dev/%s" %(part.getDeviceNodeName(),):
                 return disk, part
         raise LiveUSBError(_("Unable to find partition"))
