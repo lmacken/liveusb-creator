@@ -599,8 +599,10 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         self.log.info(_('Verifying ISO MD5 checksum'))
         try:
             self.popen('checkisomd5 "%s"' % self.iso)
-        except LiveUSBError:
+        except LiveUSBError, e:
+            self.log.info(_('ISO MD5 checksum verification failed'))
             return False
+        self.log.info(_('ISO MD5 checksum passed'))
         return True
 
     def get_proxies(self):
