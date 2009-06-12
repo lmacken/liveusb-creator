@@ -558,6 +558,13 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             if copied:
                 break
 
+        # Don't prompt about overwriting files from mtools (#491234)
+        for ldlinux in [os.path.join(self.dest, p, 'ldlinux.sys') for p in ('syslinux', '')]:
+            self.log.debug('Looking for %s' % ldlinux)
+            if os.path.isfile(ldlinux):
+                self.log.debug(_("Removing") + " %s" % ldlinux)
+                os.unlink(ldlinux)
+
         if self.drive['fstype'] in ('ext2', 'ext3'):
             shutil.move(os.path.join(syslinux_path, "syslinux.cfg"),
                         os.path.join(syslinux_path, "extlinux.conf"))
@@ -764,17 +771,21 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         LiveUSBCreator.install_bootloader(self)
         self.log.info(_("Installing bootloader"))
         device = self.drive['device']
-        if os.path.isdir(os.path.join(device + os.path.sep, "syslinux")):
-            syslinuxdir = os.path.join(device + os.path.sep, "syslinux")
+        syslinuxdir = os.path.join(device + os.path.sep, "syslinux")
+        if os.path.isdir(syslinuxdir):
             # Python for Windows is unable to delete read-only files, and some
             # may exist here if the LiveUSB stick was created in Linux
             for f in os.listdir(syslinuxdir):
                 os.chmod(os.path.join(syslinuxdir, f), 0777)
             shutil.rmtree(syslinuxdir)
-        shutil.move(os.path.join(device + os.path.sep, "isolinux"),
-                    os.path.join(device + os.path.sep, "syslinux"))
-        os.unlink(os.path.join(device + os.path.sep, "syslinux",
-                               "isolinux.cfg"))
+        shutil.move(os.path.join(device + os.path.sep, "isolinux"), syslinuxdir)
+        os.unlink(os.path.join(syslinuxdir, "isolinux.cfg"))
+
+        # Don't prompt about overwriting files from mtools (#491234)
+        for ldlinux in [os.path.join(device + os.path.sep, p) for p in (syslinuxdir, '')]:
+            if os.path.isfile(ldlinux):
+                os.unlink(ldlinux)
+
         self.popen('syslinux%s%s -m -a -d %s %s' %  (self.opts.force and ' -f'
                    or ' ', self.opts.safe and ' -s' or ' ', 'syslinux', device))
 
