@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-16 22:56+0200\n"
-"PO-Revision-Date: 2009-04-16 22:59+0200\n"
+"POT-Creation-Date: 2009-06-14 20:11+0200\n"
+"PO-Revision-Date: 2009-06-14 20:13+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -188,7 +188,7 @@ msgstr "System plików %s jest nieznany!"
 msgid "Unable to mount device: %s"
 msgstr "Nie można zamontować urządzenia: %s"
 
-#: ../liveusb/creator.py:472 ../liveusb/creator.py:700
+#: ../liveusb/creator.py:472 ../liveusb/creator.py:721
 msgid "Verifying filesystem..."
 msgstr "Sprawdzanie systemu plików..."
 
@@ -207,7 +207,7 @@ msgstr "Nieobsługiwany system plików: %s"
 msgid "Your MBR appears to be blank"
 msgstr "MBR wydaje się być pusty"
 
-#: ../liveusb/creator.py:512 ../liveusb/creator.py:735
+#: ../liveusb/creator.py:512 ../liveusb/creator.py:756
 msgid "Extracting live image to USB device..."
 msgstr "Rozpakowywanie obrazu Live na urządzenie USB..."
 
@@ -215,7 +215,7 @@ msgstr "Rozpakowywanie obrazu Live na urządzenie USB..."
 msgid "Unable to find LiveOS on ISO"
 msgstr "Nie można znaleźć systemu operacyjnego Live w pliku ISO"
 
-#: ../liveusb/creator.py:530 ../liveusb/creator.py:743
+#: ../liveusb/creator.py:530 ../liveusb/creator.py:764
 msgid "Wrote to device at"
 msgstr "Zapisano do urządzenia na"
 
@@ -223,26 +223,38 @@ msgstr "Zapisano do urządzenia na"
 msgid "Installing bootloader..."
 msgstr "Instalowanie programu startowego..."
 
-#: ../liveusb/creator.py:585
+#: ../liveusb/creator.py:565
+msgid "Removing"
+msgstr "Usuwanie"
+
+#: ../liveusb/creator.py:606
 msgid "Verifying ISO MD5 checksum"
 msgstr "Sprawdzanie sumy kontrolnej MD5 pliku ISO"
 
-#: ../liveusb/creator.py:645
+#: ../liveusb/creator.py:610
+msgid "ISO MD5 checksum verification failed"
+msgstr "Sprawdzenie sum kontrolnych MD5 pliku ISO nie powiodło się"
+
+#: ../liveusb/creator.py:612
+msgid "ISO MD5 checksum passed"
+msgstr "Sprawdzenie sum kontrolnych MD5 pliku ISO powiodło się"
+
+#: ../liveusb/creator.py:666
 msgid "Unable to find partition"
 msgstr "Nie można znaleźć partycji"
 
-#: ../liveusb/creator.py:696
+#: ../liveusb/creator.py:717
 msgid "Unable to find any removable devices"
 msgstr "Nie można znaleźć żadnych urządzeń wymiennych"
 
-#: ../liveusb/creator.py:704
+#: ../liveusb/creator.py:725
 msgid ""
 "Make sure your USB key is plugged in and formatted with the FAT filesystem"
 msgstr ""
 "Upewnij się, że klucz USB jest podłączony i sformatowany w systemie plików "
 "FAT"
 
-#: ../liveusb/creator.py:707
+#: ../liveusb/creator.py:728
 #, python-format
 msgid ""
 "Unsupported filesystem: %s\n"
@@ -251,15 +263,15 @@ msgstr ""
 "Nieobsługiwany system plików: %s\n"
 "Wykonaj kopię zapasową i sformatuj klucz USB w systemie plików FAT."
 
-#: ../liveusb/creator.py:749
+#: ../liveusb/creator.py:770
 msgid "Installing bootloader"
 msgstr "Instalowanie programu startowego"
 
-#: ../liveusb/creator.py:793
+#: ../liveusb/creator.py:818
 msgid "Cannot find"
 msgstr "Nie można znaleźć"
 
-#: ../liveusb/creator.py:794
+#: ../liveusb/creator.py:819
 msgid ""
 "Make sure to extract the entire liveusb-creator zip file before running this "
 "program."
