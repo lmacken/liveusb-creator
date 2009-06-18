@@ -34,8 +34,10 @@ class TestLiveUSBCreator:
         for release in releases:
             assert release['name']
             assert release['url']
-            if release['sha1']:
+            if 'sha1' in release:
                 assert len(release['sha1']) == 40
+            elif 'sha256' in release:
+                assert len(release['sha256']) == 64
 
     def test_mount_device(self):
         live = self._get_creator()
