@@ -470,29 +470,38 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         else:
             self.log.debug("Using existing mount: %s" % self.dest)
 
-    def unmount_device(self):
+    def unmount_device(self, force=False):
         """ Unmount our device """
         import dbus
-        try:
-            unmount = self.drive.get('unmount', None)
-        except KeyError:
-            return
-        if self.dest and unmount:
+        #try:
+        #    unmount = self.drive.get('unmount', None)
+        #except KeyError, e:
+        #    self.log.exception(e)
+        #    return
+        if self.dest or force or (self.drive and
+                self.drive.get('unmount', False)):
             self.log.debug("Unmounting %s from %s" % (self.drive['device'],
                                                       self.dest))
             try:
                 self.drive['udi'].Unmount([],
                         dbus_interface='org.freedesktop.Hal.Device.Volume')
             except dbus.exceptions.DBusException, e:
-                import traceback
-                self.log.warning("Unable to unmount device: %s" % str(e))
-                self.log.debug(traceback.format_exc())
-                return
+                if e.get_dbus_name() == \
+                        'org.freedesktop.Hal.Device.Volume.NotMountedByHal':
+                    self.log.debug('Device not mounted by HAL; trying manually')
+                    self.popen('umount %s' % self.drive['device'])
+                else:
+                    import traceback
+                    self.log.warning("Unable to unmount device: %s" % str(e))
+                    self.log.debug(traceback.format_exc())
+                    return
             self.drive['unmount'] = False
             self.drive['mount'] = None
             if os.path.exists(self.dest):
                 self.log.error("Mount %s exists after unmounting" % self.dest)
             self.dest = None
+        else:
+            self.log.warning("self.dest and unmount not set, skipping unmount")
 
     def verify_filesystem(self):
         self.log.info(_("Verifying filesystem..."))
