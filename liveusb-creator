@@ -18,7 +18,7 @@
 #
 # Author(s): Luke Macken <lmacken@redhat.com>
 
-__version__ = '3.6.5'
+__version__ = '3.6.6'
 
 def parse_args():
     from optparse import OptionParser
