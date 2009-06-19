@@ -51,7 +51,7 @@ class LiveUSBApp(QtGui.QApplication):
     """ Main application class """
     def __init__(self, opts, args):
         QtGui.QApplication.__init__(self, args) 
-        self.mywindow = LiveUSBDialog(opts)
+        self.mywindow = LiveUSBDialog(opts, args)
         self.mywindow.show()
         try:
             self.exec_()
@@ -234,11 +234,12 @@ class LiveUSBLogHandler(logging.Handler):
 class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
     """ Our main dialog class """
 
-    def __init__(self, opts):
+    def __init__(self, opts, args):
         self.in_process = False
         QtGui.QDialog.__init__(self)
         LiveUSBInterface.__init__(self)
         self.opts = opts
+        self.args = args
         self.setupUi(self)
         self.live = LiveUSBCreator(opts=opts)
         self.populate_releases()
@@ -258,6 +259,12 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         self.live.log.addHandler(self.handler)
         if not self.opts.verbose:
             self.live.log.removeHandler(self.live.handler)
+
+        # If an ISO was specified on the command line, use it.
+        if args:
+            for arg in self.args:
+                if arg.lower().endswith('.iso') and os.path.exists(arg):
+                    self.selectfile(arg)
 
     def populate_devices(self, *args, **kw):
         if self.in_process:
@@ -492,9 +499,10 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
             self.status(_("You can try again to resume your download"))
             self.enable_widgets(True)
 
-    def selectfile(self):
-        isofile = QtGui.QFileDialog.getOpenFileName(self, _("Select Live ISO"),
-                                                    ".", "ISO (*.iso)" )
+    def selectfile(self, isofile=None):
+        if not isofile:
+            isofile = QtGui.QFileDialog.getOpenFileName(self,
+                         _("Select Live ISO"), ".", "ISO (*.iso)" )
         if isofile:
             try:
                 self.live.set_iso(isofile)
