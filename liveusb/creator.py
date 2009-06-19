@@ -327,45 +327,6 @@ class LiveUSBCreator(object):
         """ Return a dictionary of proxy settings """
         return None
 
-    def get_mbr(self):
-        parent = str(self.drive.get('parent', self._drive))
-        self.log.debug('Checking the MBR of %s' % parent)
-        drive = open(parent, 'rb')
-        mbr = ''.join(['%02X' % ord(x) for x in drive.read(2)])
-        drive.close()
-        self.log.debug('mbr = %r' % mbr)
-        return mbr
-
-    def blank_mbr(self):
-        """ Return whether the MBR is empty or not """
-        return self.get_mbr() == '0000'
-
-    def _get_mbr_bin(self):
-        mbr = None
-        for mbr_bin in ('/usr/lib/syslinux/mbr.bin',
-                        '/usr/share/syslinux/mbr.bin'):
-            if os.path.exists(mbr_bin):
-                mbr = mbr_bin
-        return mbr
-
-    def mbr_matches_syslinux_bin(self):
-        """
-        Return whether or not the MBR on the drive matches the system's
-        syslinux mbr.bin
-        """
-        mbr_bin = open(self._get_mbr_bin(), 'rb')
-        mbr = ''.join(['%02X' % ord(x) for x in mbr_bin.read(2)])
-        return mbr == self.get_mbr()
-
-    def reset_mbr(self):
-        parent = str(self.drive.get('parent', self._drive))
-        if '/dev/loop' not in self.drive:
-            self.log.info(_('Resetting Master Boot Record') + ' of %s' % parent)
-            mbr = self._get_mbr_bin()
-            self.popen('cat %s > %s' % (mbr, parent))
-        else:
-            self.log.info(_('Drive is a loopback, skipping MBR reset'))
-
     def bootable_partition(self):
         """ Ensure that the selected partition is flagged as bootable """
         pass
@@ -383,6 +344,21 @@ class LiveUSBCreator(object):
                 obj = unicode(obj, encoding, 'replace')
         return obj
 
+    def get_mbr(self):
+        pass
+
+    def blank_mbr(self):
+        pass
+
+    def mbr_matches_syslinux_bin(self):
+        """
+        Return whether or not the MBR on the drive matches the system's
+        syslinux mbr.bin
+        """
+        return True
+
+    def reset_mbr(self):
+        pass
 
 class LinuxLiveUSBCreator(LiveUSBCreator):
 
@@ -725,6 +701,45 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         """ Format the selected partition as FAT32 """
         self.log.info('Formatting %s as FAT32' % self._drive)
         self.popen('mkfs.vfat -F 32 %s' % self._drive)
+
+    def get_mbr(self):
+        parent = str(self.drive.get('parent', self._drive))
+        self.log.debug('Checking the MBR of %s' % parent)
+        drive = open(parent, 'rb')
+        mbr = ''.join(['%02X' % ord(x) for x in drive.read(2)])
+        drive.close()
+        self.log.debug('mbr = %r' % mbr)
+        return mbr
+
+    def blank_mbr(self):
+        """ Return whether the MBR is empty or not """
+        return self.get_mbr() == '0000'
+
+    def _get_mbr_bin(self):
+        mbr = None
+        for mbr_bin in ('/usr/lib/syslinux/mbr.bin',
+                        '/usr/share/syslinux/mbr.bin'):
+            if os.path.exists(mbr_bin):
+                mbr = mbr_bin
+        return mbr
+
+    def mbr_matches_syslinux_bin(self):
+        """
+        Return whether or not the MBR on the drive matches the system's
+        syslinux mbr.bin
+        """
+        mbr_bin = open(self._get_mbr_bin(), 'rb')
+        mbr = ''.join(['%02X' % ord(x) for x in mbr_bin.read(2)])
+        return mbr == self.get_mbr()
+
+    def reset_mbr(self):
+        parent = str(self.drive.get('parent', self._drive))
+        if '/dev/loop' not in self.drive:
+            self.log.info(_('Resetting Master Boot Record') + ' of %s' % parent)
+            mbr = self._get_mbr_bin()
+            self.popen('cat %s > %s' % (mbr, parent))
+        else:
+            self.log.info(_('Drive is a loopback, skipping MBR reset'))
 
 
 class WindowsLiveUSBCreator(LiveUSBCreator):
