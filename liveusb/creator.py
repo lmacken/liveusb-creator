@@ -595,7 +595,8 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 break
 
         # Don't prompt about overwriting files from mtools (#491234)
-        for ldlinux in [os.path.join(self.dest, p, 'ldlinux.sys') for p in ('syslinux', '')]:
+        for ldlinux in [os.path.join(self.dest, p, 'ldlinux.sys')
+                        for p in ('syslinux', '')]:
             self.log.debug('Looking for %s' % ldlinux)
             if os.path.isfile(ldlinux):
                 self.log.debug(_("Removing") + " %s" % ldlinux)
