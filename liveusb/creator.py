@@ -607,8 +607,8 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                         os.path.join(syslinux_path, "extlinux.conf"))
             self.popen('extlinux -i %s' % syslinux_path)
         else: # FAT
-            self.popen('syslinux%s%s -d %s %s' %  (self.opts.force and ' -f' or ' ',
-                       self.opts.safe and ' -s' or ' ',
+            self.popen('syslinux%s%s -d %s %s' %  (self.opts.force and
+                       ' -f' or '', self.opts.safe and ' -s' or '',
                        'syslinux', self.drive['device']))
 
     def get_free_bytes(self, device=None):
@@ -817,12 +817,14 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         os.unlink(os.path.join(syslinuxdir, "isolinux.cfg"))
 
         # Don't prompt about overwriting files from mtools (#491234)
-        for ldlinux in [os.path.join(device + os.path.sep, p) for p in (syslinuxdir, '')]:
+        for ldlinux in [os.path.join(device + os.path.sep, p, 'ldlinux.sys')
+                        for p in (syslinuxdir, '')]:
             if os.path.isfile(ldlinux):
+                self.log.debug(_("Removing") + " %s" % ldlinux)
                 os.unlink(ldlinux)
 
         self.popen('syslinux%s%s -m -a -d %s %s' %  (self.opts.force and ' -f'
-                   or ' ', self.opts.safe and ' -s' or ' ', 'syslinux', device))
+                   or '', self.opts.safe and ' -s' or '', 'syslinux', device))
 
     def _get_device_uuid(self, drive):
         """ Return the UUID of our selected drive """
