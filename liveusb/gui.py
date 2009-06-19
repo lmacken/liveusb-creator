@@ -270,7 +270,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         if self.in_process:
             return
         self.driveBox.clear()
-        self.textEdit.clear()
+        #self.textEdit.clear()
         try:
             self.live.detect_removable_drives()
             for device, info in self.live.drives.items():
