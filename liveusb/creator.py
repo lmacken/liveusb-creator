@@ -327,18 +327,44 @@ class LiveUSBCreator(object):
         """ Return a dictionary of proxy settings """
         return None
 
-    def blank_mbr(self):
-        """ Return whether the MBR is empty or not """
-        drive = open(self._drive, 'rb')
+    def get_mbr(self):
+        parent = str(self.drive['parent'])
+        self.log.debug('Checking the MBR of %s' % parent)
+        drive = open(parent, 'rb')
         mbr = ''.join(['%02X' % ord(x) for x in drive.read(2)])
         drive.close()
         self.log.debug('mbr = %r' % mbr)
-        return mbr == '0000'
+        return mbr
+
+    def blank_mbr(self):
+        """ Return whether the MBR is empty or not """
+        return self.get_mbr() == '0000'
+
+    def _get_mbr_bin(self):
+        mbr = None
+        for mbr_bin in ('/usr/lib/syslinux/mbr.bin',
+                        '/usr/share/syslinux/mbr.bin'):
+            if os.path.exists(mbr_bin):
+                mbr = mbr_bin
+        return mbr
+
+    def mbr_matches_syslinux_bin(self):
+        """
+        Return whether or not the MBR on the drive matches the system's
+        syslinux mbr.bin
+        """
+        mbr_bin = open(self._get_mbr_bin(), 'rb')
+        mbr = ''.join(['%02X' % ord(x) for x in mbr_bin.read(2)])
+        return mbr == self.get_mbr()
 
     def reset_mbr(self):
+        parent = str(self.drive['parent'])
         if '/dev/loop' not in self.drive:
-            self.log.info(_('Resetting MBR...'))
-            self.popen('cat /usr/lib/syslinux/mbr.bin > %s' % self._drive)
+            self.log.info(_('Resetting Master Boot Record') + ' of %s' % parent)
+            mbr = self._get_mbr_bin()
+            self.popen('cat %s > %s' % (mbr, parent))
+        else:
+            self.log.info(_('Drive is a loopback, skipping MBR reset'))
 
     def bootable_partition(self):
         """ Ensure that the selected partition is flagged as bootable """
@@ -500,10 +526,11 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         # Ensure our master boot record is not empty
         if self.blank_mbr():
             self.log.debug(_('Your MBR appears to be blank'))
-            # @@ FIXME:  To do this properly, we first need to unmount the device,
-            # then reset the mbr, then remount.  However, for some reason we
-            # are unable to re-mount the drive after resetting the MBR, and it
-            # tends to hose the USB stick as well.  Maybe we need to rescan/reprobe
+            # @@ FIXME:  To do this properly, we first need to unmount the
+            # device, then reset the mbr, then remount.  However, for some
+            # reason we are unable to re-mount the drive after resetting the
+            # MBR, and it tends to hose the USB stick as well.  Maybe we need
+            # to rescan/reprobe
             # the device with DBus/Hal? -luke
             #    self.live.reset_mbr()
 

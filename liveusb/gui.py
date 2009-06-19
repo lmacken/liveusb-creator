@@ -251,6 +251,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                                          parent=self)
         self.connect_slots()
         self.confirmed = False
+        self.mbr_reset_confirmed = False
 
         # Intercept all liveusb INFO log messages, and display them in the gui
         self.handler = LiveUSBLogHandler(lambda x: self.textEdit.append(x))
@@ -400,6 +401,22 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         self.enable_widgets(False)
         self.live.overlay = self.overlaySlider.value()
         self.live.drive = self.get_selected_drive()
+
+        # Unmount the device and check the MBR
+        if self.live.blank_mbr() or not self.live.mbr_matches_syslinux_bin():
+            if not self.mbr_reset_confirmed:
+                self.status(_("The Master Boot Record on your device is %r, "
+                              "which doesn't match your systems syslinux "
+                              "mbr.bin.  Continuing will replace the MBR on "
+                              "this device.") % self.live.get_mbr())
+                self.mbr_reset_confirmed = True
+                self.enable_widgets(True)
+                return
+            if self.live.drive['mount']:
+                self.live.dest = self.live.drive['mount']
+                self.live.unmount_device(force=True)
+            self.live.log.debug(_('Your MBR appears to be blank'))
+            self.live.reset_mbr()
 
         try:
             self.live.mount_device()

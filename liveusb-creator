@@ -40,6 +40,9 @@ def parse_args():
                            ' (eg: -k noswap,selinux=0,elevator=noop)')
     parser.add_option('-x', '--no-xo', dest='xo', action='store_false',
                       default=True, help='Disable OLPC support')
+    parser.add_option('-m', '--reset-mbr', dest='reset_mbr',
+                      action='store_true', default=False,
+                      help='Reset the Master Boot Record')
     #parser.add_option('-z', '--usb-zip', dest='zip', action='store_true',
     #                  help='Initialize device with zipdrive-compatible geometry'
     #                        ' for booting in USB-ZIP mode with legacy BIOSes. '
