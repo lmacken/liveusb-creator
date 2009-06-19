@@ -632,7 +632,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 self.log.debug("Killed process %d" % pid)
             except OSError:
                 pass
-        self.unmount_device()
+        #self.unmount_device()
 
     def verify_iso_md5(self):
         """ Verify the ISO md5sum.
