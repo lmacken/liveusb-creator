@@ -328,7 +328,7 @@ class LiveUSBCreator(object):
         return None
 
     def get_mbr(self):
-        parent = str(self.drive['parent'])
+        parent = str(self.drive.get('parent', self._drive))
         self.log.debug('Checking the MBR of %s' % parent)
         drive = open(parent, 'rb')
         mbr = ''.join(['%02X' % ord(x) for x in drive.read(2)])
@@ -358,7 +358,7 @@ class LiveUSBCreator(object):
         return mbr == self.get_mbr()
 
     def reset_mbr(self):
-        parent = str(self.drive['parent'])
+        parent = str(self.drive.get('parent', self._drive))
         if '/dev/loop' not in self.drive:
             self.log.info(_('Resetting Master Boot Record') + ' of %s' % parent)
             mbr = self._get_mbr_bin()
