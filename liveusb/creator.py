@@ -509,8 +509,8 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 self.label = None
 
         # Ensure our master boot record is not empty
-        if self.blank_mbr():
-            self.log.debug(_('Your MBR appears to be blank'))
+        #if self.blank_mbr():
+        #    self.log.debug(_('Your MBR appears to be blank'))
             # @@ FIXME:  To do this properly, we first need to unmount the
             # device, then reset the mbr, then remount.  However, for some
             # reason we are unable to re-mount the drive after resetting the

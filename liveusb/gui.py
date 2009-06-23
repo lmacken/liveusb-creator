@@ -410,12 +410,11 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         self.live.drive = self.get_selected_drive()
 
         # Unmount the device and check the MBR
-        if self.live.blank_mbr() or not self.live.mbr_matches_syslinux_bin():
+        if self.live.blank_mbr():
             if not self.mbr_reset_confirmed:
-                self.status(_("The Master Boot Record on your device is %r, "
-                              "which doesn't match your systems syslinux "
-                              "mbr.bin.  Continuing will replace the MBR on "
-                              "this device.") % self.live.get_mbr())
+                self.status(_("The Master Boot Record on your device is blank. "
+                              "Pressing 'Create LiveUSB' again will reset the "
+                              "MBR on this device."))
                 self.mbr_reset_confirmed = True
                 self.enable_widgets(True)
                 return
@@ -424,6 +423,11 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                 self.live.unmount_device(force=True)
             self.live.log.debug(_('Your MBR appears to be blank'))
             self.live.reset_mbr()
+        elif not self.live.mbr_matches_syslinux_bin():
+            self.status(_("Warning: The Master Boot Record on your device "
+                          "does not match your system's syslinux MBR.  If you "
+                          "have trouble booting this stick, try running the "
+                          "liveusb-creator with the --reset-mbr option."))
 
         try:
             self.live.mount_device()
