@@ -66,8 +66,8 @@ releases = (
     ## Custom spins
     ##
     {
-        'name': 'Sugar on a Stick (beta)',
-        'url': 'http://download.sugarlabs.org/soas/releases/soas-beta.iso',
+        'name': 'Sugar on a Stick (Strawberry)',
+        'url': 'http://download.sugarlabs.org/soas/releases/soas-strawberry.iso',
         #'sha1': '',
     },
 )
