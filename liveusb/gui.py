@@ -421,7 +421,6 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
             if self.live.drive['mount']:
                 self.live.dest = self.live.drive['mount']
                 self.live.unmount_device(force=True)
-            self.live.log.debug(_('Your MBR appears to be blank'))
             self.live.reset_mbr()
         elif not self.live.mbr_matches_syslinux_bin():
             self.status(_("Warning: The Master Boot Record on your device "
