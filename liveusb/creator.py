@@ -283,6 +283,10 @@ class LiveUSBCreator(object):
                      os.path.join(self.dest + os.path.sep, 'isolinux')]:
             if os.path.exists(path):
                 self.log.debug("Deleting " + path)
+                # Python for Windows is unable to delete read-only files,
+                if os.path.isdir(path):
+                    for f in os.listdir(path):
+                        os.chmod(os.path.join(path, f), 0777)
                 try:
                     shutil.rmtree(path)
                 except OSError, e:
@@ -824,6 +828,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         for ldlinux in [os.path.join(device + os.path.sep, p, 'ldlinux.sys')
                         for p in (syslinuxdir, '')]:
             if os.path.isfile(ldlinux):
+                os.chmod(ldlinux, 0777)
                 self.log.debug(_("Removing") + " %s" % ldlinux)
                 os.unlink(ldlinux)
 
