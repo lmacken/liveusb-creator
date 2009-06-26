@@ -861,7 +861,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         import win32process
         if isinstance(cmd, basestring):
             cmd = cmd.split()
-        tool = os.path.join('tools', '%s.exe' % cmd[0])
+        tool = os.path.abspath(os.path.join('tools', '%s.exe' % cmd[0]))
         if not os.path.exists(tool):
             raise LiveUSBError(_("Cannot find") + ' %s.  ' % (cmd[0]) +
                                _("Make sure to extract the entire "
