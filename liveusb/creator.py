@@ -337,7 +337,7 @@ class LiveUSBCreator(object):
 
     def set_iso(self, iso):
         """ Select the given ISO """
-        self.iso = self._to_unicode(iso)
+        self.iso = os.path.abspath(self._to_unicode(iso))
         self.isosize = os.stat(self.iso)[ST_SIZE]
 
     def _to_unicode(self, obj, encoding='utf-8'):
