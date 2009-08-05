@@ -165,7 +165,7 @@ class LiveUSBCreator(object):
         """ Unmount the device mounted at self.mount """
         raise NotImplementedError
 
-    def popen(self, cmd, **kwargs):
+    def popen(self, cmd, passive=False, **kwargs):
         """ A wrapper method for running subprocesses.
 
         This method handles logging of the command and it's output, and keeps
@@ -173,6 +173,7 @@ class LiveUSBCreator(object):
         wrong, an error log is written out and a LiveUSBError is thrown.
 
         @param cmd: The commandline to execute.  Either a string or a list.
+        @param passive: Enable passive process failure.
         @param kwargs: Extra arguments to pass to subprocess.Popen
         """
         self.log.debug(cmd)
@@ -185,9 +186,11 @@ class LiveUSBCreator(object):
         self.output.write(out + '\n' + err + '\n')
         if proc.returncode:
             self.write_log()
-            raise LiveUSBError(_("There was a problem executing the following "
-                                 "command: `%s`\nA more detailed error log has "
-                                 "been written to 'liveusb-creator.log'" % cmd))
+            if not passive:
+                raise LiveUSBError(_("There was a problem executing the "
+                                     "following command: `%s`\nA more detailed "
+                                     "error log has been written to "
+                                     "'liveusb-creator.log'" % cmd))
         return proc
 
     def verify_iso_sha1(self, progress=None):
@@ -466,10 +469,11 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 self.drive['udi'].Unmount([],
                         dbus_interface='org.freedesktop.Hal.Device.Volume')
             except dbus.exceptions.DBusException, e:
-                if e.get_dbus_name() == \
-                        'org.freedesktop.Hal.Device.Volume.NotMountedByHal':
+                if e.get_dbus_name() in (
+                        'org.freedesktop.Hal.Device.Volume.NotMountedByHal',
+                        'org.freedesktop.Hal.Device.Volume.UnknownFailure'):
                     self.log.debug('Device not mounted by HAL; trying manually')
-                    self.popen('umount %s' % self.drive['device'])
+                    self.popen('umount %s' % self.drive['device'], passive=True)
                 else:
                     import traceback
                     self.log.warning("Unable to unmount device: %s" % str(e))
