@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright © 2008  Red Hat, Inc. All rights reserved.
+# Copyright © 2008-2009  Red Hat, Inc. All rights reserved.
+# Copyright © 2008-2009  Luke Macken <lmacken@redhat.com>
 #
 # This copyrighted material is made available to anyone wishing to use, modify,
 # copy, or redistribute it subject to the terms and conditions of the GNU
@@ -14,8 +15,6 @@
 # incorporated in the source code or documentation are not subject to the GNU
 # General Public License and may only be used or replicated with the express
 # permission of Red Hat, Inc.
-#
-# Author(s): Luke Macken <lmacken@redhat.com>
 
 """
 Our main LiveUSBCreator module.
