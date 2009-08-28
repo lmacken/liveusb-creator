@@ -426,10 +426,13 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                 self.live.unmount_device(force=True)
             self.live.reset_mbr()
         elif not self.live.mbr_matches_syslinux_bin():
-            self.status(_("Warning: The Master Boot Record on your device "
-                          "does not match your system's syslinux MBR.  If you "
-                          "have trouble booting this stick, try running the "
-                          "liveusb-creator with the --reset-mbr option."))
+            if self.opts.reset_mbr:
+                self.live.reset_mbr()
+            else:
+                self.status(_("Warning: The Master Boot Record on your device "
+                              "does not match your system's syslinux MBR.  If you "
+                              "have trouble booting this stick, try running the "
+                              "liveusb-creator with the --reset-mbr option."))
 
         try:
             self.live.mount_device()
