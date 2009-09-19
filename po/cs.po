@@ -3,24 +3,20 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Adam Přibyl <pribyl@lowlevel.cz>, 2008.
-# Adam Pribyl <pribyl@lowlevel.cz>, 2008.
+# Adam Pribyl <pribyl@lowlevel.cz>, 2008, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: liveusb-creator.master.pot.ppt\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-21 02:05+0000\n"
-"PO-Revision-Date: 2008-10-21 12:13+0200\n"
+"POT-Creation-Date: 2008-09-03 02:54-0400\n"
+"PO-Revision-Date: 2009-09-19 13:23+0200\n"
 "Last-Translator: Adam Pribyl <pribyl@lowlevel.cz>\n"
 "Language-Team: Czech <fedora-cs-list@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 0.2\n"
+"X-Generator: Lokalize 1.0\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-
-#: ../liveusb/__init__.py:42
-msgid "You must run this application as root"
-msgstr "Tuto aplikaci musíte spouštět jako root"
 
 #: ../liveusb/gui.py:69
 #, python-format
@@ -32,7 +28,11 @@ msgstr "Neznámé vydání: %s"
 msgid "Downloading %s..."
 msgstr "Stahuji %s..."
 
-#: ../liveusb/gui.py:156
+#: ../liveusb/gui.py:152
+msgid "Verifying filesystem..."
+msgstr "Ověřuji systém souborů..."
+
+#: ../liveusb/gui.py:155
 msgid ""
 "Error: Cannot set the label or obtain the UUID of your device.  Unable to "
 "continue."
@@ -40,20 +40,46 @@ msgstr ""
 "Chyba: Nelze nastavit jmenovku nebo získat UUID vašeho zařízení. Nemohu "
 "pokračovat."
 
-#: ../liveusb/gui.py:185
+#: ../liveusb/gui.py:164
+msgid "Verifying SHA1 of LiveCD image..."
+msgstr "Ověřuji SHA1 obrazu LiveCD"
+
+#: ../liveusb/gui.py:166
+msgid ""
+"Error: The SHA1 of your Live CD is invalid.  You can run this program with "
+"the --noverify argument to bypass this verification check."
+msgstr ""
+"Chyba: SHA1 vašeho LiveCD je neplatný. Tento program můžete spustit s "
+"parametrem --noverify abyste tuto kontrolu přeskočili."
+
+#: ../liveusb/gui.py:177
+msgid "Extracting live image to USB device..."
+msgstr "Extrahuji žívý obraz na USB zařízení..."
+
+#: ../liveusb/gui.py:180
+#, python-format
+msgid "Creating %d Mb persistent overlay..."
+msgstr "Vytvářím %d Mb překrytí trvalého úložiště..."
+
+#: ../liveusb/gui.py:183
+msgid "Configuring and installing bootloader..."
+msgstr "Nastavuji a Instaluji zavaděč..."
+
+#: ../liveusb/gui.py:187
 #, python-format
 msgid "Complete! (%s)"
 msgstr "Hotovo! (%s)"
 
-#: ../liveusb/gui.py:188 ../liveusb/gui.py:191
+#: ../liveusb/gui.py:190 ../liveusb/gui.py:193
 msgid "LiveUSB creation failed!"
 msgstr "Vytvoření LiveUSB selhalo!"
 
-#: ../liveusb/gui.py:331
-msgid "Persistent Storage"
-msgstr "Trvalé úložiště"
+#: ../liveusb/gui.py:316
+#, python-format
+msgid "Persistent Storage (%d Mb)"
+msgstr "Trvalé úložiště (%d Mb)"
 
-#: ../liveusb/gui.py:349
+#: ../liveusb/gui.py:334
 msgid ""
 "Your device already contains a LiveOS.\n"
 "If you continue, this will be overwritten."
@@ -61,32 +87,39 @@ msgstr ""
 "Vaše zařízení již obsahuje živý OS.\n"
 "Pokud budete pokračovat, bude přepsán."
 
-#: ../liveusb/gui.py:352
+#: ../liveusb/gui.py:337
 msgid ""
 "Warning: Creating a new persistent overlay will delete your existing one."
 msgstr "Varování: vytvořením nového trvalého úložiště smažete již existující."
 
-#: ../liveusb/gui.py:354
+#: ../liveusb/gui.py:339
 msgid "Press 'Create Live USB' again if you wish to continue."
 msgstr "Stiskněte 'Vytvořit Live USB' ještě jednou pokud chcete pokračovat."
 
-#: ../liveusb/gui.py:400
+#. The user has confirmed that they wish to overwrite their
+#. existing Live OS.  Here we delete it first, in order to
+#. accurately calculate progress.
+#: ../liveusb/gui.py:349
+msgid "Removing existing Live OS..."
+msgstr "Odstraňuji existující živý OS..."
+
+#: ../liveusb/gui.py:383
 msgid "Download complete!"
 msgstr "Stahování dokončeno!"
 
-#: ../liveusb/gui.py:404
+#: ../liveusb/gui.py:387
 msgid "Download failed: "
 msgstr "Stahování selhalo: "
 
-#: ../liveusb/gui.py:405
+#: ../liveusb/gui.py:388
 msgid "You can try again to resume your download"
 msgstr "Zkuste znovu zahájit stahování"
 
-#: ../liveusb/gui.py:409
+#: ../liveusb/gui.py:392
 msgid "Select Live ISO"
 msgstr "Vyberte Live ISO"
 
-#: ../liveusb/gui.py:416
+#: ../liveusb/gui.py:399
 msgid ""
 "Sorry, I'm having trouble encoding the filename of your livecd.  You may "
 "have better luck if you move your ISO to the root of your drive (ie: C:\\)"
@@ -94,15 +127,11 @@ msgstr ""
 "Bohužel mám problémy s kódováním jména vašeho LiveCD. Možná budete mít více "
 "štěstí pokud ISO přesunete do kořene vašeho disku (např. C:\\)"
 
-#: ../liveusb/gui.py:422
-msgid "selected"
-msgstr "vybrané"
+#: ../liveusb/gui.py:404, python-format
+msgid "ISO selected: %s"
+msgstr "Vybrané ISO: %s"
 
-#: ../liveusb/creator.py:128
-msgid "Setting up OLPC boot file..."
-msgstr "Nastavuji startovací soubor OLPC..."
-
-#: ../liveusb/creator.py:180
+#: ../liveusb/creator.py:146
 #, python-format
 msgid ""
 "There was a problem executing the following command: `%s`\n"
@@ -111,123 +140,66 @@ msgstr ""
 "Nastal problém při spouštění následujícího příkazu: `%s`\n"
 "Podrobnosti o této chybě byly zapsány do souboru 'liveusb-creator.log'"
 
-#: ../liveusb/creator.py:187
-msgid "Verifying SHA1 of LiveCD image..."
-msgstr "Ověřuji SHA1 obrazu LiveCD"
-
-#: ../liveusb/creator.py:209
-msgid ""
-"Error: The SHA1 of your Live CD is invalid.  You can run this program with "
-"the --noverify argument to bypass this verification check."
-msgstr ""
-"Chyba: SHA1 vašeho LiveCD je neplatný. Tento program můžete spustit s "
-"parametrem --noverify abyste tuto kontrolu přeskočili."
-
-#: ../liveusb/creator.py:215
-msgid "Unknown ISO, skipping checksum verification"
-msgstr "Neznámé ISO, přeskakuji ověření kontrolního součtu"
-
-#: ../liveusb/creator.py:227
+#: ../liveusb/creator.py:183
 msgid "Not enough free space on device."
 msgstr "Na disku není dostatek místa."
 
-#: ../liveusb/creator.py:228
-#, python-format
-msgid ""
-"\n"
-"%dMB ISO + %dMB overlay > %dMB free space"
-msgstr ""
-"\n"
-"%dMB ISO + %dMB úložiště > %dMB volný prostor"
+#: ../liveusb/creator.py:190, python-format
+msgid "Creating %sMB persistent overlay"
+msgstr "Vytvářím %sMB překrytí trvalého úložiště"
 
-#: ../liveusb/creator.py:234
-msgid "Creating"
-msgstr "Vytvářím"
-
-#: ../liveusb/creator.py:235
-msgid "persistent overlay"
-msgstr "trvalé úložiště"
-
-#: ../liveusb/creator.py:267
-msgid "Removing existing Live OS"
-msgstr "Odstraňuji existující živý OS"
-
-#: ../liveusb/creator.py:276
+#: ../liveusb/creator.py:226
 #, python-format
 msgid "Unable to remove previous LiveOS: %s"
 msgstr "Nemohu odstranit předchozí živý OS: %s"
 
-#: ../liveusb/creator.py:307
+#: ../liveusb/creator.py:257
 #, python-format
 msgid "Cannot find device %s"
 msgstr "Nemohu nalézt zařízení %s"
 
-#: ../liveusb/creator.py:356
+#: ../liveusb/creator.py:306
 msgid "Unable to find any USB drives"
 msgstr "Nemohu nalézt žádný USB disk"
 
-#: ../liveusb/creator.py:379
+#: ../liveusb/creator.py:327
 #, python-format
 msgid "Filesystem for %s unknown!"
 msgstr "Neznámý souborový systém pro %s!"
 
-#: ../liveusb/creator.py:380
-msgid "device"
-msgstr "zařízení"
-
-#: ../liveusb/creator.py:392
+#: ../liveusb/creator.py:335
 #, python-format
 msgid "Unable to mount device: %s"
 msgstr "Nemohu připojit zařízení: %s"
 
-#: ../liveusb/creator.py:428 ../liveusb/creator.py:588
-msgid "Verifying filesystem..."
-msgstr "Ověřuji systém souborů..."
-
-#: ../liveusb/creator.py:431
+#: ../liveusb/creator.py:370
 #, python-format
 msgid "Unknown filesystem for %s.  Your device may need to be reformatted."
 msgstr ""
 "Neznámý souborový systém pro %s. Vaše zařízení zřejmě potřebuje "
 "přeformátovat."
 
-#: ../liveusb/creator.py:434
+#: ../liveusb/creator.py:373
 #, python-format
 msgid "Unsupported filesystem: %s"
 msgstr "Nepodporovaný systém souborů: %s"
 
-#: ../liveusb/creator.py:458 ../liveusb/creator.py:623
-msgid "Extracting live image to USB device..."
-msgstr "Extrahuji žívý obraz na USB zařízení..."
-
-#: ../liveusb/creator.py:464
+#: ../liveusb/creator.py:400
 msgid "Unable to find LiveOS on ISO"
 msgstr "Nemohu nalézt živý OS v ISO"
 
-#: ../liveusb/creator.py:475 ../liveusb/creator.py:630
-msgid "Wrote to device at"
-msgstr "Zapsáno na zařízení"
-
-#: ../liveusb/creator.py:488
-msgid "Installing bootloader..."
-msgstr "Instaluji zavaděč..."
-
-#: ../liveusb/creator.py:526
-msgid "Verifying ISO MD5 checksum"
-msgstr "Ověřuji ISO kontrolní součet MD5 "
-
-#: ../liveusb/creator.py:584
+#: ../liveusb/creator.py:472
 msgid "Unable to find any removable devices"
 msgstr "Nemohu nalézt žádné vyměnitelné zařízení"
 
-#: ../liveusb/creator.py:592
+#: ../liveusb/creator.py:479
 msgid ""
 "Make sure your USB key is plugged in and formatted with the FAT filesystem"
 msgstr ""
 "Ujistěte se, že váš USB disk je připojen a naformátován na systéme souborů "
 "FAT"
 
-#: ../liveusb/creator.py:595
+#: ../liveusb/creator.py:482
 #, python-format
 msgid ""
 "Unsupported filesystem: %s\n"
@@ -236,27 +208,19 @@ msgstr ""
 "Nepodporovaný systém souborů: %s\n"
 "Prosím proveďte zálohu a naformátujte USB disk systémem souborů FAT."
 
-#: ../liveusb/creator.py:636
-msgid "Installing bootloader"
-msgstr "Instaluji zavaděč..."
-
-#: ../liveusb/creator.py:678
-msgid "Cannot find"
-msgstr "Nemohu nalézt"
-
-#: ../liveusb/creator.py:679
+#: ../liveusb/creator.py:558, python-format
 msgid ""
-"Make sure to extract the entire liveusb-creator zip file before running this "
-"program."
+"Cannot find '%s'.  Make sure to extract the entire liveusb-creator zip file "
+"before running this program."
 msgstr ""
-"Ujistěte se, že jste vyextrahovali celý soubor liveusb-"
-"creator.zip než jste program spustili."
+"Nemohu nalézt '%s'. Ujistěte se, že jste vyextrahovali celý soubor "
+"liveusb-creator.zip než jste program spustili."
 
-#: ../liveusb/linux_dialog.py:98 ../liveusb/windows_dialog.py:104
+#: ../liveusb/dialog.py:123
 msgid "Fedora LiveUSB Creator"
 msgstr "Fedora tvůrce LiveCD"
 
-#: ../liveusb/linux_dialog.py:99 ../liveusb/windows_dialog.py:105
+#: ../liveusb/dialog.py:124
 msgid ""
 "This button will begin the LiveUSB creation process.  This entails "
 "optionally downloading a release (if an existing one wasn't selected),  "
@@ -267,35 +231,35 @@ msgstr ""
 "vydání (pokud žádné existující nebylo vybráno), extrakci ISO na USB "
 "zařízení, vytvoření trvalého úložiště a instalaci zavaděče."
 
-#: ../liveusb/linux_dialog.py:100 ../liveusb/windows_dialog.py:106
+#: ../liveusb/dialog.py:125
 msgid "Create Live USB"
 msgstr "Vytvořit Live USB"
 
-#: ../liveusb/linux_dialog.py:101 ../liveusb/windows_dialog.py:107
+#: ../liveusb/dialog.py:126
 msgid "This is the status console, where all messages get written to."
 msgstr "Toto je stavová konzole, kde budou vypsány všechny zprávy."
 
-#: ../liveusb/linux_dialog.py:102 ../liveusb/windows_dialog.py:108
+#: ../liveusb/dialog.py:127
 msgid ""
 "This is the progress bar that will indicate how far along in the LiveUSB "
 "creation process you are"
 msgstr "Toto je ukazatel který indikuje jak daleko je proces vytváření LiveUSB"
 
-#: ../liveusb/linux_dialog.py:103 ../liveusb/windows_dialog.py:109
+#: ../liveusb/dialog.py:128
 msgid ""
 "If you do not select an existing Live CD, the selected release will be "
 "downloaded for you."
 msgstr "Pokud jste nevybrali existující Live CD, vybrané vydání bude staženo."
 
-#: ../liveusb/linux_dialog.py:104 ../liveusb/windows_dialog.py:110
+#: ../liveusb/dialog.py:129
 msgid "Download Fedora"
 msgstr "Stáhnout Fedoru"
 
-#: ../liveusb/linux_dialog.py:105 ../liveusb/windows_dialog.py:111
+#: ../liveusb/dialog.py:130
 msgid "or"
 msgstr "nebo"
 
-#: ../liveusb/linux_dialog.py:106 ../liveusb/windows_dialog.py:112
+#: ../liveusb/dialog.py:131
 msgid ""
 "This button allows you to browse for an existing Live CD ISO that you have "
 "previously downloaded.  If you do not select one, a release will be "
@@ -305,15 +269,15 @@ msgstr ""
 "které jste již někdy dříve stáhli. Pokud žádné nevyberete, bude automaticky "
 "staženo vydání odpovídající vybrané verzi."
 
-#: ../liveusb/linux_dialog.py:107 ../liveusb/windows_dialog.py:113
+#: ../liveusb/dialog.py:132
 msgid "Use existing Live CD"
 msgstr "Použít existující Live CD"
 
-#: ../liveusb/linux_dialog.py:108 ../liveusb/windows_dialog.py:114
+#: ../liveusb/dialog.py:133
 msgid "Browse"
 msgstr "Prohlížet"
 
-#: ../liveusb/linux_dialog.py:110 ../liveusb/windows_dialog.py:116
+#: ../liveusb/dialog.py:135
 msgid ""
 "This is the USB stick that you want to install your Live CD on.  This device "
 "must be formatted with the FAT filesystem."
@@ -321,7 +285,11 @@ msgstr ""
 "Toto je USB zařízení na které chcete instalovat vaše Live CD. Toto zařízení "
 "musí být naformátováno systémem souborů FAT."
 
-#: ../liveusb/linux_dialog.py:112 ../liveusb/windows_dialog.py:118
+#: ../liveusb/dialog.py:136
+msgid "Target Device"
+msgstr "Cílové zařízení"
+
+#: ../liveusb/dialog.py:137
 msgid ""
 "By allocating extra space on your USB stick for a persistent overlay, you "
 "will be able to store data and make permanent modifications to your live "
@@ -332,17 +300,46 @@ msgstr ""
 "úpravy vašeho živého operačního systému. Bez něj nebudete schopni ukládat "
 "data, která přetrvají restart."
 
-#: ../liveusb/linux_dialog.py:113 ../liveusb/windows_dialog.py:119
+#: ../liveusb/dialog.py:138
 msgid "Persistent Storage (0 Mb)"
 msgstr "Trvalé úložiště (0 Mb)"
 
-#: ../liveusb/windows_dialog.py:117
-msgid "Target Device"
-msgstr "Cílové zařízení"
+#~ msgid "You must run this application as root"
+#~ msgstr "Tuto aplikaci musíte spouštět jako root"
 
-#~ msgid "Creating %d Mb persistent overlay..."
-#~ msgstr "Vytvářím %d Mb překrytí trvalého úložiště..."
+#~ msgid "Persistent Storage"
+#~ msgstr "Trvalé úložiště"
 
-#~ msgid "Persistent Storage (%d Mb)"
-#~ msgstr "Trvalé úložiště (%d Mb)"
+#~ msgid "Setting up OLPC boot file..."
+#~ msgstr "Nastavuji startovací soubor OLPC..."
 
+#~ msgid "Unknown ISO, skipping checksum verification"
+#~ msgstr "Neznámé ISO, přeskakuji ověření kontrolního součtu"
+
+#~ msgid ""
+#~ "\n"
+#~ "%dMB ISO + %dMB overlay > %dMB free space"
+#~ msgstr ""
+#~ "\n"
+#~ "%dMB ISO + %dMB úložiště > %dMB volný prostor"
+
+#~ msgid "Creating"
+#~ msgstr "Vytvářím"
+
+#~ msgid "persistent overlay"
+#~ msgstr "trvalé úložiště"
+
+#~ msgid "device"
+#~ msgstr "zařízení"
+
+#~ msgid "Wrote to device at"
+#~ msgstr "Zapsáno na zařízení"
+
+#~ msgid "Verifying ISO MD5 checksum"
+#~ msgstr "Ověřuji ISO kontrolní součet MD5 "
+
+#~ msgid "Installing bootloader"
+#~ msgstr "Instaluji zavaděč..."
+
+#~ msgid "Cannot find"
+#~ msgstr "Nemohu nalézt"
