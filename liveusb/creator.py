@@ -256,12 +256,11 @@ class LiveUSBCreator(object):
                 self.popen('dd if=/dev/zero of="%s" count=1 bs=1M seek=%d'
                            % (self.get_overlay(), self.overlay))
 
-    def update_configs(self):
-        """ Generate our syslinux.cfg """
-        isolinux = file(os.path.join(self.dest, "isolinux", "isolinux.cfg"),'r')
-        syslinux = file(os.path.join(self.dest, "isolinux", "syslinux.cfg"),'w')
+    def _update_configs(self, infile, outfile):
+        infile = file(infile, 'r')
+        outfile= file(outfile, 'w')
         usblabel = self.uuid and 'UUID=' + self.uuid or 'LABEL=' + self.label
-        for line in isolinux.readlines():
+        for line in infile.readlines():
             if "CDLABEL" in line:
                 line = re.sub("CDLABEL=[^ ]*", usblabel, line)
                 line = re.sub("rootfstype=[^ ]*",
@@ -273,9 +272,30 @@ class LiveUSBCreator(object):
             if self.opts.kernel_args:
                 line = line.replace("liveimg", "liveimg %s" %
                                     ' '.join(self.opts.kernel_args.split(',')))
-            syslinux.write(line)
-        isolinux.close()
-        syslinux.close()
+            outfile.write(line)
+        infile.close()
+        outfile.close()
+        
+    def update_configs(self):
+        """ Generate our syslinux.cfg and grub.conf files """
+        grubconf     = os.path.join(self.dest, "EFI", "boot", "grub.conf")
+        bootconf     = os.path.join(self.dest, "EFI", "boot", "boot.conf")
+        bootx64conf  = os.path.join(self.dest, "EFI", "boot", "bootx64.conf")
+        bootia32conf = os.path.join(self.dest, "EFI", "boot", "bootia32.conf")
+        updates = [(os.path.join(self.dest, "isolinux", "isolinux.cfg"),
+                    os.path.join(self.dest, "isolinux", "syslinux.cfg")),
+                   (grubconf, bootconf)]
+        copies = [(bootconf, grubconf),
+                  (bootconf, bootx64conf),
+                  (bootconf, bootia32conf)]
+
+        for (infile, outfile) in updates:
+            if os.path.exists(infile):
+                self._update_configs(infile,outfile)
+        # only copy/overwrite files we had originally started with
+        for (infile, outfile) in copies:
+            if os.path.exists(outfile):
+                shutil.copyfile(infile, outfile)
 
     def delete_liveos(self):
         """ Delete the existing LiveOS """
@@ -542,6 +562,13 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 os.mkdir(isolinux)
             self.popen("cp %s/* '%s'" % (os.path.join(tmpdir, 'isolinux'),
                                        isolinux))
+
+            if os.path.exists(os.path.join(tmpdir, 'EFI')):
+                efi = os.path.join(self.dest, 'EFI')
+                if not os.path.exists(efi):
+                    os.mkdir(efi)
+                    self.popen("cp -r %s/* '%s'" % (os.path.join(tmpdir, 'EFI'),
+                                                    efi))
         finally:
             self.popen('umount %s' % tmpdir)
 
