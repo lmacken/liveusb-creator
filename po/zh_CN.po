@@ -1,24 +1,20 @@
 # liveusb-creator 简体中文翻译
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 甘露(Gan Lu) <rhythm.gan@gmail.com>. 2008
 # 闫丰刚 (sainry) <sainrysec@gmail.com>
 #
+# 甘露(Gan Lu) <rhythm.gan@gmail.com>. 2008, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: liveusb-creator\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-23 01:35+0000\n"
-"PO-Revision-Date: 2008-10-22 14:50+0700\n"
+"POT-Creation-Date: 2008-09-03 02:54-0400\n"
+"PO-Revision-Date: 2009-10-07 15:56+0800\n"
 "Last-Translator: 甘露(Gan Lu) <rhythm.gan@gmail.com>\n"
-"Language-Team: \n"
+"Language-Team:  <>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-#: ../liveusb/__init__.py:42
-msgid "You must run this application as root"
-msgstr "你必须作为根用户(root)来运行本程序"
 
 #: ../liveusb/gui.py:69
 #, python-format
@@ -30,26 +26,56 @@ msgstr "未知发行：%s"
 msgid "Downloading %s..."
 msgstr "正在下载 %s..."
 
-#: ../liveusb/gui.py:156
+#: ../liveusb/gui.py:152
+msgid "Verifying filesystem..."
+msgstr "正在验证文件系统..."
+
+#: ../liveusb/gui.py:155
 msgid ""
 "Error: Cannot set the label or obtain the UUID of your device.  Unable to "
 "continue."
 msgstr "错误：无法设定标签或获得你设备的 UUID。不能继续。"
 
-#: ../liveusb/gui.py:185
+#: ../liveusb/gui.py:164
+msgid "Verifying SHA1 of LiveCD image..."
+msgstr "正在验证 LiveCD 映像的 SHA1 值..."
+
+#: ../liveusb/gui.py:166
+msgid ""
+"Error: The SHA1 of your Live CD is invalid.  You can run this program with "
+"the --noverify argument to bypass this verification check."
+msgstr ""
+"错误：你 Live CD 的 SHA1 值不符。你能够使用 --noverify 参数运行本程序来避开该"
+"验证。"
+
+#: ../liveusb/gui.py:177
+msgid "Extracting live image to USB device..."
+msgstr "正在解压 live 映像到 USB 设备..."
+
+#: ../liveusb/gui.py:180
+#, python-format
+msgid "Creating %d Mb persistent overlay..."
+msgstr "Creating %d Mb 持久覆盖"
+
+#: ../liveusb/gui.py:183
+msgid "Configuring and installing bootloader..."
+msgstr "正在配置和安装启动加载器..."
+
+#: ../liveusb/gui.py:187
 #, python-format
 msgid "Complete! (%s)"
 msgstr "搞定！ (%s)"
 
-#: ../liveusb/gui.py:188 ../liveusb/gui.py:191
+#: ../liveusb/gui.py:190 ../liveusb/gui.py:193
 msgid "LiveUSB creation failed!"
 msgstr "LiveUSB 创建失败！"
 
-#: ../liveusb/gui.py:331
-msgid "Persistent Storage"
-msgstr "持久存储器"
+#: ../liveusb/gui.py:316
+#, python-format
+msgid "Persistent Storage (%d Mb)"
+msgstr "持久存储器 (%d Mb)"
 
-#: ../liveusb/gui.py:349
+#: ../liveusb/gui.py:334
 msgid ""
 "Your device already contains a LiveOS.\n"
 "If you continue, this will be overwritten."
@@ -57,32 +83,39 @@ msgstr ""
 "你的设备已经包含一个 LiveOS。\n"
 "如果你继续，它将被覆盖。"
 
-#: ../liveusb/gui.py:352
+#: ../liveusb/gui.py:337
 msgid ""
 "Warning: Creating a new persistent overlay will delete your existing one."
 msgstr "警告：创建一个新的持久覆盖将删除你现存的这个。"
 
-#: ../liveusb/gui.py:354
+#: ../liveusb/gui.py:339
 msgid "Press 'Create Live USB' again if you wish to continue."
 msgstr "再次按下“创建 Live USB”，如果你希望继续。"
 
-#: ../liveusb/gui.py:400
+#. The user has confirmed that they wish to overwrite their
+#. existing Live OS.  Here we delete it first, in order to
+#. accurately calculate progress.
+#: ../liveusb/gui.py:349
+msgid "Removing existing Live OS..."
+msgstr "正在删除现存的 Live OS..."
+
+#: ../liveusb/gui.py:383
 msgid "Download complete!"
 msgstr "下载完成！"
 
-#: ../liveusb/gui.py:404
+#: ../liveusb/gui.py:387
 msgid "Download failed: "
 msgstr "下载失败！"
 
-#: ../liveusb/gui.py:405
+#: ../liveusb/gui.py:388
 msgid "You can try again to resume your download"
 msgstr "你可以重试续传你的下载"
 
-#: ../liveusb/gui.py:409
+#: ../liveusb/gui.py:392
 msgid "Select Live ISO"
 msgstr "选择 Live ISO"
 
-#: ../liveusb/gui.py:416
+#: ../liveusb/gui.py:399
 msgid ""
 "Sorry, I'm having trouble encoding the filename of your livecd.  You may "
 "have better luck if you move your ISO to the root of your drive (ie: C:\\)"
@@ -90,15 +123,12 @@ msgstr ""
 "抱歉，编码你 livecd 的文件名时有点问题。如果你把你的 ISO 放到你驱动盘的根目"
 "录 (比如： C:\\)，可能会好点。"
 
-#: ../liveusb/gui.py:422
-msgid "selected"
-msgstr "已选定"
+#: ../liveusb/gui.py:404
+#, python-format
+msgid "ISO selected: %s"
+msgstr "已选定: %s"
 
-#: ../liveusb/creator.py:134
-msgid "Setting up OLPC boot file..."
-msgstr "正在设定 OLPC 启动文件..."
-
-#: ../liveusb/creator.py:186
+#: ../liveusb/creator.py:146
 #, python-format
 msgid ""
 "There was a problem executing the following command: `%s`\n"
@@ -107,127 +137,63 @@ msgstr ""
 "执行下列命令时出现问题：`%s`\n"
 "更详细的错误日志已写入 'liveusb-creator.log'"
 
-#: ../liveusb/creator.py:193
-msgid "Verifying SHA1 of LiveCD image..."
-msgstr "正在验证 LiveCD 映像的 SHA1 值..."
-
-#: ../liveusb/creator.py:215
-msgid ""
-"Error: The SHA1 of your Live CD is invalid.  You can run this program with "
-"the --noverify argument to bypass this verification check."
-msgstr ""
-"错误：你 Live CD 的 SHA1 值不符。你能够使用 --noverify 参数运行本程序来避开该"
-"验证。"
-
-#: ../liveusb/creator.py:221
-msgid "Unknown ISO, skipping checksum verification"
-msgstr "未知的 ISO，正在跳过校验值验证"
-
-#: ../liveusb/creator.py:233
+#: ../liveusb/creator.py:183
 msgid "Not enough free space on device."
 msgstr "设备上无足够空余空间。"
 
-#: ../liveusb/creator.py:234
+#: ../liveusb/creator.py:190
 #, python-format
-msgid ""
-"\n"
-"%dMB ISO + %dMB overlay > %dMB free space"
-msgstr ""
-"\n"
-"%dMB ISO + %dMB 覆盖 > %dMB 空余空间"
+msgid "Creating %sMB persistent overlay"
+msgstr "正在创建 %sMB 持久覆盖"
 
-#: ../liveusb/creator.py:240
-msgid "Creating"
-msgstr "正在创建"
-
-#: ../liveusb/creator.py:241
-msgid "persistent overlay"
-msgstr "持久覆盖"
-
-#: ../liveusb/creator.py:273
-msgid "Removing existing Live OS"
-msgstr "正在删除现存的 Live OS"
-
-#: ../liveusb/creator.py:282
+#: ../liveusb/creator.py:226
 #, python-format
 msgid "Unable to remove previous LiveOS: %s"
 msgstr "无法删除以前的 LiveOS: %s"
 
-#: ../liveusb/creator.py:313
+#: ../liveusb/creator.py:257
 #, python-format
 msgid "Cannot find device %s"
 msgstr "无法找到设备 %s"
 
-#: ../liveusb/creator.py:332
-msgid "Resetting MBR..."
-msgstr "重置MBR..."
-
-#: ../liveusb/creator.py:377
+#: ../liveusb/creator.py:306
 msgid "Unable to find any USB drives"
 msgstr "无法找到任何 USB 驱动盘"
 
-#: ../liveusb/creator.py:400
+#: ../liveusb/creator.py:327
 #, python-format
 msgid "Filesystem for %s unknown!"
 msgstr " %s 的文件系统未知！"
 
-#: ../liveusb/creator.py:401
-msgid "device"
-msgstr "设备"
-
-#: ../liveusb/creator.py:413
+#: ../liveusb/creator.py:335
 #, python-format
 msgid "Unable to mount device: %s"
 msgstr "无法挂载设备：%s"
 
-#: ../liveusb/creator.py:449 ../liveusb/creator.py:614
-msgid "Verifying filesystem..."
-msgstr "正在验证文件系统..."
-
-#: ../liveusb/creator.py:452
+#: ../liveusb/creator.py:370
 #, python-format
 msgid "Unknown filesystem for %s.  Your device may need to be reformatted."
 msgstr "%s 为未知的文件系统。你的设备也许需要重新格式化。"
 
-#: ../liveusb/creator.py:455
+#: ../liveusb/creator.py:373
 #, python-format
 msgid "Unsupported filesystem: %s"
 msgstr "不支持的文件系统：%s"
 
-#: ../liveusb/creator.py:479
-msgid "Your MBR appears to be blank"
-msgstr "MBR 空白"
-
-#: ../liveusb/creator.py:484 ../liveusb/creator.py:649
-msgid "Extracting live image to USB device..."
-msgstr "正在解压 live 映像到 USB 设备..."
-
-#: ../liveusb/creator.py:490
+#: ../liveusb/creator.py:400
 msgid "Unable to find LiveOS on ISO"
 msgstr "无法在 ISO 中找到 LiveOS "
 
-#: ../liveusb/creator.py:501 ../liveusb/creator.py:656
-msgid "Wrote to device at"
-msgstr "写入设备以"
-
-#: ../liveusb/creator.py:514
-msgid "Installing bootloader..."
-msgstr "正在安装启动加载器..."
-
-#: ../liveusb/creator.py:552
-msgid "Verifying ISO MD5 checksum"
-msgstr "正在验证 ISO MD5 校验值"
-
-#: ../liveusb/creator.py:610
+#: ../liveusb/creator.py:472
 msgid "Unable to find any removable devices"
 msgstr "无法找到任何可移动设备"
 
-#: ../liveusb/creator.py:618
+#: ../liveusb/creator.py:479
 msgid ""
 "Make sure your USB key is plugged in and formatted with the FAT filesystem"
 msgstr "请确认你的U盘已插入并已用 FAT 文件系统格式化"
 
-#: ../liveusb/creator.py:621
+#: ../liveusb/creator.py:482
 #, python-format
 msgid ""
 "Unsupported filesystem: %s\n"
@@ -236,25 +202,18 @@ msgstr ""
 "不支持的文件系统：%s\n"
 "请备份并用 FAT 文件系统格式化你的U盘"
 
-#: ../liveusb/creator.py:662
-msgid "Installing bootloader"
-msgstr "正在安装启动加载器"
-
-#: ../liveusb/creator.py:704
-msgid "Cannot find"
-msgstr "无法找到"
-
-#: ../liveusb/creator.py:705
+#: ../liveusb/creator.py:558
+#, python-format
 msgid ""
-"Make sure to extract the entire liveusb-creator zip file before running this "
-"program."
-msgstr "请确认在运行本程序前解压整个 liveusb-creator 压缩文件。"
+"Cannot find '%s'.  Make sure to extract the entire liveusb-creator zip file "
+"before running this program."
+msgstr "找不到“%s”。请确认在运行本程序前解压整个 liveusb-creator 压缩文件。"
 
-#: ../liveusb/linux_dialog.py:98 ../liveusb/windows_dialog.py:104
+#: ../liveusb/dialog.py:123
 msgid "Fedora LiveUSB Creator"
 msgstr "Fedora LiveUSB 创建者"
 
-#: ../liveusb/linux_dialog.py:99 ../liveusb/windows_dialog.py:105
+#: ../liveusb/dialog.py:124
 msgid ""
 "This button will begin the LiveUSB creation process.  This entails "
 "optionally downloading a release (if an existing one wasn't selected),  "
@@ -264,35 +223,35 @@ msgstr ""
 "该按钮将开始 LiveUSB 创建过程。可选择的使其下载某次发行(如果没有选定某现存)，"
 "解压 ISO 到U盘，建立持久覆盖并安装启动加载器。"
 
-#: ../liveusb/linux_dialog.py:100 ../liveusb/windows_dialog.py:106
+#: ../liveusb/dialog.py:125
 msgid "Create Live USB"
 msgstr "创建 Live USB"
 
-#: ../liveusb/linux_dialog.py:101 ../liveusb/windows_dialog.py:107
+#: ../liveusb/dialog.py:126
 msgid "This is the status console, where all messages get written to."
 msgstr "这是状态控制台，所有信息都将写入此处。"
 
-#: ../liveusb/linux_dialog.py:102 ../liveusb/windows_dialog.py:108
+#: ../liveusb/dialog.py:127
 msgid ""
 "This is the progress bar that will indicate how far along in the LiveUSB "
 "creation process you are"
 msgstr "这是进度条，指示 LiveUSB 创建过程已进行到多远。"
 
-#: ../liveusb/linux_dialog.py:103 ../liveusb/windows_dialog.py:109
+#: ../liveusb/dialog.py:128
 msgid ""
 "If you do not select an existing Live CD, the selected release will be "
 "downloaded for you."
 msgstr "如果你不选择某现存的 Live CD，将为你下载你选定的发行。"
 
-#: ../liveusb/linux_dialog.py:104 ../liveusb/windows_dialog.py:110
+#: ../liveusb/dialog.py:129
 msgid "Download Fedora"
 msgstr "下载 Fedora"
 
-#: ../liveusb/linux_dialog.py:105 ../liveusb/windows_dialog.py:111
+#: ../liveusb/dialog.py:130
 msgid "or"
 msgstr "或"
 
-#: ../liveusb/linux_dialog.py:106 ../liveusb/windows_dialog.py:112
+#: ../liveusb/dialog.py:131
 msgid ""
 "This button allows you to browse for an existing Live CD ISO that you have "
 "previously downloaded.  If you do not select one, a release will be "
@@ -301,22 +260,26 @@ msgstr ""
 "该按钮允许你浏览某个你之前已下载的 Live CD ISO。如果你不选择一个，将自动为你"
 "下载某次发行。"
 
-#: ../liveusb/linux_dialog.py:107 ../liveusb/windows_dialog.py:113
+#: ../liveusb/dialog.py:132
 msgid "Use existing Live CD"
 msgstr "使用现存的 Live CD"
 
-#: ../liveusb/linux_dialog.py:108 ../liveusb/windows_dialog.py:114
+#: ../liveusb/dialog.py:133
 msgid "Browse"
 msgstr "浏览"
 
-#: ../liveusb/linux_dialog.py:110 ../liveusb/windows_dialog.py:116
+#: ../liveusb/dialog.py:135
 msgid ""
 "This is the USB stick that you want to install your Live CD on.  This device "
 "must be formatted with the FAT filesystem."
 msgstr ""
 "这是你希望安装 Live CD 到其之上的U盘。该设备必须用 FAT 文件系统进行格式化。"
 
-#: ../liveusb/linux_dialog.py:112 ../liveusb/windows_dialog.py:118
+#: ../liveusb/dialog.py:136
+msgid "Target Device"
+msgstr "目标设备"
+
+#: ../liveusb/dialog.py:137
 msgid ""
 "By allocating extra space on your USB stick for a persistent overlay, you "
 "will be able to store data and make permanent modifications to your live "
@@ -326,11 +289,49 @@ msgstr ""
 "通过为持久覆盖分配你U盘上的额外空间，你将能够存放数据并对你的 live 操作系统进"
 "行永久的修改。没有它，你将无法在重启动后存放数据。"
 
-#: ../liveusb/linux_dialog.py:113 ../liveusb/windows_dialog.py:119
+#: ../liveusb/dialog.py:138
 msgid "Persistent Storage (0 Mb)"
 msgstr "持久存储器 (0 Mb)"
 
-#: ../liveusb/windows_dialog.py:117
-msgid "Target Device"
-msgstr "目标设备"
+#~ msgid "You must run this application as root"
+#~ msgstr "你必须作为根用户(root)来运行本程序"
 
+#~ msgid "Persistent Storage"
+#~ msgstr "持久存储器"
+
+#~ msgid "Setting up OLPC boot file..."
+#~ msgstr "正在设定 OLPC 启动文件..."
+
+#~ msgid "Unknown ISO, skipping checksum verification"
+#~ msgstr "未知的 ISO，正在跳过校验值验证"
+
+#~ msgid ""
+#~ "\n"
+#~ "%dMB ISO + %dMB overlay > %dMB free space"
+#~ msgstr ""
+#~ "\n"
+#~ "%dMB ISO + %dMB 覆盖 > %dMB 空余空间"
+
+#~ msgid "Creating"
+#~ msgstr "正在创建"
+
+#~ msgid "Resetting MBR..."
+#~ msgstr "重置MBR..."
+
+#~ msgid "device"
+#~ msgstr "设备"
+
+#~ msgid "Your MBR appears to be blank"
+#~ msgstr "MBR 空白"
+
+#~ msgid "Wrote to device at"
+#~ msgstr "写入设备以"
+
+#~ msgid "Verifying ISO MD5 checksum"
+#~ msgstr "正在验证 ISO MD5 校验值"
+
+#~ msgid "Installing bootloader"
+#~ msgstr "正在安装启动加载器"
+
+#~ msgid "Cannot find"
+#~ msgstr "无法找到"
