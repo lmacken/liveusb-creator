@@ -275,7 +275,7 @@ class LiveUSBCreator(object):
             outfile.write(line)
         infile.close()
         outfile.close()
-        
+
     def update_configs(self):
         """ Generate our syslinux.cfg and grub.conf files """
         grubconf     = os.path.join(self.dest, "EFI", "boot", "grub.conf")
@@ -385,6 +385,41 @@ class LiveUSBCreator(object):
 
     def reset_mbr(self):
         pass
+
+    def calculate_device_checksum(self, progress=None):
+        """ Calculate the SHA1 checksum of the device """
+        self.log.info(_("Calculating the SHA1 of %s" % self._drive))
+        if not progress:
+            class DummyProgress:
+                def set_max_progress(self, value): pass
+                def update_progress(self, value): pass
+            progress = DummyProgress()
+        # Get size of drive
+        #progress.set_max_progress(self.isosize / 1024)
+        checksum = hashlib.sha1()
+        device_name = str(self.drive['parent'])
+        device = file(device_name, 'rb')
+        bytes = 1024**2
+        total = 0
+        while bytes:
+            data = device.read(bytes)
+            checksum.update(data)
+            bytes = len(data)
+            total += bytes
+            progress.update_progress(total / 1024)
+        hexdigest = checksum.hexdigest()
+        self.log.info("sha1(%s) = %s" % (device_name, hexdigest))
+        return hexdigest
+        # Compare checksum with ISO?  not possible?
+        #if checksum.hexdigest() == release[hash]:
+        #    return True
+        #else:
+        #    self.log.info(_("Error: The SHA1 of your Live CD is "
+        #                    "invalid.  You can run this program with "
+        #                    "the --noverify argument to bypass this "
+        #                    "verification check."))
+        #    return False
+
 
 class LinuxLiveUSBCreator(LiveUSBCreator):
 

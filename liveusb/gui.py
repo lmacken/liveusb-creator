@@ -200,6 +200,9 @@ class LiveUSBThread(QtCore.QThread):
             self.live.install_bootloader()
             self.live.bootable_partition()
 
+            if self.parent.opts.device_checksum:
+                self.live.calculate_device_checksum()
+
             duration = str(datetime.now() - now).split('.')[0]
             self.status(_("Complete! (%s)" % duration))
 
