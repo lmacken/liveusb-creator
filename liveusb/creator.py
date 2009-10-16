@@ -892,18 +892,40 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         self.popen('syslinux%s%s -m -a -d %s %s' %  (self.opts.force and ' -f'
                    or '', self.opts.safe and ' -s' or '', 'syslinux', device))
 
+    # Cache these, because they are fairly expensive
+    _win32_logicaldisk = {}
+
+    def _get_win32_logicaldisk(self, drive):
+        """ Return the Win32_LogicalDisk object for the given drive """
+        import win32com.client
+        cache = self._win32_logicaldisk.get('drive')
+        if cache:
+            return cache
+        obj = None
+        try:
+            obj = win32com.client.Dispatch("WbemScripting.SWbemLocator") \
+                         .ConnectServer(".", "root\cimv2") \
+                         .ExecQuery("Select * from "
+                                    "Win32_LogicalDisk where Name = '%s'" %
+                                    drive)
+            if not obj:
+                self.log.error(_("Unable to get Win32_LogicalDisk; win32com "
+                                 "query did not return any results"))
+            else:
+                obj = obj[0]
+                self._win32_logicaldisk[drive] = obj
+        except Exception, e:
+            self.log.exception(e)
+            self.log.error("Unable to get Win32_LogicalDisk")
+        return obj
+
     def _get_device_uuid(self, drive):
         """ Return the UUID of our selected drive """
         if self.uuid:
             return self.uuid
         uuid = None
         try:
-            import win32com.client
-            uuid = win32com.client.Dispatch("WbemScripting.SWbemLocator") \
-                         .ConnectServer(".", "root\cimv2") \
-                         .ExecQuery("Select VolumeSerialNumber from "
-                                    "Win32_LogicalDisk where Name = '%s'" %
-                                    drive)[0].VolumeSerialNumber
+            uuid = self._get_win32_logicaldisk(drive).VolumeSerialNumber
             if uuid in (None, 'None', ''):
                 uuid = None
             else:
@@ -916,14 +938,9 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
 
     def _get_device_size(self, drive):
         """ Return the size of the given drive """
-        import win32com.client
         size = None
         try:
-            size = int(win32com.client.Dispatch("WbemScripting.SWbemLocator")
-                               .ConnectServer(".", "root\cimv2")
-                               .ExecQuery("Select Size from "
-                                          "Win32_LogicalDisk where Name = '%s'"
-                                          % drive)[0].Size)
+            size = int(self._get_win32_logicaldisk(drive).Size)
             self.log.debug("Max size of %s: %d" % (drive, size))
         except Exception, e:
             self.log.exception(e)
