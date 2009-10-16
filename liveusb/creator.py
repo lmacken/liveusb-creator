@@ -220,6 +220,7 @@ class LiveUSBCreator(object):
                 bytes = len(data)
                 total += bytes
                 progress.update_progress(total / 1024)
+            isofile.close()
             if checksum.hexdigest() == release[hash]:
                 return True
             else:
