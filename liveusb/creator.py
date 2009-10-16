@@ -29,6 +29,7 @@ import tempfile
 import logging
 import hashlib
 import shutil
+import time
 import os
 import re
 
@@ -1013,6 +1014,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
     def calculate_device_checksum(self, progress=None):
         """ Calculate the SHA1 checksum of the device """
         self.log.info(_("Calculating the SHA1 of %s" % self._drive))
+        time.sleep(3)
         if not progress:
             class DummyProgress:
                 def set_max_progress(self, value): pass
