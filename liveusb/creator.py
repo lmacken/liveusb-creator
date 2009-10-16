@@ -797,7 +797,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
     def detect_removable_drives(self):
         import win32file, win32api, pywintypes
         self.drives = {}
-        for drive in [l + ':' for l in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ']:
+        for drive in [l + ':' for l in 'BCDEFGHIJKLMNOPQRSTUVWXYZ']:
             if win32file.GetDriveType(drive) == win32file.DRIVE_REMOVABLE or \
                drive == self.opts.force:
                 vol = [None]
