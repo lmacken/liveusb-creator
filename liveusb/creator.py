@@ -1018,8 +1018,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                 def set_max_progress(self, value): pass
                 def update_progress(self, value): pass
             progress = DummyProgress()
-        # Get size of drive
-        #progress.set_max_progress(self.isosize / 1024)
+        progress.set_max_progress(self.drive['size'])
         checksum = hashlib.sha1()
         device_name = r'\\.\%s' % self.drive['device']
         device = file(device_name, 'rb')
@@ -1030,7 +1029,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
             checksum.update(data)
             bytes = len(data)
             total += bytes
-            #progress.update_progress(total / 1024)
+            progress.update_progress(total)
         hexdigest = checksum.hexdigest()
         self.log.info("sha1(%s) = %s" % (self.drive['device'], hexdigest))
         return hexdigest
