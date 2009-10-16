@@ -813,6 +813,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                     'fstype': 'vfat',
                     'device': drive,
                     'fsversion': vol[-1],
+                    'size': self._get_device_size(drive)
                 }
         if not len(self.drives):
             raise LiveUSBError(_("Unable to find any removable devices"))
@@ -912,6 +913,22 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
             self.log.exception(e)
             self.log.warning("Exception while fetching UUID: %s" % str(e))
         return uuid
+
+    def _get_device_size(self, drive):
+        """ Return the size of the given drive """
+        import win32com.client
+        size = None
+        try:
+            size = int(win32com.client.Dispatch("WbemScripting.SWbemLocator")
+                               .ConnectServer(".", "root\cimv2")
+                               .ExecQuery("Select Size from "
+                                          "Win32_LogicalDisk where Name = '%s'"
+                                          % drive)[0].Size)
+            self.log.debug("Max size of %s: %d" % (drive, size))
+        except Exception, e:
+            self.log.exception(e)
+            self.log.warning("Error getting drive size: %s" % str(e))
+        return size
 
     def popen(self, cmd, **kwargs):
         import win32process
