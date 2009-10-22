@@ -682,7 +682,11 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
     def bootable_partition(self):
         """ Ensure that the selected partition is flagged as bootable """
         import parted
-        disk, partition = self.get_disk_partition()
+        try:
+            disk, partition = self.get_disk_partition()
+        except LiveUSBError, e:
+            self.log.exception(e)
+            return
         if partition.isFlagAvailable(parted.PARTITION_BOOT):
             if partition.getFlag(parted.PARTITION_BOOT):
                 self.log.debug('%s already bootable' % self._drive)
