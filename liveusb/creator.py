@@ -1045,20 +1045,24 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         """ Calculate the hash of the extracted LiveOS """
         chunk_size = 1024 # FIXME: optimize this.  we hit bugs when this is *not* 1024
         checksums = []
-        for folder in ('LiveOS', 'syslinux'):
-            for img in os.listdir(os.path.join(self.drive['device'], folder)):
-                hash = getattr(hashlib, self.opts.hash, 'sha1')()
-                liveos = os.path.join(self.drive['device'], folder, img)
-                device = file(liveos, 'rb')
-                self.log.info("Calculating the %s of %s" % (hash.name, liveos))
-                bytes = 1
-                while bytes:
-                    data = device.read(chunk_size)
-                    hash.update(data)
-                    bytes = len(data)
-                checksum = hash.hexdigest()
-                checksums.append(checksum)
-                self.log.info('%s(%s) = %s' % (hash.name, liveos, checksum))
+        from os.path import join
+        for img in (join('LiveOS', 'osmin.img'),
+                    join('LiveOS', 'squashfs.img'),
+                    join('syslinux', 'initrd0.img'),
+                    join('syslinux', 'vmlinuz0'),
+                    join('syslinux', 'isolinux.bin')):
+            hash = getattr(hashlib, self.opts.hash, 'sha1')()
+            liveos = os.path.join(self.drive['device'], img)
+            device = file(liveos, 'rb')
+            self.log.info("Calculating the %s of %s" % (hash.name, liveos))
+            bytes = 1
+            while bytes:
+                data = device.read(chunk_size)
+                hash.update(data)
+                bytes = len(data)
+            checksum = hash.hexdigest()
+            checksums.append(checksum)
+            self.log.info('%s(%s) = %s' % (hash.name, liveos, checksum))
 
         # Take a checksum of all of the checksums
         hash = getattr(hashlib, self.opts.hash, 'sha1')()
