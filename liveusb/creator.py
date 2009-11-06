@@ -802,25 +802,29 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
     def detect_removable_drives(self):
         import win32file, win32api, pywintypes
         self.drives = {}
-        for drive in [l + ':' for l in 'BCDEFGHIJKLMNOPQRSTUVWXYZ']:
-            if win32file.GetDriveType(drive) == win32file.DRIVE_REMOVABLE or \
-               drive == self.opts.force:
-                vol = [None]
-                try:
-                    vol = win32api.GetVolumeInformation(drive)
-                except pywintypes.error, e:
-                    self.log.error('Unable to get GetVolumeInformation(%s): %s' % (drive, str(e)))
-                    continue
-                self.drives[drive] = {
-                    'label': vol[0],
-                    'mount': drive,
-                    'uuid': self._get_device_uuid(drive),
-                    'free': self.get_free_bytes(drive) / 1024**2,
-                    'fstype': 'vfat',
-                    'device': drive,
-                    'fsversion': vol[-1],
-                    'size': self._get_device_size(drive)
-                }
+        for drive in [l + ':' for l in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ']:
+            try:
+                if win32file.GetDriveType(drive) == win32file.DRIVE_REMOVABLE or \
+                   drive == self.opts.force:
+                    vol = [None]
+                    try:
+                        vol = win32api.GetVolumeInformation(drive)
+                    except pywintypes.error, e:
+                        self.log.error('Unable to get GetVolumeInformation(%s): %s' % (drive, str(e)))
+                        continue
+                    self.drives[drive] = {
+                        'label': vol[0],
+                        'mount': drive,
+                        'uuid': self._get_device_uuid(drive),
+                        'free': self.get_free_bytes(drive) / 1024**2,
+                        'fstype': 'vfat',
+                        'device': drive,
+                        'fsversion': vol[-1],
+                        'size': self._get_device_size(drive)
+                    }
+            except Exception, e:
+                self.log.exception(e)
+                self.log.error(_("Error probing device"))
         if not len(self.drives):
             raise LiveUSBError(_("Unable to find any removable devices"))
 
