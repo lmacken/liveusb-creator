@@ -286,7 +286,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                     self.driveBox.addItem(device)
             self.startButton.setEnabled(True)
         except LiveUSBError, e:
-            self.textEdit.setPlainText(e.message.encode('utf8'))
+            self.textEdit.setPlainText(e.message)
             self.startButton.setEnabled(False)
 
     def populate_releases(self):
@@ -521,7 +521,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
             try:
                 self.live.set_iso(isofile)
             except Exception, e:
-                self.live.log.error(e.message.encode('utf8'))
+                self.live.log.error(e.message)
                 self.status(_("Unable to encode the filename of your livecd.  "
                               "You may have better luck if you move your ISO "
                               "to the root of your drive (ie: C:\)"))
