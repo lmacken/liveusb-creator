@@ -47,10 +47,11 @@ def parse_args():
                       action='store_true', default=False,
                       help='Calculate the SHA1 of the device')
     parser.add_option('-L', '--liveos-checksum', dest='liveos_checksum',
-                      action='store_true', default=True,
+                      action='store_true', default=False,
                       help='Calculate the SHA1 of the device')
     parser.add_option('-H', '--hash', dest='hash',
-                      action='store', metavar='HASH', default='sha1')
+                      action='store', metavar='HASH', default='sha1',
+                      help='Use a specific checksum algorithm (default: sha1)')
     #parser.add_option('-z', '--usb-zip', dest='zip', action='store_true',
     #                  help='Initialize device with zipdrive-compatible geometry'
     #                        ' for booting in USB-ZIP mode with legacy BIOSes. '
