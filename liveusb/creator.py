@@ -412,8 +412,8 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
         for device in devices:
             dev = self._get_device(device)
-            if self.opts.force or dev.GetProperty("storage.bus") == "usb":
-                if dev.GetProperty("block.is_volume"):
+            if self.opts.force or self._storage_bus(dev) == "usb":
+                if self._block_is_volume(dev):
                     self._add_device(dev)
                     continue
                 else: # iterate over children looking for a volume
@@ -421,12 +421,28 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                                                               device)
                     for child in children:
                         child = self._get_device(child)
-                        if child.GetProperty("block.is_volume"):
+                        if self._block_is_volume(child):
                             self._add_device(child, parent=dev)
                             #break      # don't break, allow all partitions
 
         if not len(self.drives):
             raise LiveUSBError(_("Unable to find any USB drives"))
+
+    def _storage_bus(self, dev):
+        storage_bus = None
+        try:
+            storage_bus = dev.GetProperty('storage.bus')
+        except Exception, e:
+            self.log.exception(e)
+        return storage_bus
+
+    def _block_is_volume(self, dev):
+        is_volume = False
+        try:
+            is_volume = dev.GetProperty("block.is_volume")
+        except Exception, e:
+            self.log.exception(e)
+        return is_volume
 
     def _add_device(self, dev, parent=None):
         mount = str(dev.GetProperty('volume.mount_point'))
