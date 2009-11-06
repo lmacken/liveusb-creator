@@ -406,7 +406,9 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         self.overlayTitle.setTitle(_("Persistent Storage") + " (%d MB)" % value)
 
     def get_selected_drive(self):
-        return str(self.driveBox.currentText()).split()[0]
+        text = str(self.driveBox.currentText()).split()
+        if text:
+            return text[0]
 
     def begin(self):
         """ Begin the liveusb creation process.
