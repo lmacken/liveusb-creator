@@ -29,6 +29,7 @@ import tempfile
 import logging
 import hashlib
 import shutil
+import time
 import os
 import re
 
@@ -219,6 +220,7 @@ class LiveUSBCreator(object):
                 bytes = len(data)
                 total += bytes
                 progress.update_progress(total / 1024)
+            isofile.close()
             if checksum.hexdigest() == release[hash]:
                 return True
             else:
@@ -275,7 +277,7 @@ class LiveUSBCreator(object):
             outfile.write(line)
         infile.close()
         outfile.close()
-        
+
     def update_configs(self):
         """ Generate our syslinux.cfg and grub.conf files """
         grubconf     = os.path.join(self.dest, "EFI", "boot", "grub.conf")
@@ -385,6 +387,7 @@ class LiveUSBCreator(object):
 
     def reset_mbr(self):
         pass
+
 
 class LinuxLiveUSBCreator(LiveUSBCreator):
 
@@ -679,7 +682,11 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
     def bootable_partition(self):
         """ Ensure that the selected partition is flagged as bootable """
         import parted
-        disk, partition = self.get_disk_partition()
+        try:
+            disk, partition = self.get_disk_partition()
+        except LiveUSBError, e:
+            self.log.exception(e)
+            return
         if partition.isFlagAvailable(parted.PARTITION_BOOT):
             if partition.getFlag(parted.PARTITION_BOOT):
                 self.log.debug('%s already bootable' % self._drive)
@@ -764,6 +771,31 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         else:
             self.log.info(_('Drive is a loopback, skipping MBR reset'))
 
+    def calculate_device_checksum(self, progress=None):
+        """ Calculate the SHA1 checksum of the device """
+        self.log.info(_("Calculating the SHA1 of %s" % self._drive))
+        if not progress:
+            class DummyProgress:
+                def set_max_progress(self, value): pass
+                def update_progress(self, value): pass
+            progress = DummyProgress()
+        # Get size of drive
+        #progress.set_max_progress(self.isosize / 1024)
+        checksum = hashlib.sha1()
+        device_name = str(self.drive['parent'])
+        device = file(device_name, 'rb')
+        bytes = 1024**2
+        total = 0
+        while bytes:
+            data = device.read(bytes)
+            checksum.update(data)
+            bytes = len(data)
+            total += bytes
+            progress.update_progress(total / 1024)
+        hexdigest = checksum.hexdigest()
+        self.log.info("sha1(%s) = %s" % (device_name, hexdigest))
+        return hexdigest
+
 
 class WindowsLiveUSBCreator(LiveUSBCreator):
 
@@ -771,23 +803,28 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         import win32file, win32api, pywintypes
         self.drives = {}
         for drive in [l + ':' for l in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ']:
-            if win32file.GetDriveType(drive) == win32file.DRIVE_REMOVABLE or \
-               drive == self.opts.force:
-                vol = [None]
-                try:
-                    vol = win32api.GetVolumeInformation(drive)
-                except pywintypes.error, e:
-                    self.log.error('Unable to get GetVolumeInformation(%s): %s' % (drive, str(e)))
-                    continue
-                self.drives[drive] = {
-                    'label': vol[0],
-                    'mount': drive,
-                    'uuid': self._get_device_uuid(drive),
-                    'free': self.get_free_bytes(drive) / 1024**2,
-                    'fstype': 'vfat',
-                    'device': drive,
-                    'fsversion': vol[-1],
-                }
+            try:
+                if win32file.GetDriveType(drive) == win32file.DRIVE_REMOVABLE or \
+                   drive == self.opts.force:
+                    vol = [None]
+                    try:
+                        vol = win32api.GetVolumeInformation(drive)
+                    except pywintypes.error, e:
+                        self.log.error('Unable to get GetVolumeInformation(%s): %s' % (drive, str(e)))
+                        continue
+                    self.drives[drive] = {
+                        'label': vol[0],
+                        'mount': drive,
+                        'uuid': self._get_device_uuid(drive),
+                        'free': self.get_free_bytes(drive) / 1024**2,
+                        'fstype': 'vfat',
+                        'device': drive,
+                        'fsversion': vol[-1],
+                        'size': self._get_device_size(drive)
+                    }
+            except Exception, e:
+                self.log.exception(e)
+                self.log.error(_("Error probing device"))
         if not len(self.drives):
             raise LiveUSBError(_("Unable to find any removable devices"))
 
@@ -865,18 +902,40 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         self.popen('syslinux%s%s -m -a -d %s %s' %  (self.opts.force and ' -f'
                    or '', self.opts.safe and ' -s' or '', 'syslinux', device))
 
+    # Cache these, because they are fairly expensive
+    _win32_logicaldisk = {}
+
+    def _get_win32_logicaldisk(self, drive):
+        """ Return the Win32_LogicalDisk object for the given drive """
+        import win32com.client
+        cache = self._win32_logicaldisk.get('drive')
+        if cache:
+            return cache
+        obj = None
+        try:
+            obj = win32com.client.Dispatch("WbemScripting.SWbemLocator") \
+                         .ConnectServer(".", "root\cimv2") \
+                         .ExecQuery("Select * from "
+                                    "Win32_LogicalDisk where Name = '%s'" %
+                                    drive)
+            if not obj:
+                self.log.error(_("Unable to get Win32_LogicalDisk; win32com "
+                                 "query did not return any results"))
+            else:
+                obj = obj[0]
+                self._win32_logicaldisk[drive] = obj
+        except Exception, e:
+            self.log.exception(e)
+            self.log.error("Unable to get Win32_LogicalDisk")
+        return obj
+
     def _get_device_uuid(self, drive):
         """ Return the UUID of our selected drive """
         if self.uuid:
             return self.uuid
         uuid = None
         try:
-            import win32com.client
-            uuid = win32com.client.Dispatch("WbemScripting.SWbemLocator") \
-                         .ConnectServer(".", "root\cimv2") \
-                         .ExecQuery("Select VolumeSerialNumber from "
-                                    "Win32_LogicalDisk where Name = '%s'" %
-                                    drive)[0].VolumeSerialNumber
+            uuid = self._get_win32_logicaldisk(drive).VolumeSerialNumber
             if uuid in (None, 'None', ''):
                 uuid = None
             else:
@@ -886,6 +945,17 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
             self.log.exception(e)
             self.log.warning("Exception while fetching UUID: %s" % str(e))
         return uuid
+
+    def _get_device_size(self, drive):
+        """ Return the size of the given drive """
+        size = None
+        try:
+            size = int(self._get_win32_logicaldisk(drive).Size)
+            self.log.debug("Max size of %s: %d" % (drive, size))
+        except Exception, e:
+            self.log.exception(e)
+            self.log.warning("Error getting drive size: %s" % str(e))
+        return size
 
     def popen(self, cmd, **kwargs):
         import win32process
@@ -949,3 +1019,57 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         At the moment this is Linux-only, until we port checkisomd5 to Windows.
         """
         return True
+
+    def calculate_device_checksum(self, progress=None):
+        """ Calculate the SHA1 checksum of the device """
+        self.log.info(_("Calculating the SHA1 of %s" % self._drive))
+        time.sleep(3)
+        if not progress:
+            class DummyProgress:
+                def set_max_progress(self, value): pass
+                def update_progress(self, value): pass
+            progress = DummyProgress()
+        progress.set_max_progress(self.drive['size'])
+        checksum = hashlib.sha1()
+        device_name = r'\\.\%s' % self.drive['device']
+        device = file(device_name, 'rb')
+        bytes = 1
+        total = 0
+        while bytes:
+            data = device.read(1024**2)
+            checksum.update(data)
+            bytes = len(data)
+            total += bytes
+            progress.update_progress(total)
+        hexdigest = checksum.hexdigest()
+        self.log.info("sha1(%s) = %s" % (self.drive['device'], hexdigest))
+        return hexdigest
+
+    def calculate_liveos_checksum(self):
+        """ Calculate the hash of the extracted LiveOS """
+        chunk_size = 1024 # FIXME: optimize this.  we hit bugs when this is *not* 1024
+        checksums = []
+        from os.path import join
+        for img in (join('LiveOS', 'osmin.img'),
+                    join('LiveOS', 'squashfs.img'),
+                    join('syslinux', 'initrd0.img'),
+                    join('syslinux', 'vmlinuz0'),
+                    join('syslinux', 'isolinux.bin')):
+            hash = getattr(hashlib, self.opts.hash, 'sha1')()
+            liveos = os.path.join(self.drive['device'], img)
+            device = file(liveos, 'rb')
+            self.log.info("Calculating the %s of %s" % (hash.name, liveos))
+            bytes = 1
+            while bytes:
+                data = device.read(chunk_size)
+                hash.update(data)
+                bytes = len(data)
+            checksum = hash.hexdigest()
+            checksums.append(checksum)
+            self.log.info('%s(%s) = %s' % (hash.name, liveos, checksum))
+
+        # Take a checksum of all of the checksums
+        hash = getattr(hashlib, self.opts.hash, 'sha1')()
+        map(hash.update, checksums)
+        self.log.info("%s = %s" % (hash.name, hash.hexdigest()))
+
