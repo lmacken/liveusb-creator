@@ -1065,12 +1065,11 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         """ Calculate the hash of the extracted LiveOS """
         chunk_size = 1024 # FIXME: optimize this.  we hit bugs when this is *not* 1024
         checksums = []
-        from os.path import join
-        for img in (join('LiveOS', 'osmin.img'),
-                    join('LiveOS', 'squashfs.img'),
-                    join('syslinux', 'initrd0.img'),
-                    join('syslinux', 'vmlinuz0'),
-                    join('syslinux', 'isolinux.bin')):
+        for img in (os.path.join('LiveOS', 'osmin.img'),
+                    os.path.join('LiveOS', 'squashfs.img'),
+                    os.path.join('syslinux', 'initrd0.img'),
+                    os.path.join('syslinux', 'vmlinuz0'),
+                    os.path.join('syslinux', 'isolinux.bin')):
             hash = getattr(hashlib, self.opts.hash, 'sha1')()
             liveos = os.path.join(self.drive['device'], img)
             device = file(liveos, 'rb')
@@ -1088,4 +1087,3 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         hash = getattr(hashlib, self.opts.hash, 'sha1')()
         map(hash.update, checksums)
         self.log.info("%s = %s" % (hash.name, hash.hexdigest()))
-
