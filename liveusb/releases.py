@@ -22,27 +22,27 @@ releases = (
     },
 
     {
-        'name': 'Fedora 12 Alpha (i686)',
-        'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/test/12-Alpha/Live/i686/F12-Alpha-i686-Live.iso',
-        'sha256': 'c0b229070f04197c3f0a92fed3f7fda95535b2c2a6fc5d80db2c4e35e0a69482',
+        'name': 'Fedora 12 Beta (i686)',
+        'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/test/12-Beta/Live/i686/F12-Beta-i686-Live.iso',
+        'sha256': '11e67bf841a9ee7c2aab8d032aa405fa9f0601afbd42eac9294e965baac2cf6a',
     },
 
     {
-        'name': 'Fedora 12 Alpha KDE (i686)',
-        'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/test/12-Alpha/Live/i686/F12-Alpha-i686-Live-KDE.iso',
-        'sha256': '66424c0cbf7974b311070232d49058d0472f90953e71052ef7b2c0d20ebc5c08',
+        'name': 'Fedora 12 Beta KDE (i686)',
+        'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/test/12-Beta/Live/i686/F12-Beta-i686-Live-KDE.iso',
+        'sha256': '07d5cae1d81b5c53949aea8465a2eb8acd2762267ef2fc0763e61eed3eca9549',
     },
 
     {
-        'name': 'Fedora 12 Alpha (x86_64)',
-        'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/test/12-Alpha/Live/x86_64/F12-Alpha-x86_64-Live.iso',
-        'sha256': 'ef2ed63f10039df58fc9ab37b40c4322077cce2cdf3a2bbe1da35c54bd59966f',
+        'name': 'Fedora 12 Beta (x86_64)',
+        'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/test/12-Beta/Live/x86_64/F12-Beta-x86_64-Live.iso',
+        'sha256': 'a03cde18f52d767b7542274294556da1d9a70c1e702a6664da78fe805ea865fa',
     },
 
     {
-        'name': 'Fedora 12 Alpha KDE (x86_64)',
-        'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/test/12-Alpha/Live/x86_64/F12-Alpha-x86_64-Live-KDE.iso',
-        'sha256': '1ad2c3f0bf4c60360d9a831ebacb78c8ca75a718db4e3566bae5cb63dbd27d48',
+        'name': 'Fedora 12 Beta KDE (x86_64)',
+        'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/test/12-Beta/Live/x86_64/F12-Beta-x86_64-Live-KDE.iso',
+        'sha256': '69db537206769e1649b91c8510f31c330ea8454f7a12ce39fd9eb49169fa7282',
     },
 
     {
