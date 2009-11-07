@@ -71,7 +71,7 @@ releases = (
     ##
     {
         'name': 'Sugar on a Stick (Strawberry)',
-        'url': 'http://download.sugarlabs.org/soas/releases/soas-strawberry.iso',
-        #'sha1': '',
+        'url': 'http://download.sugarlabs.org/soas/releases/soas-1-strawberry.iso',
+        'sha1': '41b08c93a65cc1e38286b9f8980f51528a36761d',
     },
 )
