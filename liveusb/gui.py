@@ -406,7 +406,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         self.overlayTitle.setTitle(_("Persistent Storage") + " (%d MB)" % value)
 
     def get_selected_drive(self):
-        text = str(self.driveBox.currentText()).split()
+        text = self.live._to_unicode(self.driveBox.currentText()).split()
         if text:
             return text[0]
 
