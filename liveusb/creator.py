@@ -447,6 +447,8 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
     def _add_device(self, dev, parent=None):
         mount = str(dev.GetProperty('volume.mount_point'))
         device = str(dev.GetProperty('block.device'))
+        if parent:
+            parent = parent.GetProperty('block.device')
         self.drives[device] = {
             'label'   : str(dev.GetProperty('volume.label')).replace(' ', '_'),
             'fstype'  : str(dev.GetProperty('volume.fstype')),
@@ -457,7 +459,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             'unmount' : False,
             'free'    : mount and self.get_free_bytes(mount) / 1024**2 or None,
             'device'  : device,
-            'parent'  : parent.GetProperty('block.device')
+            'parent'  : parent
         }
 
     def mount_device(self):
