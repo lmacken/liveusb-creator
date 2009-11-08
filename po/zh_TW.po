@@ -1,0 +1,343 @@
+# Traditional chinese translation of liveusb-creator
+# Copyright (C) 2009 liveusb-creator
+# This file is distributed under the same license as the liveusb-creator package.
+# Wei-Lun Chao <william.chao@ossii.com.tw>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: liveusb-creator 3.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-11-23 01:35+0000\n"
+"PO-Revision-Date: 2009-01-08 15:38+0800\n"
+"Last-Translator: Wei-Lun Chao <william.chao@ossii.com.tw>\n"
+"Language-Team: Chinese (traditional) <zh-l10n@linux.org.tw>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: ../liveusb/__init__.py:42
+msgid "You must run this application as root"
+msgstr "您必須以 root 身分執行這個應用程式"
+
+#: ../liveusb/gui.py:69
+#, python-format
+msgid "Unknown release: %s"
+msgstr "不明的釋出編號：%s"
+
+#: ../liveusb/gui.py:73
+#, python-format
+msgid "Downloading %s..."
+msgstr "正在下載 %s…"
+
+#: ../liveusb/gui.py:156
+msgid ""
+"Error: Cannot set the label or obtain the UUID of your device.  Unable to "
+"continue."
+msgstr "錯誤：無法設定標籤或取得裝置的 UUID。無法繼續。"
+
+#: ../liveusb/gui.py:185
+#, python-format
+msgid "Complete! (%s)"
+msgstr "完成！(%s)"
+
+#: ../liveusb/gui.py:188 ../liveusb/gui.py:191
+msgid "LiveUSB creation failed!"
+msgstr "自活閃碟製作失敗！"
+
+#: ../liveusb/gui.py:331
+msgid "Persistent Storage"
+msgstr "留存空間"
+
+#: ../liveusb/gui.py:349
+msgid ""
+"Your device already contains a LiveOS.\n"
+"If you continue, this will be overwritten."
+msgstr ""
+"您的裝置已經含有自活作業系統。\n"
+"如果您繼續，將會覆寫它。"
+
+#: ../liveusb/gui.py:352
+msgid ""
+"Warning: Creating a new persistent overlay will delete your existing one."
+msgstr "警告：製作新的留存外罩將刪除您現有的這一個。"
+
+#: ../liveusb/gui.py:354
+msgid "Press 'Create Live USB' again if you wish to continue."
+msgstr "如果您希望繼續，請再次按下「製作自活閃碟」。"
+
+#: ../liveusb/gui.py:400
+msgid "Download complete!"
+msgstr "下載完成！"
+
+#: ../liveusb/gui.py:404
+msgid "Download failed: "
+msgstr "下載失敗："
+
+#: ../liveusb/gui.py:405
+msgid "You can try again to resume your download"
+msgstr "您可再次嘗試以接續您的下載"
+
+#: ../liveusb/gui.py:409
+msgid "Select Live ISO"
+msgstr "選取自活映像檔"
+
+#: ../liveusb/gui.py:416
+msgid ""
+"Sorry, I'm having trouble encoding the filename of your livecd.  You may "
+"have better luck if you move your ISO to the root of your drive (ie: C:\\)"
+msgstr ""
+"抱歉，在編碼您的自活光碟檔名時發生問題。如果移動您的映像檔到磁碟的根目錄(例"
+"如：C:\\)，也許會有比較好的運氣。"
+
+#: ../liveusb/gui.py:422
+msgid "selected"
+msgstr "已選取"
+
+#: ../liveusb/creator.py:134
+msgid "Setting up OLPC boot file..."
+msgstr "正在設定 OLPC 啟動檔案…"
+
+#: ../liveusb/creator.py:186
+#, python-format
+msgid ""
+"There was a problem executing the following command: `%s`\n"
+"A more detailed error log has been written to 'liveusb-creator.log'"
+msgstr ""
+"執行下列命令：「%s」時發生問題\n"
+"更詳細的錯誤記錄已被寫入「liveusb-creator.log」"
+
+#: ../liveusb/creator.py:193
+msgid "Verifying SHA1 of LiveCD image..."
+msgstr "驗證自活光碟映像檔的 SHA1…"
+
+#: ../liveusb/creator.py:215
+msgid ""
+"Error: The SHA1 of your Live CD is invalid.  You can run this program with "
+"the --noverify argument to bypass this verification check."
+msgstr ""
+"錯誤：自活光碟的 SHA1 無效。您可以在執行這個程式時以 --noverify 引數來略過這"
+"個稽核檢查。"
+
+#: ../liveusb/creator.py:221
+msgid "Unknown ISO, skipping checksum verification"
+msgstr "未知的 ISO，略過總和值檢查驗證"
+
+#: ../liveusb/creator.py:233
+msgid "Not enough free space on device."
+msgstr "裝置的剩餘空間不足。"
+
+#: ../liveusb/creator.py:234
+#, python-format
+msgid ""
+"\n"
+"%dMB ISO + %dMB overlay > %dMB free space"
+msgstr ""
+"\n"
+"%dMB 映像檔 + %dMB 外罩 > %dMB 剩餘空間"
+
+#: ../liveusb/creator.py:240
+msgid "Creating"
+msgstr "正在建立"
+
+#: ../liveusb/creator.py:241
+msgid "persistent overlay"
+msgstr "留存外罩"
+
+#: ../liveusb/creator.py:273
+msgid "Removing existing Live OS"
+msgstr "移除現有自活作業系統"
+
+#: ../liveusb/creator.py:282
+#, python-format
+msgid "Unable to remove previous LiveOS: %s"
+msgstr "無法移除之前的自活作業系統：%s"
+
+#: ../liveusb/creator.py:313
+#, python-format
+msgid "Cannot find device %s"
+msgstr "找不到裝置 %s"
+
+#: ../liveusb/creator.py:332
+msgid "Resetting MBR..."
+msgstr "重置 MBR…"
+
+#: ../liveusb/creator.py:377
+msgid "Unable to find any USB drives"
+msgstr "無法找到任何 USB 閃碟"
+
+#: ../liveusb/creator.py:400
+#, python-format
+msgid "Filesystem for %s unknown!"
+msgstr "用於 %s 的檔案系統不明！"
+
+#: ../liveusb/creator.py:401
+msgid "device"
+msgstr "裝置"
+
+#: ../liveusb/creator.py:413
+#, python-format
+msgid "Unable to mount device: %s"
+msgstr "無法掛載裝置：%s"
+
+#: ../liveusb/creator.py:449 ../liveusb/creator.py:614
+msgid "Verifying filesystem..."
+msgstr "驗證檔案系統…"
+
+#: ../liveusb/creator.py:452
+#, python-format
+msgid "Unknown filesystem for %s.  Your device may need to be reformatted."
+msgstr "用於 %s 的檔案系統不明。您的裝置也許需要重新格式化。"
+
+#: ../liveusb/creator.py:455
+#, python-format
+msgid "Unsupported filesystem: %s"
+msgstr "不支援的檔案系統：%s"
+
+#: ../liveusb/creator.py:479
+msgid "Your MBR appears to be blank"
+msgstr "MBR 空白"
+
+#: ../liveusb/creator.py:484 ../liveusb/creator.py:649
+msgid "Extracting live image to USB device..."
+msgstr "將自活映像檔擷取到 USB 裝置…"
+
+#: ../liveusb/creator.py:490
+msgid "Unable to find LiveOS on ISO"
+msgstr "於映像檔上無法找到自活作業系統"
+
+#: ../liveusb/creator.py:501 ../liveusb/creator.py:656
+msgid "Wrote to device at"
+msgstr "寫入裝置於"
+
+#: ../liveusb/creator.py:514
+msgid "Installing bootloader..."
+msgstr "安裝開機管理程式…"
+
+#: ../liveusb/creator.py:552
+msgid "Verifying ISO MD5 checksum"
+msgstr "正在驗證 ISO MD5 總和檢查值"
+
+#: ../liveusb/creator.py:610
+msgid "Unable to find any removable devices"
+msgstr "無法找到任何可移除的裝置"
+
+#: ../liveusb/creator.py:618
+msgid ""
+"Make sure your USB key is plugged in and formatted with the FAT filesystem"
+msgstr "確定您的 USB 閃碟已插入，並以 FAT 檔案系統進行格式化"
+
+#: ../liveusb/creator.py:621
+#, python-format
+msgid ""
+"Unsupported filesystem: %s\n"
+"Please backup and format your USB key with the FAT filesystem."
+msgstr ""
+"不支援的檔案系統：%s\n"
+"請製作備份並將您的 USB 閃碟以 FAT 檔案系統進行格式化。"
+
+#: ../liveusb/creator.py:662
+msgid "Installing bootloader"
+msgstr "安裝開機管理程式"
+
+#: ../liveusb/creator.py:704
+msgid "Cannot find"
+msgstr "找不到"
+
+#: ../liveusb/creator.py:705
+msgid ""
+"Make sure to extract the entire liveusb-creator zip file before running this "
+"program."
+msgstr ""
+"請確定於執行這個程式之前，擷取了整個 liveusb-creator 壓縮檔"
+"案。"
+
+#: ../liveusb/linux_dialog.py:98 ../liveusb/windows_dialog.py:104
+msgid "Fedora LiveUSB Creator"
+msgstr "Fedora 自活閃碟製作器"
+
+#: ../liveusb/linux_dialog.py:99 ../liveusb/windows_dialog.py:105
+msgid ""
+"This button will begin the LiveUSB creation process.  This entails "
+"optionally downloading a release (if an existing one wasn't selected),  "
+"extracting the ISO to the USB device, creating the persistent overlay, and "
+"installing the bootloader."
+msgstr ""
+"這個按鈕將啟始自活閃碟製作程序。 這個導致選擇性地下載釋出版本(如果尚未選取一"
+"個現有的)，將映像檔擷取到 USB 裝置、製作留存的外罩，並安裝開機管理程式。"
+
+#: ../liveusb/linux_dialog.py:100 ../liveusb/windows_dialog.py:106
+msgid "Create Live USB"
+msgstr "製作自活閃碟"
+
+#: ../liveusb/linux_dialog.py:101 ../liveusb/windows_dialog.py:107
+msgid "This is the status console, where all messages get written to."
+msgstr "這是所有訊息都會被寫入的狀態主控臺。"
+
+#: ../liveusb/linux_dialog.py:102 ../liveusb/windows_dialog.py:108
+msgid ""
+"This is the progress bar that will indicate how far along in the LiveUSB "
+"creation process you are"
+msgstr "這是指出您的自活閃碟製作程序已經進行到什麼地步的進度條"
+
+#: ../liveusb/linux_dialog.py:103 ../liveusb/windows_dialog.py:109
+msgid ""
+"If you do not select an existing Live CD, the selected release will be "
+"downloaded for you."
+msgstr "如果您不選取現有的自活光碟，將會為您下載已選的釋出版本。"
+
+#: ../liveusb/linux_dialog.py:104 ../liveusb/windows_dialog.py:110
+msgid "Download Fedora"
+msgstr "下載 Fedora"
+
+#: ../liveusb/linux_dialog.py:105 ../liveusb/windows_dialog.py:111
+msgid "or"
+msgstr "或"
+
+#: ../liveusb/linux_dialog.py:106 ../liveusb/windows_dialog.py:112
+msgid ""
+"This button allows you to browse for an existing Live CD ISO that you have "
+"previously downloaded.  If you do not select one, a release will be "
+"downloaded for you automatically."
+msgstr ""
+"這個按鈕允許您瀏覽之前所下載的現有自活光碟映像檔。 如果您一個都不選，將會為您"
+"自動下載一個釋出版本。"
+
+#: ../liveusb/linux_dialog.py:107 ../liveusb/windows_dialog.py:113
+msgid "Use existing Live CD"
+msgstr "使用現有的自活光碟"
+
+#: ../liveusb/linux_dialog.py:108 ../liveusb/windows_dialog.py:114
+msgid "Browse"
+msgstr "瀏覽"
+
+#: ../liveusb/linux_dialog.py:110 ../liveusb/windows_dialog.py:116
+msgid ""
+"This is the USB stick that you want to install your Live CD on.  This device "
+"must be formatted with the FAT filesystem."
+msgstr ""
+"這是您要安裝自活光碟於其中的 USB 閃碟。這個裝置必須以 FAT 檔案系統格式化過。"
+
+#: ../liveusb/linux_dialog.py:112 ../liveusb/windows_dialog.py:118
+msgid ""
+"By allocating extra space on your USB stick for a persistent overlay, you "
+"will be able to store data and make permanent modifications to your live "
+"operating system.  Without it, you will not be able to save data that will "
+"persist after a reboot."
+msgstr ""
+"藉由配置其他空間於您的 USB 閃碟做為留存外罩，您將能夠對於自活作業系統儲存資料"
+"和製作永久性的修改。如果沒有它，您將無法儲存於重新開機之後依然留存的資料。"
+
+#: ../liveusb/linux_dialog.py:113 ../liveusb/windows_dialog.py:119
+msgid "Persistent Storage (0 Mb)"
+msgstr "留存空間 (0 Mb)"
+
+#: ../liveusb/windows_dialog.py:117
+msgid "Target Device"
+msgstr "目標裝置"
+
+msgid "Creating %d Mb persistent overlay..."
+msgstr "正在製作 %d Mb 的留存外罩…"
+
+msgid "Creating %sMB persistent overlay"
+msgstr "正在製作 %sMB 的留存外罩"
