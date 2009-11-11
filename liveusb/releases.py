@@ -70,6 +70,12 @@ releases = (
     ## Custom spins
     ##
     {
+        'name': 'Sugar on a Stick (Strawberry)',
+        'url': 'http://download.sugarlabs.org/soas/releases/soas-1-strawberry.iso',
+        'sha1': '41b08c93a65cc1e38286b9f8980f51528a36761d',
+    },
+
+    {
         'name': 'Sugar on a Stick v2 beta (snapshot 04)',
         'url': 'http://download2.sugarlabs.org/soas/snapshots/2/soas04.iso',
         'sha1': '27700626ac05aa07aae4ee7fb411c6567945c3c8',
