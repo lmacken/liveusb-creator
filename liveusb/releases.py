@@ -1,4 +1,27 @@
 releases = (
+    {
+        'name': 'Fedora 12 (i686)',
+        'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/12/Live/i686/Fedora-12-i686-Live.iso',
+        'sha256': '5ad27455df004ee23fbc5a05dfa039a14e59956dccf4e767d493601e0bfa4001',
+    },
+
+    {
+        'name': 'Fedora 12 KDE (i686)',
+        'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/12/Live/i686/Fedora-12-i686-Live-KDE.iso',
+        'sha256': '1bb64a4eedecf4730b47fcbb6c17b49d6deaccf7b00b17dd7b1091af57cf1c1e',
+    },
+
+    {
+        'name': 'Fedora 12 (x86_64)',
+        'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/12/Live/x86_64/Fedora-12-x86_64-Live.iso',
+        'sha256': 'f2e78358dc20eea0dbe8dfda2455c39de7de5eeb06aa21e1740f3e6bec194d47',
+    },
+
+    {
+        'name': 'Fedora 12 KDE (x86_64)',
+        'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/12/Live/x86_64/Fedora-12-x86_64-Live-KDE.iso',
+        'sha256': '623c9e8ca7755d9e7723519992b4fa7d0df22ec00b4490bec8e16f64b1dd8c19',
+    },
 
     {
         'name': 'Fedora 11 (i686)',
@@ -19,30 +42,6 @@ releases = (
         'name': 'Fedora 11 KDE (x86_64)',
         'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/11/Live/x86_64/Fedora-11-x86_64-Live-KDE.iso',
         'sha256': '4fdf952afb0d27887639140f6921ff58ba74f8d633b14414b095eb54b55df405',
-    },
-
-    {
-        'name': 'Fedora 12 Beta (i686)',
-        'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/test/12-Beta/Live/i686/F12-Beta-i686-Live.iso',
-        'sha256': '11e67bf841a9ee7c2aab8d032aa405fa9f0601afbd42eac9294e965baac2cf6a',
-    },
-
-    {
-        'name': 'Fedora 12 Beta KDE (i686)',
-        'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/test/12-Beta/Live/i686/F12-Beta-i686-Live-KDE.iso',
-        'sha256': '07d5cae1d81b5c53949aea8465a2eb8acd2762267ef2fc0763e61eed3eca9549',
-    },
-
-    {
-        'name': 'Fedora 12 Beta (x86_64)',
-        'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/test/12-Beta/Live/x86_64/F12-Beta-x86_64-Live.iso',
-        'sha256': 'a03cde18f52d767b7542274294556da1d9a70c1e702a6664da78fe805ea865fa',
-    },
-
-    {
-        'name': 'Fedora 12 Beta KDE (x86_64)',
-        'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/test/12-Beta/Live/x86_64/F12-Beta-x86_64-Live-KDE.iso',
-        'sha256': '69db537206769e1649b91c8510f31c330ea8454f7a12ce39fd9eb49169fa7282',
     },
 
     {
