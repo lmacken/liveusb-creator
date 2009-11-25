@@ -55,9 +55,9 @@ msgid "Extracting live image to USB device..."
 msgstr "Ekstrakcija live slike na USB uređaj..."
 
 #: ../liveusb/gui.py:180
-#, python-format,fuzzy
+#, python-format
 msgid "Creating %d Mb persistent overlay..."
-msgstr "Stvaranje %d Mb trajnog    ..."
+msgstr "Stvaranje %d Mb trajnog prekrivanja..."
 
 #: ../liveusb/gui.py:183
 msgid "Configuring and installing bootloader..."
@@ -73,9 +73,9 @@ msgid "LiveUSB creation failed!"
 msgstr "Stvaranje LiveUSB-a nije uspjelo!"
 
 #: ../liveusb/gui.py:316
-#, python-format,fuzzy
+#, python-format
 msgid "Persistent Storage (%d Mb)"
-msgstr "Trajno "
+msgstr "Trajna memorija (%d Mb)"
 
 #: ../liveusb/gui.py:334
 msgid ""
@@ -83,50 +83,53 @@ msgid ""
 "If you continue, this will be overwritten."
 msgstr ""
 "Vaš uređaj već sadrži LiveOS.\n"
-"Ako nastavite ."
+"Ako nastavite, prepisat će se preko njega."
 
 #: ../liveusb/gui.py:337
 msgid ""
 "Warning: Creating a new persistent overlay will delete your existing one."
 msgstr ""
+"Upozorenje: Stvaranmje novog trajnog prekrivanja će izbrisati trenutno."
 
 #: ../liveusb/gui.py:339
 msgid "Press 'Create Live USB' again if you wish to continue."
-msgstr ""
+msgstr "Pritisnite 'Stvori Live USB' ponovo ako želite nastaviti."
 
 #. The user has confirmed that they wish to overwrite their
 #. existing Live OS.  Here we delete it first, in order to
 #. accurately calculate progress.
 #: ../liveusb/gui.py:349
 msgid "Removing existing Live OS..."
-msgstr ""
+msgstr "Odstranjivanje postojećeg Live OS-a..."
 
 #: ../liveusb/gui.py:383
 msgid "Download complete!"
-msgstr ""
+msgstr "Snimanje završeno!"
 
 #: ../liveusb/gui.py:387
 msgid "Download failed: "
-msgstr ""
+msgstr "Snimanje nije uspjelo:"
 
 #: ../liveusb/gui.py:388
 msgid "You can try again to resume your download"
-msgstr ""
+msgstr "Možete pokušati ponovo da nastavite svoje snimanje"
 
 #: ../liveusb/gui.py:392
 msgid "Select Live ISO"
-msgstr ""
+msgstr "Odaberi Live ISO"
 
 #: ../liveusb/gui.py:399
 msgid ""
 "Sorry, I'm having trouble encoding the filename of your livecd.  You may "
 "have better luck if you move your ISO to the root of your drive (ie: C:\\)"
 msgstr ""
+"Nažalost, postoje poteškoće pri enkodiranju datoteke Vašeg livecd-a.  Možete "
+"imati više sreće ako premjestite Vaš ISO na root Vašeg pogona (npr: C:\\)"
 
 #: ../liveusb/gui.py:404
 #, python-format
 msgid "ISO selected: %s"
-msgstr ""
+msgstr "ISO odabran: %s"
 
 #: ../liveusb/creator.py:146
 #, python-format
@@ -134,62 +137,65 @@ msgid ""
 "There was a problem executing the following command: `%s`\n"
 "A more detailed error log has been written to 'liveusb-creator.log'"
 msgstr ""
+"Nastao je problem pri izvršavanju sljedeće naredbe: `%s`\n"
+"Malo detaljniji zapis greške je upisan u 'liveusb-creator.log'"
 
 #: ../liveusb/creator.py:183
 msgid "Not enough free space on device."
-msgstr ""
+msgstr "Nema dovoljno slobodnog prostora na uređaju."
 
 #: ../liveusb/creator.py:190
 #, python-format
 msgid "Creating %sMB persistent overlay"
-msgstr ""
+msgstr "Stvaranje %sMB trajnog prekrivanja"
 
 #: ../liveusb/creator.py:226
 #, python-format
 msgid "Unable to remove previous LiveOS: %s"
-msgstr ""
+msgstr "Neuspjelo odstranjivanje prijašnjeg LiveOS-a: %s"
 
 #: ../liveusb/creator.py:257
 #, python-format
 msgid "Cannot find device %s"
-msgstr ""
+msgstr "Neuspjelo pronalaženje uređaja %s"
 
 #: ../liveusb/creator.py:306
 msgid "Unable to find any USB drives"
-msgstr ""
+msgstr "Neuspjelo pronalaženje bilo kakvih USB uređaja"
 
 #: ../liveusb/creator.py:327
 #, python-format
 msgid "Filesystem for %s unknown!"
-msgstr ""
+msgstr "Sistem datoteka za %s nepoznat!"
 
 #: ../liveusb/creator.py:335
 #, python-format
 msgid "Unable to mount device: %s"
-msgstr ""
+msgstr "Neuspjelo montiranje uređaja: %s"
 
 #: ../liveusb/creator.py:370
 #, python-format
 msgid "Unknown filesystem for %s.  Your device may need to be reformatted."
-msgstr ""
+msgstr "Nepoznat sistem datoteka za %s. Vaš uređaj bi se možda trebao reformatirati."
 
 #: ../liveusb/creator.py:373
 #, python-format
 msgid "Unsupported filesystem: %s"
-msgstr ""
+msgstr "Nepodržan sistem datoteka: %s"
 
 #: ../liveusb/creator.py:400
 msgid "Unable to find LiveOS on ISO"
-msgstr ""
+msgstr "Neuspjelo pronalaženje LiveOS-a na ISO"
 
 #: ../liveusb/creator.py:472
 msgid "Unable to find any removable devices"
-msgstr ""
+msgstr "Neuspjelo pronalaženje bilo kakvih odstranjivih uređaja"
 
 #: ../liveusb/creator.py:479
 msgid ""
 "Make sure your USB key is plugged in and formatted with the FAT filesystem"
 msgstr ""
+"Pobrinite se da je Vaš USB ključ priključen i formatiran sa FAT sistemom datoteka"
 
 #: ../liveusb/creator.py:482
 #, python-format
@@ -197,6 +203,8 @@ msgid ""
 "Unsupported filesystem: %s\n"
 "Please backup and format your USB key with the FAT filesystem."
 msgstr ""
+"Nepodržan sistem datoteka: %s\n"
+"Molimo da sačuvate kopiju Vašeg USB ključa i da ga formatirate sa FAT sistemom datoteka."
 
 #: ../liveusb/creator.py:558
 #, python-format
@@ -204,10 +212,12 @@ msgid ""
 "Cannot find '%s'.  Make sure to extract the entire liveusb-creator zip file "
 "before running this program."
 msgstr ""
+"Neuspjelo pronalaženje '%s'.  Pobrinite se da ekstraktujete cijelu liveusb-creator zip datoteku "
+"prije pokretanja ovog programa."
 
 #: ../liveusb/dialog.py:123
 msgid "Fedora LiveUSB Creator"
-msgstr ""
+msgstr "Fedora LiveUSB kreator"
 
 #: ../liveusb/dialog.py:124
 msgid ""
@@ -216,6 +226,10 @@ msgid ""
 "extracting the ISO to the USB device, creating the persistent overlay, and "
 "installing the bootloader."
 msgstr ""
+"This button will begin the LiveUSB creation process.  This entails "
+"optionally downloading a release (if an existing one wasn't selected),  "
+"extracting the ISO to the USB device, creating the persistent overlay, and "
+"installing the bootloader."
 
 #: ../liveusb/dialog.py:125
 msgid "Create Live USB"
