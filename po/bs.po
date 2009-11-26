@@ -233,31 +233,35 @@ msgstr ""
 
 #: ../liveusb/dialog.py:125
 msgid "Create Live USB"
-msgstr ""
+msgstr "Stvori Live USB"
 
 #: ../liveusb/dialog.py:126
 msgid "This is the status console, where all messages get written to."
-msgstr ""
+msgstr "Ovo je statusna konzola gdje se sve poruke ispisuju."
 
 #: ../liveusb/dialog.py:127
 msgid ""
 "This is the progress bar that will indicate how far along in the LiveUSB "
 "creation process you are"
 msgstr ""
+"Ovo je traka napretka koja će pokazivati koliko ste odmakli u procesu "
+"stvaranja LiveUSB-a"
 
 #: ../liveusb/dialog.py:128
 msgid ""
 "If you do not select an existing Live CD, the selected release will be "
 "downloaded for you."
 msgstr ""
+"Ako ne odaberete postojeći Live CD, odabrano izdanje će biti "
+"snimljeno za Vas."
 
 #: ../liveusb/dialog.py:129
 msgid "Download Fedora"
-msgstr ""
+msgstr "Snimi Fedoru"
 
 #: ../liveusb/dialog.py:130
 msgid "or"
-msgstr ""
+msgstr "ili"
 
 #: ../liveusb/dialog.py:131
 msgid ""
@@ -265,24 +269,29 @@ msgid ""
 "previously downloaded.  If you do not select one, a release will be "
 "downloaded for you automatically."
 msgstr ""
+"Ovo dugme Vam omogućava da potražite postojeći Live CD ISO koji ste "
+"prethodno snimili.  Ako ne odaberete jedan, izdanje će biti "
+"snimljeno za Vas automatski."
 
 #: ../liveusb/dialog.py:132
 msgid "Use existing Live CD"
-msgstr ""
+msgstr "Koristi postojeći Live CD"
 
 #: ../liveusb/dialog.py:133
 msgid "Browse"
-msgstr ""
+msgstr "Potraži"
 
 #: ../liveusb/dialog.py:135
 msgid ""
 "This is the USB stick that you want to install your Live CD on.  This device "
 "must be formatted with the FAT filesystem."
 msgstr ""
+"Ovo je USB na koji želite instalirati svoj Live CD.  Ovaj uređaj "
+"mora biti formatiran sa FAT sistemom datoteka."
 
 #: ../liveusb/dialog.py:136
 msgid "Target Device"
-msgstr ""
+msgstr "Ciljani uređaj"
 
 #: ../liveusb/dialog.py:137
 msgid ""
@@ -291,7 +300,11 @@ msgid ""
 "operating system.  Without it, you will not be able to save data that will "
 "persist after a reboot."
 msgstr ""
+"Dodjeljujući dodatni prostor na Vašem USB-u za trajno prekrivanje bit ćete u "
+"mogućnosti da pohranjujete podatke i činite trajna podešavanja svojem živom "
+"operativnom sistemu.  Bez toga, nećete moći pohraniti podatke koji će "
+"trajati i nakon ponovnog pokretanja računara."
 
 #: ../liveusb/dialog.py:138
 msgid "Persistent Storage (0 Mb)"
-msgstr ""
+msgstr "Trajna memorija (0 Mb)"
