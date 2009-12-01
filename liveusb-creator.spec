@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           liveusb-creator
-Version:        3.8.9
+Version:        3.9
 Release:        1%{?dist}
 Summary:        A liveusb creator
 
@@ -68,6 +68,9 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/security/console.apps/%{name}
 
 %changelog
+* Tue Dec 01 2009 Luke Macken <lmacken@redhat.com> - 3.9-1
+- 3.9 release
+
 * Tue Dec 01 2009 Luke Macken <lmacken@redhat.com> - 3.8.9-1
 - 3.8.9, fixes bug #540255
 
