@@ -707,7 +707,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             return
         if partition.isFlagAvailable(parted.PARTITION_BOOT):
             if partition.getFlag(parted.PARTITION_BOOT):
-                self.log.debug('%s already bootable' % self._drive)
+                self.log.debug(_('%s already bootable') % self._drive)
             else:
                 partition.setFlag(parted.PARTITION_BOOT)
                 try:
