@@ -76,7 +76,7 @@ releases = (
 
     {
         'name': 'Sugar on a Stick v2 beta (snapshot 04)',
-        'url': 'http://download2.sugarlabs.org/soas/snapshots/2/soas04.iso',
+        'url': 'http://download.sugarlabs.org/soas/snapshots/2/soas04.iso',
         'sha1': '27700626ac05aa07aae4ee7fb411c6567945c3c8',
     },
 )
