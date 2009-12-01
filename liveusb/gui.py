@@ -205,6 +205,9 @@ class LiveUSBThread(QtCore.QThread):
             if self.parent.opts.liveos_checksum:
                 self.live.calculate_liveos_checksum()
 
+            # This sometimes causes segfaults in dbus.
+            #self.live.unmount_device()
+
             duration = str(datetime.now() - now).split('.')[0]
             self.status(_("Complete! (%s)" % duration))
 
