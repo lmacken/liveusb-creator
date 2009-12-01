@@ -710,8 +710,11 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 self.log.debug('%s already bootable' % self._drive)
             else:
                 partition.setFlag(parted.PARTITION_BOOT)
-                disk.commit()
-                self.log.info('Marked %s as bootable' % self._drive)
+                try:
+                    disk.commit()
+                    self.log.info('Marked %s as bootable' % self._drive)
+                except Exception, e:
+                    self.log.exception(e)
         else:
             self.log.warning('%s does not have boot flag' % self._drive)
 
