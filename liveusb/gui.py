@@ -351,6 +351,8 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         """
         if not drive:
             drive = self.get_selected_drive()
+            if not drive:
+                return
 
         device = self.live.drives[drive]
         freespace = device['free']
