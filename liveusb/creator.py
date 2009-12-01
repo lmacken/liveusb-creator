@@ -310,7 +310,10 @@ class LiveUSBCreator(object):
                 # Python for Windows is unable to delete read-only files,
                 if os.path.isdir(path):
                     for f in os.listdir(path):
-                        os.chmod(os.path.join(path, f), 0777)
+                        try:
+                            os.chmod(os.path.join(path, f), 0777)
+                        except OSError, e:
+                            self.log.debug("Unable to delete %s: %s" % (f, str(e)))
                 try:
                     shutil.rmtree(path)
                 except OSError, e:
