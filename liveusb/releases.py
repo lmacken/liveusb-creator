@@ -77,6 +77,6 @@ releases = (
     {
         'name': 'Sugar on a Stick v2 Blueberry',
         'url': 'http://download.sugarlabs.org/soas/releases/soas-2-blueberry.iso',
-        'sha1': '40838b20e6a2507f2f731d082bc8d58d01178cc1',
+        'sha1': 'b26cd2a1b14523f9e0cc7306392708be4d5105fa',
     },
 )
