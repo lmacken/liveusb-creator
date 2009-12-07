@@ -469,14 +469,14 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
     def mount_device(self):
         """ Mount our device with HAL if it is not already mounted """
         import dbus
+        if not self.fstype:
+            raise LiveUSBError(_("Unknown filesystem.  Your device "
+                                 "may need to be reformatted."))
+        if self.fstype not in self.valid_fstypes:
+            raise LiveUSBError(_("Unsupported filesystem: %s") %
+                                 self.fstype)
         self.dest = self.drive['mount']
         if not self.dest:
-            if not self.fstype:
-                raise LiveUSBError(_("Unknown filesystem.  Your device "
-                                     "may need to be reformatted."))
-            if self.fstype not in self.valid_fstypes:
-                raise LiveUSBError(_("Unsupported filesystem: %s") %
-                                     self.fstype)
             try:
                 self.log.debug("Calling %s.Mount('', %s, [], ...)" % (
                                self.drive['udi'], self.fstype))
