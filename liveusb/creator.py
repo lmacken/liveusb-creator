@@ -62,6 +62,7 @@ class LiveUSBCreator(object):
     _drive = None       # mountpoint of the currently selected drive
     mb_per_sec = 0      # how many megabytes per second we can write
     log = None
+    valid_fstypes = ('vfat', 'msdos', 'ext2', 'ext3')
 
     drive = property(fget=lambda self: self.drives[self._drive],
                      fset=lambda self, d: self._set_drive(d))
@@ -471,8 +472,11 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         self.dest = self.drive['mount']
         if not self.dest:
             if not self.fstype:
-                raise LiveUSBError(_("Filesystem for %s unknown!" % 
-                                     self.drive['device']))
+                raise LiveUSBError(_("Unknown filesystem.  Your device "
+                                     "may need to be reformatted."))
+            if self.fstype not in self.valid_fstypes:
+                raise LiveUSBError(_("Unsupported filesystem: %s") %
+                                     self.fstype)
             try:
                 self.log.debug("Calling %s.Mount('', %s, [], ...)" % (
                                self.drive['udi'], self.fstype))
@@ -532,9 +536,9 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
     def verify_filesystem(self):
         self.log.info(_("Verifying filesystem..."))
-        if self.fstype not in ('vfat', 'msdos', 'ext2', 'ext3'):
+        if self.fstype not in self.valid_fstypes:
             if not self.fstype:
-                raise LiveUSBError(_("Unknown filesystem for %s.  Your device "
+                raise LiveUSBError(_("Unknown filesystem.  Your device "
                                      "may need to be reformatted."))
             else:
                 raise LiveUSBError(_("Unsupported filesystem: %s" %
