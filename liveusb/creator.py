@@ -178,12 +178,18 @@ class LiveUSBCreator(object):
         @param kwargs: Extra arguments to pass to subprocess.Popen
         """
         self.log.debug(cmd)
+        if isinstance(cmd, unicode):
+            cmd = cmd.encode('utf-8', 'replace')
         self.output.write(cmd)
         proc = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE, stdin=subprocess.PIPE,
                                 shell=True, **kwargs)
         self.pids.append(proc.pid)
         out, err = proc.communicate()
+        if isinstance(out, unicode):
+            out = out.encode('utf-8', 'replace')
+        if isinstance(err, unicode):
+            err = err.encode('utf-8', 'replace')
         self.output.write(out + '\n' + err + '\n')
         if proc.returncode:
             self.write_log()
