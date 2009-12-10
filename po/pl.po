@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-03 07:22+0100\n"
-"PO-Revision-Date: 2009-12-03 07:23+0100\n"
+"POT-Creation-Date: 2009-12-10 16:48+0100\n"
+"PO-Revision-Date: 2009-12-10 16:49+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <fedora-trans-pl@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -129,11 +129,11 @@ msgstr ""
 msgid "selected"
 msgstr "wybrano"
 
-#: ../liveusb/creator.py:135
+#: ../liveusb/creator.py:136
 msgid "Setting up OLPC boot file..."
 msgstr "Ustawianie pliku startowego OLPC..."
 
-#: ../liveusb/creator.py:190
+#: ../liveusb/creator.py:197
 #, python-format
 msgid ""
 "There was a problem executing the following command: `%s`\n"
@@ -143,15 +143,15 @@ msgstr ""
 "Bardziej szczegółowy dziennik błędu został zapisany do \"liveusb-creator.log"
 "\""
 
-#: ../liveusb/creator.py:207
+#: ../liveusb/creator.py:214
 msgid "Verifying SHA1 checksum of LiveCD image..."
 msgstr "Sprawdzanie sumy kontrolnej SHA1 obrazu Live CD..."
 
-#: ../liveusb/creator.py:211
+#: ../liveusb/creator.py:218
 msgid "Verifying SHA256 checksum of LiveCD image..."
 msgstr "Sprawdzanie sumy kontrolnej SHA256 obrazu Live CD..."
 
-#: ../liveusb/creator.py:227
+#: ../liveusb/creator.py:234
 msgid ""
 "Error: The SHA1 of your Live CD is invalid.  You can run this program with "
 "the --noverify argument to bypass this verification check."
@@ -159,135 +159,129 @@ msgstr ""
 "Błąd: suma kontrolna SHA1 obrazu Live CD jest nieprawidłowa. Można uruchomić "
 "ten program za pomocą parametru --noverify, aby obejść to sprawdzanie."
 
-#: ../liveusb/creator.py:233
+#: ../liveusb/creator.py:240
 msgid "Unknown ISO, skipping checksum verification"
 msgstr "Nieznany plik ISO, pomijanie sprawdzania sum kontrolnych"
 
-#: ../liveusb/creator.py:244
+#: ../liveusb/creator.py:251
 msgid "Not enough free space on device."
 msgstr "Niewystarczająca ilość wolnego miejsca na urządzeniu."
 
-#: ../liveusb/creator.py:251
+#: ../liveusb/creator.py:258
 msgid "Creating"
 msgstr "Tworzenie"
 
-#: ../liveusb/creator.py:252
+#: ../liveusb/creator.py:259
 msgid "persistent overlay"
 msgstr "warstwy trwałości"
 
-#: ../liveusb/creator.py:304
+#: ../liveusb/creator.py:311
 msgid "Removing existing Live OS"
 msgstr "Usuwanie istniejącego systemu operacyjnego Live"
 
-#: ../liveusb/creator.py:320
+#: ../liveusb/creator.py:327
 #, python-format
 msgid "Unable to remove previous LiveOS: %s"
 msgstr "Nie można usunąć poprzedniego systemu operacyjnego Live: %s"
 
-#: ../liveusb/creator.py:351
+#: ../liveusb/creator.py:358
 #, python-format
 msgid "Cannot find device %s"
 msgstr "Nie można odnaleźć urządzenia %s"
 
-#: ../liveusb/creator.py:432
+#: ../liveusb/creator.py:439
 msgid "Unable to find any USB drives"
 msgstr "Nie można odnaleźć żadnych urządzeń USB"
 
-#: ../liveusb/creator.py:474
-#, python-format
-msgid "Filesystem for %s unknown!"
-msgstr "System plików %s jest nieznany."
-
-#: ../liveusb/creator.py:487
-#, python-format
-msgid "Unable to mount device: %s"
-msgstr "Nie można zamontować urządzenia: %s"
-
-#: ../liveusb/creator.py:534 ../liveusb/creator.py:857
-msgid "Verifying filesystem..."
-msgstr "Sprawdzanie systemu plików..."
-
-#: ../liveusb/creator.py:537
-#, python-format
-msgid "Unknown filesystem for %s.  Your device may need to be reformatted."
+#: ../liveusb/creator.py:479 ../liveusb/creator.py:547
+msgid "Unknown filesystem.  Your device may need to be reformatted."
 msgstr ""
-"Nieznany system plików %s. Urządzenie może wymagać ponownego sformatowania."
+"Nieznany system plików. Urządzenie może wymagać ponownego sformatowania."
 
-#: ../liveusb/creator.py:540
+#: ../liveusb/creator.py:482 ../liveusb/creator.py:550
 #, python-format
 msgid "Unsupported filesystem: %s"
 msgstr "Nieobsługiwany system plików: %s"
 
-#: ../liveusb/creator.py:564 ../liveusb/creator.py:892
+#: ../liveusb/creator.py:497
+#, python-format
+msgid "Unable to mount device: %s"
+msgstr "Nie można zamontować urządzenia: %s"
+
+#: ../liveusb/creator.py:544 ../liveusb/creator.py:867
+msgid "Verifying filesystem..."
+msgstr "Sprawdzanie systemu plików..."
+
+#: ../liveusb/creator.py:574 ../liveusb/creator.py:902
 msgid "Extracting live image to USB device..."
 msgstr "Rozpakowywanie obrazu Live na urządzenie USB..."
 
-#: ../liveusb/creator.py:570
+#: ../liveusb/creator.py:580
 msgid "Unable to find LiveOS on ISO"
 msgstr "Nie można odnaleźć systemu operacyjnego Live w pliku ISO"
 
-#: ../liveusb/creator.py:582 ../liveusb/creator.py:900
+#: ../liveusb/creator.py:592 ../liveusb/creator.py:910
 msgid "Wrote to device at"
 msgstr "Zapisano do urządzenia na"
 
-#: ../liveusb/creator.py:602
+#: ../liveusb/creator.py:612
 msgid "Installing bootloader..."
 msgstr "Instalowanie programu startowego..."
 
-#: ../liveusb/creator.py:625 ../liveusb/creator.py:923
+#: ../liveusb/creator.py:635 ../liveusb/creator.py:933
 msgid "Removing"
 msgstr "Usuwanie"
 
-#: ../liveusb/creator.py:666
+#: ../liveusb/creator.py:676
 msgid "Verifying ISO MD5 checksum"
 msgstr "Sprawdzanie sumy kontrolnej MD5 pliku ISO"
 
-#: ../liveusb/creator.py:670
+#: ../liveusb/creator.py:680
 msgid "ISO MD5 checksum verification failed"
 msgstr "Sprawdzenie sumy kontrolnej MD5 pliku ISO nie powiodło się"
 
-#: ../liveusb/creator.py:672
+#: ../liveusb/creator.py:682
 msgid "ISO MD5 checksum passed"
 msgstr "Sprawdzenie sumy kontrolnej MD5 pliku ISO powiodło się"
 
-#: ../liveusb/creator.py:713
+#: ../liveusb/creator.py:723
 #, python-format
 msgid "%s already bootable"
 msgstr "%s jest już startowa"
 
-#: ../liveusb/creator.py:733
+#: ../liveusb/creator.py:743
 msgid "Unable to find partition"
 msgstr "Nie można odnaleźć partycji"
 
-#: ../liveusb/creator.py:792
+#: ../liveusb/creator.py:802
 msgid "Resetting Master Boot Record"
 msgstr "Przywracanie głównego sektora startowego"
 
-#: ../liveusb/creator.py:796
+#: ../liveusb/creator.py:806
 msgid "Drive is a loopback, skipping MBR reset"
 msgstr "Napęd jest urządzeniem loopback, pomijanie przywracania MBR"
 
-#: ../liveusb/creator.py:800 ../liveusb/creator.py:1049
+#: ../liveusb/creator.py:810 ../liveusb/creator.py:1059
 #, python-format
 msgid "Calculating the SHA1 of %s"
 msgstr "Obliczanie sumy kontrolnej SHA1 pliku %s"
 
-#: ../liveusb/creator.py:851
+#: ../liveusb/creator.py:861
 msgid "Error probing device"
 msgstr "Błąd podczas wykrywania urządzenia"
 
-#: ../liveusb/creator.py:853
+#: ../liveusb/creator.py:863
 msgid "Unable to find any removable devices"
 msgstr "Nie można odnaleźć żadnych urządzeń wymiennych"
 
-#: ../liveusb/creator.py:861
+#: ../liveusb/creator.py:871
 msgid ""
 "Make sure your USB key is plugged in and formatted with the FAT filesystem"
 msgstr ""
 "Proszę upewnić się, że klucz USB jest podłączony i sformatowany w systemie "
 "plików FAT"
 
-#: ../liveusb/creator.py:864
+#: ../liveusb/creator.py:874
 #, python-format
 msgid ""
 "Unsupported filesystem: %s\n"
@@ -296,22 +290,22 @@ msgstr ""
 "Nieobsługiwany system plików: %s\n"
 "Proszę wykonać kopię zapasową i sformatować klucz USB w systemie plików FAT."
 
-#: ../liveusb/creator.py:906
+#: ../liveusb/creator.py:916
 msgid "Installing bootloader"
 msgstr "Instalowanie programu startowego"
 
-#: ../liveusb/creator.py:946
+#: ../liveusb/creator.py:956
 msgid ""
 "Unable to get Win32_LogicalDisk; win32com query did not return any results"
 msgstr ""
 "Nie można uzyskać Win32_LogicalDisk; zapytanie win32com nie zwróciło żadnych "
 "wyników"
 
-#: ../liveusb/creator.py:990
+#: ../liveusb/creator.py:1000
 msgid "Cannot find"
 msgstr "Nie można odnaleźć"
 
-#: ../liveusb/creator.py:991
+#: ../liveusb/creator.py:1001
 msgid ""
 "Make sure to extract the entire liveusb-creator zip file before running this "
 "program."
