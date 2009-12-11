@@ -1,0 +1,279 @@
+# translation of liveusb-creator.master.po to Korean
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Eunju Kim <eukim@redhat.com>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: liveusb-creator.master\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-09-03 02:54-0400\n"
+"PO-Revision-Date: 2009-12-11 14:53+1000\n"
+"Last-Translator: Eunju Kim <eukim@redhat.com>\n"
+"Language-Team: Korean <ko@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms:  nplurals=1; plural=0;\n"
+
+#: ../liveusb/gui.py:69
+#, python-format
+msgid "Unknown release: %s"
+msgstr "알 수 없는 릴리즈: %s "
+
+#: ../liveusb/gui.py:73
+#, python-format
+msgid "Downloading %s..."
+msgstr "%s 다운로드 중...  "
+
+#: ../liveusb/gui.py:152
+msgid "Verifying filesystem..."
+msgstr "파일 시스템 확인 중... "
+
+#: ../liveusb/gui.py:155
+msgid ""
+"Error: Cannot set the label or obtain the UUID of your device.  Unable to "
+"continue."
+msgstr "오류: 레이블을 설정할 수 없거나 장치의 UUID를 검색할 수 없습니다. 계속 진행할 수 없습니다.  "
+
+#: ../liveusb/gui.py:164
+msgid "Verifying SHA1 of LiveCD image..."
+msgstr "LiveCD 이미지 중 SHA1 확인 중... "
+
+#: ../liveusb/gui.py:166
+msgid ""
+"Error: The SHA1 of your Live CD is invalid.  You can run this program with "
+"the --noverify argument to bypass this verification check."
+msgstr "오류: Live CD의 SHA1이 잘못되어 있습니다. 이러한 프로그램을 --noverify 인수와 함께 실행하여 유효성 검사를 해결할 수 있습니다. "
+
+#: ../liveusb/gui.py:177
+msgid "Extracting live image to USB device..."
+msgstr "라이브 이미지를 USB 장치로 추출 중...  "
+
+#: ../liveusb/gui.py:180
+#, python-format
+msgid "Creating %d Mb persistent overlay..."
+msgstr "%d Mb 영구적 오버레이 생성 중...    "
+
+#: ../liveusb/gui.py:183
+msgid "Configuring and installing bootloader..."
+msgstr "부트로더 설정 및 설치 중... "
+
+#: ../liveusb/gui.py:187
+#, python-format
+msgid "Complete! (%s)"
+msgstr "완료! (%s) "
+
+#: ../liveusb/gui.py:190 ../liveusb/gui.py:193
+msgid "LiveUSB creation failed!"
+msgstr "LiveUSB 생성 실패!  "
+
+#: ../liveusb/gui.py:316
+#, python-format
+msgid "Persistent Storage (%d Mb)"
+msgstr "영구적 저장소 (%d Mb) "
+
+#: ../liveusb/gui.py:334
+msgid ""
+"Your device already contains a LiveOS.\n"
+"If you continue, this will be overwritten."
+msgstr ""
+"장치에 이미 LiveOS가 들어 있습니다. \n"
+"계속 진행할 경우, 이를 덮어쓰게 됩니다. "
+
+#: ../liveusb/gui.py:337
+msgid "Warning: Creating a new persistent overlay will delete your existing one."
+msgstr "경고: 새로운 영구적 오버레이를 생성할 경우 기존의 것을 삭제하게 됩니다.   "
+
+#: ../liveusb/gui.py:339
+msgid "Press 'Create Live USB' again if you wish to continue."
+msgstr "계속 실행하시려면 'Live USB 생성'을 다시 누릅니다. "
+
+#. The user has confirmed that they wish to overwrite their
+#. existing Live OS.  Here we delete it first, in order to
+#. accurately calculate progress.
+#: ../liveusb/gui.py:349
+msgid "Removing existing Live OS..."
+msgstr "기존 Live OS 제거중...  "
+
+#: ../liveusb/gui.py:383
+msgid "Download complete!"
+msgstr "다운로드 완료! "
+
+#: ../liveusb/gui.py:387
+msgid "Download failed: "
+msgstr "다운로드 실패:  "
+
+#: ../liveusb/gui.py:388
+msgid "You can try again to resume your download"
+msgstr "다운로드를 다시 시작할 수 있습니다  "
+
+#: ../liveusb/gui.py:392
+msgid "Select Live ISO"
+msgstr "Live ISO 선택  "
+
+#: ../liveusb/gui.py:399
+msgid ""
+"Sorry, I'm having trouble encoding the filename of your livecd.  You may "
+"have better luck if you move your ISO to the root of your drive (ie: C:\\)"
+msgstr ""
+
+#: ../liveusb/gui.py:404
+#, python-format
+msgid "ISO selected: %s"
+msgstr "ISO가 선택됨: %s "
+
+#: ../liveusb/creator.py:146
+#, python-format
+msgid ""
+"There was a problem executing the following command: `%s`\n"
+"A more detailed error log has been written to 'liveusb-creator.log'"
+msgstr ""
+
+#: ../liveusb/creator.py:183
+msgid "Not enough free space on device."
+msgstr "장치에 여유 공간이 충분하지 않음. "
+
+#: ../liveusb/creator.py:190
+#, python-format
+msgid "Creating %sMB persistent overlay"
+msgstr ""
+
+#: ../liveusb/creator.py:226
+#, python-format
+msgid "Unable to remove previous LiveOS: %s"
+msgstr "이전 LiveOS를 제거할 수 없음: %s "
+
+#: ../liveusb/creator.py:257
+#, python-format
+msgid "Cannot find device %s"
+msgstr "%s 장치를 찾을 수 없음 "
+
+#: ../liveusb/creator.py:306
+msgid "Unable to find any USB drives"
+msgstr "USB 드라이브를 찾을 수 없음  "
+
+#: ../liveusb/creator.py:327
+#, python-format
+msgid "Filesystem for %s unknown!"
+msgstr "%s에 대한 파일 시스템을 알 수 없음! "
+
+#: ../liveusb/creator.py:335
+#, python-format
+msgid "Unable to mount device: %s"
+msgstr "장치를 마운트할 수 없음: %s "
+
+#: ../liveusb/creator.py:370
+#, python-format
+msgid "Unknown filesystem for %s.  Your device may need to be reformatted."
+msgstr ""
+
+#: ../liveusb/creator.py:373
+#, python-format
+msgid "Unsupported filesystem: %s"
+msgstr "지원되지 않는 파일 시스템: %s "
+
+#: ../liveusb/creator.py:400
+msgid "Unable to find LiveOS on ISO"
+msgstr "ISO에서 LiveOS를 찾을 수 없음 "
+
+#: ../liveusb/creator.py:472
+msgid "Unable to find any removable devices"
+msgstr ""
+
+#: ../liveusb/creator.py:479
+msgid "Make sure your USB key is plugged in and formatted with the FAT filesystem"
+msgstr ""
+
+#: ../liveusb/creator.py:482
+#, python-format
+msgid ""
+"Unsupported filesystem: %s\n"
+"Please backup and format your USB key with the FAT filesystem."
+msgstr ""
+
+#: ../liveusb/creator.py:558
+#, python-format
+msgid ""
+"Cannot find '%s'.  Make sure to extract the entire liveusb-creator zip file "
+"before running this program."
+msgstr ""
+
+#: ../liveusb/dialog.py:123
+msgid "Fedora LiveUSB Creator"
+msgstr "Fedora LiveUSB Creator"
+
+#: ../liveusb/dialog.py:124
+msgid ""
+"This button will begin the LiveUSB creation process.  This entails "
+"optionally downloading a release (if an existing one wasn't selected),  "
+"extracting the ISO to the USB device, creating the persistent overlay, and "
+"installing the bootloader."
+msgstr ""
+
+#: ../liveusb/dialog.py:125
+msgid "Create Live USB"
+msgstr "Live USB 생성  "
+
+#: ../liveusb/dialog.py:126
+msgid "This is the status console, where all messages get written to."
+msgstr ""
+
+#: ../liveusb/dialog.py:127
+msgid ""
+"This is the progress bar that will indicate how far along in the LiveUSB "
+"creation process you are"
+msgstr ""
+
+#: ../liveusb/dialog.py:128
+msgid ""
+"If you do not select an existing Live CD, the selected release will be "
+"downloaded for you."
+msgstr ""
+
+#: ../liveusb/dialog.py:129
+msgid "Download Fedora"
+msgstr "Fedora 다운로드  "
+
+#: ../liveusb/dialog.py:130
+msgid "or"
+msgstr "또는 "
+
+#: ../liveusb/dialog.py:131
+msgid ""
+"This button allows you to browse for an existing Live CD ISO that you have "
+"previously downloaded.  If you do not select one, a release will be "
+"downloaded for you automatically."
+msgstr ""
+
+#: ../liveusb/dialog.py:132
+msgid "Use existing Live CD"
+msgstr "기존 라이브 CD 사용  "
+
+#: ../liveusb/dialog.py:133
+msgid "Browse"
+msgstr "찾아보기 "
+
+#: ../liveusb/dialog.py:135
+msgid ""
+"This is the USB stick that you want to install your Live CD on.  This device "
+"must be formatted with the FAT filesystem."
+msgstr ""
+
+#: ../liveusb/dialog.py:136
+msgid "Target Device"
+msgstr "대상 장치  "
+
+#: ../liveusb/dialog.py:137
+msgid ""
+"By allocating extra space on your USB stick for a persistent overlay, you "
+"will be able to store data and make permanent modifications to your live "
+"operating system.  Without it, you will not be able to save data that will "
+"persist after a reboot."
+msgstr ""
+
+#: ../liveusb/dialog.py:138
+msgid "Persistent Storage (0 Mb)"
+msgstr ""
+
