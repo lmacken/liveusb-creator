@@ -10,13 +10,14 @@ msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-09-03 02:54-0400\n"
-"PO-Revision-Date: 2009-12-08 11:43+1100\n"
+"PO-Revision-Date: 2009-12-15 12:46+1100\n"
 "Last-Translator: Yulia <ypoyarko@redhat.com>\n"
 "Language-Team: Russian <fedora-trans-ru@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: ../liveusb/gui.py:69
 #, python-format
@@ -122,7 +123,9 @@ msgstr "Выберите Live ISO"
 msgid ""
 "Sorry, I'm having trouble encoding the filename of your livecd.  You may "
 "have better luck if you move your ISO to the root of your drive (ie: C:\\)"
-msgstr "Извините, возникла проблема распознавания имени вашего livecd.  Попробуйте переместить ISO в корень диска (например, C:\\)"
+msgstr ""
+"Извините, возникла проблема распознавания имени вашего livecd.  Попробуйте "
+"переместить ISO в корень диска (например, C:\\)"
 
 #: ../liveusb/gui.py:404
 #, python-format
@@ -202,18 +205,21 @@ msgid ""
 "Please backup and format your USB key with the FAT filesystem."
 msgstr ""
 "Неподдерживаемая файловая система: %s\n"
-"Пожалуйста, сделайте резервную копию данных и отформатируйте USB-устройство в файловую систему FAT."
+"Пожалуйста, сделайте резервную копию данных и отформатируйте USB-устройство "
+"в файловую систему FAT."
 
 #: ../liveusb/creator.py:558
 #, python-format
 msgid ""
 "Cannot find '%s'.  Make sure to extract the entire liveusb-creator zip file "
 "before running this program."
-msgstr "Не удалось найти «%s». Убедитесь, что zip-файл liveusb-creator был полностью извлечён до запуска программы."
+msgstr ""
+"Не удалось найти «%s». Убедитесь, что zip-файл liveusb-creator был полностью "
+"извлечён до запуска программы."
 
 #: ../liveusb/dialog.py:123
 msgid "Fedora LiveUSB Creator"
-msgstr "Создатель Fedora LiveUSB"
+msgstr "Создание Fedora LiveUSB"
 
 #: ../liveusb/dialog.py:124
 msgid ""
@@ -222,8 +228,9 @@ msgid ""
 "extracting the ISO to the USB device, creating the persistent overlay, and "
 "installing the bootloader."
 msgstr ""
-"Эта кнопка начинает процесс создания LiveUSB.  Это позволяет дополнительно загрузить выпуск (если не выбран существующий выпуск), скопировать ISO на USB-устройство, создать слой постоянства и установить "
-"загрузчик."
+"Эта кнопка начинает процесс создания LiveUSB.  Это позволяет дополнительно "
+"загрузить выпуск (если не выбран существующий выпуск), скопировать ISO на "
+"USB-устройство, создать слой постоянства и установить загрузчик."
 
 #: ../liveusb/dialog.py:125
 msgid "Create Live USB"
@@ -246,8 +253,8 @@ msgid ""
 "If you do not select an existing Live CD, the selected release will be "
 "downloaded for you."
 msgstr ""
-"Если вы не выбрали существующий Live CD, выбранный выпуск будет "
-"загружен для вас."
+"Если вы не выбрали существующий Live CD, выбранный выпуск будет загружен для "
+"вас."
 
 #: ../liveusb/dialog.py:129
 msgid "Download Fedora"
@@ -269,7 +276,7 @@ msgstr ""
 
 #: ../liveusb/dialog.py:132
 msgid "Use existing Live CD"
-msgstr "Использовать существующий Live CD"
+msgstr "Использовать существующий LiveCD"
 
 #: ../liveusb/dialog.py:133
 msgid "Browse"
@@ -279,7 +286,9 @@ msgstr "Обзор"
 msgid ""
 "This is the USB stick that you want to install your Live CD on.  This device "
 "must be formatted with the FAT filesystem."
-msgstr "Это USB-устройство, на которое вы можете установить ваш Live CD.  На этом устройстве должна быть создана файловая система FAT."
+msgstr ""
+"Это USB-устройство, на которое вы можете установить ваш Live CD.  На этом "
+"устройстве должна быть создана файловая система FAT."
 
 #: ../liveusb/dialog.py:136
 msgid "Target Device"
@@ -292,9 +301,10 @@ msgid ""
 "operating system.  Without it, you will not be able to save data that will "
 "persist after a reboot."
 msgstr ""
-"Выделив дополнительное пространство на USB-устройстве для "
-"постоянного слоя, вы сможете сохранять данные и применять постоянные изменения в LiveOS. Без этого вы не сможете "
-"сохранить данные, чтобы они не исчезли после перезагрузки."
+"Выделив дополнительное пространство на USB-устройстве для постоянного слоя, "
+"вы сможете сохранять данные и применять постоянные изменения в LiveOS. Без "
+"этого вы не сможете сохранить данные, чтобы они не исчезли после "
+"перезагрузки."
 
 #: ../liveusb/dialog.py:138
 msgid "Persistent Storage (0 Mb)"
