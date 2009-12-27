@@ -1105,3 +1105,8 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         hash = getattr(hashlib, self.opts.hash, 'sha1')()
         map(hash.update, checksums)
         self.log.info("%s = %s" % (hash.name, hash.hexdigest()))
+
+    def format_device(self):
+        """ Format the selected partition as FAT32 """
+        self.log.info('Formatting %s as FAT32' % self.drive['device'])
+        self.popen('format /Q /X /y /V:Fedora /FS:FAT32 %s' % self.drive['device'])
