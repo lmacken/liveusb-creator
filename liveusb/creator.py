@@ -304,7 +304,10 @@ class LiveUSBCreator(object):
         # only copy/overwrite files we had originally started with
         for (infile, outfile) in copies:
             if os.path.exists(outfile):
-                shutil.copyfile(infile, outfile)
+                try:
+                    shutil.copyfile(infile, outfile)
+                except Exception, e:
+                    self.log.warning("Unable to copy %s to %s: %s" % (infile, outfile, str(e)))
 
     def delete_liveos(self):
         """ Delete the existing LiveOS """
