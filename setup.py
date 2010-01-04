@@ -14,7 +14,7 @@ if sys.platform == 'win32':
 
     setup(
         name = 'liveusb-creator',
-        version = '3.9',
+        version = '3.9.2',
         packages = ['liveusb', 'liveusb/urlgrabber'],
         scripts = ['liveusb-creator'], 
         license = 'GNU General Public License (GPL)',
@@ -55,7 +55,7 @@ if sys.platform == 'win32':
 else:
     setup(
         name = 'liveusb-creator',
-        version = '3.9',
+        version = '3.9.2',
         packages = ['liveusb'],
         scripts = ['liveusb-creator'],
         license = 'GNU General Public License (GPL)',
