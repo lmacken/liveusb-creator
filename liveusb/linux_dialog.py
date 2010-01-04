@@ -8,6 +8,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
+from liveusb import _
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -94,21 +95,21 @@ class Ui_Dialog(object):
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", "Fedora LiveUSB Creator", None, QtGui.QApplication.UnicodeUTF8))
-        self.startButton.setWhatsThis(QtGui.QApplication.translate("Dialog", "This button will begin the LiveUSB creation process.  This entails optionally downloading a release (if an existing one wasn\'t selected),  extracting the ISO to the USB device, creating the persistent overlay, and installing the bootloader.", None, QtGui.QApplication.UnicodeUTF8))
-        self.startButton.setText(QtGui.QApplication.translate("Dialog", "Create Live USB", None, QtGui.QApplication.UnicodeUTF8))
-        self.textEdit.setWhatsThis(QtGui.QApplication.translate("Dialog", "This is the status console, where all messages get written to.", None, QtGui.QApplication.UnicodeUTF8))
-        self.progressBar.setWhatsThis(QtGui.QApplication.translate("Dialog", "This is the progress bar that will indicate how far along in the LiveUSB creation process you are", None, QtGui.QApplication.UnicodeUTF8))
-        self.downloadGroup.setWhatsThis(QtGui.QApplication.translate("Dialog", "If you do not select an existing Live CD, the selected release will be downloaded for you.", None, QtGui.QApplication.UnicodeUTF8))
-        self.downloadGroup.setTitle(QtGui.QApplication.translate("Dialog", "Download Fedora", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_2.setText(QtGui.QApplication.translate("Dialog", "or", None, QtGui.QApplication.UnicodeUTF8))
-        self.groupBox.setWhatsThis(QtGui.QApplication.translate("Dialog", "This button allows you to browse for an existing Live CD ISO that you have previously downloaded.  If you do not select one, a release will be downloaded for you automatically.", None, QtGui.QApplication.UnicodeUTF8))
-        self.groupBox.setTitle(QtGui.QApplication.translate("Dialog", "Use existing Live CD", None, QtGui.QApplication.UnicodeUTF8))
-        self.isoBttn.setText(QtGui.QApplication.translate("Dialog", "Browse", None, QtGui.QApplication.UnicodeUTF8))
+        Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", _("Fedora LiveUSB Creator"), None, QtGui.QApplication.UnicodeUTF8))
+        self.startButton.setWhatsThis(QtGui.QApplication.translate("Dialog", _("This button will begin the LiveUSB creation process.  This entails optionally downloading a release (if an existing one wasn\'t selected),  extracting the ISO to the USB device, creating the persistent overlay, and installing the bootloader."), None, QtGui.QApplication.UnicodeUTF8))
+        self.startButton.setText(QtGui.QApplication.translate("Dialog", _("Create Live USB"), None, QtGui.QApplication.UnicodeUTF8))
+        self.textEdit.setWhatsThis(QtGui.QApplication.translate("Dialog", _("This is the status console, where all messages get written to."), None, QtGui.QApplication.UnicodeUTF8))
+        self.progressBar.setWhatsThis(QtGui.QApplication.translate("Dialog", _("This is the progress bar that will indicate how far along in the LiveUSB creation process you are"), None, QtGui.QApplication.UnicodeUTF8))
+        self.downloadGroup.setWhatsThis(QtGui.QApplication.translate("Dialog", _("If you do not select an existing Live CD, the selected release will be downloaded for you."), None, QtGui.QApplication.UnicodeUTF8))
+        self.downloadGroup.setTitle(QtGui.QApplication.translate("Dialog", _("Download Fedora"), None, QtGui.QApplication.UnicodeUTF8))
+        self.label_2.setText(QtGui.QApplication.translate("Dialog", _("or"), None, QtGui.QApplication.UnicodeUTF8))
+        self.groupBox.setWhatsThis(QtGui.QApplication.translate("Dialog", _("This button allows you to browse for an existing Live CD ISO that you have previously downloaded.  If you do not select one, a release will be downloaded for you automatically."), None, QtGui.QApplication.UnicodeUTF8))
+        self.groupBox.setTitle(QtGui.QApplication.translate("Dialog", _("Use existing Live CD"), None, QtGui.QApplication.UnicodeUTF8))
+        self.isoBttn.setText(QtGui.QApplication.translate("Dialog", _("Browse"), None, QtGui.QApplication.UnicodeUTF8))
         self.isoBttn.setShortcut(QtGui.QApplication.translate("Dialog", "Alt+B", None, QtGui.QApplication.UnicodeUTF8))
-        self.groupBox_2.setWhatsThis(QtGui.QApplication.translate("Dialog", "This is the USB stick that you want to install your Live CD on.  This device must be formatted with the FAT filesystem.", None, QtGui.QApplication.UnicodeUTF8))
-        self.groupBox_2.setTitle(QtGui.QApplication.translate("Dialog", "Target Device", None, QtGui.QApplication.UnicodeUTF8))
-        self.overlayTitle.setWhatsThis(QtGui.QApplication.translate("Dialog", "By allocating extra space on your USB stick for a persistent overlay, you will be able to store data and make permanent modifications to your live operating system.  Without it, you will not be able to save data that will persist after a reboot.", None, QtGui.QApplication.UnicodeUTF8))
-        self.overlayTitle.setTitle(QtGui.QApplication.translate("Dialog", "Persistent Storage (0 MB)", None, QtGui.QApplication.UnicodeUTF8))
+        self.groupBox_2.setWhatsThis(QtGui.QApplication.translate("Dialog", _("This is the USB stick that you want to install your Live CD on.  This device must be formatted with the FAT filesystem."), None, QtGui.QApplication.UnicodeUTF8))
+        self.groupBox_2.setTitle(QtGui.QApplication.translate("Dialog", _("Target Device"), None, QtGui.QApplication.UnicodeUTF8))
+        self.overlayTitle.setWhatsThis(QtGui.QApplication.translate("Dialog", _("By allocating extra space on your USB stick for a persistent overlay, you will be able to store data and make permanent modifications to your live operating system.  Without it, you will not be able to save data that will persist after a reboot."), None, QtGui.QApplication.UnicodeUTF8))
+        self.overlayTitle.setTitle(QtGui.QApplication.translate("Dialog", _("Persistent Storage") + " (0 MB)", None, QtGui.QApplication.UnicodeUTF8))
 
 import resources_rc
