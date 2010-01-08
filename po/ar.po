@@ -27,25 +27,25 @@ msgstr "جاري التحميل %s..."
 
 #: ../liveusb/gui.py:152
 msgid "Verifying filesystem..."
-msgstr "جاري التحقق من منظومة خزن الملفات"
+msgstr "جاري التحقق من نظام الملفات"
 
 #: ../liveusb/gui.py:155
 msgid ""
 "Error: Cannot set the label or obtain the UUID of your device.  Unable to "
 "continue."
 msgstr ""
-"خطأ: لا يمكن وضع العنوان أو الحصول على رقم UUID لجهازك.  ﻻ يمكن المتابعة."
+"خطأ: لا يمكن ضبط العنوان أو الحصول على رقم UUID لجهازك.  ﻻ يمكن المتابعة."
 
 #: ../liveusb/gui.py:164
 msgid "Verifying SHA1 of LiveCD image..."
-msgstr "جاري التحقق من SHA1 للصورة الحية..."
+msgstr "جاري التحقق من SHA1 لصورة قرص التشغيل التلقائي..."
 
 #: ../liveusb/gui.py:166
 msgid ""
 "Error: The SHA1 of your Live CD is invalid.  You can run this program with "
 "the --noverify argument to bypass this verification check."
 msgstr ""
-"خطأ: إن الـ SHA1 للصورة الحية غير خالص.  تستطيع تشغيل هذا البرنامج باستخدام "
+"خطأ: إن الـ SHA1 لقرص التشغيل التلقائي غير صالح.  تستطيع تشغيل هذا البرنامج باستخدام "
 "المعطى --noverify لتجاوز فحص التحقق."
 
 #: ../liveusb/gui.py:177
@@ -55,7 +55,7 @@ msgstr "جاري استخراج الصورة الحية إلى جهاز USB..."
 #: ../liveusb/gui.py:180
 #, python-format
 msgid "Creating %d Mb persistent overlay..."
-msgstr "جاري إنشاء %d م.ب من المساحة المستمرة..."
+msgstr "جاري إنشاء %d م.ب من المساحة الدائمة..."
 
 #: ../liveusb/gui.py:183
 msgid "Configuring and installing bootloader..."
@@ -68,36 +68,36 @@ msgstr "اكنمل! (%s)"
 
 #: ../liveusb/gui.py:190 ../liveusb/gui.py:193
 msgid "LiveUSB creation failed!"
-msgstr "صناعة USB الحي فشلت!"
+msgstr "فشل إنشاء قرص USB ذاتي التشغيل"
 
 #: ../liveusb/gui.py:316
 #, python-format
 msgid "Persistent Storage (%d Mb)"
-msgstr "التخزين المستمر (%d م.ب)"
+msgstr "التخزين الدائم (%d م.ب)"
 
 #: ../liveusb/gui.py:334
 msgid ""
 "Your device already contains a LiveOS.\n"
 "If you continue, this will be overwritten."
 msgstr ""
-"جهازك يحتوي نظام حي حاليا.\n"
-"إذا استمررت، سوف يتم الكتبة محله."
+"يحتوي جهازك على نظام تشغيل تلقائي.\n"
+"إذا استمررت، سوف يتم الكتابة محله."
 
 #: ../liveusb/gui.py:337
 msgid ""
 "Warning: Creating a new persistent overlay will delete your existing one."
-msgstr "تحذير: إنشاء مساحة مستمرة جديدة سوف يحذف الموجودة أصلاً."
+msgstr "تحذير: إنشاء مساحة دائمة جديدة سوف يحذف الموجودة أصلاً."
 
 #: ../liveusb/gui.py:339
 msgid "Press 'Create Live USB' again if you wish to continue."
-msgstr "انقر \"اصنع USB حي\" مرة أخرى اذا كنت تريد المتابعة"
+msgstr "اضغط 'أنشئ قرص تشغيل USB' مرة أخرى إذا كنت تريد المتابعة."
 
 #. The user has confirmed that they wish to overwrite their
 #. existing Live OS.  Here we delete it first, in order to
 #. accurately calculate progress.
 #: ../liveusb/gui.py:349
 msgid "Removing existing Live OS..."
-msgstr "جاري إزالة نظام التشغيل الحي الموجود..."
+msgstr "جاري إزالة نظام التشغيل التلقائي الموجود..."
 
 #: ../liveusb/gui.py:383
 msgid "Download complete!"
@@ -105,7 +105,7 @@ msgstr "اكتمل التنزيل!"
 
 #: ../liveusb/gui.py:387
 msgid "Download failed: "
-msgstr "فشل التنزيل:"
+msgstr "فشل التنزيل: "
 
 #: ../liveusb/gui.py:388
 msgid "You can try again to resume your download"
@@ -113,14 +113,14 @@ msgstr "تستطيع المحاولة مرة أخرى لاستئناف التح�
 
 #: ../liveusb/gui.py:392
 msgid "Select Live ISO"
-msgstr "اختر الصورة الحية (ISO)"
+msgstr "اختر الصورة ذاتية التشغيل (ISO)"
 
 #: ../liveusb/gui.py:399
 msgid ""
 "Sorry, I'm having trouble encoding the filename of your livecd.  You may "
 "have better luck if you move your ISO to the root of your drive (ie: C:\\)"
 msgstr ""
-"المعذرة، انني أواجه مشاكل في ترميز اسم الملف للصورة الحية.  قد يكون لك حظ "
+"المعذرة، إنني أواجه مشاكل في ترميز اسم الملف للصورة الحية.  قد يكون لك حظ "
 "أوفر إذا قمت بنقل الصورة ISO إلى الجذر الخاص بمحرك الأقراص (مثال: :\\C)"
 
 #: ../liveusb/gui.py:404
@@ -144,12 +144,12 @@ msgstr "ليس هناك مساحة كافية على الجهاز."
 #: ../liveusb/creator.py:190
 #, python-format
 msgid "Creating %sMB persistent overlay"
-msgstr "جاري إنشاء %sم.ب من المساحة المستمرة"
+msgstr "جاري إنشاء %sم.ب من المساحة الدائمة"
 
 #: ../liveusb/creator.py:226
 #, python-format
 msgid "Unable to remove previous LiveOS: %s"
-msgstr "لا يمكن إزالة النظام الحي السابق: %s"
+msgstr "لا يمكن إزالة النظام الذاتي السابق: %s"
 
 #: ../liveusb/creator.py:257
 #, python-format
@@ -158,7 +158,7 @@ msgstr "لا يمكن إيجاد الجهاز %s"
 
 #: ../liveusb/creator.py:306
 msgid "Unable to find any USB drives"
-msgstr "لا يمكن ايجاد أي جهاز USB"
+msgstr "لا يمكن إيجاد أي جهاز USB"
 
 #: ../liveusb/creator.py:327
 #, python-format
@@ -168,30 +168,30 @@ msgstr "نظام الملفات لـ %s غير معروف!"
 #: ../liveusb/creator.py:335
 #, python-format
 msgid "Unable to mount device: %s"
-msgstr "لا يمكن ضم الجهاز: %s"
+msgstr "لا يمكن تحميل الجهاز: %s"
 
 #: ../liveusb/creator.py:370
 #, python-format
 msgid "Unknown filesystem for %s.  Your device may need to be reformatted."
-msgstr "منظومة خزن الملفات لـ %s غير معروفة.  قد يحتاج جهازك إلى إعادة تهيئة."
+msgstr "نظام الملفات على %s غير معروف. قد يحتاج جهازك إلى إعادة تهيئة."
 
 #: ../liveusb/creator.py:373
 #, python-format
 msgid "Unsupported filesystem: %s"
-msgstr "نظام الملفات غير مدعوم: %s"
+msgstr "نظام ملفات غير مدعوم: %s"
 
 #: ../liveusb/creator.py:400
 msgid "Unable to find LiveOS on ISO"
-msgstr "لا يمكن إيجاد نظام حي على الصورة (ISO)"
+msgstr "لا يمكن إيجاد نظام ذاتي على الصورة (ISO)"
 
 #: ../liveusb/creator.py:472
 msgid "Unable to find any removable devices"
-msgstr "لا يمكن إيجاد أي جهاز قابل للنقل"
+msgstr "لا يمكن إيجاد أي جهاز قابل للإزالة"
 
 #: ../liveusb/creator.py:479
 msgid ""
 "Make sure your USB key is plugged in and formatted with the FAT filesystem"
-msgstr "تأكد أن USB موصول بالجهاز ومهيأ بنظام الملفات FAT"
+msgstr "تأكد أن قرص الـ USB موصول بالجهاز ومهيأ بنظام الملفات FAT"
 
 #: ../liveusb/creator.py:482
 #, python-format
@@ -199,8 +199,8 @@ msgid ""
 "Unsupported filesystem: %s\n"
 "Please backup and format your USB key with the FAT filesystem."
 msgstr ""
-"نظام الملفات غير مدعوم: %s\n"
-"الرجاء نسخ USB نسخة احتياطية ثم تهيئته بنظام الملفات FAT"
+"نظام ملفات غير مدعوم: %s\n"
+"الرجاء نسخ قرص USB نسخة احتياطية ثم تهيئته بنظام الملفات FAT"
 
 #: ../liveusb/creator.py:558
 #, python-format
@@ -208,12 +208,12 @@ msgid ""
 "Cannot find '%s'.  Make sure to extract the entire liveusb-creator zip file "
 "before running this program."
 msgstr ""
-"لا يمكن إيجاد '%s'. تأكد من استخراج ملف liveusb-creator zip كاملاً قبل تشغيل "
-"هذا البرنامج."
+"لا يمكن إيجاد '%s'. تأكد من استخراج ملف liveusb-creator zip كاملاً "
+"قبل تشغيل هذا البرنامج."
 
 #: ../liveusb/dialog.py:123
 msgid "Fedora LiveUSB Creator"
-msgstr "صانع USB فيدورا الحي"
+msgstr "صانع قرص (USB) فيدورا الذاتي"
 
 #: ../liveusb/dialog.py:124
 msgid ""
@@ -222,13 +222,14 @@ msgid ""
 "extracting the ISO to the USB device, creating the persistent overlay, and "
 "installing the bootloader."
 msgstr ""
-"هذا الزر سيبدأ عملية انشاء USB حي.  هذا يتضمن تنزيل إصدار اختيارياً (إذا لم "
-"يتم اختيار اصدار موجود)، استخراج الصورة إلى جهاز الـUSB، إنشاء المساحة "
-"المستمرة وتنصيب محمل الإقلاع."
+"هذا الزر سيبدأ عملية إنشاء قرص USB ذاتي.  وهذا يتضمن"
+"تنزيل إصدار اختياريا (إذا لم يتم اختيار إصدار موجود)، "
+"استخراج الصورة إلى جهاز الـ USB، إنشاء المساحة "
+"الدائمة وتنصيب محمل الإقلاع."
 
 #: ../liveusb/dialog.py:125
 msgid "Create Live USB"
-msgstr "اصنع USB حي"
+msgstr "اصنع USB ذاتي"
 
 #: ../liveusb/dialog.py:126
 msgid "This is the status console, where all messages get written to."
@@ -238,13 +239,13 @@ msgstr "هذه هي لوحة مراقبة الحالة، حيث تكتب جمي�
 msgid ""
 "This is the progress bar that will indicate how far along in the LiveUSB "
 "creation process you are"
-msgstr "هذا هو شريط التقدم الذي سيظهر أين وصلت في عملية إنشاء الـUSB الحي"
+msgstr "هذا هو شريط التقدم الذي سيظهر أين وصلت في عملية إنشاء الـUSB الذاتي"
 
 #: ../liveusb/dialog.py:128
 msgid ""
 "If you do not select an existing Live CD, the selected release will be "
 "downloaded for you."
-msgstr "إذا لم تختر صورة حية موجودة، فإن الإصدار المُختار سوف يتم تنزيله لك."
+msgstr "إذا لم تختر صورة ذاتية موجودة، فإن الإصدار المُختار سوف يتم تنزيله لك."
 
 #: ../liveusb/dialog.py:129
 msgid "Download Fedora"
@@ -260,12 +261,12 @@ msgid ""
 "previously downloaded.  If you do not select one, a release will be "
 "downloaded for you automatically."
 msgstr ""
-"هذا الزر يسمح لك بالتصفح لإختيار صورة حية ISO موجودة قمت بتحميلها مسبقاً.  "
-"إذا لم تختر واحدة، سوف يتم تنزيل اصدار بشكل تلقائي."
+"هذا الزر يسمح لك بالتصفح لاختيار صورة حية ISO موجودة قمت بتحميلها مسبقاً.  "
+"إذا لم تختر واحدة، سوف يتم تنزيل إصدار بشكل تلقائي."
 
 #: ../liveusb/dialog.py:132
 msgid "Use existing Live CD"
-msgstr "استخدم الصورة الحية (Live CD) الموجودة حاليا"
+msgstr "استخدم الصورة الذاتية (Live CD) الموجودة حاليا"
 
 #: ../liveusb/dialog.py:133
 msgid "Browse"
@@ -276,7 +277,7 @@ msgid ""
 "This is the USB stick that you want to install your Live CD on.  This device "
 "must be formatted with the FAT filesystem."
 msgstr ""
-"هذا هو الـ USB الذي تريد تنصيب الصورة الحية عليه.  هذا الجهاز يجب أن يتم "
+"هذا هو الـ USB الذي تريد تنصيب الصورة الذاتية عليه.  هذا الجهاز يجب أن يتم "
 "تهيئته بنظام الملفات FAT."
 
 #: ../liveusb/dialog.py:136
@@ -290,10 +291,10 @@ msgid ""
 "operating system.  Without it, you will not be able to save data that will "
 "persist after a reboot."
 msgstr ""
-"بتخصيص مساحة إضافية على الـUSB للمساحة المستمرة سوف تستطيع أن تخزن بيانات "
-"وإجراء تعديلات دائمة للنظام الحي.  بدونها لن تستطيع تخزين البيانات التي "
+"بتخصيص مساحة إضافية على الـ USB للمساحة المستمرة سوف تستطيع أن تخزن بيانات "
+"وإجراء تعديلات دائمة للنظام الذاتي.  بدونها لن تستطيع تخزين البيانات التي "
 "ستستمر بعد إعادة الإقلاع."
 
 #: ../liveusb/dialog.py:138
 msgid "Persistent Storage (0 Mb)"
-msgstr "التخزين المستمر (0 م.ب)"
+msgstr "التخزين الدائم (0 م.ب)"
