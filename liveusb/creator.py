@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright © 2008-2009  Red Hat, Inc. All rights reserved.
-# Copyright © 2008-2009  Luke Macken <lmacken@redhat.com>
+# Copyright © 2008-2010  Red Hat, Inc. All rights reserved.
+# Copyright © 2008-2010  Luke Macken <lmacken@redhat.com>
 #
 # This copyrighted material is made available to anyone wishing to use, modify,
 # copy, or redistribute it subject to the terms and conditions of the GNU
