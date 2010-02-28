@@ -157,9 +157,9 @@ class LiveUSBThread(QtCore.QThread):
         self.live.log.addHandler(handler)
         now = datetime.now()
         try:
-            if self.parent.opts.format:
-                self.live.unmount_device()
-                self.live.format_device()
+            #if self.parent.opts.format:
+            #    self.live.unmount_device()
+            #    self.live.format_device()
 
             # Initialize zip-drive-compatible geometry
             #if self.parent.opts.zip:
