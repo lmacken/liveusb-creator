@@ -216,7 +216,7 @@ class LiveUSBThread(QtCore.QThread):
             self.status(_("Complete! (%s)" % duration))
 
         except Exception, e:
-            self.status(e.message)
+            self.status(e.args[0])
             self.status(_("LiveUSB creation failed!"))
             self.live.log.exception(e)
 
@@ -293,7 +293,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                     self.driveBox.addItem(device)
             self.startButton.setEnabled(True)
         except LiveUSBError, e:
-            self.textEdit.setPlainText(e.message)
+            self.textEdit.setPlainText(e.args[0])
             self.startButton.setEnabled(False)
 
     def populate_releases(self):
@@ -398,7 +398,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
 
     def status(self, text):
         if isinstance(text, Exception):
-            text = text.message
+            text = text.args[0]
         self.textEdit.append(text)
 
     def enable_widgets(self, enabled=True):
@@ -454,7 +454,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
             self.live.mount_device()
             self._refresh_overlay_slider() # To reflect the drives free space
         except LiveUSBError, e:
-            self.status(e.message)
+            self.status(e.args[0])
             self.enable_widgets(True)
             return
         except OSError, e:
@@ -483,7 +483,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                 try:
                     self.live.delete_liveos()
                 except LiveUSBError, e:
-                    self.status(e.message)
+                    self.status(e.args[0])
                     self.live.unmount_device()
                     self.enable_widgets(True)
                     return
@@ -532,7 +532,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
             try:
                 self.live.set_iso(isofile)
             except Exception, e:
-                self.live.log.error(e.message)
+                self.live.log.error(e.args[0])
                 self.status(_("Unable to encode the filename of your livecd.  "
                               "You may have better luck if you move your ISO "
                               "to the root of your drive (ie: C:\)"))
