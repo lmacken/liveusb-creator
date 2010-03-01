@@ -802,9 +802,13 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
     def reset_mbr(self):
         parent = str(self.drive.get('parent', self._drive))
         if '/dev/loop' not in self.drive:
-            self.log.info(_('Resetting Master Boot Record') + ' of %s' % parent)
             mbr = self._get_mbr_bin()
-            self.popen('cat %s > %s' % (mbr, parent))
+            if mbr:
+                self.log.info(_('Resetting Master Boot Record') + ' of %s' % parent)
+                self.popen('cat %s > %s' % (mbr, parent))
+            else:
+                self.log.info(_('Unable to reset MBR.  You may not have the '
+                                '`syslinux` package installed'))
         else:
             self.log.info(_('Drive is a loopback, skipping MBR reset'))
 
