@@ -39,3 +39,12 @@ clean:
 
 docs:
 		epydoc --name liveusb-creator -u http://liveusb-creator.fedorahosted.org -o docs --exclude urlgrabber liveusb
+
+
+everything:
+	python setup.py  sdist --format=bztar
+	rm -f ~/rpmbuild/RPMS/noarch/liveusb-creator*.rpm
+	make clean rpm
+	sudo rpm -e liveusb-creator
+	sudo rpm -Uvh ~/rpmbuild/RPMS/noarch/liveusb-creator*.rpm
+	sudo /usr/bin/liveusb-creator -v
