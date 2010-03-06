@@ -15,6 +15,11 @@ include liveusb/urlgrabber/grabber.py
 include liveusb/urlgrabber/keepalive.py
 include liveusb/urlgrabber/mirror.py
 include liveusb/urlgrabber/progress.py
+include data/liveusb-header.png
+include data/liveusb-creator.ui
+include data/liveusb-creator-tabbed.ui
+include data/resources.qrc
+include data/refresh.png
 include data/liveusb-creator.desktop
 include data/fedorausb.png
 include liveusb-creator.console
