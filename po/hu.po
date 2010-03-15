@@ -2,7 +2,7 @@
 # Copyright (C) 2009 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Sulyok Péter <peti@fedoraproject.org>, 2009.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: liveusb-creator master\n"
@@ -59,8 +59,7 @@ msgstr "Rendszerbetöltő telepítése és beállítása"
 msgid "Complete! (%s)"
 msgstr "Kész! (%s)"
 
-#: ../liveusb/gui.py:190
-#: ../liveusb/gui.py:193
+#: ../liveusb/gui.py:190 ../liveusb/gui.py:193
 msgid "LiveUSB creation failed!"
 msgstr "Az élő USB létrehozása nem sikerült!"
 
@@ -100,11 +99,6 @@ msgstr "Letöltés kész!"
 #: ../liveusb/gui.py:387
 msgid "Download failed: "
 msgstr "A letöltés nem sikerlt:"
-
-#: ../liveusb/gui.py:388
-#, fuzzy
-msgid "You can try again to resume your download"
-msgstr "Megpróbálhatja újra, így folytatva a letöltést"
 
 #: ../liveusb/gui.py:392
 msgid "Select Live ISO"
@@ -197,19 +191,9 @@ msgstr ""
 msgid "Cannot find '%s'.  Make sure to extract the entire liveusb-creator zip file before running this program."
 msgstr "„%s” nem található.  Győződjön meg arról, hogy a teljes liveusb-creator.zip fájlt kicsomagolta, mielőtt futtatja a programot."
 
-#: ../liveusb/dialog.py:123
-#, fuzzy
-msgid "Fedora LiveUSB Creator"
-msgstr "Fedora élő rendszer készítő"
-
 #: ../liveusb/dialog.py:124
 msgid "This button will begin the LiveUSB creation process.  This entails optionally downloading a release (if an existing one wasn't selected),  extracting the ISO to the USB device, creating the persistent overlay, and installing the bootloader."
 msgstr "Ez a gomb indítja az élő USB teremtés folyamatát.  Ebbe beleértendő egy kiadás letöltésének lehetősége (ha nem választott már meglévőt),  az ISO kicsomagolása az USB eszközre, állandó tárhely létrehozása és a rendszerindító telepítése."
-
-#: ../liveusb/dialog.py:125
-#, fuzzy
-msgid "Create Live USB"
-msgstr "Élő USB teremtése"
 
 #: ../liveusb/dialog.py:126
 msgid "This is the status console, where all messages get written to."
@@ -259,3 +243,14 @@ msgstr "Többlet hely lefoglalásával  egy állandó tárhelyet hozhat létre, 
 msgid "Persistent Storage (0 Mb)"
 msgstr "Állandó tárhely (0 Mb)"
 
+#: ../liveusb/dialog.py:125
+msgid "Create Live USB"
+msgstr "LiveUSB készítése"
+
+#: ../liveusb/gui.py:388
+msgid "You can try again to resume your download"
+msgstr "Megpróbálhatja újra, így folytatva a letöltést"
+
+#: ../liveusb/dialog.py:123
+msgid "Fedora LiveUSB Creator"
+msgstr "Fedora LiveUSB készítő"
