@@ -80,11 +80,6 @@ msgstr ""
 msgid "Warning: Creating a new persistent overlay will delete your existing one."
 msgstr "Figyelmeztetés: Új állandó tárhely létrehozása törli a meglévőt."
 
-# A 211. sorral egyezőnek kell lennie a szövegnek…
-#: ../liveusb/gui.py:339
-msgid "Press 'Create Live USB' again if you wish to continue."
-msgstr "Nyomja meg az „Élő USB teremtése” gombot ismét, ha folytatni kívánja."
-
 #. The user has confirmed that they wish to overwrite their
 #. existing Live OS.  Here we delete it first, in order to
 #. accurately calculate progress.
@@ -96,31 +91,14 @@ msgstr "Meglévő élő rendszer eltávolítása…"
 msgid "Download complete!"
 msgstr "Letöltés kész!"
 
-#: ../liveusb/gui.py:387
-msgid "Download failed: "
-msgstr "A letöltés nem sikerlt:"
-
 #: ../liveusb/gui.py:392
 msgid "Select Live ISO"
 msgstr "Válasszon élő ISO-t"
-
-#: ../liveusb/gui.py:399
-msgid "Sorry, I'm having trouble encoding the filename of your livecd.  You may have better luck if you move your ISO to the root of your drive (ie: C:\\)"
-msgstr "Baj van az élő CD képfájl nevének kódolásával.  Talán több szerencséje lesz, ha az ISO-t átmozgatja a lemez gyökerébe (azaz: C:\\)"
 
 #: ../liveusb/gui.py:404
 #, python-format
 msgid "ISO selected: %s"
 msgstr "Kiválasztott ISO: %s"
-
-#: ../liveusb/creator.py:146
-#, python-format
-msgid ""
-"There was a problem executing the following command: `%s`\n"
-"A more detailed error log has been written to 'liveusb-creator.log'"
-msgstr ""
-"Probléma történt a következő parancs végrehajtásakor: „%s”\n"
-"Részletesebb hibanapló került a „liveusb-creator.log”-ba."
 
 #: ../liveusb/creator.py:183
 msgid "Not enough free space on device."
@@ -140,10 +118,6 @@ msgstr "Nem lehet eltávolítani az előző élő rendszert: %s"
 #, python-format
 msgid "Cannot find device %s"
 msgstr "A(z) %s eszköz nem található"
-
-#: ../liveusb/creator.py:306
-msgid "Unable to find any USB drives"
-msgstr "Nem található USB eszköz"
 
 #: ../liveusb/creator.py:327
 #, python-format
@@ -186,22 +160,9 @@ msgstr ""
 "Nem támogatott fájlrendszer: %s\n"
 "Kérem mentse le az adatait, majd alakítson ki az USB eszközön FAT fájlrendszert."
 
-#: ../liveusb/creator.py:558
-#, python-format
-msgid "Cannot find '%s'.  Make sure to extract the entire liveusb-creator zip file before running this program."
-msgstr "„%s” nem található.  Győződjön meg arról, hogy a teljes liveusb-creator.zip fájlt kicsomagolta, mielőtt futtatja a programot."
-
-#: ../liveusb/dialog.py:124
-msgid "This button will begin the LiveUSB creation process.  This entails optionally downloading a release (if an existing one wasn't selected),  extracting the ISO to the USB device, creating the persistent overlay, and installing the bootloader."
-msgstr "Ez a gomb indítja az élő USB teremtés folyamatát.  Ebbe beleértendő egy kiadás letöltésének lehetősége (ha nem választott már meglévőt),  az ISO kicsomagolása az USB eszközre, állandó tárhely létrehozása és a rendszerindító telepítése."
-
 #: ../liveusb/dialog.py:126
 msgid "This is the status console, where all messages get written to."
 msgstr "Ez az állapot kijelző, ahol minden üzenet megjelenik."
-
-#: ../liveusb/dialog.py:127
-msgid "This is the progress bar that will indicate how far along in the LiveUSB creation process you are"
-msgstr "Ez a folyamatjelző, ami mutatja, hogy hol tart az élő USB létrehozásának folyamata"
 
 #: ../liveusb/dialog.py:128
 msgid "If you do not select an existing Live CD, the selected release will be downloaded for you."
@@ -254,3 +215,42 @@ msgstr "Megpróbálhatja újra, így folytatva a letöltést"
 #: ../liveusb/dialog.py:123
 msgid "Fedora LiveUSB Creator"
 msgstr "Fedora LiveUSB készítő"
+
+#: ../liveusb/gui.py:387
+msgid "Download failed: "
+msgstr "A letöltés nem sikerült:"
+
+# A 211. sorral egyezőnek kell lennie a szövegnek…
+#: ../liveusb/gui.py:339
+msgid "Press 'Create Live USB' again if you wish to continue."
+msgstr "Nyomja meg az „Élő USB készítése” gombot ismét, ha folytatni kívánja."
+
+#: ../liveusb/creator.py:306
+msgid "Unable to find any USB drives"
+msgstr "Nincs elérhető USB-s eszköz"
+
+#: ../liveusb/gui.py:399
+msgid "Sorry, I'm having trouble encoding the filename of your livecd.  You may have better luck if you move your ISO to the root of your drive (ie: C:\\)"
+msgstr "Baj van az élő CD képfájl fájlnevének kódolásával.  Talán több szerencséje lesz, ha az ISO-t átmozgatja a lemez gyökerébe (azaz: C:\\)"
+
+#: ../liveusb/creator.py:146
+#, python-format
+msgid ""
+"There was a problem executing the following command: `%s`\n"
+"A more detailed error log has been written to 'liveusb-creator.log'"
+msgstr ""
+"Probléma történt a következő parancs végrehajtásakor: „%s”\n"
+"Részletesebb hibanapló került a „liveusb-creator.log”-ban."
+
+#: ../liveusb/dialog.py:124
+msgid "This button will begin the LiveUSB creation process.  This entails optionally downloading a release (if an existing one wasn't selected),  extracting the ISO to the USB device, creating the persistent overlay, and installing the bootloader."
+msgstr "Ez a gomb indítja a LiveUSB készítés folyamatát.  Ebbe beleértendő egy kiadás letöltésének lehetősége (ha nem választott már meglévőt),  az ISO kicsomagolása az USB eszközre, állandó tárhely létrehozása és a rendszerindító telepítése."
+
+#: ../liveusb/creator.py:558
+#, python-format
+msgid "Cannot find '%s'.  Make sure to extract the entire liveusb-creator zip file before running this program."
+msgstr "A(z) '%s' nem található.  Győződjön meg arról, hogy a teljes liveusb-creator.zip fájlt kicsomagolta, mielőtt futtatja a programot."
+
+#: ../liveusb/dialog.py:127
+msgid "This is the progress bar that will indicate how far along in the LiveUSB creation process you are"
+msgstr "Ez a folyamatjelző, ami mutatja, hogy hol tart az élő USB létrehozásának folyamata."
