@@ -1,11 +1,11 @@
 [Desktop Entry]
 Type=Application
 Encoding=UTF-8
-Name=liveusb-creator
-GenericName=liveusb-creator
-Comment=Liveusb creator
+Name=Fedora LiveUSB Creator
+Comment=Write Fedora images to a USB device
 Icon=fedorausb.png
-TryExec=liveusb-creator
 Exec=liveusb-creator
 Terminal=false
 Categories=System;
+StartupNotify=true
+
