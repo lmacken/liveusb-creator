@@ -24,5 +24,6 @@ include data/liveusb-creator.desktop
 include data/fedorausb.png
 include liveusb-creator.console
 include liveusb-creator.pam
+include liveusb-creator.spec
 include po/*.po
 include po/mki18n.py
