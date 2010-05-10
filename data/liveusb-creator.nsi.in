@@ -1,0 +1,119 @@
+;--------------------------------
+;LiveUSB Crator NSIS script
+
+Name "LiveUSB Creator 3.9"
+OutFile "liveusb-creator-3.9-setup.exe"
+
+SetCompressor lzma
+
+!define LC_NSIS_INCLUDE_PATH "..\data"
+
+;--------------------------------
+;Include Modern UI
+!include "MUI2.nsh"
+;--------------------------------
+;	Interface Configuration
+
+  !define MUI_HEADERIMAGE
+  !define MUI_HEADERIMAGE_BITMAP "${LC_NSIS_INCLUDE_PATH}\liveusb-creator-nsi.bmp"
+  !define MUI_ABORTWARNING
+
+;--------------------------------
+;	Pages
+  !insertmacro MUI_PAGE_LICENSE "LICENSE.txt"
+  !insertmacro MUI_PAGE_DIRECTORY
+  !insertmacro MUI_PAGE_INSTFILES
+  
+  !insertmacro MUI_UNPAGE_CONFIRM
+  !insertmacro MUI_UNPAGE_INSTFILES
+
+;--------------------------------
+;	Translations
+@INSERT_TRANSLATIONS@
+
+;--------------------------------
+InstallDir "$PROGRAMFILES\LiveUSB Creator"
+InstallDirRegKey HKEY_LOCAL_MACHINE "SOFTWARE\LiveUSB Creator" ""
+
+DirText $(s_InstallHere)
+
+Icon liveusb-creator.ico
+
+Section "Dummy Section" SecDummy
+
+	; Install files.
+	SetOverwrite on
+
+	SetOutPath "$INSTDIR"
+	File liveusb-creator.exe
+	File LICENSE.txt
+	File README.txt
+	File MSVCP90.dll
+	File MSVCP90.DLL
+	File w9xpopen.exe
+	File /r locale
+	
+	SetOutPath "$INSTDIR\tools"
+	File tools\7z.dll
+	File tools\7z.exe
+	File tools\7zCon.sfx
+	File tools\7-Zip-License.txt
+	File tools\dd.exe
+	File tools\syslinux.exe
+	
+	; Create shortcut.
+	SetOutPath -
+	CreateDirectory "$SMPROGRAMS\LiveUSB Creator"
+	CreateShortCut "$SMPROGRAMS\LiveUSB Creator\LiveUSB Creator.lnk" "$INSTDIR\liveusb-creator.exe"
+	CreateShortCut "$SMPROGRAMS\LiveUSB Creator\Uninstall LiveUSB Creator.lnk" "$INSTDIR\uninst.exe" "" "$INSTDIR\uninst.exe" 0
+
+	; Optionally start program.
+	MessageBox MB_YESNO|MB_ICONQUESTION $(s_RunNow) IDNO SkipRunProgram
+	Exec "$INSTDIR\liveusb-creator.exe"
+SkipRunProgram:
+
+	; Create uninstaller.
+	WriteRegStr HKEY_LOCAL_MACHINE "SOFTWARE\LiveUSB Creator" "" "$INSTDIR"
+	WriteRegStr HKEY_LOCAL_MACHINE "Software\Microsoft\Windows\CurrentVersion\Uninstall\LiveUSB Creator" "DisplayName" "LiveUSB Creator (remove only)"
+	WriteRegStr HKEY_LOCAL_MACHINE "Software\Microsoft\Windows\CurrentVersion\Uninstall\LiveUSB Creator" "UninstallString" '"$INSTDIR\uninst.exe"'
+	WriteUninstaller "$INSTDIR\uninst.exe"
+
+SectionEnd
+
+UninstallText $(s_UnInstall)
+
+Section Uninstall
+
+	; Delete shortcuts.
+	Delete "$SMPROGRAMS\LiveUSB Creator\LiveUSB Creator.lnk"
+	Delete "$SMPROGRAMS\LiveUSB Creator\Uninstall LiveUSB Creator.lnk"
+	RMDir "$SMPROGRAMS\LiveUSB Creator"
+	Delete "$DESKTOP\LiveUSB Creator.lnk"
+
+	; Delete registry keys.
+	Delete "$INSTDIR\uninst.exe"
+	DeleteRegKey HKEY_LOCAL_MACHINE "SOFTWARE\LiveUSB Creator"
+	DeleteRegKey HKEY_LOCAL_MACHINE "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\LiveUSB Creator"
+
+	; Delete files.
+	Delete "$INSTDIR\liveusb-creator.exe"
+	Delete "$INSTDIR\LICENSE.txt"
+	Delete "$INSTDIR\README.txt"
+	Delete "$INSTDIR\MSVCP90.DLL"
+	Delete "$INSTDIR\MSVCP90.dll"
+	Delete "$INSTDIR\w9xpopen.exe"
+	
+	Delete "$INSTDIR\tools\7z.dll"
+	Delete "$INSTDIR\tools\7z.exe"
+	Delete "$INSTDIR\tools\7zCon.sfx"
+	Delete "$INSTDIR\tools\7-Zip-License.txt"
+	Delete "$INSTDIR\tools\dd.exe"
+	Delete "$INSTDIR\tools\syslinux.exe"
+
+	Delete "$INSTDIR\liveusb-creator.exe.log"
+
+	; Remove the installation directories.
+	RMDir "$INSTDIR\tools"
+	RMDir "$INSTDIR"
+
+SectionEnd
