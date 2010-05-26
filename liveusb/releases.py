@@ -1,28 +1,48 @@
 releases = (
     {
+        'name': 'Fedora 13 (i686)',
+        'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/13/Live/i686/Fedora-13-i686-Live.iso',
+        'sha256': '47ccc37db256387b70857f53a6067e8d50e692c9aa85e45e63e5190c5d1e0942',
+    },
+
+    {
+        'name': 'Fedora 13 KDE (i686)',
+        'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/13/Live/i686/Fedora-13-i686-Live-KDE.iso',
+        'sha256': '6828c02f2bce4ec3bd1ca488df8662640bf53fe7724913310295a5f5f6502cf8',
+    },
+
+    {
+        'name': 'Fedora 13 (x86_64)',
+        'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/13/Live/x86_64/Fedora-13-x86_64-Live.iso',
+        'sha256': 'c16923e9c2f04af3609c9534f32ea280e4d2c3af50e704344ccb35090f87065a',
+    },
+
+    {
+        'name': 'Fedora 13 KDE (x86_64)',
+        'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/13/Live/x86_64/Fedora-13-x86_64-Live-KDE.iso',
+        'sha256': '789d7090d39230f0e9b16ed3276974223c120db3120c48e53fa95a6f1604c650',
+    },
+
+    {
         'name': 'Fedora 12 (i686)',
         'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/12/Live/i686/Fedora-12-i686-Live.iso',
         'sha256': '5ad27455df004ee23fbc5a05dfa039a14e59956dccf4e767d493601e0bfa4001',
     },
-
     {
         'name': 'Fedora 12 KDE (i686)',
         'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/12/Live/i686/Fedora-12-i686-Live-KDE.iso',
         'sha256': '1bb64a4eedecf4730b47fcbb6c17b49d6deaccf7b00b17dd7b1091af57cf1c1e',
     },
-
     {
         'name': 'Fedora 12 (x86_64)',
         'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/12/Live/x86_64/Fedora-12-x86_64-Live.iso',
         'sha256': 'f2e78358dc20eea0dbe8dfda2455c39de7de5eeb06aa21e1740f3e6bec194d47',
     },
-
     {
         'name': 'Fedora 12 KDE (x86_64)',
         'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/12/Live/x86_64/Fedora-12-x86_64-Live-KDE.iso',
         'sha256': '623c9e8ca7755d9e7723519992b4fa7d0df22ec00b4490bec8e16f64b1dd8c19',
     },
-
     {
         'name': 'Fedora 11 (i686)',
         'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/11/Live/i686/Fedora-11-i686-Live.iso',
@@ -78,5 +98,10 @@ releases = (
         'name': 'Sugar on a Stick v2 Blueberry',
         'url': 'http://download.sugarlabs.org/soas/releases/soas-2-blueberry.iso',
         'sha1': '8022b68433295f12fbfffa66bf49205851a6a1e0',
+    },
+    {
+        'name': 'Sugar on a Stick v3 Mirabelle',
+        'url': 'http://alt.fedoraproject.org/pub/alt/spins/linux/releases/13/Spins/i686/Fedora-13-i686-Live-SoaS.iso',
+        'sha1': 'b610e7eb6f8128295b643cdfc32101731d8d3f22',
     },
 )
