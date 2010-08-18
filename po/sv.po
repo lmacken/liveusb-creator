@@ -1,15 +1,16 @@
 # Swedish messages for liveusb-creator
 # Copyright © 2010 Free Software Foundation
-# This file is distributed under the same license as the liveusb-creator package.
+# This file is distributed under the same license as the liveusb-creator
+# package.
 # Göran Uddeborg <goeran@uddeborg.se>, 2010.
 #
-# $Revision$
+# $Revision: 1.2 $
 msgid ""
 msgstr ""
 "Project-Id-Version: liveusb-creator\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-09-03 02:54-0400\n"
-"PO-Revision-Date: 2010-08-13 20:44+0200\n"
+"PO-Revision-Date: 2010-08-18 23:34+0200\n"
 "Last-Translator: Göran Uddeborg <goeran@uddeborg.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -19,108 +20,110 @@ msgstr ""
 #: ../liveusb/gui.py:69
 #, python-format
 msgid "Unknown release: %s"
-msgstr ""
+msgstr "Okänd utgåva: %s"
 
 #: ../liveusb/gui.py:73
 #, python-format
 msgid "Downloading %s..."
-msgstr ""
+msgstr "Hämtar %s…"
 
 #: ../liveusb/gui.py:152
 msgid "Verifying filesystem..."
-msgstr ""
+msgstr "Verifierar filsystem…"
 
 #: ../liveusb/gui.py:155
 msgid ""
 "Error: Cannot set the label or obtain the UUID of your device.  Unable to "
 "continue."
-msgstr ""
+msgstr "Fel: Det går inte att sätta etikett eller hämta UUID från din enhet.  Kan inte fortsätta."
 
 #: ../liveusb/gui.py:164
 msgid "Verifying SHA1 of LiveCD image..."
-msgstr ""
+msgstr "Verifierar SHA1 för LiveCD-avbilden…"
 
 #: ../liveusb/gui.py:166
 msgid ""
 "Error: The SHA1 of your Live CD is invalid.  You can run this program with "
 "the --noverify argument to bypass this verification check."
-msgstr ""
+msgstr "Fel: SHA1-summan för din Live CD är ogiltig.  Du kan köra detta program med argumentet --noverify för att gå förbi denna verifieringskontroll."
 
 #: ../liveusb/gui.py:177
 msgid "Extracting live image to USB device..."
-msgstr ""
+msgstr "Hämtar live-avbild till USB-enhet…"
 
 #: ../liveusb/gui.py:180
 #, python-format
 msgid "Creating %d Mb persistent overlay..."
-msgstr ""
+msgstr "Skapar %d MB varaktig överlägg…"
 
 #: ../liveusb/gui.py:183
 msgid "Configuring and installing bootloader..."
-msgstr ""
+msgstr "Konfigurerar och installerar startprogram…"
 
 #: ../liveusb/gui.py:187
 #, python-format
 msgid "Complete! (%s)"
-msgstr ""
+msgstr "Klar! (%s)"
 
 #: ../liveusb/gui.py:190 ../liveusb/gui.py:193
 msgid "LiveUSB creation failed!"
-msgstr ""
+msgstr "Misslyckades att skapa LiveUSB!"
 
 #: ../liveusb/gui.py:316
 #, python-format
 msgid "Persistent Storage (%d Mb)"
-msgstr ""
+msgstr "Varaktig lagring (%d MB)"
 
 #: ../liveusb/gui.py:334
 msgid ""
 "Your device already contains a LiveOS.\n"
 "If you continue, this will be overwritten."
 msgstr ""
+"Din enhet innehåller redan ett LiveOS.\n"
+"Om du fortsätter kommer det skrivas över."
 
 #: ../liveusb/gui.py:337
 msgid ""
 "Warning: Creating a new persistent overlay will delete your existing one."
-msgstr ""
+msgstr "Varning: Att skapa ett nytt varaktigt överlägg kommer radera ditt nuvarande."
 
 #: ../liveusb/gui.py:339
 msgid "Press 'Create Live USB' again if you wish to continue."
-msgstr ""
+msgstr "Tryck ”Skapa Live-USB” igen om du vill fortsätta."
 
 #. The user has confirmed that they wish to overwrite their
 #. existing Live OS.  Here we delete it first, in order to
 #. accurately calculate progress.
 #: ../liveusb/gui.py:349
 msgid "Removing existing Live OS..."
-msgstr ""
+msgstr "Tar bort befintligt Live-OS…"
 
 #: ../liveusb/gui.py:383
 msgid "Download complete!"
-msgstr ""
+msgstr "Hämtat färdigt!"
 
 #: ../liveusb/gui.py:387
 msgid "Download failed: "
-msgstr ""
+msgstr "Misslyckades hämta: "
 
 #: ../liveusb/gui.py:388
 msgid "You can try again to resume your download"
-msgstr ""
+msgstr "Du kan försöka igen för att återuppta din hämtning"
 
 #: ../liveusb/gui.py:392
 msgid "Select Live ISO"
-msgstr ""
+msgstr "Välj Live-ISO"
 
 #: ../liveusb/gui.py:399
 msgid ""
 "Sorry, I'm having trouble encoding the filename of your livecd.  You may "
 "have better luck if you move your ISO to the root of your drive (ie: C:\\)"
-msgstr ""
+msgstr "Tyvärr, jag har problem med att koda filnamnet på din live-cd.  Du kan ha bättre lycka om du flyttar din ISO till roten på din hårddisk (d.v.s.: C:\\)"
 
 #: ../liveusb/gui.py:404
 #, python-format
 msgid "ISO selected: %s"
-msgstr ""
+msgstr "ISO vald: %s"
 
 #: ../liveusb/creator.py:146
 #, python-format
@@ -128,62 +131,64 @@ msgid ""
 "There was a problem executing the following command: `%s`\n"
 "A more detailed error log has been written to 'liveusb-creator.log'"
 msgstr ""
+"Det uppstod ett problem när följande kommando kördes: ”%s”\n"
+"En mer detaljerad fellogg har skrivits till ”liveusb-creator.log”"
 
 #: ../liveusb/creator.py:183
 msgid "Not enough free space on device."
-msgstr ""
+msgstr "Inte tillräckligt med fritt utrymme på enheten."
 
 #: ../liveusb/creator.py:190
 #, python-format
 msgid "Creating %sMB persistent overlay"
-msgstr ""
+msgstr "Skapar %s MB varaktigt överlägg"
 
 #: ../liveusb/creator.py:226
 #, python-format
 msgid "Unable to remove previous LiveOS: %s"
-msgstr ""
+msgstr "Kan inte ta bort tidigare LiveOS: %s"
 
 #: ../liveusb/creator.py:257
 #, python-format
 msgid "Cannot find device %s"
-msgstr ""
+msgstr "Hittar inte enheten %s"
 
 #: ../liveusb/creator.py:306
 msgid "Unable to find any USB drives"
-msgstr ""
+msgstr "Hittar inte någon USB-enhet"
 
 #: ../liveusb/creator.py:327
 #, python-format
 msgid "Filesystem for %s unknown!"
-msgstr ""
+msgstr "Filsystemet på %s är okänt!"
 
 #: ../liveusb/creator.py:335
 #, python-format
 msgid "Unable to mount device: %s"
-msgstr ""
+msgstr "Kan inte montera enheten: %s"
 
 #: ../liveusb/creator.py:370
 #, python-format
 msgid "Unknown filesystem for %s.  Your device may need to be reformatted."
-msgstr ""
+msgstr "Okänt filsystem på %s.  Din enhet kan behöva formateras om."
 
 #: ../liveusb/creator.py:373
 #, python-format
 msgid "Unsupported filesystem: %s"
-msgstr ""
+msgstr "Ej stött filsystem: %s"
 
 #: ../liveusb/creator.py:400
 msgid "Unable to find LiveOS on ISO"
-msgstr ""
+msgstr "Kan inte hitta LiveOS på ISO"
 
 #: ../liveusb/creator.py:472
 msgid "Unable to find any removable devices"
-msgstr ""
+msgstr "Kan inte hitta några löstagbara enheter"
 
 #: ../liveusb/creator.py:479
 msgid ""
 "Make sure your USB key is plugged in and formatted with the FAT filesystem"
-msgstr ""
+msgstr "Se till att din USB-pinne är inkopplat och formaterad med filsystemet FAT"
 
 #: ../liveusb/creator.py:482
 #, python-format
@@ -191,17 +196,19 @@ msgid ""
 "Unsupported filesystem: %s\n"
 "Please backup and format your USB key with the FAT filesystem."
 msgstr ""
+"Ej stött filsystem: %s\n"
+"Gör en säkerhetskopia och formatera din USB-pinne med filsystemet FAT."
 
 #: ../liveusb/creator.py:558
 #, python-format
 msgid ""
 "Cannot find '%s'.  Make sure to extract the entire liveusb-creator zip file "
 "before running this program."
-msgstr ""
+msgstr "Kan inte hitta ”%s”.  Se till att extrahera hela liveusb-creator-zip-filen före du kör detta program."
 
 #: ../liveusb/dialog.py:123
 msgid "Fedora LiveUSB Creator"
-msgstr ""
+msgstr "Fedoras LiveUSB-skapare"
 
 #: ../liveusb/dialog.py:124
 msgid ""
@@ -209,60 +216,60 @@ msgid ""
 "optionally downloading a release (if an existing one wasn't selected),  "
 "extracting the ISO to the USB device, creating the persistent overlay, and "
 "installing the bootloader."
-msgstr ""
+msgstr "Denna knapp kommer inleda processen att skapa en LiveUSB.  Detta medför eventuellt att en utgåva hämtas (om inte en befintlig valdes), extraktion av ISO:n till USB-enheten, skapandet av ett varaktigt överlägg och installation av startprogrammet."
 
 #: ../liveusb/dialog.py:125
 msgid "Create Live USB"
-msgstr ""
+msgstr "Skapa Live-USB"
 
 #: ../liveusb/dialog.py:126
 msgid "This is the status console, where all messages get written to."
-msgstr ""
+msgstr "Detta är statuskonsolen, dit alla meddelanden skrivs."
 
 #: ../liveusb/dialog.py:127
 msgid ""
 "This is the progress bar that will indicate how far along in the LiveUSB "
 "creation process you are"
-msgstr ""
+msgstr "Detta är förloppsmätaren som kommer indikera hur långt på vägen i processen att skapa en LiveUSB du kommit"
 
 #: ../liveusb/dialog.py:128
 msgid ""
 "If you do not select an existing Live CD, the selected release will be "
 "downloaded for you."
-msgstr ""
+msgstr "Om du inte väljer en befintlig Live-CD, kommer den valda utgåvan att hämtas åt dig."
 
 #: ../liveusb/dialog.py:129
 msgid "Download Fedora"
-msgstr ""
+msgstr "Hämta Fedora"
 
 #: ../liveusb/dialog.py:130
 msgid "or"
-msgstr ""
+msgstr "eller"
 
 #: ../liveusb/dialog.py:131
 msgid ""
 "This button allows you to browse for an existing Live CD ISO that you have "
 "previously downloaded.  If you do not select one, a release will be "
 "downloaded for you automatically."
-msgstr ""
+msgstr "Denna knapp låter dig bläddra efter en befintlig Live-CD-ISO som du har hämtat tidigare.  Om du inte väljer en, kommer en utgåva hämtas automatiskt åt dig."
 
 #: ../liveusb/dialog.py:132
 msgid "Use existing Live CD"
-msgstr ""
+msgstr "Använd befintlig Live-CD"
 
 #: ../liveusb/dialog.py:133
 msgid "Browse"
-msgstr ""
+msgstr "Bläddra"
 
 #: ../liveusb/dialog.py:135
 msgid ""
 "This is the USB stick that you want to install your Live CD on.  This device "
 "must be formatted with the FAT filesystem."
-msgstr ""
+msgstr "Detta är USB-pinnen som du vill installera din Live-CD på.  Denna enhet måste vara formaterad med filsystemet FAT."
 
 #: ../liveusb/dialog.py:136
 msgid "Target Device"
-msgstr ""
+msgstr "Målenhet"
 
 #: ../liveusb/dialog.py:137
 msgid ""
@@ -270,8 +277,8 @@ msgid ""
 "will be able to store data and make permanent modifications to your live "
 "operating system.  Without it, you will not be able to save data that will "
 "persist after a reboot."
-msgstr ""
+msgstr "Genom att allokera extra utrymme på din USB-pinne för varaktigt överlägg kommer du kunna lagra data och göra permanenta ändringar till ditt live-operativsystem.  Utan det kommer du inte kunna spara data som kommer finnas kvar efter en omstart."
 
 #: ../liveusb/dialog.py:138
 msgid "Persistent Storage (0 Mb)"
-msgstr ""
+msgstr "Varaktig lagring (0 MB)"
