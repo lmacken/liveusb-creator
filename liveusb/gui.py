@@ -212,6 +212,9 @@ class LiveUSBThread(QtCore.QThread):
             # This sometimes causes segfaults in dbus.
             #self.live.unmount_device()
 
+            # Flush all filesystem buffers
+            self.live.flush_buffers()
+
             duration = str(datetime.now() - now).split('.')[0]
             self.status(_("Complete! (%s)" % duration))
 

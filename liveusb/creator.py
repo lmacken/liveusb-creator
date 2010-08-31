@@ -401,6 +401,10 @@ class LiveUSBCreator(object):
     def reset_mbr(self):
         pass
 
+    def flush_buffers(self):
+        """ Flush filesystem buffers """
+        pass
+
 
 class LinuxLiveUSBCreator(LiveUSBCreator):
 
@@ -836,6 +840,9 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         hexdigest = checksum.hexdigest()
         self.log.info("sha1(%s) = %s" % (device_name, hexdigest))
         return hexdigest
+
+    def flush_buffers(self):
+        self.popen('sync', passive=True)
 
 
 class WindowsLiveUSBCreator(LiveUSBCreator):
