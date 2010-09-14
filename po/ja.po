@@ -2,14 +2,15 @@
 # Copyright (C) 2008
 # This file is distributed under the same license as the PACKAGE package.
 # Hyu_gabaru Ryu_ichi <hyu_gabaru@yahoo.co.jp>, 2009.
+# Hajime Taira <htaira@redhat.com>, 2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-09-03 02:54-0400\n"
-"PO-Revision-Date: 2009-09-21 18:36+0900\n"
-"Last-Translator: Hyu_gabaru Ryu_ichi <hyu_gabaru@yahoo.co.jp>\n"
+"PO-Revision-Date: 2010-09-14 21:45+0900\n"
+"Last-Translator: Hajime Taira <htaira@redhat.com>\n"
 "Language-Team: Japanese <fedora-trans-ja@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,7 +35,8 @@ msgid ""
 "Error: Cannot set the label or obtain the UUID of your device.  Unable to "
 "continue."
 msgstr ""
-"エラー: ラベルを設定できないか、装置の UUID を取得できません。継続できません。"
+"エラー: ファイルシステムのラベルを設定できないか、デバイスの UUID を取得できません。"
+"そのため処理を継続できません。"
 
 #: ../liveusb/gui.py:164
 msgid "Verifying SHA1 of LiveCD image..."
@@ -45,8 +47,8 @@ msgid ""
 "Error: The SHA1 of your Live CD is invalid.  You can run this program with "
 "the --noverify argument to bypass this verification check."
 msgstr ""
-"エラー: Live CD の SHA1 が不当です。検証チェックを迂回するには、"
-"プログラムに --noverify パラメーターを付けて実行します。"
+"エラー: LiveCD の SHA1 ハッシュ値が不当です。検証チェックを迂回するには、プログラムに "
+"--noverify オプションを付けて実行します。"
 
 #: ../liveusb/gui.py:177
 msgid "Extracting live image to USB device..."
@@ -55,11 +57,11 @@ msgstr "ライブイメージを USB 装置に抽出中..."
 #: ../liveusb/gui.py:180
 #, python-format
 msgid "Creating %d Mb persistent overlay..."
-msgstr "%d Mb 永続オーバーレイを作成中..."
+msgstr "%d MB 永続オーバーレイを作成中..."
 
 #: ../liveusb/gui.py:183
 msgid "Configuring and installing bootloader..."
-msgstr "ブートローダーの設定とインストール中..."
+msgstr "ブートローダーの設定とブートローダーをインストール中..."
 
 #: ../liveusb/gui.py:187
 #, python-format
@@ -73,14 +75,14 @@ msgstr "LiveUSB 作成失敗!"
 #: ../liveusb/gui.py:316
 #, python-format
 msgid "Persistent Storage (%d Mb)"
-msgstr "永続ストレージ (%d Mb)"
+msgstr "永続ストレージ (%d MB)"
 
 #: ../liveusb/gui.py:334
 msgid ""
 "Your device already contains a LiveOS.\n"
 "If you continue, this will be overwritten."
 msgstr ""
-"ドライブには既に LiveOS があります。\n"
+"対象のデバイスには既に LiveOS があります。\n"
 "続けると上書きします。"
 
 #: ../liveusb/gui.py:337
@@ -90,18 +92,18 @@ msgstr "警告: 新しい永続オーバーレイを作成すると既存のも�
 
 #: ../liveusb/gui.py:339
 msgid "Press 'Create Live USB' again if you wish to continue."
-msgstr "続けたいのならば 'Live USB を作成する' を押してください。"
+msgstr "続けたいのならば 'LiveUSB を作成する' を押してください。"
 
 #. The user has confirmed that they wish to overwrite their
 #. existing Live OS.  Here we delete it first, in order to
 #. accurately calculate progress.
 #: ../liveusb/gui.py:349
 msgid "Removing existing Live OS..."
-msgstr "既存の Live OS を削除中..."
+msgstr "既存の LiveOS を削除中..."
 
 #: ../liveusb/gui.py:383
 msgid "Download complete!"
-msgstr "ダウンロード完了!"
+msgstr "ダウンロード完了！"
 
 #: ../liveusb/gui.py:387
 msgid "Download failed: "
@@ -120,7 +122,7 @@ msgid ""
 "Sorry, I'm having trouble encoding the filename of your livecd.  You may "
 "have better luck if you move your ISO to the root of your drive (ie: C:\\)"
 msgstr ""
-"ライブ CD のファイル名をコード化することに問題があります。ISO を装置のルート"
+"LiveCD のファイル名をエンコード化することに問題があります。ISO をデバイスのルート"
 "(例えば C:\\) に移動するとうまくいくかもしれません"
 
 #: ../liveusb/gui.py:404
@@ -139,7 +141,7 @@ msgstr ""
 
 #: ../liveusb/creator.py:183
 msgid "Not enough free space on device."
-msgstr "装置上に十分な空き領域がありません。"
+msgstr "デバイス上に十分な空き領域がありません。"
 
 #: ../liveusb/creator.py:190
 #, python-format
@@ -154,26 +156,27 @@ msgstr "以前の LiveOS を削除できません: %s"
 #: ../liveusb/creator.py:257
 #, python-format
 msgid "Cannot find device %s"
-msgstr "装置 %s が見つかりません"
+msgstr "デバイス %s が見つかりません"
 
 #: ../liveusb/creator.py:306
 msgid "Unable to find any USB drives"
-msgstr "USB 装置が一つも見つかりません"
+msgstr "USB ストレージデバイスが一つも見つかりません"
 
 #: ../liveusb/creator.py:327
 #, python-format
 msgid "Filesystem for %s unknown!"
-msgstr "%s 用のファイルシステムが不明です!"
+msgstr "%s 用のファイルシステムが不明です。"
 
 #: ../liveusb/creator.py:335
 #, python-format
 msgid "Unable to mount device: %s"
-msgstr "装置をマウントできません: %s"
+msgstr "デバイスをマウントできません: %s"
 
 #: ../liveusb/creator.py:370
 #, python-format
 msgid "Unknown filesystem for %s.  Your device may need to be reformatted."
-msgstr "%s 用の不明なファイルシステム。装置を再フォーマットする必要があります。"
+msgstr ""
+"%s 用の不明なファイルシステム。デバイスを再フォーマットする必要があります。"
 
 #: ../liveusb/creator.py:373
 #, python-format
@@ -182,18 +185,18 @@ msgstr "サポートしていないファイルシステム: %s"
 
 #: ../liveusb/creator.py:400
 msgid "Unable to find LiveOS on ISO"
-msgstr "ISO 上に LiveOS が見つかりません"
+msgstr "ISO イメージの中に LiveOS が見つかりません"
 
 #: ../liveusb/creator.py:472
 msgid "Unable to find any removable devices"
-msgstr "可搬装置が見つかりません"
+msgstr "リムーバブルデバイスが見つかりません"
 
 #: ../liveusb/creator.py:479
 msgid ""
 "Make sure your USB key is plugged in and formatted with the FAT filesystem"
 msgstr ""
-"USB キーが接続され、FAT ファイルシステムでフォーマットされていることを確認"
-"してください。"
+"USB ストレージデバイスが接続され、FAT ファイルシステムでフォーマットされていることを確認し"
+"てください。"
 
 #: ../liveusb/creator.py:482
 #, python-format
@@ -202,7 +205,7 @@ msgid ""
 "Please backup and format your USB key with the FAT filesystem."
 msgstr ""
 "サポートしていないファイルシステム: %s\n"
-"USB キーをバックアップし、FAT ファイルシステムでフォーマットしてください。"
+"USB ストレージデバイスをバックアップし、FAT ファイルシステムでフォーマットしてください。"
 
 #: ../liveusb/creator.py:558
 #, python-format
@@ -210,8 +213,8 @@ msgid ""
 "Cannot find '%s'.  Make sure to extract the entire liveusb-creator zip file "
 "before running this program."
 msgstr ""
-"'%s' が見つかりません。このプログラムを実行する前に liveusb-creator zip "
-"ファイル全体を展開したことを確認してください。"
+"'%s' が見つかりません。このプログラムを実行する前に liveusb-creator zip ファ"
+"イル全体を展開したかどうか確認してください。"
 
 #: ../liveusb/dialog.py:123
 msgid "Fedora LiveUSB Creator"
@@ -224,9 +227,9 @@ msgid ""
 "extracting the ISO to the USB device, creating the persistent overlay, and "
 "installing the bootloader."
 msgstr ""
-"このボタンを押すと LiveUSB 作成プロセスが開始します。そうすると、(既存の"
-"リリースが選択されなかったら)リリースをダウンロードし、ISO を USB 装置に"
-"抽出し、永続的なオーバーレイを作成し、ブートローダーをインストールします。"
+"このボタンを押すと LiveUSB 作成プロセスが開始します。そうすると、(既存のリ"
+"リースが選択されなかったら)リリースをダウンロードし、ISO を USB ストレージデバイスに抽出"
+"し、永続的なオーバーレイを作成し、ブートローダーをインストールします。"
 
 #: ../liveusb/dialog.py:125
 msgid "Create Live USB"
@@ -234,21 +237,20 @@ msgstr "Live USB を作成する"
 
 #: ../liveusb/dialog.py:126
 msgid "This is the status console, where all messages get written to."
-msgstr "これは全てのメッセージが書かれる状態コンソールです。"
+msgstr "これはすべてののメッセージが書かれる状態コンソールです。"
 
 #: ../liveusb/dialog.py:127
 msgid ""
 "This is the progress bar that will indicate how far along in the LiveUSB "
 "creation process you are"
-msgstr ""
-"これは LiveUSB 作成の処理がどれくらい進んでいるかを示す進行バーです"
+msgstr "これは LiveUSB 作成の処理がどれくらい進んでいるかを示すプログレスバーです"
 
 #: ../liveusb/dialog.py:128
 msgid ""
 "If you do not select an existing Live CD, the selected release will be "
 "downloaded for you."
 msgstr ""
-"既存のライブ CD を選択しなかったら、選択したリリースがダウンロードされます。"
+"既存の LiveCD を選択しなかったら、選択したリリースがダウンロードされます。"
 
 #: ../liveusb/dialog.py:129
 msgid "Download Fedora"
@@ -264,12 +266,12 @@ msgid ""
 "previously downloaded.  If you do not select one, a release will be "
 "downloaded for you automatically."
 msgstr ""
-"このボタンで以前ダウンロードした既存のライブ CD ISO をブラウズすることが"
-"できます。選択しないと自動的にリリースがダウンロードされます。" 
+"このボタンで以前ダウンロードした LiveCD ISO イメージをブラウズすることができ"
+"ます。選択しないと自動的にリリースがダウンロードされます。"
 
 #: ../liveusb/dialog.py:132
 msgid "Use existing Live CD"
-msgstr "既存のライブ CD を使用する"
+msgstr "既存の LiveCD を使用する"
 
 #: ../liveusb/dialog.py:133
 msgid "Browse"
@@ -280,12 +282,12 @@ msgid ""
 "This is the USB stick that you want to install your Live CD on.  This device "
 "must be formatted with the FAT filesystem."
 msgstr ""
-"これはライブ CD をインストールしたい USB 装置です。この装置は FAT "
-"ファイルシステムでフォーマットされていなければなりません。"
+"これは LiveCD をインストールしたい USB ストレージデバイスです。このデバイスは FAT ファイルシ"
+"ステムでフォーマットされていなければなりません。"
 
 #: ../liveusb/dialog.py:136
 msgid "Target Device"
-msgstr "対象装置"
+msgstr "対象デバイス"
 
 #: ../liveusb/dialog.py:137
 msgid ""
@@ -294,10 +296,10 @@ msgid ""
 "operating system.  Without it, you will not be able to save data that will "
 "persist after a reboot."
 msgstr ""
-"USB 装置に余分な空き領域を割り当てることで、データを保存でき、ライブ"
-"オペレーティングシステムに永続的な変更をすることができます。この領域が"
-"なければ、再起動後まで持続するデータを保存できません。"
+"USB ストレージデバイスに余分な空き領域を割り当てることで、ユーザーデータを保存でき、LiveOS に"
+"永続的な変更をすることができます。この領域を作らない場合、再起"
+"動に持続するデータを保存できません。"
 
 #: ../liveusb/dialog.py:138
 msgid "Persistent Storage (0 Mb)"
-msgstr "永続的ストレージ (0 Mb)"
+msgstr "永続的ストレージ (0 MB)"
