@@ -19,8 +19,8 @@ Section ""
 	File liveusb-creator.exe
 	File LICENSE.txt
 	File README.txt
-	File MSVCP71.DLL
-	File MSVCR71.dll
+	File MSVCP90.DLL
+	File MSVCR90.dll
 	File w9xpopen.exe
 	
 	SetOutPath $INSTDIR\tools
@@ -69,8 +69,8 @@ Section Uninstall
 	Delete "$INSTDIR\liveusb-creator.exe"
 	Delete "$INSTDIR\LICENSE.txt"
 	Delete "$INSTDIR\README.txt"
-	Delete "$INSTDIR\MSVCP71.DLL"
-	Delete "$INSTDIR\MSVCR71.dll"
+	Delete "$INSTDIR\MSVCP90.DLL"
+	Delete "$INSTDIR\MSVCR90.dll"
 	Delete "$INSTDIR\w9xpopen.exe"
 	
 	Delete "$INSTDIR\tools\7z.dll"
