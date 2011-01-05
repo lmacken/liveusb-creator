@@ -9,4 +9,5 @@ copy *.dll dist
 copy README.txt dist
 copy data\fedora.ico dist\liveusb-creator.ico
 copy data\liveusb-creator.nsi dist\liveusb-creator.nsi
+"C:\Program Files\NSIS\makensis.exe" dist\liveusb-creator.nsi
 rename dist liveusb-creator-%1
