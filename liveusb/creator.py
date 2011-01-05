@@ -332,7 +332,8 @@ class LiveUSBCreator(object):
 
     def write_log(self):
         """ Write out our subprocess stdout/stderr to a log file """
-        out = file('liveusb-creator.log', 'a')
+        tmpdir = os.getenv('TEMP', '/tmp')
+        out = file(os.path.join(tmpdir, 'liveusb-creator.log'), 'a')
         out.write(self.output.getvalue())
         out.close()
 
