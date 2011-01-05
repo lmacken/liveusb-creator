@@ -27,6 +27,7 @@ A cross-platform graphical interface for the LiveUSBCreator
 import os
 import sys
 import logging
+import urlparse
 
 from time import sleep
 from datetime import datetime
@@ -78,6 +79,12 @@ class ReleaseDownloader(QtCore.QThread):
         self.emit(QtCore.SIGNAL("status(PyQt_PyObject)"),
                   _("Downloading %s..." % os.path.basename(self.url)))
         grabber = URLGrabber(progress_obj=self.progress, proxies=self.proxies)
+        home = os.getenv('HOME', 'USERPROFILE')
+        filename = os.path.basename(urlparse.urlparse(self.url).path)
+        for folder in ('Downloads', 'My Documents'):
+            if os.path.isdir(os.path.join(home, folder)):
+                filename = os.path.join(home, folder, filename)
+                break
         try:
             iso = grabber.urlgrab(self.url, reget='simple')
         except URLGrabError, e:
