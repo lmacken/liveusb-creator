@@ -43,27 +43,6 @@ releases = (
         'sha256': '789d7090d39230f0e9b16ed3276974223c120db3120c48e53fa95a6f1604c650',
     },
 
-    {
-        'name': 'Fedora 12 (i686)',
-        'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/12/Live/i686/Fedora-12-i686-Live.iso',
-        'sha256': '5ad27455df004ee23fbc5a05dfa039a14e59956dccf4e767d493601e0bfa4001',
-    },
-    {
-        'name': 'Fedora 12 KDE (i686)',
-        'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/12/Live/i686/Fedora-12-i686-Live-KDE.iso',
-        'sha256': '1bb64a4eedecf4730b47fcbb6c17b49d6deaccf7b00b17dd7b1091af57cf1c1e',
-    },
-    {
-        'name': 'Fedora 12 (x86_64)',
-        'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/12/Live/x86_64/Fedora-12-x86_64-Live.iso',
-        'sha256': 'f2e78358dc20eea0dbe8dfda2455c39de7de5eeb06aa21e1740f3e6bec194d47',
-    },
-    {
-        'name': 'Fedora 12 KDE (x86_64)',
-        'url': 'http://download.fedora.redhat.com/pub/fedora/linux/releases/12/Live/x86_64/Fedora-12-x86_64-Live-KDE.iso',
-        'sha256': '623c9e8ca7755d9e7723519992b4fa7d0df22ec00b4490bec8e16f64b1dd8c19',
-    },
-
     ##
     ## Custom spins
     ##
