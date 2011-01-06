@@ -1017,8 +1017,15 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         import win32process
         if isinstance(cmd, basestring):
             cmd = cmd.split()
-        tool = os.path.join('.', 'tools', '%s.exe' % cmd[0])
-        if not os.path.exists(tool):
+        prgmfiles = os.getenv('PROGRAMFILES')
+        paths = (prgmfiles, prgmfiles + ' (x86)', '.')
+        tool = None
+        for path in paths:
+            exe = os.path.join(path, 'LiveUSB Creator', 'tools', '%s.exe' % cmd[0])
+            if os.path.exists(exe):
+                tool = '"%s"' % exe
+                break
+        else:
             raise LiveUSBError(_("Cannot find") + ' %s.  ' % (cmd[0]) +
                                _("Make sure to extract the entire "
                                  "liveusb-creator zip file before "
