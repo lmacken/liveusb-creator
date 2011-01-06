@@ -192,12 +192,12 @@ class LiveUSBCreator(object):
             err = err.encode('utf-8', 'replace')
         self.output.write(out + '\n' + err + '\n')
         if proc.returncode:
-            self.write_log()
+            filename = self.write_log()
             if not passive:
                 raise LiveUSBError(_("There was a problem executing the "
                                      "following command: `%s`\nA more detailed "
                                      "error log has been written to "
-                                     "'liveusb-creator.log'" % cmd))
+                                     "'%s'" % (cmd, filename)))
         return proc
 
     def verify_iso_sha1(self, progress=None):
@@ -333,9 +333,12 @@ class LiveUSBCreator(object):
     def write_log(self):
         """ Write out our subprocess stdout/stderr to a log file """
         tmpdir = os.getenv('TEMP', '/tmp')
-        out = file(os.path.join(tmpdir, 'liveusb-creator.log'), 'a')
+        filename = os.path.join(tmpdir, 'liveusb-creator.log')
+        out = file(filename, 'a')
         out.write(self.output.getvalue())
         out.close()
+        return filename
+        
 
     def existing_liveos(self):
         return os.path.exists(self.get_liveos())
