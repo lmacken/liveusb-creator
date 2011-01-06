@@ -289,6 +289,14 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                 if arg.lower().endswith('.iso') and os.path.exists(arg):
                     self.selectfile(arg)
 
+        # Determine if we have admin rights
+        if not self.live.is_admin():
+            self.live.log.error(_('Warning: This tool needs to be run as an '
+                'Administrator. To do this, right click on the icon and open '
+                'the Properties. Under the Compatibility tab, check the "Run '
+                'this program as an administrator" box.'))
+
+
     def populate_devices(self, *args, **kw):
         if self.in_process:
             return

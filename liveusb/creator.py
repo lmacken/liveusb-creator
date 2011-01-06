@@ -406,6 +406,8 @@ class LiveUSBCreator(object):
         """ Flush filesystem buffers """
         pass
 
+    def is_admin(self):
+        raise NotImplementedError
 
 class LinuxLiveUSBCreator(LiveUSBCreator):
 
@@ -845,6 +847,8 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
     def flush_buffers(self):
         self.popen('sync', passive=True)
 
+    def is_admin(self):
+        return os.getuid() == 0
 
 class WindowsLiveUSBCreator(LiveUSBCreator):
 
@@ -1125,3 +1129,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         """ Format the selected partition as FAT32 """
         self.log.info('Formatting %s as FAT32' % self.drive['device'])
         self.popen('format /Q /X /y /V:Fedora /FS:FAT32 %s' % self.drive['device'])
+
+    def is_admin(self):
+        from win32com.shell import shell
+        return shell.IsUserAnAdmin()
