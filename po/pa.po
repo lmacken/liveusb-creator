@@ -1,20 +1,21 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
 # A S Alam <aalam@users.sf.net>, 2010.
+# Jaswinder Singh <j.phulewala@gmail.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-09-03 02:54-0400\n"
-"PO-Revision-Date: 2010-07-16 19:42+0530\n"
-"Last-Translator: A S Alam <aalam@users.sf.net>\n"
-"Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
+"PO-Revision-Date: 2011-01-12 16:04+0530\n"
+"Last-Translator: Jaswinder Singh <j.phulewala@gmail.com>\n"
+"Language-Team: PLTG\n"
+"Language: pa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.0\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.6.1\n"
 
 #: ../liveusb/gui.py:69
 #, python-format
@@ -35,6 +36,8 @@ msgid ""
 "Error: Cannot set the label or obtain the UUID of your device.  Unable to "
 "continue."
 msgstr ""
+"ਗਲਤੀ: ਲੇਬਲ ਸੈੱਟ ਨਹੀਂ ਕਰ ਸਕਿਆ ਜਾਂ ਤੁਹਾਡੇ ਜੰਤਰ ਦਾ UUID ਪ੍ਰਾਪਤ ਨਹੀਂ ਕਰ ਸਕਦਾ।  "
+"ਜਾਰੀ ਕਰਨ ਤੋਂ ਅਸਫਲ।"
 
 #: ../liveusb/gui.py:164
 msgid "Verifying SHA1 of LiveCD image..."
@@ -45,6 +48,8 @@ msgid ""
 "Error: The SHA1 of your Live CD is invalid.  You can run this program with "
 "the --noverify argument to bypass this verification check."
 msgstr ""
+"ਗਲਤੀ: ਤੁਹਾਡੀ ਲਾਈਵ CD ਦਾ SHA1 ਗਲਤ ਹੈ। ਤੁਸੀਂ ਇਸ ਪਰੋਗਰਾਮ ਨੂੰ --noverify "
+"ਆਰਗੂਮੈਂਟ ਨਾਲ ਚਲਾ ਸਕਦੇ ਹੋ ਤਾਂ ਜੋ ਇਹ ਜਾਂਚ ਬਾਈਪਾਸ ਕੀਤੀ ਜਾ ਸਕੇ।"
 
 #: ../liveusb/gui.py:177
 msgid "Extracting live image to USB device..."
@@ -53,7 +58,7 @@ msgstr "ਲਾਈਵ ਈਮੇਜ਼ USB ਜੰਤਰ ਉੱਤੇ ਖਿਲਾ�
 #: ../liveusb/gui.py:180
 #, python-format
 msgid "Creating %d Mb persistent overlay..."
-msgstr ""
+msgstr "%d Mb ਸਥਿਰ ਓਵਰਲੇਅ ਬਣਾ ਰਿਹਾ ਹੈ..."
 
 #: ../liveusb/gui.py:183
 msgid "Configuring and installing bootloader..."
@@ -84,7 +89,7 @@ msgstr ""
 #: ../liveusb/gui.py:337
 msgid ""
 "Warning: Creating a new persistent overlay will delete your existing one."
-msgstr ""
+msgstr "ਚੇਤਾਵਨੀ: ਨਵਾਂ ਸਥਿਰ ਓਵਰਲੇਅ ਬਣਾਉਣ ਨਾਲ ਤੁਹਾਡਾ ਮੌਜੂਦਾ ਵਾਲਾ ਹਟਾਇਆ ਜਾਵੇਗਾ।"
 
 #: ../liveusb/gui.py:339
 msgid "Press 'Create Live USB' again if you wish to continue."
@@ -118,6 +123,9 @@ msgid ""
 "Sorry, I'm having trouble encoding the filename of your livecd.  You may "
 "have better luck if you move your ISO to the root of your drive (ie: C:\\)"
 msgstr ""
+"ਮਾਫ ਕਰਨਾ, ਮੈਨੂੰ ਤੁਹਾਡੀ ਲਾਈਵ ਸੀਡੀ ਦਾ ਫਾਇਲ-ਨਾਂ ਇੰਕੋਡਿੰਗ ਕਰਨ ਵਿੱਚ ਸਮੱਸਿਆ ਆਈ ਹੈ। "
+"ਤੁਹਾਡੀ ਕਿਸਮਤ ਚੰਗੀ ਹੋ ਸਕਦੀ ਹੈ ਜੇ ਤੁਸੀਂ ਆਪਣੇ ISO ਨੂੰ ਆਪਣੀ ਡਰਾਈਵ ਦੇ ਰੂਟ(root) "
+"ਵਿੱਚ ਲੇ ਜਾਓ (ਜਿਵੇਂ: C:\\)"
 
 #: ../liveusb/gui.py:404
 #, python-format
@@ -130,6 +138,8 @@ msgid ""
 "There was a problem executing the following command: `%s`\n"
 "A more detailed error log has been written to 'liveusb-creator.log'"
 msgstr ""
+"ਹੇਠਲੀ ਕਮਾਂਡ ਚਲਾਉਣ ਨਾਲ ਇੱਕ ਸਮੱਸਿਆ ਆਈ ਸੀ: `%s`\n"
+"ਵੇਰਵੇ ਸਾਹਿਤ ਗਲਤੀ ਲਾਗ 'liveusb-creator.log' ਵਿੱਚ ਲਿਖਿਆ ਗਿਆ ਹੈ"
 
 #: ../liveusb/creator.py:183
 msgid "Not enough free space on device."
@@ -138,7 +148,7 @@ msgstr "ਜੰਤਰ ਉੱਤੇ ਲੋੜੀਦੀ ਥਾਂ ਖਾਲੀ ਨ�
 #: ../liveusb/creator.py:190
 #, python-format
 msgid "Creating %sMB persistent overlay"
-msgstr ""
+msgstr "%sMB ਸਥਿਰ ਓਵਰਲੇਅ ਬਣਾ ਰਿਹਾ ਹੈ"
 
 #: ../liveusb/creator.py:226
 #, python-format
@@ -167,7 +177,7 @@ msgstr "ਜੰਤਰ ਮਾਊਂਟ ਕਰਨ ਲਈ ਅਸਮਰੱਥ: %s"
 #: ../liveusb/creator.py:370
 #, python-format
 msgid "Unknown filesystem for %s.  Your device may need to be reformatted."
-msgstr ""
+msgstr "%s ਲਈ ਅਣਜਾਣ ਫਾਇਲਸਿਸਟਮ। ਤੁਹਾਡੇ ਜੰਤਰ ਨੂੰ ਮੁੜ-ਫਾਰਮੈਟ ਕਰਨ ਦੀ ਲੋੜ ਹੈ।"
 
 #: ../liveusb/creator.py:373
 #, python-format
@@ -186,6 +196,7 @@ msgstr "ਹਟਾਉਣਯੋਗ ਜੰਤਰ ਲੱਭਣ ਲਈ ਅਸਮਰ�
 msgid ""
 "Make sure your USB key is plugged in and formatted with the FAT filesystem"
 msgstr ""
+"ਜਾਂਚ ਕਰੋ ਕੀ ਤੁਹਾਡੀ USB ਪਲੱਗਇਨ ਕੀਤੀ ਹੈ ਅਤੇ FAT ਫਾਇਲ ਸਿਸਟਮ ਨਾਲ ਫਾਰਮੈਟ ਕੀਤੀ ਹੈ"
 
 #: ../liveusb/creator.py:482
 #, python-format
@@ -202,6 +213,8 @@ msgid ""
 "Cannot find '%s'.  Make sure to extract the entire liveusb-creator zip file "
 "before running this program."
 msgstr ""
+"'%s' ਨੂੰ ਲੱਭ ਨਹੀਂ ਸਕਿਆ। ਪੂਰੀ liveusb-creator zip ਫਾਇਲ ਨੂੰ ਇਹ ਪਰੋਗਰਾਮ ਚਲਾਉਣ "
+"ਤੋਂ ਪਹਿਲਾਂ ਖੋਲਣਾ ਨਾ ਭੁੱਲੋ।"
 
 #: ../liveusb/dialog.py:123
 msgid "Fedora LiveUSB Creator"
@@ -214,6 +227,10 @@ msgid ""
 "extracting the ISO to the USB device, creating the persistent overlay, and "
 "installing the bootloader."
 msgstr ""
+"This button will begin the LiveUSB creation process।  This entails "
+"optionally downloading a release (if an existing one wasn't selected),  "
+"extracting the ISO to the USB device, creating the persistent overlay, and "
+"installing the bootloader।"
 
 #: ../liveusb/dialog.py:125
 msgid "Create Live USB"
@@ -221,19 +238,22 @@ msgstr "ਲਾਈਵ USB ਬਣਾਓ"
 
 #: ../liveusb/dialog.py:126
 msgid "This is the status console, where all messages get written to."
-msgstr ""
+msgstr "ਇਹ ਸਟੇਟਸ ਕੰਸੋਲ ਹੈ, ਜਿੱਥੇ ਸਭ ਸੁਨੇਹੇ ਲਿਖੇ ਜਾਂਦੇ ਹਨ।"
 
 #: ../liveusb/dialog.py:127
 msgid ""
 "This is the progress bar that will indicate how far along in the LiveUSB "
 "creation process you are"
 msgstr ""
+"ਇਹ ਪਰੋਗਰੈੱਸ ਬਾਰ ਹੈ ਜੋ ਦੱਸਦੀ ਹੈ ਕਿ ਤੁਸੀਂ ਕਿੰਨੇ ਸਮੇਂ ਤੋਂ LiveUSB ਬਣਾਉਣ ਵਾਲੇ "
+"ਕਾਰਜ ਵਿੱਚ ਹੋ"
 
 #: ../liveusb/dialog.py:128
 msgid ""
 "If you do not select an existing Live CD, the selected release will be "
 "downloaded for you."
 msgstr ""
+"ਜੇ ਤੁਸੀਂ ਇੱਕ ਮੌਜੂਦਾ ਲਾਈਵ CD ਚੁਣਦੇ ਹੋ, ਚੁਣਿਆ ਰੀਲੀਜ਼ ਤੁਹਾਡੇ ਡਾਊਨਲੋਡ ਹੋਵੇਗਾ।"
 
 #: ../liveusb/dialog.py:129
 msgid "Download Fedora"
@@ -249,6 +269,9 @@ msgid ""
 "previously downloaded.  If you do not select one, a release will be "
 "downloaded for you automatically."
 msgstr ""
+"This button allows you to browse for an existing Live CD ISO that you have "
+"previously downloaded।  If you do not select one, a release will be "
+"downloaded for you automatically।"
 
 #: ../liveusb/dialog.py:132
 msgid "Use existing Live CD"
@@ -263,6 +286,8 @@ msgid ""
 "This is the USB stick that you want to install your Live CD on.  This device "
 "must be formatted with the FAT filesystem."
 msgstr ""
+"ਇਹ USB ਸਟਿੱਕ ਹੈ ਜੋ ਉੱਪਰ ਤੁਸੀਂ ਆਪਣੀ ਲਾਈਵ CD ਇੰਸਟਾਲ ਕਰਨੀ ਚਾਹੁੰਦੇ ਹੋ। ਇਹ ਜੰਤਰ "
+"FAT ਫਾਇਲਸਿਸਟਮ ਨਾਲ ਫਾਰਮੈਟ ਕੀਤਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ।"
 
 #: ../liveusb/dialog.py:136
 msgid "Target Device"
@@ -275,8 +300,11 @@ msgid ""
 "operating system.  Without it, you will not be able to save data that will "
 "persist after a reboot."
 msgstr ""
+"By allocating extra space on your USB stick for a persistent overlay, you "
+"will be able to store data and make permanent modifications to your live "
+"operating system।  Without it, you will not be able to save data that will "
+"persist after a reboot।"
 
 #: ../liveusb/dialog.py:138
 msgid "Persistent Storage (0 Mb)"
 msgstr "ਸਟੋਰੇਜ਼ ਰੱਖ (੦ Mb)"
-
