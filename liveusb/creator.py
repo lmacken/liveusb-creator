@@ -1141,5 +1141,10 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         self.popen('format /Q /X /y /V:Fedora /FS:FAT32 %s' % self.drive['device'])
 
     def is_admin(self):
-        from win32com.shell import shell
-        return shell.IsUserAnAdmin()
+        import pywintypes
+        try:
+            from win32com.shell import shell
+            return shell.IsUserAnAdmin()
+        except pywintypes.com_error:
+            # Thrown on certain XP installs
+            return True
