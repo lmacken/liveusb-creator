@@ -16,11 +16,18 @@ Section ""
 	SetOverwrite on
 
 	SetOutPath $INSTDIR
+
+	File vcredist_x86.exe
+	IfFileExists "$WINDIR\WinSxS\x86_Microsoft.VC90.CRT_1fc8b3b9a1e18e3b_9.0.21022.8_x-ww_d08d0375" vcredist_install_finished vcredist_silent_install
+	vcredist_silent_install:
+	DetailPrint "Installing the Microsoft Visual C++ 2008 Redistributable Package"
+	ExecWait '"$INSTDIR\vcredist_x86.exe" /q'
+	vcredist_install_finished:
+	Delete "$INSTDIR\vcredist_x86.exe"
+
 	File liveusb-creator.exe
 	File LICENSE.txt
 	File README.txt
-	File MSVCP90.DLL
-	File MSVCR90.dll
 	File w9xpopen.exe
 	
 	SetOutPath $INSTDIR\tools
@@ -69,8 +76,6 @@ Section Uninstall
 	Delete "$INSTDIR\liveusb-creator.exe"
 	Delete "$INSTDIR\LICENSE.txt"
 	Delete "$INSTDIR\README.txt"
-	Delete "$INSTDIR\MSVCP90.DLL"
-	Delete "$INSTDIR\MSVCR90.dll"
 	Delete "$INSTDIR\w9xpopen.exe"
 	
 	Delete "$INSTDIR\tools\7z.dll"

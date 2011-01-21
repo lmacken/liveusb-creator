@@ -5,9 +5,9 @@ echo Generating an exe of the liveusb-creator %1
 del /Q dist
 del /Q build
 python -OO setup.py py2exe
-copy *.dll dist
 copy README.txt dist
 copy data\fedora.ico dist\liveusb-creator.ico
+copy data\vcredist_x86.exe dist
 copy data\liveusb-creator.nsi dist\liveusb-creator.nsi
 "C:\Program Files\NSIS\makensis.exe" dist\liveusb-creator.nsi
 rename dist liveusb-creator-%1
