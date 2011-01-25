@@ -33,7 +33,6 @@ Section ""
 	SetOutPath $INSTDIR\tools
 	File tools\7z.dll
 	File tools\7z.exe
-	File tools\7zCon.sfx
 	File tools\7-Zip-License.txt
 	File tools\dd.exe
 	File tools\syslinux.exe
@@ -80,7 +79,6 @@ Section Uninstall
 	
 	Delete "$INSTDIR\tools\7z.dll"
 	Delete "$INSTDIR\tools\7z.exe"
-	Delete "$INSTDIR\tools\7zCon.sfx"
 	Delete "$INSTDIR\tools\7-Zip-License.txt"
 	Delete "$INSTDIR\tools\dd.exe"
 	Delete "$INSTDIR\tools\syslinux.exe"
