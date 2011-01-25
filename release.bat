@@ -2,8 +2,9 @@
 :: Usage: `release 3.0.1`
 :: Author: Luke Macken <lmacken@redhat.com>
 echo Generating an exe of the liveusb-creator %1
-del /Q dist
-del /Q build
+rmdir /S /Q dist
+rmdir /S /Q build
+rmdir /S /Q liveusb-creator-%1
 python -OO setup.py py2exe
 copy README.txt dist
 copy data\fedora.ico dist\liveusb-creator.ico
