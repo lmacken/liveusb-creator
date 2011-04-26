@@ -645,21 +645,29 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             liveos = os.path.join(self.dest, 'LiveOS')
             if not os.path.exists(liveos):
                 os.mkdir(liveos)
-            for img in ('squashfs.img', 'osmin.img'):
-                start = datetime.now()
-                self.popen("cp %s '%s'" % (os.path.join(tmpliveos, img),
-                                           os.path.join(liveos, img)))
-                delta = datetime.now() - start
-                if delta.seconds:
-                    self.mb_per_sec = (self.isosize / delta.seconds) / 1024**2
-                    if self.mb_per_sec:
-                        self.log.info(_("Wrote to device at") + " %d MB/sec" %
-                                      self.mb_per_sec)
+
+            start = datetime.now()
+            self.popen("cp %s '%s'" % (os.path.join(tmpliveos, 'squashfs.img'),
+                                       os.path.join(liveos, 'squashfs.img')))
+            delta = datetime.now() - start
+            if delta.seconds:
+                self.mb_per_sec = (self.isosize / delta.seconds) / 1024**2
+                if self.mb_per_sec:
+                    self.log.info(_("Wrote to device at") + " %d MB/sec" %
+                                  self.mb_per_sec)
+
+            osmin = os.path.join(tmpliveos, 'osmin.img')
+            if os.path.exists(osmin):
+                self.popen("cp %s '%s'" % (osmin,
+                    os.path.join(liveos, 'osmin.img')))
+            else:
+                self.log.debug('No osmin.img found')
+
             isolinux = os.path.join(self.dest, 'isolinux')
             if not os.path.exists(isolinux):
                 os.mkdir(isolinux)
-            self.popen("cp %s/* '%s'" % (os.path.join(tmpdir, 'isolinux'),
-                                       isolinux))
+            self.popen("cp %s/* '%s'" % (
+                os.path.join(tmpdir, 'isolinux'), isolinux))
 
             if os.path.exists(os.path.join(tmpdir, 'EFI')):
                 efi = os.path.join(self.dest, 'EFI')
