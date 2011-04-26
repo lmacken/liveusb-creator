@@ -383,12 +383,16 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         freespace = device['free']
         current_overlay = self.overlaySlider.value()
 
-        if not freespace:
+        if not device['mount']:
             self.live.log.warning(_('Device is not yet mounted, so we cannot '
                                     'determine the amount of free space.  '
                                     'Setting a maximum limit of 8G for the '
                                     'persistent storage.'))
             freespace = 8192
+        else:
+            if not freespace:
+                self.live.log.warning(_('No free space on %s') % drive)
+                freespace = 0
 
         # FAT16 cannot handle files greater than 2G
         if device['fsversion'] == 'FAT16':

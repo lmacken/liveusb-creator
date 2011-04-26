@@ -35,6 +35,7 @@ import re
 
 from StringIO import StringIO
 from datetime import datetime
+from pprint import pformat
 from stat import ST_SIZE
 
 from liveusb.releases import releases
