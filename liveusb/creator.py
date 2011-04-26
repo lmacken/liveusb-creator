@@ -748,6 +748,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         try:
             self.popen('checkisomd5 "%s"' % self.iso)
         except LiveUSBError, e:
+            self.log.exception(e)
             self.log.info(_('ISO MD5 checksum verification failed'))
             return False
         self.log.info(_('ISO MD5 checksum passed'))
