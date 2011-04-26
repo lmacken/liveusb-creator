@@ -302,14 +302,16 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
             return
         self.driveBox.clear()
         #self.textEdit.clear()
-        try:
-            self.live.detect_removable_drives()
+        def add_devices():
             for device, info in self.live.drives.items():
                 if info['label']:
                     self.driveBox.addItem("%s (%s)" % (device, info['label']))
                 else:
                     self.driveBox.addItem(device)
             self.startButton.setEnabled(True)
+
+        try:
+            self.live.detect_removable_drives(callback=add_devices)
         except LiveUSBError, e:
             self.textEdit.setPlainText(e.args[0])
             self.startButton.setEnabled(False)
@@ -346,10 +348,10 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                          self.populate_devices)
 
         # If we have access to HAL & DBus, intercept some useful signals
-        if hasattr(self.live, 'hal'):
-            self.live.hal.connect_to_signal('DeviceAdded',
+        if hasattr(self.live, 'udisks'):
+            self.live.udisks.connect_to_signal('DeviceAdded',
                                             self.populate_devices)
-            self.live.hal.connect_to_signal('DeviceRemoved',
+            self.live.udisks.connect_to_signal('DeviceRemoved',
                                             self.populate_devices)
 
     @QtCore.pyqtSignature("QString")

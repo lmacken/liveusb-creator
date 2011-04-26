@@ -416,40 +416,98 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
     bus = None # the dbus.SystemBus
     hal = None # the org.freedesktop.Hal.Manager dbus.Interface
+    udisks = None # the org.freedesktop.UDisks dbus.Interface
 
-    def detect_removable_drives(self):
-        """ Detect all removable USB storage devices using HAL via D-Bus """
+    def detect_removable_drives(self, callback=None):
+        """ Detect all removable USB storage devices using UDisks via D-Bus """
         import dbus
         self.drives = {}
         self.bus = dbus.SystemBus()
-        hal_obj = self.bus.get_object("org.freedesktop.Hal",
-                                      "/org/freedesktop/Hal/Manager")
-        self.hal = dbus.Interface(hal_obj, "org.freedesktop.Hal.Manager")
+        udisks_obj = self.bus.get_object("org.freedesktop.UDisks",
+                                         "/org/freedesktop/UDisks")
+        self.udisks = dbus.Interface(udisks_obj, "org.freedesktop.UDisks")
 
-        devices = []
-        if self.opts.force:
-            devices = self.hal.FindDeviceStringMatch('block.device',
-                                                     self.opts.force)
-        else:
-            devices = self.hal.FindDeviceByCapability("storage")
+        def handle_reply(devices):
+            for device in devices:
+                dev_obj = self.bus.get_object("org.freedesktop.UDisks", device)
+                dev = dbus.Interface(dev_obj, "org.freedesktop.DBus.Properties")
 
-        for device in devices:
-            dev = self._get_device(device)
-            if self.opts.force or self._storage_bus(dev) == "usb":
-                if self._block_is_volume(dev):
-                    self._add_device(dev)
+                data = {
+                    'udi': str(device),
+                    'is_optical': bool(dev.Get(device, 'DeviceIsOpticalDisc')),
+                    'label': str(dev.Get(device, 'IdLabel')).replace(' ', '_'),
+                    'fstype': str(dev.Get(device, 'IdType')),
+                    'fsversion': str(dev.Get(device, 'IdVersion')),
+                    'uuid': str(dev.Get(device, 'IdUuid')),
+                    'device': str(dev.Get(device, 'DeviceFile')),
+                    'mount': map(str, list(dev.Get(device, 'DeviceMountPaths'))),
+                    'bootable': 'boot' in map(str,
+                        list(dev.Get(device, 'PartitionFlags'))),
+                    'parent': None,
+                    'size': int(dev.Get(device, 'DeviceSize')),
+                }
+
+                # Only pay attention to USB devices, unless --force'd
+                iface = str(dev.Get(device, 'DriveConnectionInterface'))
+                if iface != 'usb' and self.opts.force != data['device']:
+                    self.log.warning('Skipping non-usb drive: %s' % device)
                     continue
-                else: # iterate over children looking for a volume
-                    children = self.hal.FindDeviceStringMatch("info.parent",
-                                                              device)
-                    for child in children:
-                        child = self._get_device(child)
-                        if self._block_is_volume(child):
-                            self._add_device(child, parent=dev)
-                            #break      # don't break, allow all partitions
 
-        if not len(self.drives):
-            raise LiveUSBError(_("Unable to find any USB drives"))
+                # Skip optical drives
+                if data['is_optical'] and self.opts.force != data['device']:
+                    self.log.debug('Skipping optical device: %s' % data['device'])
+                    continue
+
+                # Skip things without a size
+                if not data['size'] and not self.opts.force:
+                    self.log.debug('Skipping device without size: %s' % device)
+                    continue
+
+                # Skip devices with unknown filesystems
+                if data['fstype'] not in self.valid_fstypes and \
+                        self.opts.force != data['device']:
+                    self.log.debug('Skipping %s with unknown filesystem: %s' % (
+                        data['device'], data['fstype']))
+                    continue
+
+                parent = dev.Get(device, 'PartitionSlave')
+                if parent and parent != '/':
+                    data['parent'] = str(dbus.Interface(self._get_device(parent),
+                            'org.freedesktop.DBus.Properties').Get(parent,
+                                'DeviceFile'))
+
+                mount = data['mount']
+                if mount:
+                    if len(mount) > 1:
+                        self.log.warning('Multiple mount points for %s' %
+                                data['device'])
+                    mount = data['mount'] = data['mount'][0]
+                else:
+                    mount = data['mount'] = None
+
+                data['free'] = mount and \
+                        self.get_free_bytes(mount) / 1024**2 or None
+
+                self.log.debug(pformat(data))
+
+                self.drives[data['device']] = data
+
+            # Remove parent drives if a valid partition exists
+            for parent in [d['parent'] for d in self.drives.values()]:
+                if parent in self.drives:
+                    del(self.drives[parent])
+
+            if callback:
+                callback()
+
+            if not len(self.drives):
+                raise LiveUSBError(_("Unable to find any USB drives"))
+
+        def handle_error(error):
+            self.log.error(str(error))
+
+        self.udisks.EnumerateDevices(reply_handler=handle_reply,
+                                     error_handler=handle_error)
 
     def _storage_bus(self, dev):
         storage_bus = None
@@ -665,10 +723,10 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         return stat[statvfs.F_BSIZE] * stat[statvfs.F_BAVAIL]
 
     def _get_device(self, udi):
-        """ Return a dbus Interface to a specific HAL device UDI """
+        """ Return a dbus Interface to a specific UDisks device UDI """
         import dbus
-        dev_obj = self.bus.get_object("org.freedesktop.Hal", udi)
-        return dbus.Interface(dev_obj, "org.freedesktop.Hal.Device")
+        dev_obj = self.bus.get_object("org.freedesktop.UDisks", udi)
+        return dbus.Interface(dev_obj, "org.freedesktop.UDisks.Device")
 
     def terminate(self):
         import signal
