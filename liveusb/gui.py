@@ -184,6 +184,7 @@ class LiveUSBThread(QtCore.QThread):
             if not self.live.drive['uuid'] and not self.live.label:
                 self.status(_("Error: Cannot set the label or obtain " 
                               "the UUID of your device.  Unable to continue."))
+                self.live.log.removeHandler(handler)
                 return
 
             self.live.check_free_space()
@@ -191,12 +192,14 @@ class LiveUSBThread(QtCore.QThread):
             if not self.parent.opts.noverify:
                 # Verify the MD5 checksum inside of the ISO image
                 if not self.live.verify_iso_md5():
+                    self.live.log.removeHandler(handler)
                     return
 
                 # If we know about this ISO, and it's SHA1 -- verify it
                 release = self.live.get_release_from_iso()
                 if release and ('sha1' in release or 'sha256' in release):
                     if not self.live.verify_iso_sha1(progress=self):
+                        self.live.log.removeHandler(handler)
                         return
 
             # Setup the progress bar
