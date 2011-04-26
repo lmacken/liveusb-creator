@@ -216,11 +216,9 @@ class LiveUSBThread(QtCore.QThread):
             if self.parent.opts.liveos_checksum:
                 self.live.calculate_liveos_checksum()
 
-            # This sometimes causes segfaults in dbus.
-            #self.live.unmount_device()
-
-            # Flush all filesystem buffers
+            # Flush all filesystem buffers and unmount
             self.live.flush_buffers()
+            self.live.unmount_device()
 
             duration = str(datetime.now() - now).split('.')[0]
             self.status(_("Complete! (%s)" % duration))
@@ -459,7 +457,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                 return
             if self.live.drive['mount']:
                 self.live.dest = self.live.drive['mount']
-                self.live.unmount_device(force=True)
+                self.live.unmount_device()
             self.live.reset_mbr()
         elif not self.live.mbr_matches_syslinux_bin():
             if self.opts.reset_mbr:
@@ -492,7 +490,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                 self.status(_("Press 'Create Live USB' again if you wish to "
                               "continue."))
                 self.confirmed = True
-                self.live.unmount_device()
+                #self.live.unmount_device()
                 self.enable_widgets(True)
                 return
             else:
@@ -504,7 +502,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                     self.live.delete_liveos()
                 except LiveUSBError, e:
                     self.status(e.args[0])
-                    self.live.unmount_device()
+                    #self.live.unmount_device()
                     self.enable_widgets(True)
                     return
 

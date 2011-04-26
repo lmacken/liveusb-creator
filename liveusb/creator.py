@@ -548,14 +548,13 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             'uuid'    : str(dev.GetProperty('volume.uuid')),
             'mount'   : mount,
             'udi'     : dev,
-            'unmount' : False,
             'free'    : mount and self.get_free_bytes(mount) / 1024**2 or None,
             'device'  : device,
             'parent'  : parent
         }
 
     def mount_device(self):
-        """ Mount our device with HAL if it is not already mounted """
+        """ Mount our device if it is not already mounted """
         import dbus
         if not self.fstype:
             raise LiveUSBError(_("Unknown filesystem.  Your device "
@@ -568,59 +567,42 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             try:
                 self.log.debug("Calling %s.Mount('', %s, [], ...)" % (
                                self.drive['udi'], self.fstype))
-                self.drive['udi'].Mount('', self.fstype, [],
-                        dbus_interface='org.freedesktop.Hal.Device.Volume')
-                self.drive['unmount'] = True
+                dev = self._get_device(self.drive['udi'])
+                dev.FilesystemMount('', [],
+                        dbus_interface='org.freedesktop.UDisks.Device')
             except dbus.exceptions.DBusException, e:
                 if e.get_dbus_name() == \
                         'org.freedesktop.Hal.Device.Volume.AlreadyMounted':
                     self.log.debug('Device already mounted')
+                else:
+                    self.log.error('Unknown dbus exception:')
+                    self.log.exception(e)
             except Exception, e:
                 raise LiveUSBError(_("Unable to mount device: %s" % str(e)))
-            device = self.hal.FindDeviceStringMatch('block.device',
-                                                    self.drive['device'])
-            device = self._get_device(device[0])
-            self.dest = device.GetProperty('volume.mount_point')
-            self.log.debug("Mounted %s to %s " % (self.drive['device'],
-                                                  self.dest))
-            self.drive['mount'] = self.dest
-            self.drive['free'] = self.get_free_bytes(self.dest) / 1024**2
+
+            # Get the new mount point
+            udi = self.drive['udi']
+            dev_obj = self.bus.get_object("org.freedesktop.UDisks", udi)
+            dev = dbus.Interface(dev_obj, "org.freedesktop.DBus.Properties")
+            mounts = map(str, list(dev.Get(udi, 'DeviceMountPaths')))
+            if not mounts:
+                self.log.error(_('No mount points found after mounting attempt'))
+            else:
+                self.dest = self.drive['mount'] = mounts[0]
+                self.drive['free'] = self.get_free_bytes(self.dest) / 1024**2
+                self.log.debug("Mounted %s to %s " % (self.drive['device'],
+                                                      self.dest))
         else:
             self.log.debug("Using existing mount: %s" % self.dest)
 
-    def unmount_device(self, force=False):
+    def unmount_device(self):
         """ Unmount our device """
-        import dbus
-        #try:
-        #    unmount = self.drive.get('unmount', None)
-        #except KeyError, e:
-        #    self.log.exception(e)
-        #    return
-        if self.dest or force or (self.drive and
-                self.drive.get('unmount', False)):
-            self.log.debug("Unmounting %s from %s" % (self.drive['device'],
-                                                      self.dest))
-            try:
-                self.drive['udi'].Unmount([],
-                        dbus_interface='org.freedesktop.Hal.Device.Volume')
-            except dbus.exceptions.DBusException, e:
-                if e.get_dbus_name() in (
-                        'org.freedesktop.Hal.Device.Volume.NotMountedByHal',
-                        'org.freedesktop.Hal.Device.Volume.UnknownFailure'):
-                    self.log.debug('Device not mounted by HAL; trying manually')
-                    self.popen('umount %s' % self.drive['device'], passive=True)
-                else:
-                    import traceback
-                    self.log.warning("Unable to unmount device: %s" % str(e))
-                    self.log.debug(traceback.format_exc())
-                    return
-            self.drive['unmount'] = False
-            self.drive['mount'] = None
-            if os.path.exists(self.dest):
-                self.log.error("Mount %s exists after unmounting" % self.dest)
-            self.dest = None
-        else:
-            self.log.warning("self.dest and unmount not set, skipping unmount")
+        self.log.info("Unmounting %s" % self.dest)
+        self.popen('umount %s' % self.drive['device'], passive=True)
+        self.drive['mount'] = None
+        if os.path.exists(self.dest):
+            self.log.error("Mount %s exists after unmounting" % self.dest)
+        self.dest = None
 
     def verify_filesystem(self):
         self.log.info(_("Verifying filesystem..."))
@@ -747,7 +729,6 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 self.log.debug("Killed process %d" % pid)
             except OSError:
                 pass
-        #self.unmount_device()
 
     def verify_iso_md5(self):
         """ Verify the ISO md5sum.
