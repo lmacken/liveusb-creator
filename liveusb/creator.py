@@ -62,7 +62,8 @@ class LiveUSBCreator(object):
     _drive = None       # mountpoint of the currently selected drive
     mb_per_sec = 0      # how many megabytes per second we can write
     log = None
-    valid_fstypes = ('vfat', 'msdos', 'ext2', 'ext3')
+    ext_fstypes = ['ext2', 'ext3', 'ext4']
+    valid_fstypes = ['vfat', 'msdos'] + ext_fstypes
 
     drive = property(fget=lambda self: self.drives[self._drive],
                      fset=lambda self, d: self._set_drive(d))
@@ -412,11 +413,21 @@ class LiveUSBCreator(object):
     def is_admin(self):
         raise NotImplementedError
 
+
 class LinuxLiveUSBCreator(LiveUSBCreator):
 
     bus = None # the dbus.SystemBus
     hal = None # the org.freedesktop.Hal.Manager dbus.Interface
     udisks = None # the org.freedesktop.UDisks dbus.Interface
+
+    def __init__(self, *args, **kw):
+        super(LinuxLiveUSBCreator, self).__init__(*args, **kw)
+        extlinux = self.get_extlinux_version()
+        if extlinux < 4:
+            self.log.debug(_('You are using an old version of syslinux-extlinux '
+                    'that does not support the ext4 filesystem'))
+
+            self.valid_fstypes.remove('ext4')
 
     def detect_removable_drives(self, callback=None):
         """ Detect all removable USB storage devices using UDisks via D-Bus """
@@ -706,7 +717,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 self.log.debug(_("Removing") + " %s" % ldlinux)
                 os.unlink(ldlinux)
 
-        if self.drive['fstype'] in ('ext2', 'ext3'):
+        if self.drive['fstype'] in self.ext_fstypes:
             shutil.move(os.path.join(syslinux_path, "syslinux.cfg"),
                         os.path.join(syslinux_path, "extlinux.conf"))
             self.popen("extlinux -i '%s'" % syslinux_path)
@@ -910,6 +921,24 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
     def is_admin(self):
         return os.getuid() == 0
+
+    def get_extlinux_version(self):
+        """ Return the version of extlinux. None if it isn't installed """
+        import subprocess
+        version = None
+        p = subprocess.Popen('extlinux -v', shell=True,
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        out, err = p.communicate()
+        if p.returncode == 0:
+            version = int(err.split()[1].split('.')[0])
+        elif p.returncode == 127:
+            self.log.warning('extlinux not found! Only FAT filesystems will be supported')
+            self.valid_fstypes.remove('ext4')
+        else:
+            self.log.debug('Unknown return code from extlinux: %s' % p.returncode)
+            self.log.debug('stdout: %s\nstderr: %s' % (out, err))
+        return version
+
 
 class WindowsLiveUSBCreator(LiveUSBCreator):
 
