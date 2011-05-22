@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: liveusb-creator.master\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-09-03 02:54-0400\n"
-"PO-Revision-Date: 2009-12-08 14:28+1000\n"
-"Last-Translator: Terry Chuang <tchuang@redhat.com>\n"
+"PO-Revision-Date: 2011-05-22 23:49+0800\n"
+"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Traditional Chinese <zh@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,59 +22,56 @@ msgstr ""
 #: ../liveusb/gui.py:69
 #, python-format
 msgid "Unknown release: %s"
-msgstr "不明的釋出編號：%s"
+msgstr "未知的發行版：%s"
 
 #: ../liveusb/gui.py:73
 #, python-format
 msgid "Downloading %s..."
-msgstr "正在下載 %s…"
+msgstr "正在下載 %s..."
 
 #: ../liveusb/gui.py:152
 msgid "Verifying filesystem..."
-msgstr "驗證檔案系統…"
+msgstr "正在驗證檔案系統..."
 
 #: ../liveusb/gui.py:155
-msgid ""
-"Error: Cannot set the label or obtain the UUID of your device.  Unable to "
-"continue."
+msgid "Error: Cannot set the label or obtain the UUID of your device.  Unable to continue."
 msgstr "錯誤：無法設定標籤或取得裝置的 UUID。無法繼續。"
 
 #: ../liveusb/gui.py:164
 msgid "Verifying SHA1 of LiveCD image..."
-msgstr "驗證 LiveCD 映像檔的 SHA1…"
+msgstr "正在驗證 LiveCD 映像檔的 SHA1..."
 
 #: ../liveusb/gui.py:166
-msgid ""
-"Error: The SHA1 of your Live CD is invalid.  You can run this program with "
-"the --noverify argument to bypass this verification check."
-msgstr "錯誤：Live CD 的 SHA1 無效。您可以在執行這個程式時以 --noverify 引數來略過這項稽核檢查。"
+msgid "Error: The SHA1 of your Live CD is invalid.  You can run this program with the --noverify argument to bypass this verification check."
+msgstr "錯誤：Live CD 的 SHA1 無效。您可以在執行這個程式時以 --noverify 引數來略過這項驗證檢查。"
 
 #: ../liveusb/gui.py:177
 msgid "Extracting live image to USB device..."
-msgstr "將 live 映像檔擷取到 USB 裝置…"
+msgstr "將 live 映像檔擷取到 USB 裝置..."
 
 #: ../liveusb/gui.py:180
 #, python-format
 msgid "Creating %d Mb persistent overlay..."
-msgstr "正在製作 %d Mb 的 persistent overlay…"
+msgstr "正在製作 %d Mb 的持續性覆蓋層..."
 
 #: ../liveusb/gui.py:183
 msgid "Configuring and installing bootloader..."
-msgstr "配置與安裝開機載入程式…"
+msgstr "正在設定與安裝開機載入程式..."
 
 #: ../liveusb/gui.py:187
 #, python-format
 msgid "Complete! (%s)"
 msgstr "完成！(%s)"
 
-#: ../liveusb/gui.py:190 ../liveusb/gui.py:193
+#: ../liveusb/gui.py:190
+#: ../liveusb/gui.py:193
 msgid "LiveUSB creation failed!"
 msgstr "LiveUSB 建立失敗！"
 
 #: ../liveusb/gui.py:316
 #, python-format
 msgid "Persistent Storage (%d Mb)"
-msgstr "持續性儲存媒介(%d Mb)"
+msgstr "持續性儲存裝置 (%d Mb)"
 
 #: ../liveusb/gui.py:334
 msgid ""
@@ -86,7 +83,7 @@ msgstr ""
 
 #: ../liveusb/gui.py:337
 msgid "Warning: Creating a new persistent overlay will delete your existing one."
-msgstr "警告：建立新的 persistent overlay 將會刪除您現有的 persistent overlay。"
+msgstr "警告：建立新的持續性覆蓋層將會刪除您現有的持續性覆蓋層。"
 
 #: ../liveusb/gui.py:339
 msgid "Press 'Create Live USB' again if you wish to continue."
@@ -97,7 +94,7 @@ msgstr "如果您希望繼續，請再次按下「建立 Live USB」。"
 #. accurately calculate progress.
 #: ../liveusb/gui.py:349
 msgid "Removing existing Live OS..."
-msgstr "正在移除現有的 Live 作業系統..."
+msgstr "正在移除現有的 Live OS..."
 
 #: ../liveusb/gui.py:383
 msgid "Download complete!"
@@ -113,13 +110,11 @@ msgstr "您可再次嘗試復原您的下載"
 
 #: ../liveusb/gui.py:392
 msgid "Select Live ISO"
-msgstr "選取 Live 映像檔"
+msgstr "選取 Live ISO"
 
 #: ../liveusb/gui.py:399
-msgid ""
-"Sorry, I'm having trouble encoding the filename of your livecd.  You may "
-"have better luck if you move your ISO to the root of your drive (ie: C:\\)"
-msgstr "抱歉，在為您的 live CD 檔案名稱進行編碼時發生了問題。建議您將 ISO 映像檔移至您磁碟的 root 目錄下（例如 C:\\）"
+msgid "Sorry, I'm having trouble encoding the filename of your livecd.  You may have better luck if you move your ISO to the root of your drive (ie: C:\\)"
+msgstr "抱歉，在為您的 live CD 檔案名稱進行編碼時發生了問題。建議您將 ISO 映像檔移至您磁碟的 root 目錄下 (例如 C:\\)"
 
 #: ../liveusb/gui.py:404
 #, python-format
@@ -142,7 +137,7 @@ msgstr "裝置上的剩餘空間不足。"
 #: ../liveusb/creator.py:190
 #, python-format
 msgid "Creating %sMB persistent overlay"
-msgstr "正在建立 %sMB 的 persistent overlay"
+msgstr "正在建立 %sMB 的持續性覆蓋層"
 
 #: ../liveusb/creator.py:226
 #, python-format
@@ -201,22 +196,16 @@ msgstr ""
 
 #: ../liveusb/creator.py:558
 #, python-format
-msgid ""
-"Cannot find '%s'.  Make sure to extract the entire liveusb-creator zip file "
-"before running this program."
-msgstr "找不到「%s」。請確認在執行這個程式之前，擷取了整個 liveusb-creator 壓縮檔案。"
+msgid "Cannot find '%s'.  Make sure to extract the entire liveusb-creator zip file before running this program."
+msgstr "找不到「%s」。請確認在執行這個程式之前有解開整個 liveusb-creator 的 zip 檔案。"
 
 #: ../liveusb/dialog.py:123
 msgid "Fedora LiveUSB Creator"
 msgstr "Fedora LiveUSB 建立程式"
 
 #: ../liveusb/dialog.py:124
-msgid ""
-"This button will begin the LiveUSB creation process.  This entails "
-"optionally downloading a release (if an existing one wasn't selected),  "
-"extracting the ISO to the USB device, creating the persistent overlay, and "
-"installing the bootloader."
-msgstr "這個按鈕將啟動 LiveUSB 的建立程序。這會導致選擇性地下載發行版本（若尚未選取一個現有的發行版本）、將映像檔擷取至 USB 裝置上、建立 persistent overlay，並安裝開機載入程式。"
+msgid "This button will begin the LiveUSB creation process.  This entails optionally downloading a release (if an existing one wasn't selected),  extracting the ISO to the USB device, creating the persistent overlay, and installing the bootloader."
+msgstr "這個按鈕將啟動 LiveUSB 的建立程序。這會導致選擇性地下載發行版本 (若尚未選取一個現有的發行版本)、將映像檔擷取至 USB 裝置上、建立持續性覆蓋層，並安裝開機載入程式。"
 
 #: ../liveusb/dialog.py:125
 msgid "Create Live USB"
@@ -224,18 +213,14 @@ msgstr "建立 Live USB"
 
 #: ../liveusb/dialog.py:126
 msgid "This is the status console, where all messages get written to."
-msgstr "這是所有訊息都會被寫入的狀態主控台。"
+msgstr "這是所有訊息都會被寫入的狀態主控臺。"
 
 #: ../liveusb/dialog.py:127
-msgid ""
-"This is the progress bar that will indicate how far along in the LiveUSB "
-"creation process you are"
-msgstr "這是個會表示您的 LiveUSB 建立程序已進行到甚麼階段的進度顯示"
+msgid "This is the progress bar that will indicate how far along in the LiveUSB creation process you are"
+msgstr "這是個會指示您 LiveUSB 建立程序進行到甚麼階段的進度列"
 
 #: ../liveusb/dialog.py:128
-msgid ""
-"If you do not select an existing Live CD, the selected release will be "
-"downloaded for you."
+msgid "If you do not select an existing Live CD, the selected release will be downloaded for you."
 msgstr "如果您不選取現有的 LiveCD，系統將會為您下載已選擇的發行版本。"
 
 #: ../liveusb/dialog.py:129
@@ -247,11 +232,8 @@ msgid "or"
 msgstr "或"
 
 #: ../liveusb/dialog.py:131
-msgid ""
-"This button allows you to browse for an existing Live CD ISO that you have "
-"previously downloaded.  If you do not select one, a release will be "
-"downloaded for you automatically."
-msgstr "這個按鈕允許您瀏覽之前所下載的現有 Live CD 映像檔。如果您一個都不選，系統將會為您自動下載一個發行版本。"
+msgid "This button allows you to browse for an existing Live CD ISO that you have previously downloaded.  If you do not select one, a release will be downloaded for you automatically."
+msgstr "這個按鈕允許您瀏覽之前所下載的現有 Live CD ISO。如果您一個都不選，系統將會為您自動下載一個發行版本。"
 
 #: ../liveusb/dialog.py:132
 msgid "Use existing Live CD"
@@ -262,9 +244,7 @@ msgid "Browse"
 msgstr "瀏覽"
 
 #: ../liveusb/dialog.py:135
-msgid ""
-"This is the USB stick that you want to install your Live CD on.  This device "
-"must be formatted with the FAT filesystem."
+msgid "This is the USB stick that you want to install your Live CD on.  This device must be formatted with the FAT filesystem."
 msgstr "這是您要安裝 LiveCD 於其中的 USB 磁碟。此裝置必須經過 FAT 檔案系統格式化。"
 
 #: ../liveusb/dialog.py:136
@@ -272,14 +252,10 @@ msgid "Target Device"
 msgstr "目標裝置"
 
 #: ../liveusb/dialog.py:137
-msgid ""
-"By allocating extra space on your USB stick for a persistent overlay, you "
-"will be able to store data and make permanent modifications to your live "
-"operating system.  Without it, you will not be able to save data that will "
-"persist after a reboot."
-msgstr "藉由配置額外空間於您的 USB 磁碟來做為 persistent overlay，您將能夠對於 Live 作業系統進行資料的儲存，以及進行永久性的修改。如果沒有它，您將無法儲存重新開機之後依然留存的資料。"
+msgid "By allocating extra space on your USB stick for a persistent overlay, you will be able to store data and make permanent modifications to your live operating system.  Without it, you will not be able to save data that will persist after a reboot."
+msgstr "藉由配置額外空間於您的 USB 磁碟來做為持續性覆蓋層，您將能夠對於 Live 作業系統進行資料的儲存，以及進行永久性的修改。如果沒有它，您將無法儲存重新開機之後依然留存的資料。"
 
 #: ../liveusb/dialog.py:138
 msgid "Persistent Storage (0 Mb)"
-msgstr "持續性儲存媒介(0 Mb)"
+msgstr "持續性儲存裝置 (0 Mb)"
 
