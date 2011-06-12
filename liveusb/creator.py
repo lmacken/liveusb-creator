@@ -428,7 +428,8 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             self.log.debug(_('You are using an old version of syslinux-extlinux '
                     'that does not support the ext4 filesystem'))
 
-            self.valid_fstypes.remove('ext4')
+            if 'ext4' in self.valid_fstypes:
+                self.valid_fstypes.remove('ext4')
 
     def detect_removable_drives(self, callback=None):
         """ Detect all removable USB storage devices using UDisks via D-Bus """
