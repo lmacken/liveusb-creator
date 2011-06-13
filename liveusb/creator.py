@@ -424,10 +424,13 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
     def __init__(self, *args, **kw):
         super(LinuxLiveUSBCreator, self).__init__(*args, **kw)
         extlinux = self.get_extlinux_version()
-        if extlinux < 4:
+        if extlinux is None:
+            for type in self.ext_fstypes:
+                # FIXME: more Python-ic way of doing this
+                self.valid_fstypes.remove(type)
+        elif extlinux < 4:
             self.log.debug(_('You are using an old version of syslinux-extlinux '
                     'that does not support the ext4 filesystem'))
-
             self.valid_fstypes.remove('ext4')
 
     def detect_removable_drives(self, callback=None):
@@ -924,7 +927,6 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             version = int(err.split()[1].split('.')[0])
         elif p.returncode == 127:
             self.log.warning('extlinux not found! Only FAT filesystems will be supported')
-            self.valid_fstypes.remove('ext4')
         else:
             self.log.debug('Unknown return code from extlinux: %s' % p.returncode)
             self.log.debug('stdout: %s\nstderr: %s' % (out, err))
