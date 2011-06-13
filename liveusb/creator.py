@@ -63,8 +63,8 @@ class LiveUSBCreator(object):
     _drive = None       # mountpoint of the currently selected drive
     mb_per_sec = 0      # how many megabytes per second we can write
     log = None
-    ext_fstypes = ['ext2', 'ext3', 'ext4']
-    valid_fstypes = ['vfat', 'msdos'] + ext_fstypes
+    ext_fstypes = set(['ext2', 'ext3', 'ext4'])
+    valid_fstypes = set(['vfat', 'msdos']) | ext_fstypes
 
     drive = property(fget=lambda self: self.drives[self._drive],
                      fset=lambda self, d: self._set_drive(d))
@@ -425,9 +425,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         super(LinuxLiveUSBCreator, self).__init__(*args, **kw)
         extlinux = self.get_extlinux_version()
         if extlinux is None:
-            for type in self.ext_fstypes:
-                # FIXME: more Python-ic way of doing this
-                self.valid_fstypes.remove(type)
+            self.valid_fstypes -= self.ext_fstypes
         elif extlinux < 4:
             self.log.debug(_('You are using an old version of syslinux-extlinux '
                     'that does not support the ext4 filesystem'))
