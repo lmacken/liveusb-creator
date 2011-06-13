@@ -786,6 +786,10 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
     def bootable_partition(self):
         """ Ensure that the selected partition is flagged as bootable """
+        if self.drive.get('parent') is None:
+            self.log.debug('No partitions on device; not attempting to mark '
+                           'any paritions as bootable')
+            return
         import parted
         try:
             disk, partition = self.get_disk_partition()
