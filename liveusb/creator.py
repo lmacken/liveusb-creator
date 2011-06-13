@@ -845,7 +845,10 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         self.popen('mkfs.vfat -F 32 %s' % self._drive)
 
     def get_mbr(self):
-        parent = str(self.drive.get('parent', self._drive))
+        parent = self.drive.get('parent', self._drive)
+        if parent is None:
+            parent = self._drive
+        parent = str(parent)
         self.log.debug('Checking the MBR of %s' % parent)
         drive = open(parent, 'rb')
         mbr = ''.join(['%02X' % ord(x) for x in drive.read(2)])
