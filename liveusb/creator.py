@@ -577,8 +577,8 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                         'org.freedesktop.Hal.Device.Volume.AlreadyMounted':
                     self.log.debug('Device already mounted')
                 else:
-                    self.log.error('Unknown dbus exception:')
-                    self.log.exception(e)
+                    self.log.error('Unknown dbus exception while trying to '
+                                   'mount device: %s' % str(e))
             except Exception, e:
                 raise LiveUSBError(_("Unable to mount device: %s" % str(e)))
 
