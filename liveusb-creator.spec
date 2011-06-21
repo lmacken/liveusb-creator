@@ -1,7 +1,7 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 Name:           liveusb-creator
-Version:        3.11.2
+Version:        3.11.4
 Release:        1%{?dist}
 Summary:        A liveusb creator
 
@@ -68,6 +68,12 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/security/console.apps/%{name}
 
 %changelog
+* Tue Jun 21 2011 Luke Macken <lmacken@redhat.com> - 3.11.4-1
+- 3.11.4 bugfix release
+
+* Tue Jun 21 2011 Luke Macken <lmacken@redhat.com> - 3.11.3-1
+- 3.11.3 bugfix release
+
 * Sun Jun 12 2011 Luke Macken <lmacken@redhat.com> - 3.11.2-1
 - 3.11.2 minor bugfix release
 
