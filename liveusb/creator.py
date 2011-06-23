@@ -513,9 +513,6 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             if callback:
                 callback()
 
-            if not len(self.drives):
-                raise LiveUSBError(_("Unable to find any USB drives"))
-
         def handle_error(error):
             self.log.error(str(error))
 

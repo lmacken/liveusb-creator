@@ -304,6 +304,10 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         self.driveBox.clear()
         #self.textEdit.clear()
         def add_devices():
+            if not len(self.live.drives):
+                self.textEdit.setPlainText(_("Unable to find any USB drives"))
+                self.startButton.setEnabled(False)
+                return
             for device, info in self.live.drives.items():
                 if info['label']:
                     self.driveBox.addItem("%s (%s)" % (device, info['label']))
