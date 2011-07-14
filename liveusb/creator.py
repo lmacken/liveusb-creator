@@ -85,7 +85,7 @@ class LiveUSBCreator(object):
         self.handler.setFormatter(formatter)
         self.log.addHandler(self.handler)
 
-    def detect_removable_drives(self):
+    def detect_removable_drives(self, callback=None):
         """ This method should populate self.drives with removable devices """
         raise NotImplementedError
 
@@ -937,7 +937,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
 class WindowsLiveUSBCreator(LiveUSBCreator):
 
-    def detect_removable_drives(self):
+    def detect_removable_drives(self, callback=None):
         import win32file, win32api, pywintypes
         self.drives = {}
         for drive in [l + ':' for l in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ']:
@@ -965,6 +965,8 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                 self.log.error(_("Error probing device"))
         if not len(self.drives):
             raise LiveUSBError(_("Unable to find any removable devices"))
+        if callback:
+            callback()
 
     def verify_filesystem(self):
         import win32api, win32file, pywintypes
