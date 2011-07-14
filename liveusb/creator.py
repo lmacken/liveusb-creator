@@ -1100,10 +1100,12 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         if isinstance(cmd, basestring):
             cmd = cmd.split()
         prgmfiles = os.getenv('PROGRAMFILES')
-        paths = (prgmfiles, prgmfiles + ' (x86)', '.')
+        folder = 'LiveUSB Creator'
+        paths = [os.path.join(x, folder) for x in (prgmfiles, prgmfiles + ' (x86)')]
+        paths += [os.path.join(os.path.dirname(__file__), '..', '..'), '.']
         tool = None
         for path in paths:
-            exe = os.path.join(path, 'LiveUSB Creator', 'tools', '%s.exe' % cmd[0])
+            exe = os.path.join(path, 'tools', '%s.exe' % cmd[0])
             if os.path.exists(exe):
                 tool = '"%s"' % exe
                 break
