@@ -50,7 +50,7 @@ class LiveUSBCreator(object):
     """ An OS-independent parent class for Live USB Creators """
 
     iso = None          # the path to our live image
-    label = "FEDORA"    # if one doesn't already exist
+    label = "LIVE"    # if one doesn't already exist
     fstype = None       # the format of our usb stick
     drives = {}         # {device: {'label': label, 'mount': mountpoint}}
     overlay = 0         # size in mb of our persisten overlay
