@@ -50,7 +50,7 @@ class LiveUSBCreator(object):
     """ An OS-independent parent class for Live USB Creators """
 
     iso = None          # the path to our live image
-    label = "LIVE"    # if one doesn't already exist
+    label = "LIVE"      # if one doesn't already exist
     fstype = None       # the format of our usb stick
     drives = {}         # {device: {'label': label, 'mount': mountpoint}}
     overlay = 0         # size in mb of our persisten overlay
@@ -612,9 +612,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             else:
                 raise LiveUSBError(_("Unsupported filesystem: %s" %
                                      self.fstype))
-        if self.drive['label']:
-            self.label = self.drive['label']
-        else:
+        if self.drive['label'] != self.label:
             self.log.info("Setting %s label to %s" % (self.drive['device'],
                                                       self.label))
             try:
@@ -630,7 +628,6 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                                                         self.label))
             except LiveUSBError, e:
                 self.log.error("Unable to change volume label: %s" % str(e))
-                self.label = None
 
     def extract_iso(self):
         """ Extract self.iso to self.dest """
@@ -981,16 +978,13 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                                  "and format your USB key with the FAT "
                                  "filesystem." % vol[-1]))
         self.fstype = 'vfat'
-        if vol[0] == '':
+        if vol[0] != self.label:
             try:
                 win32file.SetVolumeLabel(self.drive['device'], self.label)
                 self.log.debug("Set %s label to %s" % (self.drive['device'],
-                                                      self.label))
+                                                       self.label))
             except pywintypes.error, e:
                 self.log.warning("Unable to SetVolumeLabel: " + str(e))
-                self.label = None
-        else:
-            self.label = vol[0].replace(' ', '_')
 
     def get_free_bytes(self, device=None):
         """ Return the number of free bytes on our selected drive """
