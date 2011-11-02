@@ -1,6 +1,8 @@
 from distutils.core import setup
 import sys, os
 
+VERSION = '3.11.5'
+
 LOCALE_DIR= '/usr/share/locale'
 
 locales = []
@@ -39,7 +41,7 @@ if sys.platform == 'win32':
 
     setup(
         name = 'liveusb-creator',
-        version = '3.11.4',
+        version = VERSION,
         packages = ['liveusb', 'liveusb/urlgrabber'],
         scripts = ['liveusb-creator'], 
         license = 'GNU General Public License (GPL)',
@@ -80,7 +82,7 @@ if sys.platform == 'win32':
 else:
     setup(
         name = 'liveusb-creator',
-        version = '3.11.4',
+        version = VERSION,
         packages = ['liveusb'],
         scripts = ['liveusb-creator'],
         license = 'GNU General Public License (GPL)',
