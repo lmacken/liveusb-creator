@@ -72,7 +72,7 @@ if sys.platform == 'win32':
                 "tools/syslinux.exe",
                 "tools/7z.exe",
                 "tools/7z.dll",
-                "tools/7zCon.sfx",
+                #"tools/7zCon.sfx",
                 "tools/7-Zip-License.txt",
             ],)
           ] + [(os.path.join(LOCALE_DIR, locale),
