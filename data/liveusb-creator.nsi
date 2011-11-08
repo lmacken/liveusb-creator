@@ -1,5 +1,5 @@
-Name "LiveUSB Creator 3.9.11"
-OutFile "liveusb-creator-3.9.11-setup.exe"
+Name "LiveUSB Creator 3.11.6"
+OutFile "liveusb-creator-3.11.6-setup.exe"
 
 SetCompressor lzma
 
