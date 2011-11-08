@@ -1,8 +1,8 @@
 ;--------------------------------
 ;LiveUSB Crator NSIS script
 
-Name "LiveUSB Creator 3.9"
-OutFile "liveusb-creator-3.9-setup.exe"
+Name "LiveUSB Creator 3.11.6"
+OutFile "liveusb-creator-3.11.6-setup.exe"
 
 SetCompressor lzma
 
