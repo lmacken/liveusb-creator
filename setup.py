@@ -1,7 +1,7 @@
 from distutils.core import setup
 import sys, os
 
-VERSION = '3.11.5'
+VERSION = '3.11.6'
 
 LOCALE_DIR= '/usr/share/locale'
 
