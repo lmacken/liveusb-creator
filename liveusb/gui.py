@@ -27,7 +27,7 @@ A cross-platform graphical interface for the LiveUSBCreator
 import os
 import sys
 import logging
-import urlparse
+import urllib.parse
 
 from time import sleep
 from datetime import datetime
@@ -39,8 +39,8 @@ if sys.platform == 'win32':
     from liveusb.urlgrabber.grabber import URLGrabber, URLGrabError
     from liveusb.urlgrabber.progress import BaseMeter
 else:
-    from urlgrabber.grabber import URLGrabber, URLGrabError
-    from urlgrabber.progress import BaseMeter
+    from .urlgrabber.grabber import URLGrabber, URLGrabError
+    from .urlgrabber.progress import BaseMeter
 
 try:
     import dbus.mainloop.qt
@@ -80,14 +80,14 @@ class ReleaseDownloader(QtCore.QThread):
                   _("Downloading %s..." % os.path.basename(self.url)))
         grabber = URLGrabber(progress_obj=self.progress, proxies=self.proxies)
         home = os.getenv('HOME', 'USERPROFILE')
-        filename = os.path.basename(urlparse.urlparse(self.url).path)
+        filename = os.path.basename(urllib.parse.urlparse(self.url).path)
         for folder in ('Downloads', 'My Documents'):
             if os.path.isdir(os.path.join(home, folder)):
                 filename = os.path.join(home, folder, filename)
                 break
         try:
             iso = grabber.urlgrab(self.url, reget='simple')
-        except URLGrabError, e:
+        except URLGrabError as e:
             self.emit(QtCore.SIGNAL("dlcomplete(PyQt_PyObject)"), e.strerror)
         else:
             self.emit(QtCore.SIGNAL("dlcomplete(PyQt_PyObject)"), iso)
@@ -226,7 +226,7 @@ class LiveUSBThread(QtCore.QThread):
             duration = str(datetime.now() - now).split('.')[0]
             self.status(_("Complete! (%s)" % duration))
 
-        except Exception, e:
+        except Exception as e:
             self.status(e.args[0])
             self.status(_("LiveUSB creation failed!"))
             self.live.log.exception(e)
@@ -308,7 +308,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                 self.textEdit.setPlainText(_("Unable to find any USB drives"))
                 self.startButton.setEnabled(False)
                 return
-            for device, info in self.live.drives.items():
+            for device, info in list(self.live.drives.items()):
                 if info['label']:
                     self.driveBox.addItem("%s (%s)" % (device, info['label']))
                 else:
@@ -317,7 +317,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
 
         try:
             self.live.detect_removable_drives(callback=add_devices)
-        except LiveUSBError, e:
+        except LiveUSBError as e:
             self.textEdit.setPlainText(e.args[0])
             self.startButton.setEnabled(False)
 
@@ -482,11 +482,11 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         try:
             self.live.mount_device()
             self._refresh_overlay_slider() # To reflect the drives free space
-        except LiveUSBError, e:
+        except LiveUSBError as e:
             self.status(e.args[0])
             self.enable_widgets(True)
             return
-        except OSError, e:
+        except OSError as e:
             self.status(_('Unable to mount device'))
             self.enable_widgets(True)
             return
@@ -511,7 +511,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                 self.confirmed = False
                 try:
                     self.live.delete_liveos()
-                except LiveUSBError, e:
+                except LiveUSBError as e:
                     self.status(e.args[0])
                     #self.live.unmount_device()
                     self.enable_widgets(True)
@@ -560,7 +560,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         if isofile:
             try:
                 self.live.set_iso(isofile)
-            except Exception, e:
+            except Exception as e:
                 self.live.log.error(e.args[0])
                 self.status(_("Unable to encode the filename of your livecd.  "
                               "You may have better luck if you move your ISO "

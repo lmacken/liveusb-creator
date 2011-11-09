@@ -76,7 +76,7 @@ class TestLiveUSBCreator:
                 live.unmount_device()
                 assert not live.drive['mount'] and not live.drive['unmount']
             else:
-                raise Exception, "Device not mounted from previous test?"
+                raise Exception("Device not mounted from previous test?")
 
     def test_verify_filesystem(self):
         live = self._get_creator()
@@ -92,8 +92,7 @@ class TestLiveUSBCreator:
         from glob import glob
         live = self._get_creator()
         live.detect_removable_drives()
-        isos = filter(lambda x: x.endswith('.iso'), 
-                      filter(os.path.isfile, glob('*') + glob('*/*')))
+        isos = [x for x in list(filter(os.path.isfile, glob('*') + glob('*/*'))) if x.endswith('.iso')]
         assert isos, "No ISOs found.  Put one in this directory"
         for drive in live.drives:
             live.drive = drive

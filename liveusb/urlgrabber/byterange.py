@@ -21,22 +21,22 @@
 
 import os
 import stat
-import urllib
-import urllib2
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
 import rfc822
 
 DEBUG = None
 
 try:    
-    from cStringIO import StringIO
-except ImportError, msg: 
-    from StringIO import StringIO
+    from io import StringIO
+except ImportError as msg: 
+    from io import StringIO
 
 class RangeError(IOError):
     """Error raised when an unsatisfiable range is requested."""
     pass
     
-class HTTPRangeHandler(urllib2.BaseHandler):
+class HTTPRangeHandler(urllib.request.BaseHandler):
     """Handler that enables HTTP Range headers.
     
     This was extremely simple. The Range header is a HTTP feature to
@@ -121,7 +121,7 @@ class RangeableFileObject:
         in self.fo.  This includes methods."""
         if hasattr(self.fo, name):
             return getattr(self.fo, name)
-        raise AttributeError, name
+        raise AttributeError(name)
     
     def tell(self):
         """Return the position within the range.
@@ -212,7 +212,7 @@ class RangeableFileObject:
                 raise RangeError('Requested Range Not Satisfiable')
             pos+= bufsize
 
-class FileRangeHandler(urllib2.FileHandler):
+class FileRangeHandler(urllib.request.FileHandler):
     """FileHandler subclass that adds Range support.
     This class handles Range headers exactly like an HTTP
     server would.
@@ -222,15 +222,15 @@ class FileRangeHandler(urllib2.FileHandler):
         import mimetools
         host = req.get_host()
         file = req.get_selector()
-        localfile = urllib.url2pathname(file)
+        localfile = urllib.request.url2pathname(file)
         stats = os.stat(localfile)
         size = stats[stat.ST_SIZE]
         modified = rfc822.formatdate(stats[stat.ST_MTIME])
         mtype = mimetypes.guess_type(file)[0]
         if host:
-            host, port = urllib.splitport(host)
+            host, port = urllib.parse.splitport(host)
             if port or socket.gethostbyname(host) not in self.get_names():
-                raise urllib2.URLError('file not on local host')
+                raise urllib.error.URLError('file not on local host')
         fo = open(localfile,'rb')
         brange = req.headers.get('Range',None)
         brange = range_header_to_tuple(brange)
@@ -255,8 +255,7 @@ class FileRangeHandler(urllib2.FileHandler):
 # follows:
 # -- range support modifications start/end here
 
-from urllib import splitport, splituser, splitpasswd, splitattr, \
-                   unquote, addclosehook, addinfourl
+from urllib.parse import splitport, splituser, splitpasswd, splitattr, unquote
 import ftplib
 import socket
 import sys
@@ -264,11 +263,11 @@ import ftplib
 import mimetypes
 import mimetools
 
-class FTPRangeHandler(urllib2.FTPHandler):
+class FTPRangeHandler(urllib.request.FTPHandler):
     def ftp_open(self, req):
         host = req.get_host()
         if not host:
-            raise IOError, ('ftp error', 'no host given')
+            raise IOError('ftp error', 'no host given')
         host, port = splitport(host)
         if port is None:
             port = ftplib.FTP_PORT
@@ -287,11 +286,11 @@ class FTPRangeHandler(urllib2.FTPHandler):
         
         try:
             host = socket.gethostbyname(host)
-        except socket.error, msg:
-            raise urllib2.URLError(msg)
+        except socket.error as msg:
+            raise urllib.error.URLError(msg)
         path, attrs = splitattr(req.get_selector())
         dirs = path.split('/')
-        dirs = map(unquote, dirs)
+        dirs = list(map(unquote, dirs))
         dirs, file = dirs[:-1], dirs[-1]
         if dirs and not dirs[0]:
             dirs = dirs[1:]
@@ -340,8 +339,8 @@ class FTPRangeHandler(urllib2.FTPHandler):
             sf = StringIO(headers)
             headers = mimetools.Message(sf)
             return addinfourl(fp, headers, req.get_full_url())
-        except ftplib.all_errors, msg:
-            raise IOError, ('ftp error', msg), sys.exc_info()[2]
+        except ftplib.all_errors as msg:
+            raise IOError('ftp error', msg).with_traceback(sys.exc_info()[2])
 
     def connect_ftp(self, user, passwd, host, port, dirs):
         fw = ftpwrapper(user, passwd, host, port, dirs)
@@ -366,22 +365,22 @@ class ftpwrapper(urllib.ftpwrapper):
             # Use nlst to see if the file exists at all
             try:
                 self.ftp.nlst(file)
-            except ftplib.error_perm, reason:
-                raise IOError, ('ftp error', reason), sys.exc_info()[2]
+            except ftplib.error_perm as reason:
+                raise IOError('ftp error', reason).with_traceback(sys.exc_info()[2])
             # Restore the transfer mode!
             self.ftp.voidcmd(cmd)
             # Try to retrieve as a file
             try:
                 cmd = 'RETR ' + file
                 conn = self.ftp.ntransfercmd(cmd, rest)
-            except ftplib.error_perm, reason:
+            except ftplib.error_perm as reason:
                 if str(reason)[:3] == '501':
                     # workaround for REST not supported error
                     fp, retrlen = self.retrfile(file, type)
                     fp = RangeableFileObject(fp, (rest,''))
                     return (fp, retrlen)
                 elif str(reason)[:3] != '550':
-                    raise IOError, ('ftp error', reason), sys.exc_info()[2]
+                    raise IOError('ftp error', reason).with_traceback(sys.exc_info()[2])
         if not conn:
             # Set transfer mode to ASCII!
             self.ftp.voidcmd('TYPE A')

@@ -118,4 +118,4 @@ class Ui_Dialog(object):
         self.overlayTitle.setWhatsThis(QtGui.QApplication.translate("Dialog", _("By allocating extra space on your USB stick for a persistent overlay, you will be able to store data and make permanent modifications to your live operating system.  Without it, you will not be able to save data that will persist after a reboot."), None, QtGui.QApplication.UnicodeUTF8))
         self.overlayTitle.setTitle(QtGui.QApplication.translate("Dialog", _("Persistent Storage (0 Mb)"), None, QtGui.QApplication.UnicodeUTF8))
 
-import resources_rc
+from . import resources_rc

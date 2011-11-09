@@ -89,14 +89,14 @@ CUSTOMIZATION
 # $Id: mirror.py,v 1.14 2006/02/22 18:26:46 mstenner Exp $
 
 import random
-import thread  # needed for locking to make this threadsafe
+import _thread  # needed for locking to make this threadsafe
 import types
 
-from grabber import URLGrabError, CallbackObject, DEBUG
+from .grabber import URLGrabError, CallbackObject, DEBUG
 
 try:
     from i18n import _
-except ImportError, msg:
+except ImportError as msg:
     def _(st): return st
 
 class GrabRequest:
@@ -251,7 +251,7 @@ class MirrorGroup:
         self.grabber = grabber
         self.mirrors = self._parse_mirrors(mirrors)
         self._next = 0
-        self._lock = thread.allocate_lock()
+        self._lock = _thread.allocate_lock()
         self.default_action = None
         self._process_kwargs(kwargs)
 
@@ -267,7 +267,7 @@ class MirrorGroup:
     def _parse_mirrors(self, mirrors):
         parsed_mirrors = []
         for m in mirrors:
-            if type(m) in types.StringTypes: m = {'mirror': m}
+            if type(m) in str: m = {'mirror': m}
             parsed_mirrors.append(m)
         return parsed_mirrors
     
@@ -396,7 +396,7 @@ class MirrorGroup:
             if DEBUG: DEBUG.info('MIRROR: trying %s -> %s', url, fullurl)
             try:
                 return func_ref( *(fullurl,), **kwargs )
-            except URLGrabError, e:
+            except URLGrabError as e:
                 if DEBUG: DEBUG.info('MIRROR: failed')
                 obj = CallbackObject()
                 obj.exception = e

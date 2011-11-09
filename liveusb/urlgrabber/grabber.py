@@ -369,14 +369,15 @@ BANDWIDTH THROTTLING
 import os
 import os.path
 import sys
-import urlparse
+import urllib.parse
 import rfc822
 import time
 import types
 import string
-import urllib
-import urllib2
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
 from stat import *  # S_* and ST_*
+import collections
 
 ########################################################################
 #                     MODULE INITIALIZATION
@@ -386,36 +387,36 @@ try:
 except:
     __version__ = '???'
 
-auth_handler = urllib2.HTTPBasicAuthHandler( \
-     urllib2.HTTPPasswordMgrWithDefaultRealm())
+auth_handler = urllib.request.HTTPBasicAuthHandler( \
+     urllib.request.HTTPPasswordMgrWithDefaultRealm())
 
 try:
     from i18n import _
-except ImportError, msg:
+except ImportError as msg:
     def _(st): return st
 
 try:
-    from httplib import HTTPException
-except ImportError, msg:
+    from http.client import HTTPException
+except ImportError as msg:
     HTTPException = None
 
 try:
     # This is a convenient way to make keepalive optional.
     # Just rename the module so it can't be imported.
-    import keepalive
-    from keepalive import HTTPHandler, HTTPSHandler
-except ImportError, msg:
+    from . import keepalive
+    from .keepalive import HTTPHandler, HTTPSHandler
+except ImportError as msg:
     keepalive_handlers = ()
 else:
     keepalive_handlers = (HTTPHandler(), HTTPSHandler())
 
 try:
     # add in range support conditionally too
-    import byterange
-    from byterange import HTTPRangeHandler, HTTPSRangeHandler, \
+    from . import byterange
+    from .byterange import HTTPRangeHandler, HTTPSRangeHandler, \
          FileRangeHandler, FTPRangeHandler, range_tuple_normalize, \
          range_tuple_to_header, RangeError
-except ImportError, msg:
+except ImportError as msg:
     range_handlers = ()
     RangeError = None
     have_range = 0
@@ -653,14 +654,14 @@ class URLParser:
         if opts.prefix:
             url = self.add_prefix(url, opts.prefix)
             
-        parts = urlparse.urlparse(url)
+        parts = urllib.parse.urlparse(url)
         (scheme, host, path, parm, query, frag) = parts
 
         if not scheme or (len(scheme) == 1 and scheme in string.letters):
             # if a scheme isn't specified, we guess that it's "file:"
             if url[0] not in '/\\': url = os.path.abspath(url)
-            url = 'file:' + urllib.pathname2url(url)
-            parts = urlparse.urlparse(url)
+            url = 'file:' + urllib.request.pathname2url(url)
+            parts = urllib.parse.urlparse(url)
             quote = 0 # pathname2url quotes, so we won't do it again
             
         if scheme in ['http', 'https']:
@@ -671,7 +672,7 @@ class URLParser:
         if quote:
             parts = self.quote(parts)
         
-        url = urlparse.urlunparse(parts)
+        url = urllib.parse.urlunparse(parts)
         return url, parts
 
     def add_prefix(self, url, prefix):
@@ -689,7 +690,7 @@ class URLParser:
                 user_pass, host = host.split('@', 1)
                 if ':' in user_pass:
                     user, password = user_pass.split(':', 1)
-            except ValueError, e:
+            except ValueError as e:
                 raise URLGrabError(1, _('Bad URL: %s') % url)
             if DEBUG: DEBUG.info('adding HTTP auth: %s, %s', user, password)
             auth_handler.add_password(None, host, user, password)
@@ -705,7 +706,7 @@ class URLParser:
         passing into urlgrabber.
         """
         (scheme, host, path, parm, query, frag) = parts
-        path = urllib.quote(path)
+        path = urllib.parse.quote(path)
         return (scheme, host, path, parm, query, frag)
 
     hexvals = '0123456789ABCDEF'
@@ -751,7 +752,7 @@ class URLGrabberOptions:
     def __getattr__(self, name):
         if self.delegate and hasattr(self.delegate, name):
             return getattr(self.delegate, name)
-        raise AttributeError, name
+        raise AttributeError(name)
     
     def raw_throttle(self):
         """Calculate raw throttle value from throttle and bandwidth 
@@ -774,7 +775,7 @@ class URLGrabberOptions:
     def _set_attributes(self, **kwargs):
         """Update object attributes with those provided in kwargs."""
         self.__dict__.update(kwargs)
-        if have_range and kwargs.has_key('range'):
+        if have_range and 'range' in kwargs:
             # normalize the supplied range value
             self.range = range_tuple_normalize(self.range)
         if not self.reget in [None, 'simple', 'check_timestamp']:
@@ -843,14 +844,14 @@ class URLGrabber:
             if DEBUG: DEBUG.info('attempt %i/%s: %s',
                                  tries, opts.retry, args[0])
             try:
-                r = apply(func, (opts,) + args, {})
+                r = func(*(opts,) + args, **{})
                 if DEBUG: DEBUG.info('success')
                 return r
-            except URLGrabError, e:
+            except URLGrabError as e:
                 exception = e
                 callback = opts.failure_callback
                 retrycode = e.errno
-            except KeyboardInterrupt, e:
+            except KeyboardInterrupt as e:
                 exception = e
                 callback = opts.interrupt_callback
 
@@ -894,11 +895,11 @@ class URLGrabber:
         (url,parts) = opts.urlparser.parse(url, opts) 
         (scheme, host, path, parm, query, frag) = parts
         if filename is None:
-            filename = os.path.basename( urllib.unquote(path) )
+            filename = os.path.basename( urllib.parse.unquote(path) )
         if scheme == 'file' and not opts.copy_local:
             # just return the name of the local file - don't make a 
             # copy currently
-            path = urllib.url2pathname(path)
+            path = urllib.request.url2pathname(path)
             if host:
                 path = os.path.normpath('//' + host + path)
             if not os.path.exists(path):
@@ -920,7 +921,7 @@ class URLGrabber:
                     obj = CallbackObject()
                     obj.filename = filename
                     obj.url = url
-                    apply(cb_func, (obj, )+cb_args, cb_kwargs)
+                    cb_func(*(obj, )+cb_args, **cb_kwargs)
             finally:
                 fo.close()
             return filename
@@ -956,7 +957,7 @@ class URLGrabber:
                     obj = CallbackObject()
                     obj.data = s
                     obj.url = url
-                    apply(cb_func, (obj, )+cb_args, cb_kwargs)
+                    cb_func(*(obj, )+cb_args, **cb_kwargs)
             finally:
                 fo.close()
             return s
@@ -968,7 +969,7 @@ class URLGrabber:
         return s
         
     def _make_callback(self, callback_obj):
-        if callable(callback_obj):
+        if isinstance(callback_obj, collections.Callable):
             return callback_obj, (), {}
         else:
             return callback_obj
@@ -1007,7 +1008,7 @@ class URLGrabberFileObject:
         in self.fo.  This includes methods."""
         if hasattr(self.fo, name):
             return getattr(self.fo, name)
-        raise AttributeError, name
+        raise AttributeError(name)
     
     def _get_opener(self):
         """Build a urllib2 OpenerDirector based on request options."""
@@ -1040,9 +1041,9 @@ class URLGrabberFileObject:
                 # these go way or be dealt with more elegantly.  The
                 # problem isn't there after 2.2.  -MDS 2005/02/24
                 if not need_keepalive_handler:
-                    handlers.append( urllib2.HTTPHandler() )
+                    handlers.append( urllib.request.HTTPHandler() )
                 if not need_range_handler:
-                    handlers.append( urllib2.FTPHandler() )
+                    handlers.append( urllib.request.FTPHandler() )
                 # -------------------------------------------------------
                     
             if need_keepalive_handler:
@@ -1053,7 +1054,7 @@ class URLGrabberFileObject:
             if self.opts.cache_openers:
               self._opener = CachedOpenerDirector(*handlers)
             else:
-              self._opener = urllib2.build_opener(*handlers)
+              self._opener = urllib.request.build_opener(*handlers)
             # OK, I don't like to do this, but otherwise, we end up with
             # TWO user-agent headers.
             self._opener.addheaders = []
@@ -1062,7 +1063,7 @@ class URLGrabberFileObject:
     def _do_open(self):
         opener = self._get_opener()
 
-        req = urllib2.Request(self.url, self.opts.data) # build request object
+        req = urllib.request.Request(self.url, self.opts.data) # build request object
         self._add_headers(req) # add misc headers that we need
         self._build_range(req) # take care of reget and byterange stuff
 
@@ -1088,8 +1089,8 @@ class URLGrabberFileObject:
                 self._build_range(req)
                 fo, hdr = self._make_request(req, opener)
 
-        (scheme, host, path, parm, query, frag) = urlparse.urlparse(self.url)
-        path = urllib.unquote(path)
+        (scheme, host, path, parm, query, frag) = urllib.parse.urlparse(self.url)
+        path = urllib.parse.unquote(path)
         if not (self.opts.progress_obj or self.opts.raw_throttle() \
                 or self.opts.timeout):
             # if we're not using the progress_obj, throttling, or timeout
@@ -1106,7 +1107,7 @@ class URLGrabberFileObject:
                 length = None
 
             self.opts.progress_obj.start(str(self.filename),
-                                         urllib.unquote(self.url),
+                                         urllib.parse.unquote(self.url),
                                          os.path.basename(path), 
                                          length, text=self.opts.text)
             self.opts.progress_obj.update(0)
@@ -1129,7 +1130,7 @@ class URLGrabberFileObject:
         self.append = 0
         reget_length = 0
         rt = None
-        if have_range and self.opts.reget and type(self.filename) in types.StringTypes:
+        if have_range and self.opts.reget and type(self.filename) in str:
             # we have reget turned on and we're dumping to a file
             try:
                 s = os.stat(self.filename)
@@ -1168,24 +1169,24 @@ class URLGrabberFileObject:
             else:
                 fo = opener.open(req)
             hdr = fo.info()
-        except ValueError, e:
+        except ValueError as e:
             raise URLGrabError(1, _('Bad URL: %s') % (e, ))
-        except RangeError, e:
+        except RangeError as e:
             raise URLGrabError(9, str(e))
-        except urllib2.HTTPError, e:
+        except urllib.error.HTTPError as e:
             new_e = URLGrabError(14, str(e))
             new_e.code = e.code
             new_e.exception = e
             raise new_e
-        except IOError, e:
+        except IOError as e:
             if hasattr(e, 'reason') and have_socket_timeout and \
                    isinstance(e.reason, TimeoutError):
                 raise URLGrabError(12, _('Timeout: %s') % (e, ))
             else:
                 raise URLGrabError(4, _('IOError: %s') % (e, ))
-        except OSError, e:
+        except OSError as e:
             raise URLGrabError(5, _('OSError: %s') % (e, ))
-        except HTTPException, e:
+        except HTTPException as e:
             raise URLGrabError(7, _('HTTP Exception (%s): %s') % \
                             (e.__class__.__name__, e))
         else:
@@ -1199,7 +1200,7 @@ class URLGrabberFileObject:
             # if we have a known range, only try to read that much.
             (low, high) = self.opts.range
             amount = high - low
-        except TypeError, ValueError:
+        except TypeError as ValueError:
             amount = None
         bs = 1024*8
         size = 0
@@ -1220,7 +1221,7 @@ class URLGrabberFileObject:
             modified_tuple  = self.hdr.getdate_tz('last-modified')
             modified_stamp  = rfc822.mktime_tz(modified_tuple)
             os.utime(self.filename, (modified_stamp, modified_stamp))
-        except (TypeError,), e: pass
+        except (TypeError,) as e: pass
 
         return size
     
@@ -1256,11 +1257,11 @@ class URLGrabberFileObject:
             else:           readamount = min(amt, self._rbufsize)
             try:
                 new = self.fo.read(readamount)
-            except socket.error, e:
+            except socket.error as e:
                 raise URLGrabError(4, _('Socket Error: %s') % (e, ))
-            except TimeoutError, e:
+            except TimeoutError as e:
                 raise URLGrabError(12, _('Timeout: %s') % (e, ))
-            except IOError, e:
+            except IOError as e:
                 raise URLGrabError(4, _('IOError: %s') %(e,))
             newsize = len(new)
             if not newsize: break # no more to read
@@ -1314,7 +1315,7 @@ def CachedOpenerDirector(*handlers):
             for handler in opener.handlers:
                 handler.add_parent(opener)
             return opener
-    opener = urllib2.build_opener(*handlers)
+    opener = urllib.request.build_opener(*handlers)
     _handler_cache.append( (handlers, opener) )
     return opener
 
@@ -1325,14 +1326,14 @@ def CachedProxyHandler(proxies):
             if DEBUG: DEBUG.debug('re-using proxy settings: %s', proxies)
             break
     else:
-        for k, v in proxies.items():
-            utype, url = urllib.splittype(v)
-            host, other = urllib.splithost(url)
+        for k, v in list(proxies.items()):
+            utype, url = urllib.parse.splittype(v)
+            host, other = urllib.parse.splithost(url)
             if (utype is None) or (host is None):
                 raise URLGrabError(13, _('Bad proxy URL: %s') % v)
 
         if DEBUG: DEBUG.info('creating new proxy handler: %s', proxies)
-        handler = urllib2.ProxyHandler(proxies)
+        handler = urllib.request.ProxyHandler(proxies)
         _proxy_cache.append( (proxies, handler) )
     return handler
 
@@ -1376,8 +1377,8 @@ def _main_test():
     import sys
     try: url, filename = sys.argv[1:3]
     except ValueError:
-        print 'usage:', sys.argv[0], \
-              '<url> <filename> [copy_local=0|1] [close_connection=0|1]'
+        print('usage:', sys.argv[0], \
+              '<url> <filename> [copy_local=0|1] [close_connection=0|1]')
         sys.exit()
 
     kwargs = {}
@@ -1387,24 +1388,24 @@ def _main_test():
 
     set_throttle(1.0)
     set_bandwidth(32 * 1024)
-    print "throttle: %s,  throttle bandwidth: %s B/s" % (default_grabber.throttle, 
-                                                        default_grabber.bandwidth)
+    print("throttle: %s,  throttle bandwidth: %s B/s" % (default_grabber.throttle, 
+                                                        default_grabber.bandwidth))
 
-    try: from progress import text_progress_meter
-    except ImportError, e: pass
+    try: from .progress import text_progress_meter
+    except ImportError as e: pass
     else: kwargs['progress_obj'] = text_progress_meter()
 
-    try: name = apply(urlgrab, (url, filename), kwargs)
-    except URLGrabError, e: print e
-    else: print 'LOCAL FILE:', name
+    try: name = urlgrab(*(url, filename), **kwargs)
+    except URLGrabError as e: print(e)
+    else: print('LOCAL FILE:', name)
 
 
 def _retry_test():
     import sys
     try: url, filename = sys.argv[1:3]
     except ValueError:
-        print 'usage:', sys.argv[0], \
-              '<url> <filename> [copy_local=0|1] [close_connection=0|1]'
+        print('usage:', sys.argv[0], \
+              '<url> <filename> [copy_local=0|1] [close_connection=0|1]')
         sys.exit()
 
     kwargs = {}
@@ -1412,34 +1413,34 @@ def _retry_test():
         k, v = string.split(a, '=', 1)
         kwargs[k] = int(v)
 
-    try: from progress import text_progress_meter
-    except ImportError, e: pass
+    try: from .progress import text_progress_meter
+    except ImportError as e: pass
     else: kwargs['progress_obj'] = text_progress_meter()
 
     def cfunc(filename, hello, there='foo'):
-        print hello, there
+        print(hello, there)
         import random
         rnum = random.random()
         if rnum < .5:
-            print 'forcing retry'
+            print('forcing retry')
             raise URLGrabError(-1, 'forcing retry')
         if rnum < .75:
-            print 'forcing failure'
+            print('forcing failure')
             raise URLGrabError(-2, 'forcing immediate failure')
-        print 'success'
+        print('success')
         return
         
     close_all()
     kwargs['checkfunc'] = (cfunc, ('hello',), {'there':'there'})
-    try: name = apply(retrygrab, (url, filename), kwargs)
-    except URLGrabError, e: print e
-    else: print 'LOCAL FILE:', name
+    try: name = retrygrab(*(url, filename), **kwargs)
+    except URLGrabError as e: print(e)
+    else: print('LOCAL FILE:', name)
 
 def _file_object_test(filename=None):
-    import random, cStringIO, sys
+    import random, io, sys
     if filename is None:
         filename = __file__
-    print 'using file "%s" for comparisons' % filename
+    print('using file "%s" for comparisons' % filename)
     fo = open(filename)
     s_input = fo.read()
     fo.close()
@@ -1448,14 +1449,14 @@ def _file_object_test(filename=None):
                      _test_file_object_readall,
                      _test_file_object_readline,
                      _test_file_object_readlines]:
-        fo_input = cStringIO.StringIO(s_input)
-        fo_output = cStringIO.StringIO()
+        fo_input = io.StringIO(s_input)
+        fo_output = io.StringIO()
         wrapper = URLGrabberFileObject(fo_input, None, 0)
-        print 'testing %-30s ' % testfunc.__name__,
+        print('testing %-30s ' % testfunc.__name__, end=' ')
         testfunc(wrapper, fo_output)
         s_output = fo_output.getvalue()
-        if s_output == s_input: print 'passed'
-        else: print 'FAILED'
+        if s_output == s_input: print('passed')
+        else: print('FAILED')
             
 def _test_file_object_smallread(wrapper, fo_output):
     while 1:

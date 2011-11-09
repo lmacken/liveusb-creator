@@ -50,4 +50,4 @@ __author__  = 'Michael D. Stenner <mstenner@linux.duke.edu>, ' \
               'Ryan Tomayko <rtomayko@naeblis.cx>'
 __url__     = 'http://linux.duke.edu/projects/urlgrabber/'
 
-from grabber import urlgrab, urlopen, urlread
+from .grabber import urlgrab, urlopen, urlread
