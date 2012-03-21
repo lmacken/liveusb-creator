@@ -448,7 +448,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 data = {
                     'udi': str(device),
                     'is_optical': bool(dev.Get(device, 'DeviceIsOpticalDisc')),
-                    'label': str(dev.Get(device, 'IdLabel')).replace(' ', '_'),
+                    'label': unicode(dev.Get(device, 'IdLabel')).replace(' ', '_'),
                     'fstype': str(dev.Get(device, 'IdType')),
                     'fsversion': str(dev.Get(device, 'IdVersion')),
                     'uuid': str(dev.Get(device, 'IdUuid')),
