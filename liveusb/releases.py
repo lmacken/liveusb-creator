@@ -27,25 +27,9 @@ releases = (
     ##
     ## Custom spins
     ##
-
     {
-        'name': 'Sugar on a Stick v4 Mango lassi',
-        'url': 'http://alt.fedoraproject.org/pub/alt/spins/linux/releases/14/Spins/i686/Fedora-14-i686-Live-SoaS.iso',
-        'sha256': '32d74ea3dee51ea4643b7ea0143774099533e727f301e7868d399366f26c5471',
-    },
-    {
-        'name': 'Sugar on a Stick v3 Mirabelle',
-        'url': 'http://alt.fedoraproject.org/pub/alt/spins/linux/releases/13/Spins/i686/Fedora-13-i686-Live-SoaS.iso',
-        'sha1': 'b610e7eb6f8128295b643cdfc32101731d8d3f22',
-    },
-    {
-        'name': 'Sugar on a Stick v2 Blueberry',
-        'url': 'http://download.sugarlabs.org/soas/releases/soas-2-blueberry.iso',
-        'sha1': '8022b68433295f12fbfffa66bf49205851a6a1e0',
-    },
-    {
-        'name': 'Sugar on a Stick v1 Strawberry',
-        'url': 'http://download.sugarlabs.org/soas/releases/soas-1-strawberry.iso',
-        'sha1': '41b08c93a65cc1e38286b9f8980f51528a36761d',
+        'name': 'Sugar on a Stick v6 Pineapple',
+        'url': 'https://alt.fedoraproject.org/pub/alt/spins/linux/releases/16/Spins/i686/Fedora-16-i686-Live-SoaS.iso',
+        'sha256': '5aa938737cc4ebeb1d269c4d8b2bf56e41bacd1967c3997b8969b42b88b63bfa',
     },
 )
