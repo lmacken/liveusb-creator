@@ -1,7 +1,7 @@
 import re
 from urlgrabber import urlread
 
-FEDORA_RELEASES = 'http://download.fedora.redhat.com/pub/fedora/linux/releases/'
+FEDORA_RELEASES = 'http://dl.fedoraproject.org/pub/fedora/linux/releases/'
 ARCHES = ('i686', 'x86_64')
 
 def get_fedora_releases():
