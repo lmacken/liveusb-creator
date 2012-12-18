@@ -22,13 +22,9 @@ import sys
 import gettext
 import locale
 
-# Cope with i18n on windows: this should not arm on other OS
-# only solution to have it work on WinXP FR locale
-locale.setlocale(locale.LC_ALL, '')
-lang=locale.getlocale(locale.LC_ALL)[0]
-os.environ['LANG'] = lang
-#print >> sys.stderr, lang
-#print >> sys.stderr, os.getenv('LANG')
+if sys.platform == 'win32':
+    import gettext_windows
+    gettext_windows.setup_env()
 
 if os.path.exists('locale'):
     translation = gettext.translation('liveusb-creator', 'locale', fallback=True)

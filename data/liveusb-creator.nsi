@@ -29,6 +29,7 @@ Section ""
 	File LICENSE.txt
 	File README.txt
 	File w9xpopen.exe
+	File /r locale
 	
 	SetOutPath $INSTDIR\tools
 	File tools\7z.dll
@@ -86,6 +87,7 @@ Section Uninstall
 	Delete "$INSTDIR\liveusb-creator.exe.log"
 
 	; Remove the installation directories.
+	RMDir /R "$INSTDIR\locale"
 	RMDir "$INSTDIR\tools"
 	RMDir "$INSTDIR"
 
