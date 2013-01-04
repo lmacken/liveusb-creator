@@ -43,9 +43,6 @@ if sys.platform == "win32":
     from liveusb.creator import WindowsLiveUSBCreator as LiveUSBCreator
     from liveusb.windows_dialog import Ui_Dialog as LiveUSBInterface
 else:
-    if os.getuid() != 0:
-        print >> sys.stderr, _("You must run this application as root")
-        sys.exit(1)
     from liveusb.creator import LinuxLiveUSBCreator as LiveUSBCreator
     from liveusb.linux_dialog import Ui_Dialog as LiveUSBInterface
 
