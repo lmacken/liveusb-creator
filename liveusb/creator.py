@@ -32,6 +32,7 @@ import shutil
 import time
 import os
 import re
+import sys
 
 from StringIO import StringIO
 from datetime import datetime
@@ -181,7 +182,7 @@ class LiveUSBCreator(object):
         """
         self.log.debug(cmd)
         if isinstance(cmd, unicode):
-            cmd = cmd.encode('utf-8', 'replace')
+            cmd = cmd.encode(sys.getfilesystemencoding(), 'replace')
         self.output.write(cmd)
         proc = subprocess.Popen(cmd, stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE, stdin=subprocess.PIPE,
