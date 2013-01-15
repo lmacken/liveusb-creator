@@ -7,6 +7,18 @@ ARCHES = ('i386', 'i686', 'x86_64')
 
 # A backup list of releases, just in case we can't fetch them.
 fedora_releases = [
+    {'name': 'Fedora 18 i686 Desktop',
+     'sha256': '7c7f453c15a5d13df95bf8caab6277e5aab1c6353eb242b1cf00344b61869d26',
+     'url': 'http://dl.fedoraproject.org/pub/fedora/linux/releases/18/Live/i386/Fedora-18-i686-Live-Desktop.iso'},
+    {'name': 'Fedora 18 i686 KDE',
+     'sha256': 'f172192566d0e12c29a741a568a917c5d8643aa781fdf06598b12a217a58cb74',
+     'url': 'http://dl.fedoraproject.org/pub/fedora/linux/releases/18/Live/i386/Fedora-18-i686-Live-KDE.iso'},
+    {'name': 'Fedora 18 x86_64 Desktop',
+     'sha256': 'a276e06d244e04b765f0a35532d9036ad84f340b0bdcc32e0233a8fbc31d5bed',
+     'url': 'http://dl.fedoraproject.org/pub/fedora/linux/releases/18/Live/x86_64/Fedora-18-x86_64-Live-Desktop.iso'},
+    {'name': 'Fedora 18 x86_64 KDE',
+     'sha256': '41d51d86ff5c272263285d00a0c3da7acbbce404b9930b0ff8bd7226e7248805',
+     'url': 'http://dl.fedoraproject.org/pub/fedora/linux/releases/18/Live/x86_64/Fedora-18-x86_64-Live-KDE.iso'},
     {'name': 'Fedora 17 i686 Desktop',
      'sha256': '26027f4d4686f1df186b31ce773dbb903db18f4b1aa37a1e37f0fa6ff4111f42',
      'url': 'http://dl.fedoraproject.org/pub/fedora/linux/releases/17/Live/i686/Fedora-17-i686-Live-Desktop.iso'},
