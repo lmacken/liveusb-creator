@@ -262,6 +262,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         self.in_process = False
         QtGui.QDialog.__init__(self)
         LiveUSBInterface.__init__(self)
+        self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
         self.opts = opts
         self.args = args
         self.setupUi(self)
@@ -334,6 +335,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         self.live.log.info(_('Releases updated!'))
 
     def connect_slots(self):
+        self.connect(self, QtCore.SIGNAL('triggered()'), self.terminate)
         self.connect(self.isoBttn, QtCore.SIGNAL("clicked()"), self.selectfile)
         self.connect(self.startButton, QtCore.SIGNAL("clicked()"), self.begin)
         self.connect(self.overlaySlider, QtCore.SIGNAL("valueChanged(int)"),
