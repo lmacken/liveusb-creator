@@ -1,8 +1,9 @@
 import re
 from urlgrabber import urlread
+from urlgrabber.grabber import URLGrabError
 
 FEDORA_RELEASES = 'http://dl.fedoraproject.org/pub/fedora/linux/releases/'
-ARCHES = ('i686', 'x86_64')
+ARCHES = ('i386', 'i686', 'x86_64')
 
 def get_fedora_releases():
     releases = []
@@ -10,7 +11,10 @@ def get_fedora_releases():
     for release in re.findall(r'<a href="(\d+)/">', html)[-2:][::-1]:
         for arch in ARCHES:
             arch_url = FEDORA_RELEASES + '%s/Live/%s/' % (release, arch)
-            files = urlread(arch_url)
+            try:
+                files = urlread(arch_url)
+            except URLGrabError:
+                continue
             for link in re.findall(r'<a href="(.*)">', files):
                 if link.endswith('-CHECKSUM'):
                     checksum = urlread(arch_url + link)
