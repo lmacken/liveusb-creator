@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>Dialog</class>
- <widget class="QDialog" name="Dialog" >
-  <property name="geometry" >
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,20 +10,20 @@
     <height>388</height>
    </rect>
   </property>
-  <property name="sizePolicy" >
-   <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Fedora LiveUSB Creator</string>
   </property>
-  <widget class="QPushButton" name="startButton" >
-   <property name="enabled" >
+  <widget class="QPushButton" name="startButton">
+   <property name="enabled">
     <bool>true</bool>
    </property>
-   <property name="geometry" >
+   <property name="geometry">
     <rect>
      <x>130</x>
      <y>350</y>
@@ -30,15 +31,15 @@
      <height>34</height>
     </rect>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>This button will begin the LiveUSB creation process.  This entails optionally downloading a release (if an existing one wasn't selected),  extracting the ISO to the USB device, creating the persistent overlay, and installing the bootloader.</string>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Create Live USB</string>
    </property>
   </widget>
-  <widget class="QTextEdit" name="textEdit" >
-   <property name="geometry" >
+  <widget class="QTextEdit" name="textEdit">
+   <property name="geometry">
     <rect>
      <x>10</x>
      <y>200</y>
@@ -46,20 +47,20 @@
      <height>111</height>
     </rect>
    </property>
-   <property name="font" >
+   <property name="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>This is the status console, where all messages get written to.</string>
    </property>
-   <property name="readOnly" >
+   <property name="readOnly">
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QProgressBar" name="progressBar" >
-   <property name="geometry" >
+  <widget class="QProgressBar" name="progressBar">
+   <property name="geometry">
     <rect>
      <x>10</x>
      <y>320</y>
@@ -67,15 +68,15 @@
      <height>23</height>
     </rect>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>This is the progress bar that will indicate how far along in the LiveUSB creation process you are</string>
    </property>
-   <property name="value" >
+   <property name="value">
     <number>0</number>
    </property>
   </widget>
-  <widget class="QGroupBox" name="downloadGroup" >
-   <property name="geometry" >
+  <widget class="QGroupBox" name="downloadGroup">
+   <property name="geometry">
     <rect>
      <x>210</x>
      <y>80</y>
@@ -83,30 +84,50 @@
      <height>51</height>
     </rect>
    </property>
-   <property name="font" >
+   <property name="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>If you do not select an existing Live CD, the selected release will be downloaded for you.</string>
    </property>
-   <property name="title" >
+   <property name="title">
     <string>Download Fedora</string>
    </property>
-   <widget class="QComboBox" name="downloadCombo" >
-    <property name="geometry" >
+   <widget class="QComboBox" name="downloadCombo">
+    <property name="geometry">
      <rect>
       <x>10</x>
       <y>20</y>
-      <width>181</width>
+      <width>161</width>
       <height>22</height>
      </rect>
     </property>
    </widget>
+   <widget class="QPushButton" name="refreshReleasesButton">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>20</y>
+      <width>30</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="resources.qrc">
+      <normaloff>:/refresh.png</normaloff>:/refresh.png</iconset>
+    </property>
+    <property name="flat">
+     <bool>true</bool>
+    </property>
+   </widget>
   </widget>
-  <widget class="QLabel" name="label_2" >
-   <property name="geometry" >
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
     <rect>
      <x>180</x>
      <y>100</y>
@@ -114,7 +135,7 @@
      <height>24</height>
     </rect>
    </property>
-   <property name="font" >
+   <property name="font">
     <font>
      <family>Verdana</family>
      <pointsize>10</pointsize>
@@ -122,12 +143,12 @@
      <bold>true</bold>
     </font>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>or</string>
    </property>
   </widget>
-  <widget class="QGroupBox" name="groupBox" >
-   <property name="geometry" >
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
     <rect>
      <x>10</x>
      <y>80</y>
@@ -135,19 +156,19 @@
      <height>51</height>
     </rect>
    </property>
-   <property name="font" >
+   <property name="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>This button allows you to browse for an existing Live CD ISO that you have previously downloaded.  If you do not select one, a release will be downloaded for you automatically.</string>
    </property>
-   <property name="title" >
+   <property name="title">
     <string>Use existing Live CD</string>
    </property>
-   <widget class="QPushButton" name="isoBttn" >
-    <property name="geometry" >
+   <widget class="QPushButton" name="isoBttn">
+    <property name="geometry">
      <rect>
       <x>11</x>
       <y>18</y>
@@ -155,16 +176,16 @@
       <height>25</height>
      </rect>
     </property>
-    <property name="text" >
+    <property name="text">
      <string>Browse</string>
     </property>
-    <property name="shortcut" >
+    <property name="shortcut">
      <string>Alt+B</string>
     </property>
    </widget>
   </widget>
-  <widget class="QGroupBox" name="groupBox_2" >
-   <property name="geometry" >
+  <widget class="QGroupBox" name="groupBox_2">
+   <property name="geometry">
     <rect>
      <x>10</x>
      <y>140</y>
@@ -172,58 +193,59 @@
      <height>51</height>
     </rect>
    </property>
-   <property name="font" >
+   <property name="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string>This is the USB stick that you want to install your Live CD on.  This device must be formatted with the FAT filesystem.</string>
    </property>
-   <property name="title" >
+   <property name="title">
     <string>Target Device</string>
    </property>
-   <widget class="QComboBox" name="driveBox" >
-    <property name="geometry" >
+   <widget class="QComboBox" name="driveBox">
+    <property name="geometry">
      <rect>
       <x>10</x>
       <y>20</y>
-      <width>145</width>
-      <height>20</height>
+      <width>151</width>
+      <height>21</height>
      </rect>
     </property>
-    <property name="editable" >
+    <property name="editable">
      <bool>false</bool>
     </property>
-    <property name="insertPolicy" >
+    <property name="insertPolicy">
      <enum>QComboBox::InsertAtTop</enum>
     </property>
-    <property name="duplicatesEnabled" >
+    <property name="duplicatesEnabled">
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="refreshDevicesButton" >
-    <property name="geometry" >
+   <widget class="QPushButton" name="refreshDevicesButton">
+    <property name="geometry">
      <rect>
-      <x>156</x>
-      <y>16</y>
+      <x>160</x>
+      <y>20</y>
       <width>30</width>
-      <height>26</height>
+      <height>20</height>
      </rect>
     </property>
-    <property name="text" >
+    <property name="text">
      <string/>
     </property>
-    <property name="icon" >
-     <iconset resource="resources.qrc" >:/refresh.png</iconset>
+    <property name="icon">
+     <iconset resource="resources.qrc">
+      <normaloff>:/refresh.png</normaloff>:/refresh.png</iconset>
     </property>
-    <property name="flat" >
+    <property name="flat">
      <bool>true</bool>
     </property>
    </widget>
   </widget>
-  <widget class="QGroupBox" name="overlayTitle" >
-   <property name="geometry" >
+  <widget class="QGroupBox" name="overlayTitle">
+   <property name="geometry">
     <rect>
      <x>210</x>
      <y>140</y>
@@ -231,19 +253,19 @@
      <height>51</height>
     </rect>
    </property>
-   <property name="font" >
+   <property name="font">
     <font>
      <pointsize>8</pointsize>
     </font>
    </property>
-   <property name="whatsThis" >
-    <string comment="comment!" >By allocating extra space on your USB stick for a persistent overlay, you will be able to store data and make permanent modifications to your live operating system.  Without it, you will not be able to save data that will persist after a reboot.</string>
+   <property name="whatsThis">
+    <string comment="comment!">By allocating extra space on your USB stick for a persistent overlay, you will be able to store data and make permanent modifications to your live operating system.  Without it, you will not be able to save data that will persist after a reboot.</string>
    </property>
-   <property name="title" >
+   <property name="title">
     <string>Persistent Storage (0 MB)</string>
    </property>
-   <widget class="QSlider" name="overlaySlider" >
-    <property name="geometry" >
+   <widget class="QSlider" name="overlaySlider">
+    <property name="geometry">
      <rect>
       <x>10</x>
       <y>20</y>
@@ -251,19 +273,19 @@
       <height>21</height>
      </rect>
     </property>
-    <property name="maximum" >
+    <property name="maximum">
      <number>2047</number>
     </property>
-    <property name="orientation" >
+    <property name="orientation">
      <enum>Qt::Horizontal</enum>
     </property>
-    <property name="tickPosition" >
+    <property name="tickPosition">
      <enum>QSlider::NoTicks</enum>
     </property>
    </widget>
   </widget>
-  <widget class="QLabel" name="label" >
-   <property name="geometry" >
+  <widget class="QLabel" name="label">
+   <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
@@ -271,16 +293,16 @@
      <height>72</height>
     </rect>
    </property>
-   <property name="text" >
+   <property name="text">
     <string/>
    </property>
-   <property name="pixmap" >
-    <pixmap resource="resources.qrc" >:/liveusb-header.png</pixmap>
+   <property name="pixmap">
+    <pixmap resource="resources.qrc">:/liveusb-header.png</pixmap>
    </property>
   </widget>
  </widget>
  <resources>
-  <include location="resources.qrc" />
+  <include location="resources.qrc"/>
  </resources>
  <connections/>
 </ui>
