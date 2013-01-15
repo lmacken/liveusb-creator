@@ -251,7 +251,7 @@ class LiveUSBCreator(object):
         self.log.debug('overlaysize = %d' % overlaysize)
         self.totalsize = overlaysize + self.isosize
         if self.totalsize > freebytes:
-            raise LiveUSBError(_("Not enough free space on device." + 
+            raise LiveUSBError(_("Not enough free space on device." +
                                  "\n%dMB ISO + %dMB overlay > %dMB free space" %
                                  (self.isosize/1024**2, self.overlay,
                                   freebytes/1024**2)))
@@ -310,7 +310,7 @@ class LiveUSBCreator(object):
                 try:
                     shutil.copyfile(infile, outfile)
                 except Exception, e:
-                    self.log.warning("Unable to copy %s to %s: %s" % (infile, outfile, str(e)))
+                    self.log.warning(_("Unable to copy %s to %s: %s") % (infile, outfile, str(e)))
 
     def delete_liveos(self):
         """ Delete the existing LiveOS """
@@ -319,14 +319,14 @@ class LiveUSBCreator(object):
                      os.path.join(self.dest + os.path.sep, 'syslinux'),
                      os.path.join(self.dest + os.path.sep, 'isolinux')]:
             if os.path.exists(path):
-                self.log.debug("Deleting " + path)
+                self.log.debug(_("Deleting ") + path)
                 # Python for Windows is unable to delete read-only files,
                 if os.path.isdir(path):
                     for f in os.listdir(path):
                         try:
                             os.chmod(os.path.join(path, f), 0777)
                         except OSError, e:
-                            self.log.debug("Unable to delete %s: %s" % (f, str(e)))
+                            self.log.debug(_("Unable to delete %s: %s") % (f, e))
                 try:
                     shutil.rmtree(path)
                 except OSError, e:
@@ -573,10 +573,10 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             except dbus.exceptions.DBusException, e:
                 if e.get_dbus_name() == \
                         'org.freedesktop.Hal.Device.Volume.AlreadyMounted':
-                    self.log.debug('Device already mounted')
+                    self.log.debug(_('Device already mounted'))
                 else:
-                    self.log.error('Unknown dbus exception while trying to '
-                                   'mount device: %s' % str(e))
+                    self.log.error(_('Unknown dbus exception while trying to '
+                                     'mount device: %s') % str(e))
             except Exception, e:
                 raise LiveUSBError(_("Unable to mount device: %s" % str(e)))
 
@@ -593,7 +593,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 self.log.debug("Mounted %s to %s " % (self.drive['device'],
                                                       self.dest))
         else:
-            self.log.debug("Using existing mount: %s" % self.dest)
+            self.log.debug(_("Using existing mount: %s") % self.dest)
 
     def unmount_device(self):
         """ Unmount our device """
@@ -614,8 +614,8 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 raise LiveUSBError(_("Unsupported filesystem: %s" %
                                      self.fstype))
         if self.drive['label'] != self.label:
-            self.log.info("Setting %s label to %s" % (self.drive['device'],
-                                                      self.label))
+            self.log.info(_("Setting %s label to %s") % (self.drive['device'],
+                                                         self.label))
             try:
                 if self.fstype in ('vfat', 'msdos'):
                     try:
@@ -628,7 +628,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                     self.popen('/sbin/e2label %s %s' % (self.drive['device'],
                                                         self.label))
             except LiveUSBError, e:
-                self.log.error("Unable to change volume label: %s" % str(e))
+                self.log.error(_("Unable to change volume label: %s") % e)
 
     def extract_iso(self):
         """ Extract self.iso to self.dest """
@@ -946,7 +946,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                     try:
                         vol = win32api.GetVolumeInformation(drive)
                     except pywintypes.error, e:
-                        self.log.error('Unable to get GetVolumeInformation(%s): %s' % (drive, str(e)))
+                        self.log.error(_('Unable to get GetVolumeInformation(%s): %s') % (drive, e))
                         continue
                     self.drives[drive] = {
                         'label': vol[0],
@@ -985,7 +985,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                 self.log.debug("Set %s label to %s" % (self.drive['device'],
                                                        self.label))
             except pywintypes.error, e:
-                self.log.warning("Unable to SetVolumeLabel: " + str(e))
+                self.log.warning(_("Unable to SetVolumeLabel: ") + e)
 
     def get_free_bytes(self, device=None):
         """ Return the number of free bytes on our selected drive """
@@ -994,7 +994,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         try:
             (spc, bps, fc, tc) = win32file.GetDiskFreeSpace(device)
         except Exception, e:
-            self.log.error("Problem determining free space: %s" % str(e))
+            self.log.error(_("Problem determining free space: %s") % e)
             return 0
         return fc * (spc * bps) # free-clusters * bytes per-cluster
 
@@ -1008,7 +1008,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         if delta.seconds:
             self.mb_per_sec = (self.isosize / delta.seconds) / 1024**2
             if self.mb_per_sec:
-                self.log.info(_("Wrote to device at") + " %d MB/sec" % 
+                self.log.info(_("Wrote to device at") + " %d MB/sec" %
                               self.mb_per_sec)
 
     def install_bootloader(self):
@@ -1075,10 +1075,10 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                 uuid = None
             else:
                 uuid = uuid[:4] + '-' + uuid[4:]
-            self.log.debug("Found UUID %s for %s" % (uuid, drive))
+            self.log.debug(_("Found UUID %s for %s") % (uuid, drive))
         except Exception, e:
             self.log.exception(e)
-            self.log.warning("Exception while fetching UUID: %s" % str(e))
+            self.log.warning(_("Exception while fetching UUID: %s") % e)
         return uuid
 
     def _get_device_size(self, drive):
@@ -1086,10 +1086,10 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         size = None
         try:
             size = int(self._get_win32_logicaldisk(drive).Size)
-            self.log.debug("Max size of %s: %d" % (drive, size))
+            self.log.debug(_("Max size of %s: %d") % (drive, size))
         except Exception, e:
             self.log.exception(e)
-            self.log.warning("Error getting drive size: %s" % str(e))
+            self.log.warning(_("Error getting drive size: %s") % e)
         return size
 
     def popen(self, cmd, **kwargs):
@@ -1153,8 +1153,8 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                     proxies['ftp'] = 'ftp://%s' % server
             settings.Close()
         except Exception, e:
-            self.log.warning('Unable to detect proxy settings: %s' % str(e))
-        self.log.debug('Using proxies: %s' % proxies)
+            self.log.warning(_('Unable to detect proxy settings: %s') % e)
+        self.log.debug(_('Using proxies: %s') % proxies)
         return proxies
 
     def verify_iso_md5(self):
