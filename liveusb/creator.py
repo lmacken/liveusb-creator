@@ -454,7 +454,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                     'fsversion': str(dev.Get(device, 'IdVersion')),
                     'uuid': str(dev.Get(device, 'IdUuid')),
                     'device': str(dev.Get(device, 'DeviceFile')),
-                    'mount': map(str, list(dev.Get(device, 'DeviceMountPaths'))),
+                    'mount': map(unicode, list(dev.Get(device, 'DeviceMountPaths'))),
                     'bootable': 'boot' in map(str,
                         list(dev.Get(device, 'PartitionFlags'))),
                     'parent': None,
@@ -537,12 +537,12 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         return is_volume
 
     def _add_device(self, dev, parent=None):
-        mount = str(dev.GetProperty('volume.mount_point'))
+        mount = unicode(dev.GetProperty('volume.mount_point'))
         device = str(dev.GetProperty('block.device'))
         if parent:
             parent = parent.GetProperty('block.device')
         self.drives[device] = {
-            'label'   : str(dev.GetProperty('volume.label')).replace(' ', '_'),
+            'label'   : unicode(dev.GetProperty('volume.label')).replace(' ', '_'),
             'fstype'  : str(dev.GetProperty('volume.fstype')),
             'fsversion': str(dev.GetProperty('volume.fsversion')),
             'uuid'    : str(dev.GetProperty('volume.uuid')),
@@ -584,7 +584,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             udi = self.drive['udi']
             dev_obj = self.bus.get_object("org.freedesktop.UDisks", udi)
             dev = dbus.Interface(dev_obj, "org.freedesktop.DBus.Properties")
-            mounts = map(str, list(dev.Get(udi, 'DeviceMountPaths')))
+            mounts = map(unicode, list(dev.Get(udi, 'DeviceMountPaths')))
             if not mounts:
                 self.log.error(_('No mount points found after mounting attempt'))
             else:
@@ -717,7 +717,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         """ Return the number of available bytes on our device """
         import statvfs
         device = device and device or self.dest
-        stat = os.statvfs(device)
+        stat = os.statvfs(device.encode('utf-8'))
         return stat[statvfs.F_BSIZE] * stat[statvfs.F_BAVAIL]
 
     def _get_device(self, udi):
@@ -843,7 +843,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         parent = self.drive.get('parent', self._drive)
         if parent is None:
             parent = self._drive
-        parent = str(parent)
+        parent = unicode(parent)
         self.log.debug('Checking the MBR of %s' % parent)
         drive = open(parent, 'rb')
         mbr = ''.join(['%02X' % ord(x) for x in drive.read(2)])
@@ -873,7 +873,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         return mbr == self.get_mbr()
 
     def reset_mbr(self):
-        parent = str(self.drive.get('parent', self._drive))
+        parent = unicode(self.drive.get('parent', self._drive))
         if '/dev/loop' not in self.drive:
             mbr = self._get_mbr_bin()
             if mbr:
@@ -896,7 +896,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         # Get size of drive
         #progress.set_max_progress(self.isosize / 1024)
         checksum = hashlib.sha1()
-        device_name = str(self.drive['parent'])
+        device_name = unicode(self.drive['parent'])
         device = file(device_name, 'rb')
         bytes = 1024**2
         total = 0

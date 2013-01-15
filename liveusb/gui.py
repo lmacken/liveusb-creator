@@ -382,9 +382,10 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         2gigs of free space, set the maximum to 2047mb, which is apparently
         the largest file we can/should store on a vfat partition.
         """
-        if not str(drive):
+        drive = unicode(drive)
+        if not drive:
             return
-        self._refresh_overlay_slider(str(drive).split()[0])
+        self._refresh_overlay_slider(drive.split()[0])
 
     def _refresh_overlay_slider(self, drive=None):
         """
