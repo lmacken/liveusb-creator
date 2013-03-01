@@ -400,7 +400,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                 return
 
         device = self.live.drives[drive]
-        freespace = device['free']
+        freespace = device['free'] or 0
         current_overlay = self.overlaySlider.value()
 
         if device['fsversion'] == 'FAT32':
