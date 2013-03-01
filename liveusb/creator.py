@@ -290,10 +290,10 @@ class LiveUSBCreator(object):
 
     def update_configs(self):
         """ Generate our syslinux.cfg and grub.conf files """
-        grubconf     = os.path.join(self.dest, "EFI", "boot", "grub.conf")
-        bootconf     = os.path.join(self.dest, "EFI", "boot", "boot.conf")
-        bootx64conf  = os.path.join(self.dest, "EFI", "boot", "bootx64.conf")
-        bootia32conf = os.path.join(self.dest, "EFI", "boot", "bootia32.conf")
+        grubconf     = os.path.join(self.dest, "EFI", "BOOT", "grub.cfg")
+        bootconf     = os.path.join(self.dest, "EFI", "BOOT", "boot.conf")
+        bootx64conf  = os.path.join(self.dest, "EFI", "BOOT", "bootx64.conf")
+        bootia32conf = os.path.join(self.dest, "EFI", "BOOT", "bootia32.conf")
         updates = [(os.path.join(self.dest, "isolinux", "isolinux.cfg"),
                     os.path.join(self.dest, "isolinux", "syslinux.cfg")),
                    (grubconf, bootconf)]
