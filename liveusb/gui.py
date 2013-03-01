@@ -48,6 +48,9 @@ try:
 except:
     pass
 
+MAX_FAT16 = 2047
+MAX_FAT32 = 3999
+
 
 class LiveUSBApp(QtGui.QApplication):
     """ Main application class """
@@ -400,27 +403,36 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         freespace = device['free']
         current_overlay = self.overlaySlider.value()
 
+        if device['fsversion'] == 'FAT32':
+            self.live.log.warning(_('Partition is FAT32; Restricting overlay '
+                                    'size to 4G'))
+            max_space = MAX_FAT32
+        elif device['fsversion'] == 'FAT16':
+            self.live.log.warning(_('Partition is FAT16; Restricting overlay '
+                                    'size to 2G'))
+            max_space = MAX_FAT16
+        else:
+            max_space = freespace
+
         if not device['mount']:
             self.live.log.warning(_('Device is not yet mounted, so we cannot '
-                                    'determine the amount of free space.  '
-                                    'Setting a maximum limit of 8G for the '
-                                    'persistent storage.'))
-            freespace = 8192
+                                    'determine the amount of free space.'))
+            if freespace > max_space:
+                freespace = max_space
         else:
             if not freespace:
                 self.live.log.warning(_('No free space on %s') % drive)
                 freespace = 0
-
-        # FAT16 cannot handle files greater than 2G
-        if device['fsversion'] == 'FAT16':
-            self.live.log.warning(_('Partition is FAT16; Restricting overlay '
-                                    'size to 2G'))
-            if freespace > 2047:
-                freespace = 2047
+            else:
+                if device['fsversion'] in ('FAT32', 'FAT16'):
+                    if freespace > max_space:
+                        freespace = max_space
 
         # Subtract the size of the ISO from our maximum overlay size
         if self.live.isosize:
-            freespace -= self.live.isosize / 1024**2
+            iso_size = self.live.isosize / 1024**2
+            if freespace + iso_size > device['free']:
+                freespace -= iso_size
 
         freespace -= 1 # Don't fill the device 100%
 
