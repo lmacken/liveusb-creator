@@ -50,6 +50,7 @@ except:
 
 MAX_FAT16 = 2047
 MAX_FAT32 = 3999
+MAX_EXT = 2097152
 
 
 class LiveUSBApp(QtGui.QApplication):
@@ -400,7 +401,8 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                 return
 
         device = self.live.drives[drive]
-        freespace = device['free'] or 0
+        freespace = device['free']
+        device_size = device['size'] / 1024**2
         current_overlay = self.overlaySlider.value()
 
         if device['fsversion'] == 'FAT32':
@@ -412,21 +414,23 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                                     'size to 2G'))
             max_space = MAX_FAT16
         else:
-            max_space = freespace
+            max_space = MAX_EXT
+
+        if freespace:
+            if freespace > device_size:
+                freespace = device_size
+            if freespace > max_space:
+                freespace = max_space
 
         if not device['mount']:
             self.live.log.warning(_('Device is not yet mounted, so we cannot '
                                     'determine the amount of free space.'))
-            if freespace > max_space:
-                freespace = max_space
+            if not freespace:
+                freespace = device_size
         else:
             if not freespace:
                 self.live.log.warning(_('No free space on %s') % drive)
                 freespace = 0
-            else:
-                if device['fsversion'] in ('FAT32', 'FAT16'):
-                    if freespace > max_space:
-                        freespace = max_space
 
         # Subtract the size of the ISO from our maximum overlay size
         if self.live.isosize:
