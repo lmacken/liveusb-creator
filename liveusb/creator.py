@@ -118,7 +118,7 @@ class LiveUSBCreator(object):
 
         Platform-specific classes inheriting from the LiveUSBCreator are
         expected to implement this method to install the bootloader to the
-        specified device using syslinux.  This specific implemention is 
+        specified device using syslinux.  This specific implemention is
         platform independent and performs sanity checking along with adding
         OLPC support.
         """
@@ -251,7 +251,7 @@ class LiveUSBCreator(object):
         self.log.debug('overlaysize = %d' % overlaysize)
         self.totalsize = overlaysize + self.isosize
         if self.totalsize > freebytes:
-            raise LiveUSBError(_("Not enough free space on device." + 
+            raise LiveUSBError(_("Not enough free space on device." +
                                  "\n%dMB ISO + %dMB overlay > %dMB free space" %
                                  (self.isosize/1024**2, self.overlay,
                                   freebytes/1024**2)))
@@ -303,7 +303,7 @@ class LiveUSBCreator(object):
 
         for (infile, outfile) in updates:
             if os.path.exists(infile):
-                self._update_configs(infile,outfile)
+                self._update_configs(infile, outfile)
         # only copy/overwrite files we had originally started with
         for (infile, outfile) in copies:
             if os.path.exists(outfile):
@@ -341,7 +341,7 @@ class LiveUSBCreator(object):
         out.write(self.output.getvalue())
         out.close()
         return filename
-        
+
 
     def existing_liveos(self):
         return os.path.exists(self.get_liveos())
@@ -738,7 +738,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
     def verify_iso_md5(self):
         """ Verify the ISO md5sum.
 
-        At the moment this is Linux specific, until we port checkisomd5 
+        At the moment this is Linux specific, until we port checkisomd5
         to Windows.
         """
         self.log.info(_('Verifying ISO MD5 checksum'))
@@ -1008,7 +1008,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         if delta.seconds:
             self.mb_per_sec = (self.isosize / delta.seconds) / 1024**2
             if self.mb_per_sec:
-                self.log.info(_("Wrote to device at") + " %d MB/sec" % 
+                self.log.info(_("Wrote to device at") + " %d MB/sec" %
                               self.mb_per_sec)
 
     def install_bootloader(self):
