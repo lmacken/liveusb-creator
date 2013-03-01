@@ -453,6 +453,8 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
     def status(self, text):
         if isinstance(text, Exception):
             text = text.args[0]
+        elif isinstance(text, int):
+            text = str(text)
         self.textEdit.append(text)
 
     def enable_widgets(self, enabled=True):
