@@ -271,10 +271,10 @@ class LiveUSBCreator(object):
     def _update_configs(self, infile, outfile):
         infile = file(infile, 'r')
         outfile= file(outfile, 'w')
-        usblabel = self.uuid and 'UUID=' + self.uuid or 'LABEL=' + self.label
+        usblabel = 'LABEL=' + self.label
         for line in infile.readlines():
-            if "CDLABEL" in line:
-                line = re.sub("CDLABEL=[^ ]*", usblabel, line)
+            if "LABEL" in line:
+                line = re.sub("LABEL=[^ ]*", usblabel, line)
                 line = re.sub("rootfstype=[^ ]*",
                               "rootfstype=%s" % self.fstype,
                               line)
