@@ -456,7 +456,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                     'fsversion': str(dev.Get(device, 'IdVersion')),
                     'uuid': str(dev.Get(device, 'IdUuid')),
                     'device': str(dev.Get(device, 'DeviceFile')),
-                    'mount': map(str, list(dev.Get(device, 'DeviceMountPaths'))),
+                    'mount': map(unicode, list(dev.Get(device, 'DeviceMountPaths'))),
                     'bootable': 'boot' in map(str,
                         list(dev.Get(device, 'PartitionFlags'))),
                     'parent': None,
