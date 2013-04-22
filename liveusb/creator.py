@@ -743,8 +743,8 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             try:
                 os.kill(pid, signal.SIGHUP)
                 self.log.debug("Killed process %d" % pid)
-            except OSError:
-                pass
+            except OSError, e:
+                self.log.debug(str(e))
 
     def verify_iso_md5(self):
         """ Verify the ISO md5sum.
