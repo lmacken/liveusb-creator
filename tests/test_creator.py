@@ -5,7 +5,7 @@ class LiveUSBCreatorOptions(object):
     force = False
     safe = False
     noverify = False
-    verbose = False
+    verbose = True
 
 
 class TestLiveUSBCreator:
