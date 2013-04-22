@@ -130,6 +130,7 @@ class ProgressThread(QtCore.QThread):
     orig_free = 0
     drive = None
     get_free_bytes = None
+    alive = True
 
     def set_data(self, size, drive, freebytes):
         self.totalsize = size / 1024
@@ -139,13 +140,16 @@ class ProgressThread(QtCore.QThread):
         self.emit(QtCore.SIGNAL("maxprogress(int)"), self.totalsize)
 
     def run(self):
-        while True:
+        while self.alive:
             free = self.get_free_bytes()
             value = (self.orig_free - free) / 1024
             self.emit(QtCore.SIGNAL("progress(int)"), value)
             if value >= self.totalsize:
                 break
             sleep(3)
+
+    def stop(self):
+        self.alive = False
 
     def terminate(self):
         self.emit(QtCore.SIGNAL("progress(int)"), self.totalsize)
@@ -222,6 +226,8 @@ class LiveUSBThread(QtCore.QThread):
                 self.live.calculate_device_checksum(progress=self)
             if self.parent.opts.liveos_checksum:
                 self.live.calculate_liveos_checksum()
+
+            self.progress.stop()
 
             # Flush all filesystem buffers and unmount
             self.live.flush_buffers()
@@ -302,12 +308,12 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                 'the Properties. Under the Compatibility tab, check the "Run '
                 'this program as an administrator" box.'))
 
-
     def populate_devices(self, *args, **kw):
         if self.in_process:
             return
         self.driveBox.clear()
         #self.textEdit.clear()
+
         def add_devices():
             if not len(self.live.drives):
                 self.textEdit.setPlainText(_("Unable to find any USB drives"))
