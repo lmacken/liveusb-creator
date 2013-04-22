@@ -29,6 +29,7 @@ import tempfile
 import logging
 import hashlib
 import shutil
+import signal
 import time
 import os
 import re
@@ -738,7 +739,6 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         return dbus.Interface(dev_obj, "org.freedesktop.UDisks.Device")
 
     def terminate(self):
-        import signal
         for pid in self.pids:
             try:
                 os.kill(pid, signal.SIGHUP)

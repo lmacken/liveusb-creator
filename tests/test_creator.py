@@ -92,7 +92,7 @@ class TestLiveUSBCreator:
         from glob import glob
         live = self._get_creator()
         live.detect_removable_drives()
-        isos = filter(lambda x: x.endswith('.iso'), 
+        isos = filter(lambda x: x.endswith('.iso'),
                       filter(os.path.isfile, glob('*') + glob('*/*')))
         assert isos, "No ISOs found.  Put one in this directory"
         for drive in live.drives:
