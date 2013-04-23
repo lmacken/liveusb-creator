@@ -261,7 +261,7 @@ class LiveUSBLogHandler(logging.Handler):
         self.cb = cb
 
     def emit(self, record):
-        if record.levelname in ('INFO', 'ERROR'):
+        if record.levelname in ('INFO', 'ERROR', 'WARN'):
             self.cb(record.msg)
 
 
