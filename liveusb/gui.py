@@ -412,12 +412,12 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         current_overlay = self.overlaySlider.value()
 
         if device['fsversion'] == 'FAT32':
-            self.live.log.warning(_('Partition is FAT32; Restricting overlay '
-                                    'size to 4G'))
+            self.live.log.debug(_('Partition is FAT32; Restricting overlay '
+                                  'size to 4G'))
             max_space = MAX_FAT32
         elif device['fsversion'] == 'FAT16':
-            self.live.log.warning(_('Partition is FAT16; Restricting overlay '
-                                    'size to 2G'))
+            self.live.log.debug(_('Partition is FAT16; Restricting overlay '
+                                  'size to 2G'))
             max_space = MAX_FAT16
         else:
             max_space = MAX_EXT
