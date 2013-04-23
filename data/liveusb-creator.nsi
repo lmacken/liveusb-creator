@@ -1,5 +1,5 @@
-Name "LiveUSB Creator 3.11.7"
-OutFile "liveusb-creator-3.11.7-setup.exe"
+Name "LiveUSB Creator 3.11.8"
+OutFile "liveusb-creator-3.11.8-setup.exe"
 
 !include "MUI2.nsh"
 XPStyle on
