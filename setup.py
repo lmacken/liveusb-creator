@@ -62,8 +62,10 @@ if sys.platform == 'win32':
                 #"includes" : ["sip", "PyQt4._qt"],
                 "includes" : ["sip"],
                 'bundle_files': 1,
+                # http://stackoverflow.com/questions/1439621/problem-with-loading-win32file-pyd-on-python-2-6
+                "dll_excludes": ["mswsock.dll", "MSWSOCK.dll"],
             }
-        }, 
+        },
         zipfile=None,
         data_files = [
             "LICENSE.txt",
