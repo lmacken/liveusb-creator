@@ -48,6 +48,10 @@ try:
 except:
     pass
 
+MAX_FAT16 = 2047
+MAX_FAT32 = 3999
+MAX_EXT = 2097152
+
 
 class LiveUSBApp(QtGui.QApplication):
     """ Main application class """
@@ -126,6 +130,7 @@ class ProgressThread(QtCore.QThread):
     orig_free = 0
     drive = None
     get_free_bytes = None
+    alive = True
 
     def set_data(self, size, drive, freebytes):
         self.totalsize = size / 1024
@@ -135,13 +140,16 @@ class ProgressThread(QtCore.QThread):
         self.emit(QtCore.SIGNAL("maxprogress(int)"), self.totalsize)
 
     def run(self):
-        while True:
+        while self.alive:
             free = self.get_free_bytes()
             value = (self.orig_free - free) / 1024
             self.emit(QtCore.SIGNAL("progress(int)"), value)
             if value >= self.totalsize:
                 break
             sleep(3)
+
+    def stop(self):
+        self.alive = False
 
     def terminate(self):
         self.emit(QtCore.SIGNAL("progress(int)"), self.totalsize)
@@ -219,6 +227,8 @@ class LiveUSBThread(QtCore.QThread):
             if self.parent.opts.liveos_checksum:
                 self.live.calculate_liveos_checksum()
 
+            self.progress.stop()
+
             # Flush all filesystem buffers and unmount
             self.live.flush_buffers()
             self.live.unmount_device()
@@ -251,7 +261,7 @@ class LiveUSBLogHandler(logging.Handler):
         self.cb = cb
 
     def emit(self, record):
-        if record.levelname in ('INFO', 'ERROR'):
+        if record.levelname in ('INFO', 'ERROR', 'WARN'):
             self.cb(record.msg)
 
 
@@ -298,12 +308,12 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                 'the Properties. Under the Compatibility tab, check the "Run '
                 'this program as an administrator" box.'))
 
-
     def populate_devices(self, *args, **kw):
         if self.in_process:
             return
         self.driveBox.clear()
         #self.textEdit.clear()
+
         def add_devices():
             if not len(self.live.drives):
                 self.textEdit.setPlainText(_("Unable to find any USB drives"))
@@ -382,9 +392,9 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         2gigs of free space, set the maximum to 2047mb, which is apparently
         the largest file we can/should store on a vfat partition.
         """
-        if not str(drive):
+        if not unicode(drive):
             return
-        self._refresh_overlay_slider(str(drive).split()[0])
+        self._refresh_overlay_slider(unicode(drive).split()[0])
 
     def _refresh_overlay_slider(self, drive=None):
         """
@@ -398,29 +408,41 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
 
         device = self.live.drives[drive]
         freespace = device['free']
+        device_size = device['size'] / 1024**2
         current_overlay = self.overlaySlider.value()
+
+        if device['fsversion'] == 'FAT32':
+            self.live.log.debug(_('Partition is FAT32; Restricting overlay '
+                                  'size to 4G'))
+            max_space = MAX_FAT32
+        elif device['fsversion'] == 'FAT16':
+            self.live.log.debug(_('Partition is FAT16; Restricting overlay '
+                                  'size to 2G'))
+            max_space = MAX_FAT16
+        else:
+            max_space = MAX_EXT
+
+        if freespace:
+            if freespace > device_size:
+                freespace = device_size
+            if freespace > max_space:
+                freespace = max_space
 
         if not device['mount']:
             self.live.log.warning(_('Device is not yet mounted, so we cannot '
-                                    'determine the amount of free space.  '
-                                    'Setting a maximum limit of 8G for the '
-                                    'persistent storage.'))
-            freespace = 8192
+                                    'determine the amount of free space.'))
+            if not freespace:
+                freespace = device_size
         else:
             if not freespace:
                 self.live.log.warning(_('No free space on %s') % drive)
                 freespace = 0
 
-        # FAT16 cannot handle files greater than 2G
-        if device['fsversion'] == 'FAT16':
-            self.live.log.warning(_('Partition is FAT16; Restricting overlay '
-                                    'size to 2G'))
-            if freespace > 2047:
-                freespace = 2047
-
         # Subtract the size of the ISO from our maximum overlay size
         if self.live.isosize:
-            freespace -= self.live.isosize / 1024**2
+            iso_size = self.live.isosize / 1024**2
+            if freespace + iso_size > device['free']:
+                freespace -= iso_size
 
         freespace -= 1 # Don't fill the device 100%
 
@@ -441,6 +463,8 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
     def status(self, text):
         if isinstance(text, Exception):
             text = text.args[0]
+        elif isinstance(text, int):
+            text = str(text)
         self.textEdit.append(text)
 
     def enable_widgets(self, enabled=True):
@@ -489,7 +513,7 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
             if self.opts.reset_mbr:
                 self.live.reset_mbr()
             else:
-                self.status(_("Warning: The Master Boot Record on your device "
+                self.live.log.warn(_("Warning: The Master Boot Record on your device "
                               "does not match your system's syslinux MBR.  If you "
                               "have trouble booting this stick, try running the "
                               "liveusb-creator with the --reset-mbr option."))

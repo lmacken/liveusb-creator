@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright © 2008-2010  Red Hat, Inc. All rights reserved.
-# Copyright © 2008-2010  Luke Macken <lmacken@redhat.com>
+# Copyright © 2008-2013  Red Hat, Inc. All rights reserved.
+# Copyright © 2008-2013  Luke Macken <lmacken@redhat.com>
 #
 # This copyrighted material is made available to anyone wishing to use, modify,
 # copy, or redistribute it subject to the terms and conditions of the GNU
@@ -29,6 +29,7 @@ import tempfile
 import logging
 import hashlib
 import shutil
+import signal
 import time
 import os
 import re
@@ -118,7 +119,7 @@ class LiveUSBCreator(object):
 
         Platform-specific classes inheriting from the LiveUSBCreator are
         expected to implement this method to install the bootloader to the
-        specified device using syslinux.  This specific implemention is 
+        specified device using syslinux.  This specific implemention is
         platform independent and performs sanity checking along with adding
         OLPC support.
         """
@@ -251,7 +252,7 @@ class LiveUSBCreator(object):
         self.log.debug('overlaysize = %d' % overlaysize)
         self.totalsize = overlaysize + self.isosize
         if self.totalsize > freebytes:
-            raise LiveUSBError(_("Not enough free space on device." + 
+            raise LiveUSBError(_("Not enough free space on device." +
                                  "\n%dMB ISO + %dMB overlay > %dMB free space" %
                                  (self.isosize/1024**2, self.overlay,
                                   freebytes/1024**2)))
@@ -271,29 +272,40 @@ class LiveUSBCreator(object):
     def _update_configs(self, infile, outfile):
         infile = file(infile, 'r')
         outfile= file(outfile, 'w')
-        usblabel = self.uuid and 'UUID=' + self.uuid or 'LABEL=' + self.label
+        usblabel = 'LABEL=' + self.label
         for line in infile.readlines():
-            if "CDLABEL" in line:
-                line = re.sub("CDLABEL=[^ ]*", usblabel, line)
+            if "LABEL" in line:
+                line = re.sub("LABEL=[^ ]*", usblabel, line)
                 line = re.sub("rootfstype=[^ ]*",
                               "rootfstype=%s" % self.fstype,
                               line)
-            if self.overlay and "liveimg" in line:
-                line = line.replace("liveimg", "liveimg overlay=" + usblabel)
-                line = line.replace(" ro ", " rw ")
-            if self.opts.kernel_args:
-                line = line.replace("liveimg", "liveimg %s" %
-                                    ' '.join(self.opts.kernel_args.split(',')))
+            if "isolinux" in line:
+                line = re.sub("isolinux", "syslinux", line)
+            if "liveimg" in line:
+                if self.overlay:
+                    line = line.replace("liveimg", "liveimg overlay=" + usblabel)
+                    line = line.replace(" ro ", " rw ")
+                if self.opts.kernel_args:
+                    line = line.replace("liveimg", "liveimg %s" %
+                                        ' '.join(self.opts.kernel_args.split(',')))
+            elif "rd.live.image" in line:
+                if self.overlay:
+                    line = line.replace("rd.live.image", "rd.live.image " +
+                                        "rd.live.overlay=" + usblabel)
+                    line = line.replace(" ro ", " rw ")
+                if self.opts.kernel_args:
+                    line = line.replace("rd.live.image", "rd.live.image %s" %
+                                        ' '.join(self.opts.kernel_args.split(',')))
             outfile.write(line)
         infile.close()
         outfile.close()
 
     def update_configs(self):
         """ Generate our syslinux.cfg and grub.conf files """
-        grubconf     = os.path.join(self.dest, "EFI", "boot", "grub.conf")
-        bootconf     = os.path.join(self.dest, "EFI", "boot", "boot.conf")
-        bootx64conf  = os.path.join(self.dest, "EFI", "boot", "bootx64.conf")
-        bootia32conf = os.path.join(self.dest, "EFI", "boot", "bootia32.conf")
+        grubconf     = os.path.join(self.dest, "EFI", "BOOT", "grub.cfg")
+        bootconf     = os.path.join(self.dest, "EFI", "BOOT", "boot.conf")
+        bootx64conf  = os.path.join(self.dest, "EFI", "BOOT", "bootx64.conf")
+        bootia32conf = os.path.join(self.dest, "EFI", "BOOT", "bootia32.conf")
         updates = [(os.path.join(self.dest, "isolinux", "isolinux.cfg"),
                     os.path.join(self.dest, "isolinux", "syslinux.cfg")),
                    (grubconf, bootconf)]
@@ -303,7 +315,7 @@ class LiveUSBCreator(object):
 
         for (infile, outfile) in updates:
             if os.path.exists(infile):
-                self._update_configs(infile,outfile)
+                self._update_configs(infile, outfile)
         # only copy/overwrite files we had originally started with
         for (infile, outfile) in copies:
             if os.path.exists(outfile):
@@ -341,7 +353,7 @@ class LiveUSBCreator(object):
         out.write(self.output.getvalue())
         out.close()
         return filename
-        
+
 
     def existing_liveos(self):
         return os.path.exists(self.get_liveos())
@@ -454,7 +466,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                     'fsversion': str(dev.Get(device, 'IdVersion')),
                     'uuid': str(dev.Get(device, 'IdUuid')),
                     'device': str(dev.Get(device, 'DeviceFile')),
-                    'mount': map(str, list(dev.Get(device, 'DeviceMountPaths'))),
+                    'mount': map(unicode, list(dev.Get(device, 'DeviceMountPaths'))),
                     'bootable': 'boot' in map(str,
                         list(dev.Get(device, 'PartitionFlags'))),
                     'parent': None,
@@ -727,18 +739,17 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         return dbus.Interface(dev_obj, "org.freedesktop.UDisks.Device")
 
     def terminate(self):
-        import signal
         for pid in self.pids:
             try:
                 os.kill(pid, signal.SIGHUP)
                 self.log.debug("Killed process %d" % pid)
-            except OSError:
-                pass
+            except OSError, e:
+                self.log.debug(str(e))
 
     def verify_iso_md5(self):
         """ Verify the ISO md5sum.
 
-        At the moment this is Linux specific, until we port checkisomd5 
+        At the moment this is Linux specific, until we port checkisomd5
         to Windows.
         """
         self.log.info(_('Verifying ISO MD5 checksum'))
@@ -1008,7 +1019,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         if delta.seconds:
             self.mb_per_sec = (self.isosize / delta.seconds) / 1024**2
             if self.mb_per_sec:
-                self.log.info(_("Wrote to device at") + " %d MB/sec" % 
+                self.log.info(_("Wrote to device at") + " %d MB/sec" %
                               self.mb_per_sec)
 
     def install_bootloader(self):
