@@ -338,9 +338,10 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
 
     def refresh_releases(self):
         self.live.log.info(_('Refreshing releases...'))
-        fedora_releases = get_fedora_releases()
+        global releases
+        releases = get_fedora_releases()
         self.downloadCombo.clear()
-        for release in [release['name'] for release in fedora_releases]:
+        for release in [release['name'] for release in releases]:
             self.downloadCombo.addItem(release)
         self.live.log.info(_('Releases updated!'))
 
