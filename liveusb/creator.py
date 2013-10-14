@@ -199,9 +199,9 @@ class LiveUSBCreator(object):
             filename = self.write_log()
             if not passive:
                 raise LiveUSBError(_("There was a problem executing the "
-                                     "following command: `%s`\nA more detailed "
+                                     "following command: `%s`\n%s\nA more detailed "
                                      "error log has been written to "
-                                     "'%s'" % (cmd, filename)))
+                                     "'%s'" % (cmd, err, filename)))
         return proc
 
     def verify_iso_sha1(self, progress=None):
