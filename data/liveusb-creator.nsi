@@ -4,6 +4,9 @@ OutFile "liveusb-creator-3.11.8-setup.exe"
 !include "MUI2.nsh"
 XPStyle on
 
+!include "MUI2.nsh"
+XPStyle on
+
 SetCompressor lzma
 
 InstallDir "$PROGRAMFILES\LiveUSB Creator"
