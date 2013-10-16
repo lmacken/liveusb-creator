@@ -50,9 +50,14 @@ other_releases = [
     ## Custom spins
     ##
     {
-        'name': 'Sugar on a Stick v6 Pineapple',
-        'url': 'https://alt.fedoraproject.org/pub/alt/spins/linux/releases/16/Spins/i686/Fedora-16-i686-Live-SoaS.iso',
-        'sha256': '5aa938737cc4ebeb1d269c4d8b2bf56e41bacd1967c3997b8969b42b88b63bfa',
+        'name': 'Sugar on a Stick v7 Quandong (x86_64)',
+        'url': 'http://dl.fedoraproject.org/pub/alt/releases/17/Spins/x86_64/Fedora-17-x86_64-Live-SoaS.iso',
+        'sha256': 'e872932ff02f20adc76252fff5fa16717b10a6d91dbee779bf4792d36c939a28',
+    },
+    {
+        'name': 'Sugar on a Stick v7 Quandong (i686)',
+        'url': 'http://dl.fedoraproject.org/pub/alt/releases/17/Spins/i686/Fedora-17-i686-Live-SoaS.iso',
+        'sha256': '04a7824f36a4015985e328da450534a40a4babb0d0a2c8959e0bc9103b06721e',
     },
 ]
 
