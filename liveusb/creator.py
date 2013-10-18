@@ -201,7 +201,7 @@ class LiveUSBCreator(object):
                 raise LiveUSBError(_("There was a problem executing the "
                                      "following command: `%s`\n%s\nA more detailed "
                                      "error log has been written to "
-                                     "'%s'" % (cmd, err, filename)))
+                                     "'%s'" % (cmd, err.decode('utf-8', errors='replace'), filename)))
         return proc
 
     def verify_iso_sha1(self, progress=None):
