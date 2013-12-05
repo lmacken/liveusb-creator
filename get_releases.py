@@ -3,7 +3,7 @@ from urlgrabber import urlread
 from urlgrabber.grabber import URLGrabError
 
 FEDORA_RELEASES = 'http://dl.fedoraproject.org/pub/fedora/linux/releases/'
-ARCHES = ('i386', 'i686', 'x86_64')
+ARCHES = ('armhfp', 'i386', 'i686', 'x86_64')
 
 def get_fedora_releases():
     releases = []
