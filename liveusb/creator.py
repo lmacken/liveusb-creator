@@ -714,6 +714,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             self.log.debug('Looking for %s' % ldlinux)
             if os.path.isfile(ldlinux):
                 self.log.debug(_("Removing") + " %s" % ldlinux)
+                self.popen('chattr -i "%s"' % ldlinux, passive=True)
                 os.unlink(ldlinux)
 
         if self.drive['fstype'] in self.ext_fstypes:
