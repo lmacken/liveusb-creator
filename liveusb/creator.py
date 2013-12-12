@@ -324,9 +324,20 @@ class LiveUSBCreator(object):
                 except Exception, e:
                     self.log.warning(_("Unable to copy %s to %s: %s") % (infile, outfile, str(e)))
 
+    def delete_ldlinux(self):
+        # Don't prompt about overwriting files from mtools (#491234)
+        for ldlinux in [os.path.join(self.dest, p, 'ldlinux.sys')
+                        for p in ('syslinux', '')]:
+            self.log.debug('Looking for %s' % ldlinux)
+            if os.path.isfile(ldlinux):
+                self.log.debug(_("Removing") + " %s" % ldlinux)
+                self.popen('chattr -i "%s"' % ldlinux, passive=True)
+                os.unlink(ldlinux)
+
     def delete_liveos(self):
         """ Delete the existing LiveOS """
         self.log.info(_('Removing existing Live OS'))
+        self.delete_ldlinux()
         for path in [self.get_liveos(),
                      os.path.join(self.dest + os.path.sep, 'syslinux'),
                      os.path.join(self.dest + os.path.sep, 'isolinux')]:
@@ -708,14 +719,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             if copied:
                 break
 
-        # Don't prompt about overwriting files from mtools (#491234)
-        for ldlinux in [os.path.join(self.dest, p, 'ldlinux.sys')
-                        for p in ('syslinux', '')]:
-            self.log.debug('Looking for %s' % ldlinux)
-            if os.path.isfile(ldlinux):
-                self.log.debug(_("Removing") + " %s" % ldlinux)
-                self.popen('chattr -i "%s"' % ldlinux, passive=True)
-                os.unlink(ldlinux)
+        self.delete_ldlinux()
 
         if self.drive['fstype'] in self.ext_fstypes:
             shutil.move(os.path.join(syslinux_path, "syslinux.cfg"),
