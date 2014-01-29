@@ -73,8 +73,10 @@ def get_fedora_releases():
                                 if filename[0] != '*':
                                     continue
                                 filename = filename[1:]
-                                chunks = filename[:-4].split('-')
+                                chunks = filename[:-6].split('-')
                                 chunks.remove('Live')
+                                release = chunks.pop()
+                                chunks.insert(1,release)
                                 name = ' '.join(chunks)
                                 fedora_releases.append(dict(
                                     name=name,
