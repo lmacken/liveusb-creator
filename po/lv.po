@@ -1,0 +1,279 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>, 2011
+msgid ""
+msgstr ""
+"Project-Id-Version: liveusb-creator\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-09-03 02:54-0400\n"
+"PO-Revision-Date: 2013-11-20 10:34+0000\n"
+"Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
+"Language-Team: Latvian (http://www.transifex.com/projects/p/fedora/language/lv/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: lv\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);\n"
+
+#: ../liveusb/gui.py:69
+#, python-format
+msgid "Unknown release: %s"
+msgstr "Nezināms laidiens: %s"
+
+#: ../liveusb/gui.py:73
+#, python-format
+msgid "Downloading %s..."
+msgstr "Lejupielādē %s..."
+
+#: ../liveusb/gui.py:152
+msgid "Verifying filesystem..."
+msgstr "Pārbaude failu sistēmu..."
+
+#: ../liveusb/gui.py:155
+msgid ""
+"Error: Cannot set the label or obtain the UUID of your device.  Unable to "
+"continue."
+msgstr "Kļūda: Nevar iestatīt vai saņemt ierīces UUID.  Nevar turpināt."
+
+#: ../liveusb/gui.py:164
+msgid "Verifying SHA1 of LiveCD image..."
+msgstr "Pārbauda LiveCD SHA1 kontrolsummu..."
+
+#: ../liveusb/gui.py:166
+msgid ""
+"Error: The SHA1 of your Live CD is invalid.  You can run this program with "
+"the --noverify argument to bypass this verification check."
+msgstr "Kļūda: Live CD SHA1 kontrolsumma ir nepareiza.  Jūs varat palaist šo programmu ar --noverify parametru, lai apietu šo pārbaudi."
+
+#: ../liveusb/gui.py:177
+msgid "Extracting live image to USB device..."
+msgstr "Atspiež dzīvo attēlu uz USB ierīces..."
+
+#: ../liveusb/gui.py:180
+#, python-format
+msgid "Creating %d Mb persistent overlay..."
+msgstr "Izveido %d Mb pastāvīgo pārklājumu..."
+
+#: ../liveusb/gui.py:183
+msgid "Configuring and installing bootloader..."
+msgstr "Konfigurē un instalē ielādētāju..."
+
+#: ../liveusb/gui.py:187
+#, python-format
+msgid "Complete! (%s)"
+msgstr "Izpildīts! (%s)"
+
+#: ../liveusb/gui.py:190 ../liveusb/gui.py:193
+msgid "LiveUSB creation failed!"
+msgstr "Neizdevās izveidot LiveUSB!"
+
+#: ../liveusb/gui.py:316
+#, python-format
+msgid "Persistent Storage (%d Mb)"
+msgstr "Pastāvīgā glabātuve (%d Mb)"
+
+#: ../liveusb/gui.py:334
+msgid ""
+"Your device already contains a LiveOS.\n"
+"If you continue, this will be overwritten."
+msgstr "Ierīce jau satur LiveOS.\nJa turpināsiet, tā tiks pārrakstīta."
+
+#: ../liveusb/gui.py:337
+msgid ""
+"Warning: Creating a new persistent overlay will delete your existing one."
+msgstr "Brīdinājums: jauna pastāvīgā pārklājuma izveide izdzēsīs jau esošo."
+
+#: ../liveusb/gui.py:339
+msgid "Press 'Create Live USB' again if you wish to continue."
+msgstr "Spiediet 'Izveidot dzīvo USB' atkal, ja vēlaties turpināt."
+
+#. The user has confirmed that they wish to overwrite their
+#. existing Live OS.  Here we delete it first, in order to
+#. accurately calculate progress.
+#: ../liveusb/gui.py:349
+msgid "Removing existing Live OS..."
+msgstr "Izņem esošo dzīvo OS..."
+
+#: ../liveusb/gui.py:383
+msgid "Download complete!"
+msgstr "Lejupielāde pabeigta!"
+
+#: ../liveusb/gui.py:387
+msgid "Download failed: "
+msgstr "Neizdevās lejupielādēt: "
+
+#: ../liveusb/gui.py:388
+msgid "You can try again to resume your download"
+msgstr "Jūs varat atkal mēģināt atsākt lejupielādi"
+
+#: ../liveusb/gui.py:392
+msgid "Select Live ISO"
+msgstr "Izvēlieties dzīvo ISO"
+
+#: ../liveusb/gui.py:399
+msgid ""
+"Sorry, I'm having trouble encoding the filename of your livecd.  You may "
+"have better luck if you move your ISO to the root of your drive (ie: C:\\)"
+msgstr "Diemžēl ir problēmas ar dzīvā CD faila nosaukuma iekodēšanu.  Jums var tas izdoties labāk, ja pārvietosiet ISO uz sava diska sakni (piem.: C:\\)"
+
+#: ../liveusb/gui.py:404
+#, python-format
+msgid "ISO selected: %s"
+msgstr "ISO izvēlēts: %s"
+
+#: ../liveusb/creator.py:146
+#, python-format
+msgid ""
+"There was a problem executing the following command: `%s`\n"
+"A more detailed error log has been written to 'liveusb-creator.log'"
+msgstr "Gadījās problēmas, izpildot sekojošo komandu: `%s`\nDetalizētāks kļūdas žurnāls ir ierakstīts failā 'liveusb-creator.log'"
+
+#: ../liveusb/creator.py:183
+msgid "Not enough free space on device."
+msgstr "Uz ierīces nepietiek brīvās vietas."
+
+#: ../liveusb/creator.py:190
+#, python-format
+msgid "Creating %sMB persistent overlay"
+msgstr "Izveido %sMB pastāvīgo pārklājumu"
+
+#: ../liveusb/creator.py:226
+#, python-format
+msgid "Unable to remove previous LiveOS: %s"
+msgstr "Nevar izņemt iepriekšējo dzīvi OS: %s"
+
+#: ../liveusb/creator.py:257
+#, python-format
+msgid "Cannot find device %s"
+msgstr "Nevar atrast ierīci %s"
+
+#: ../liveusb/creator.py:306
+msgid "Unable to find any USB drives"
+msgstr "Nevar atrast nevienu USB disku"
+
+#: ../liveusb/creator.py:327
+#, python-format
+msgid "Filesystem for %s unknown!"
+msgstr "%s failu sistēma nav zināma!"
+
+#: ../liveusb/creator.py:335
+#, python-format
+msgid "Unable to mount device: %s"
+msgstr "Nevar montēt ierīci: %s"
+
+#: ../liveusb/creator.py:370
+#, python-format
+msgid "Unknown filesystem for %s.  Your device may need to be reformatted."
+msgstr "Nezināma %s failu sistēma.  Iespējams, šo ierīci vajadzēs pārformatēt."
+
+#: ../liveusb/creator.py:373
+#, python-format
+msgid "Unsupported filesystem: %s"
+msgstr "Neatbalstīta failu sistēma: %s"
+
+#: ../liveusb/creator.py:400
+msgid "Unable to find LiveOS on ISO"
+msgstr "Nevar atrast dzīvo OS uz ISO"
+
+#: ../liveusb/creator.py:472
+msgid "Unable to find any removable devices"
+msgstr "Nevar atrast nevienu noņemamu ierīci"
+
+#: ../liveusb/creator.py:479
+msgid ""
+"Make sure your USB key is plugged in and formatted with the FAT filesystem"
+msgstr "Pārliecinieties, ka zibatmiņa ir pievienota un noformatēta ar FAT failu sistēmu"
+
+#: ../liveusb/creator.py:482
+#, python-format
+msgid ""
+"Unsupported filesystem: %s\n"
+"Please backup and format your USB key with the FAT filesystem."
+msgstr "Neatbalstīta failu sistēma: %s\nLūdzu, izveidojiet zibatmiņas datu rezerves kopiju un noformatējiet to ar FAT failu sistēmu."
+
+#: ../liveusb/creator.py:558
+#, python-format
+msgid ""
+"Cannot find '%s'.  Make sure to extract the entire liveusb-creator zip file "
+"before running this program."
+msgstr "Nevar atrast '%s'.  Pārliecinieties, ka esat atspieduši visu liveusb-creator zip failu, pirms palaist šo programmu."
+
+#: ../liveusb/dialog.py:123
+msgid "Fedora LiveUSB Creator"
+msgstr "Fedora dzīvā USB veidotājs"
+
+#: ../liveusb/dialog.py:124
+msgid ""
+"This button will begin the LiveUSB creation process.  This entails "
+"optionally downloading a release (if an existing one wasn't selected),  "
+"extracting the ISO to the USB device, creating the persistent overlay, and "
+"installing the bootloader."
+msgstr "Šī poga sāks dzīvā USB veidošanas procesu.  Tas iekļauj neobligātu laidiena lejupielādi (ja netiek izvēlēts jau esošs), ISO atspiešanu uz USB ierīces, pastāvīgā pārklājuma izveidošanu un ielādētāja instalēšanu."
+
+#: ../liveusb/dialog.py:125
+msgid "Create Live USB"
+msgstr "Izveidot dzīvo USB"
+
+#: ../liveusb/dialog.py:126
+msgid "This is the status console, where all messages get written to."
+msgstr "Šī ir statusa konsole, kurā tiek rakstīti visi paziņojumi."
+
+#: ../liveusb/dialog.py:127
+msgid ""
+"This is the progress bar that will indicate how far along in the LiveUSB "
+"creation process you are"
+msgstr "Šī ir progresa josla, kas norādīs, cik tālu ir ticis dzīvā USB veidošanas process."
+
+#: ../liveusb/dialog.py:128
+msgid ""
+"If you do not select an existing Live CD, the selected release will be "
+"downloaded for you."
+msgstr "Ja neizvēlējāties esošu dzīvo CD, izvēlētais laidiens tiks lejupielādēts."
+
+#: ../liveusb/dialog.py:129
+msgid "Download Fedora"
+msgstr "Lejupielādēt Fedora"
+
+#: ../liveusb/dialog.py:130
+msgid "or"
+msgstr "vai"
+
+#: ../liveusb/dialog.py:131
+msgid ""
+"This button allows you to browse for an existing Live CD ISO that you have "
+"previously downloaded.  If you do not select one, a release will be "
+"downloaded for you automatically."
+msgstr "Šī poga ļauj jums pārlūkot esošo dzīvo CD ISO, kurus esat iepriekš lejupielādējis.  Ja nevienu neizvēlaties, laidiens tiks lejupielādēts automātiski."
+
+#: ../liveusb/dialog.py:132
+msgid "Use existing Live CD"
+msgstr "Lietot esošu dzīvo CD"
+
+#: ../liveusb/dialog.py:133
+msgid "Browse"
+msgstr "Pārlūkot"
+
+#: ../liveusb/dialog.py:135
+msgid ""
+"This is the USB stick that you want to install your Live CD on.  This device"
+" must be formatted with the FAT filesystem."
+msgstr "Šī ir zibatmiņa, uz kuras plānojat instalēt dzīvo CD.  Šai ierīcei ir jābūt formatētai ar FAT failu sistēmu."
+
+#: ../liveusb/dialog.py:136
+msgid "Target Device"
+msgstr "Mērķa ierīce"
+
+#: ../liveusb/dialog.py:137
+msgid ""
+"By allocating extra space on your USB stick for a persistent overlay, you "
+"will be able to store data and make permanent modifications to your live "
+"operating system.  Without it, you will not be able to save data that will "
+"persist after a reboot."
+msgstr "Piešķirot papildu vietu uz USB ierīces pastāvīgajam pārklājumam, jūs varēsiet saglabāt datus un veikt pastāvīgas izmaiņas savā operētājsistēmā. Bez tā jūs nevarēsiet saglabāt datus tā, lai tie paliek arī pēc pārstartēšanas."
+
+#: ../liveusb/dialog.py:138
+msgid "Persistent Storage (0 Mb)"
+msgstr "Pastāvīgā glabātuve (0 Mb)"

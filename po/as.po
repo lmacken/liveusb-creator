@@ -1,0 +1,279 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# ngoswami <ngoswami@redhat.com>, 2011
+msgid ""
+msgstr ""
+"Project-Id-Version: liveusb-creator\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-09-03 02:54-0400\n"
+"PO-Revision-Date: 2013-11-20 10:34+0000\n"
+"Last-Translator: ngoswami <ngoswami@redhat.com>\n"
+"Language-Team: Assamese (http://www.transifex.com/projects/p/fedora/language/as/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: as\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../liveusb/gui.py:69
+#, python-format
+msgid "Unknown release: %s"
+msgstr "অজ্ঞাত উন্মোচন: %s"
+
+#: ../liveusb/gui.py:73
+#, python-format
+msgid "Downloading %s..."
+msgstr "%s ডাউনলোড কৰা হৈ আছে..."
+
+#: ../liveusb/gui.py:152
+msgid "Verifying filesystem..."
+msgstr "নথিপত্ৰ প্ৰণালী সতা সত্য নিৰূপণ কৰা হৈ আছে..."
+
+#: ../liveusb/gui.py:155
+msgid ""
+"Error: Cannot set the label or obtain the UUID of your device.  Unable to "
+"continue."
+msgstr "ত্ৰুটি: লেবেল সংহতি কৰিব অথবা আপোনাৰ ডিভাইচৰ UUID প্ৰাপ্ত কৰিব নোৱাৰি। আগবাঢ়িবলে অক্ষম।"
+
+#: ../liveusb/gui.py:164
+msgid "Verifying SHA1 of LiveCD image..."
+msgstr "LiveCD ছবিৰ SHA1 -ৰ সতা সত্য নিৰূপণ কৰা হৈ আছে..."
+
+#: ../liveusb/gui.py:166
+msgid ""
+"Error: The SHA1 of your Live CD is invalid.  You can run this program with "
+"the --noverify argument to bypass this verification check."
+msgstr "ত্ৰুটি: আপোনাৰ Live CD -ৰ SHA1 অবৈধ। আপুনি সতা সত্য নিৰূপণ নিৰিক্ষণ বাদ দিবলে এই প্ৰগ্ৰামক --noverify তৰ্কৰ সৈতে চলাব পাৰে।"
+
+#: ../liveusb/gui.py:177
+msgid "Extracting live image to USB device..."
+msgstr "USB ডিভাইচলে জীৱন্ত ছবি নিষ্কাষণ কৰা হৈ আছে..."
+
+#: ../liveusb/gui.py:180
+#, python-format
+msgid "Creating %d Mb persistent overlay..."
+msgstr "%d Mb অপৰিৱৰ্তনীয় অভাৰলে সৃষ্টি কৰা হৈ আছে..."
+
+#: ../liveusb/gui.py:183
+msgid "Configuring and installing bootloader..."
+msgstr "bootloader সংৰূপীত আৰু ইনস্টল কৰা হৈ আছে...s"
+
+#: ../liveusb/gui.py:187
+#, python-format
+msgid "Complete! (%s)"
+msgstr "সমপূৰ্ণ! (%s)"
+
+#: ../liveusb/gui.py:190 ../liveusb/gui.py:193
+msgid "LiveUSB creation failed!"
+msgstr "LiveUSB সৃষ্টিকৰণ ব্যৰ্থ!"
+
+#: ../liveusb/gui.py:316
+#, python-format
+msgid "Persistent Storage (%d Mb)"
+msgstr "অপৰিৱৰ্তনীয় সংৰক্ষণ (%d Mb)"
+
+#: ../liveusb/gui.py:334
+msgid ""
+"Your device already contains a LiveOS.\n"
+"If you continue, this will be overwritten."
+msgstr "আপোনাৰ ডিভাইচত ইতিমধ্যে এটা জিৱন্ত OS আছে।\nযদি আপুনি আগবাঢ়ে, ই পুনৰ লিখীত হব।"
+
+#: ../liveusb/gui.py:337
+msgid ""
+"Warning: Creating a new persistent overlay will delete your existing one."
+msgstr "সতৰ্কবাৰ্তা: এটা নতুন অপৰিৱৰ্তনীয় অভাৰলেৰ সৃষ্টিকৰণে ইতিমধ্যে থকাটোক মচি দিব পাৰে।"
+
+#: ../liveusb/gui.py:339
+msgid "Press 'Create Live USB' again if you wish to continue."
+msgstr "যদি আপুনি চলাই থাকিব বিচাৰিছে তেনেহলে 'জীৱন্ত USB সৃষ্টি কৰক' দবাওক।"
+
+#. The user has confirmed that they wish to overwrite their
+#. existing Live OS.  Here we delete it first, in order to
+#. accurately calculate progress.
+#: ../liveusb/gui.py:349
+msgid "Removing existing Live OS..."
+msgstr "অস্তিচ্ববান জীৱন্ত OS আতৰোৱা হৈ আছে..."
+
+#: ../liveusb/gui.py:383
+msgid "Download complete!"
+msgstr "ডাউনলোড সমপূৰ্ণ!"
+
+#: ../liveusb/gui.py:387
+msgid "Download failed: "
+msgstr "ডাউনলোড ব্যৰ্থ:"
+
+#: ../liveusb/gui.py:388
+msgid "You can try again to resume your download"
+msgstr "আপোনাৰ ডাউনলোড চলাই থাকিবলে আপুনি পুনৰ চেষ্টা কৰিব পাৰে"
+
+#: ../liveusb/gui.py:392
+msgid "Select Live ISO"
+msgstr "জীৱন্ত ISO বাচক"
+
+#: ../liveusb/gui.py:399
+msgid ""
+"Sorry, I'm having trouble encoding the filename of your livecd.  You may "
+"have better luck if you move your ISO to the root of your drive (ie: C:\\)"
+msgstr "ক্ষমা কৰিব, মই আপোনাৰ জীৱন্ত cd -ৰ নথিপত্ৰনাম এনকোড কৰোতে অসুবিধা পাইছো। আপুনি যদি আপোনাৰ ISO -ক আপোনাৰ ড্ৰাইভৰ ৰুট (যেনে: C:\\) লে লই যায় আপোনাৰ শ্ৰেয় ভাগ্য হব পাৰে"
+
+#: ../liveusb/gui.py:404
+#, python-format
+msgid "ISO selected: %s"
+msgstr "ISO বচা হল: %s"
+
+#: ../liveusb/creator.py:146
+#, python-format
+msgid ""
+"There was a problem executing the following command: `%s`\n"
+"A more detailed error log has been written to 'liveusb-creator.log'"
+msgstr "এটা ত্ৰুটি হৈছিল নিম্নলিখিত কমান্ড: `%s` চলাওতে\n'liveusb-creator.log' -ত এটা বেছি বিৱৰিত ত্ৰুটি লগ লিখা হৈছে  "
+
+#: ../liveusb/creator.py:183
+msgid "Not enough free space on device."
+msgstr "ডিভাইচ পৰ্যাপ্ত খালি ঠাই নাই।"
+
+#: ../liveusb/creator.py:190
+#, python-format
+msgid "Creating %sMB persistent overlay"
+msgstr "%sMB অপৰিৱৰ্তনীয় অভাৰলে সৃষ্টি কৰা হৈ আছে"
+
+#: ../liveusb/creator.py:226
+#, python-format
+msgid "Unable to remove previous LiveOS: %s"
+msgstr "পুৰ্বৱৰ্তী LiveOS আতৰাবলে ব্যৰ্থ: %s "
+
+#: ../liveusb/creator.py:257
+#, python-format
+msgid "Cannot find device %s"
+msgstr "%s ডিভাইচ পোৱা নগল"
+
+#: ../liveusb/creator.py:306
+msgid "Unable to find any USB drives"
+msgstr "কোনো USB ড্ৰাইভ পোৱা নগল"
+
+#: ../liveusb/creator.py:327
+#, python-format
+msgid "Filesystem for %s unknown!"
+msgstr "%s -ৰ বাবে অজ্ঞাত নথিপত্ৰপ্ৰণালী!"
+
+#: ../liveusb/creator.py:335
+#, python-format
+msgid "Unable to mount device: %s"
+msgstr "ডিভাইচ মাউন্ট কৰিবলে অক্ষম: %s"
+
+#: ../liveusb/creator.py:370
+#, python-format
+msgid "Unknown filesystem for %s.  Your device may need to be reformatted."
+msgstr "%s -ৰ বাবে অজ্ঞাত নথিপত্ৰপ্ৰণালী। আপোনাৰ ডিভাইচ পুনৰ ফৰমেট কৰিব লগিয়া হব পাৰে।"
+
+#: ../liveusb/creator.py:373
+#, python-format
+msgid "Unsupported filesystem: %s"
+msgstr "অসমৰ্থিত নথিপত্ৰপ্ৰণালী: %s"
+
+#: ../liveusb/creator.py:400
+msgid "Unable to find LiveOS on ISO"
+msgstr "ISO -ত LiveOS পাবলে ব্যৰ্থ"
+
+#: ../liveusb/creator.py:472
+msgid "Unable to find any removable devices"
+msgstr "কোনো এৰুৱাব পৰা ডিভাইচ বিচাৰি পাবলে অক্ষম"
+
+#: ../liveusb/creator.py:479
+msgid ""
+"Make sure your USB key is plugged in and formatted with the FAT filesystem"
+msgstr "নিশ্চিত হওক যে আপোনাৰ USB চাবি প্লাগ-ইন হই আছে আৰু FAT নথিপত্ৰপ্ৰণালীৰে ফৰমেট কৰা"
+
+#: ../liveusb/creator.py:482
+#, python-format
+msgid ""
+"Unsupported filesystem: %s\n"
+"Please backup and format your USB key with the FAT filesystem."
+msgstr "অসমৰ্থিত নথিপত্ৰপ্ৰণালী: %s\nঅনুগ্ৰহ কৰি বেকআপ লওক আৰু FAT নথিপত্ৰপ্ৰণালীৰ সৈতে আপোনাৰ USB চাবি ফৰমেট কৰক।"
+
+#: ../liveusb/creator.py:558
+#, python-format
+msgid ""
+"Cannot find '%s'.  Make sure to extract the entire liveusb-creator zip file "
+"before running this program."
+msgstr "'%s' পোৱা নগল। এই প্ৰগ্ৰাম চলোৱাৰ আগত সমপূৰ্ণ liveusb - সৃষ্টিকাৰক যিপ নথিপত্ৰ নিষ্কাষণ কৰক।"
+
+#: ../liveusb/dialog.py:123
+msgid "Fedora LiveUSB Creator"
+msgstr "Fedora LiveUSB সৃষ্টিকাৰক"
+
+#: ../liveusb/dialog.py:124
+msgid ""
+"This button will begin the LiveUSB creation process.  This entails "
+"optionally downloading a release (if an existing one wasn't selected),  "
+"extracting the ISO to the USB device, creating the persistent overlay, and "
+"installing the bootloader."
+msgstr "এই বুটামে জীৱন্ত USB সৃষ্টিকৰন প্ৰক্ৰিয়া আৰম্ভ কৰিব। এইটোৱে অন্তৰভুক্ত কৰে বিকল্পিতভাৱে এটা উন্মোচন ডাউনলোড কৰা (যদি স্থায়ী এটা বচা হোৱা নাছিল), ISO -ক USB ডিভাইচলে নিষ্কাষণ কৰা, অপৰিৱৰ্তনীয় অভাৰলে সৃষ্টি কৰা, আৰু বুটলোডাৰ ইনস্টল কৰা।"
+
+#: ../liveusb/dialog.py:125
+msgid "Create Live USB"
+msgstr "এটা জীৱন্ত USB সৃষ্টি কৰক"
+
+#: ../liveusb/dialog.py:126
+msgid "This is the status console, where all messages get written to."
+msgstr "এইটো অৱস্থা কনসোল, যত সকলো বাৰ্তা লিখা হয়।"
+
+#: ../liveusb/dialog.py:127
+msgid ""
+"This is the progress bar that will indicate how far along in the LiveUSB "
+"creation process you are"
+msgstr "এইটো প্ৰগ্ৰেচ বাৰ যোনটোৱে ইংগিত দিব যে জীৱন্ত USB সৃষ্টি প্ৰক্ৰিয়াত আপুনি কিমান আগবাঢ়িছে"
+
+#: ../liveusb/dialog.py:128
+msgid ""
+"If you do not select an existing Live CD, the selected release will be "
+"downloaded for you."
+msgstr "আপুনি যদি এটা স্থায়ি জিৱন্ত CD বাচি নলয়, বাচিলোৱা উন্মোচনটো আপোনাৰ বাবে ডাউনলোড কৰা হব।"
+
+#: ../liveusb/dialog.py:129
+msgid "Download Fedora"
+msgstr "Fedora ডাউনলোড কৰক"
+
+#: ../liveusb/dialog.py:130
+msgid "or"
+msgstr "অথবা"
+
+#: ../liveusb/dialog.py:131
+msgid ""
+"This button allows you to browse for an existing Live CD ISO that you have "
+"previously downloaded.  If you do not select one, a release will be "
+"downloaded for you automatically."
+msgstr "এই বুটামে আপোনাক এটা স্থায়ী জীৱন্ত CD ISO যাক আপুনি আগতিয়াকৈ ডাউনলোড কৰি থৈছে তাক ব্ৰাউছ কৰাৰ অনুমতি দিয়ে। আপুনি যদি এটা বাচি নলয়, এটা উন্মোচন আপোনাৰ বাবে স্বচালিতভাৱে ডাউনলোড কৰা হব।"
+
+#: ../liveusb/dialog.py:132
+msgid "Use existing Live CD"
+msgstr "স্থায়ী জীৱন্ত CD ব্যৱহাৰ কৰক"
+
+#: ../liveusb/dialog.py:133
+msgid "Browse"
+msgstr "ব্ৰাউছ কৰক"
+
+#: ../liveusb/dialog.py:135
+msgid ""
+"This is the USB stick that you want to install your Live CD on.  This device"
+" must be formatted with the FAT filesystem."
+msgstr "এইটোৱে সৈই USB স্টিক যত আপুনি আপোনাৰ জীৱন্ত CD ইনস্টল কৰিব বিচাৰে। এই ডিভাইচ FAT নথিপত্ৰপ্ৰণালীৰ দ্বাৰা ফৰমেট হব লাগিব।"
+
+#: ../liveusb/dialog.py:136
+msgid "Target Device"
+msgstr "লক্ষ্য ডিভাইচ"
+
+#: ../liveusb/dialog.py:137
+msgid ""
+"By allocating extra space on your USB stick for a persistent overlay, you "
+"will be able to store data and make permanent modifications to your live "
+"operating system.  Without it, you will not be able to save data that will "
+"persist after a reboot."
+msgstr "এটা অপৰিৱৰ্তনীয় অভাৰলেৰ বাবে আপোনাৰ USB স্টিকলে অতিৰিক্ত ঠাই আবন্টন কৰি, আপুনি তথ্য সঞ্চয় আৰু আপোনাৰ জীৱন্ত অপাৰেটিং চিস্টেমলে স্থায়ী পৰিৱৰ্তন কৰিবলে সক্ষম হব। ইয়াৰ বাহিৰে, আপুনি পুনৰাম্ভ হোৱাৰ পিছৰ অপৰিৱৰ্তনীয় তথ্য সঞ্চয় কৰিব নোৱেৰিব।"
+
+#: ../liveusb/dialog.py:138
+msgid "Persistent Storage (0 Mb)"
+msgstr "অপৰিৱৰ্তনীয় সংৰক্ষণ (0 Mb)"

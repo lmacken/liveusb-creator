@@ -1,0 +1,281 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Bilal Karaer <networkuzmanlari@hotmail.com.tr>, 2011
+# Hasan Alp İNAN <hasanalpinan@gmail.com>, 2011
+# Necdet Yücel <necdetyucel@gmail.com>, 2012
+msgid ""
+msgstr ""
+"Project-Id-Version: liveusb-creator\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-09-03 02:54-0400\n"
+"PO-Revision-Date: 2013-11-20 10:34+0000\n"
+"Last-Translator: Necdet Yücel <necdetyucel@gmail.com>\n"
+"Language-Team: Turkish (http://www.transifex.com/projects/p/fedora/language/tr/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: tr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: ../liveusb/gui.py:69
+#, python-format
+msgid "Unknown release: %s"
+msgstr "Bilinmeyen sürüm: %s"
+
+#: ../liveusb/gui.py:73
+#, python-format
+msgid "Downloading %s..."
+msgstr "İndirilme %s..."
+
+#: ../liveusb/gui.py:152
+msgid "Verifying filesystem..."
+msgstr "Dosya sistemi doğrulanıyor ..."
+
+#: ../liveusb/gui.py:155
+msgid ""
+"Error: Cannot set the label or obtain the UUID of your device.  Unable to "
+"continue."
+msgstr "Hata: Etiket ayarlanamıyor veya cihazınızı UUID edemiyoruz. Bu şekilde devam edemezsiniz."
+
+#: ../liveusb/gui.py:164
+msgid "Verifying SHA1 of LiveCD image..."
+msgstr "Çalışan CD ​​görüntüsü SHA1 doğrulanıyor ..."
+
+#: ../liveusb/gui.py:166
+msgid ""
+"Error: The SHA1 of your Live CD is invalid.  You can run this program with "
+"the --noverify argument to bypass this verification check."
+msgstr "Hata: Çalışan CD SHA1 geçersiz. Bu programı --noverify seçeneği ile çalıştırarak doğrulama kontrolünü atlayabilirsiniz."
+
+#: ../liveusb/gui.py:177
+msgid "Extracting live image to USB device..."
+msgstr "USB aygıtı için çalışan görüntü ayıklanıyor ..."
+
+#: ../liveusb/gui.py:180
+#, python-format
+msgid "Creating %d Mb persistent overlay..."
+msgstr "%d Mb kalıcı yerleşim oluşturuluyor ..."
+
+#: ../liveusb/gui.py:183
+msgid "Configuring and installing bootloader..."
+msgstr "Yapılandırma ve önyükleyici yükleniyor..."
+
+#: ../liveusb/gui.py:187
+#, python-format
+msgid "Complete! (%s)"
+msgstr "Tamamlandı! (%s)"
+
+#: ../liveusb/gui.py:190 ../liveusb/gui.py:193
+msgid "LiveUSB creation failed!"
+msgstr "Çalışan USB oluşturma başarısız oldu!"
+
+#: ../liveusb/gui.py:316
+#, python-format
+msgid "Persistent Storage (%d Mb)"
+msgstr "Kalıcı Depolama (%d Mb)"
+
+#: ../liveusb/gui.py:334
+msgid ""
+"Your device already contains a LiveOS.\n"
+"If you continue, this will be overwritten."
+msgstr "Halihazırda cihazınızda bir Çalışan İşetim Sistemi içermektedir.\nEğer devam ederseniz üzerine yazılacaktır. "
+
+#: ../liveusb/gui.py:337
+msgid ""
+"Warning: Creating a new persistent overlay will delete your existing one."
+msgstr "Uyarı: Yeni bir kullanıcı yerleşimi oluşturur, varolan kullanıcı yerleşimi silinecektir."
+
+#: ../liveusb/gui.py:339
+msgid "Press 'Create Live USB' again if you wish to continue."
+msgstr "Eğer tekrar devam etmek isterseniz 'Çalışan USB oluşturma' ya basınız."
+
+#. The user has confirmed that they wish to overwrite their
+#. existing Live OS.  Here we delete it first, in order to
+#. accurately calculate progress.
+#: ../liveusb/gui.py:349
+msgid "Removing existing Live OS..."
+msgstr "Mevcut Çalışan İşletim Sisteminiz Kaldırılıyor..."
+
+#: ../liveusb/gui.py:383
+msgid "Download complete!"
+msgstr "İndirme tamamlandı!"
+
+#: ../liveusb/gui.py:387
+msgid "Download failed: "
+msgstr "İndirme başarısız oldu: "
+
+#: ../liveusb/gui.py:388
+msgid "You can try again to resume your download"
+msgstr "İndirmeye devam etmek için tekrar deneyebilirsiniz"
+
+#: ../liveusb/gui.py:392
+msgid "Select Live ISO"
+msgstr "Çalışan ISO dosyasını seçin"
+
+#: ../liveusb/gui.py:399
+msgid ""
+"Sorry, I'm having trouble encoding the filename of your livecd.  You may "
+"have better luck if you move your ISO to the root of your drive (ie: C:\\)"
+msgstr "Üzgünüm, Çalışan CD'nizin dosya adı kodlamasında sorun yaşıyorum. Eğer ISO'nuzu sabit diskinizin kök bölümüne koyarsanız daha çok şansınız olabilir (Örn: C:\\)"
+
+#: ../liveusb/gui.py:404
+#, python-format
+msgid "ISO selected: %s"
+msgstr "ISO seçildi: %s"
+
+#: ../liveusb/creator.py:146
+#, python-format
+msgid ""
+"There was a problem executing the following command: `%s`\n"
+"A more detailed error log has been written to 'liveusb-creator.log'"
+msgstr "Aşağıdaki komutu çalıştırırken bir sorun meydana geldi: `%s`\nDaha detaylı bir hata günlüğü 'liveusb-creator.log' dosyasına yazılmıştır"
+
+#: ../liveusb/creator.py:183
+msgid "Not enough free space on device."
+msgstr "Cihazınızda yeterli boş alan yok."
+
+#: ../liveusb/creator.py:190
+#, python-format
+msgid "Creating %sMB persistent overlay"
+msgstr "%sMB'a kalıcı yerleşimi oluşturma"
+
+#: ../liveusb/creator.py:226
+#, python-format
+msgid "Unable to remove previous LiveOS: %s"
+msgstr "Önceki Çalışan Sistem kaldırılamıyor: %s"
+
+#: ../liveusb/creator.py:257
+#, python-format
+msgid "Cannot find device %s"
+msgstr "Aygıt bulunamıyor %s"
+
+#: ../liveusb/creator.py:306
+msgid "Unable to find any USB drives"
+msgstr "Herhangi bir USB sürücü bulunamıyor"
+
+#: ../liveusb/creator.py:327
+#, python-format
+msgid "Filesystem for %s unknown!"
+msgstr "Dosya Sistemi için %s bilinmiyor!"
+
+#: ../liveusb/creator.py:335
+#, python-format
+msgid "Unable to mount device: %s"
+msgstr "Cihaz monte edilemiyor: %s"
+
+#: ../liveusb/creator.py:370
+#, python-format
+msgid "Unknown filesystem for %s.  Your device may need to be reformatted."
+msgstr "Bilinmeyen dosya sistemi %s.  Cihazınızın biçimlendirilebilmesi gerekebilir."
+
+#: ../liveusb/creator.py:373
+#, python-format
+msgid "Unsupported filesystem: %s"
+msgstr "Desteklenmeyen Dosya Sistemi: %s"
+
+#: ../liveusb/creator.py:400
+msgid "Unable to find LiveOS on ISO"
+msgstr "ISO üzerinde Çalışan CD bulunamadı"
+
+#: ../liveusb/creator.py:472
+msgid "Unable to find any removable devices"
+msgstr "Herhangi bir taşınabilir aygıt bulunamıyor"
+
+#: ../liveusb/creator.py:479
+msgid ""
+"Make sure your USB key is plugged in and formatted with the FAT filesystem"
+msgstr "USB anahtar takılı ve FAT dosya sistemi ile biçimlendirilmiş olduğundan emin olun"
+
+#: ../liveusb/creator.py:482
+#, python-format
+msgid ""
+"Unsupported filesystem: %s\n"
+"Please backup and format your USB key with the FAT filesystem."
+msgstr "Desteklenmeyen Dosya Sistemi: %s\nLütfen yedek alın ve USB anahtarınızı FAT dosya sistemi olarak biçimlendirin."
+
+#: ../liveusb/creator.py:558
+#, python-format
+msgid ""
+"Cannot find '%s'.  Make sure to extract the entire liveusb-creator zip file "
+"before running this program."
+msgstr "Bulunamıyor '%s'. Bu programı çalıştırmadan önce tüm liveusb-creator zip dosyasını ayıkladığınızdan emin olun."
+
+#: ../liveusb/dialog.py:123
+msgid "Fedora LiveUSB Creator"
+msgstr "Fedora ÇalışanUSB Oluşturucusu"
+
+#: ../liveusb/dialog.py:124
+msgid ""
+"This button will begin the LiveUSB creation process.  This entails "
+"optionally downloading a release (if an existing one wasn't selected),  "
+"extracting the ISO to the USB device, creating the persistent overlay, and "
+"installing the bootloader."
+msgstr "Bu düğme Çalışan USB oluşturma sürecini başlatacaktır.  Seçimlik olarak bir sürüm indirmenizi (eğer mevcut birini seçmediyseniz), ISO dosyasını USB aygıtına açmanızı, kalıcı bir yerleşim oluşturmanızı ve önyükleyici kurmanızı gerektirir."
+
+#: ../liveusb/dialog.py:125
+msgid "Create Live USB"
+msgstr "Çalışan USB Oluşturun"
+
+#: ../liveusb/dialog.py:126
+msgid "This is the status console, where all messages get written to."
+msgstr "Bu durum konsoludur, tüm mesajlar burada yazılır."
+
+#: ../liveusb/dialog.py:127
+msgid ""
+"This is the progress bar that will indicate how far along in the LiveUSB "
+"creation process you are"
+msgstr "Bu süreç çubuğudur; ÇalışanUSB oluşturma sürecinde ne kadar ilerlediğinizi gösterecektir"
+
+#: ../liveusb/dialog.py:128
+msgid ""
+"If you do not select an existing Live CD, the selected release will be "
+"downloaded for you."
+msgstr "Eğer mevcut bir Çalışan CD'yi seçmezseniz, seçilen sürüm sizin için indirilecektir."
+
+#: ../liveusb/dialog.py:129
+msgid "Download Fedora"
+msgstr "Fedora'yı İndirin"
+
+#: ../liveusb/dialog.py:130
+msgid "or"
+msgstr "ya da"
+
+#: ../liveusb/dialog.py:131
+msgid ""
+"This button allows you to browse for an existing Live CD ISO that you have "
+"previously downloaded.  If you do not select one, a release will be "
+"downloaded for you automatically."
+msgstr "Bu düğme indirmiş olduğunuz Çalışan CD ISO dosyasını taramanıza imkan verir.  Eğer mevcutlardan birini seçmezseniz sizin için bir sürüm indirilecektir."
+
+#: ../liveusb/dialog.py:132
+msgid "Use existing Live CD"
+msgstr "Mevcut Çalışan CD kullanın"
+
+#: ../liveusb/dialog.py:133
+msgid "Browse"
+msgstr "Tarayın"
+
+#: ../liveusb/dialog.py:135
+msgid ""
+"This is the USB stick that you want to install your Live CD on.  This device"
+" must be formatted with the FAT filesystem."
+msgstr "Çalışan CD'yi kurmak istediğiniz USB aygıtı budur.  Bu aygıtı FAT dosya sistemiyle biçimlendirmeniz gereklidir."
+
+#: ../liveusb/dialog.py:136
+msgid "Target Device"
+msgstr "Hedef Cihaz"
+
+#: ../liveusb/dialog.py:137
+msgid ""
+"By allocating extra space on your USB stick for a persistent overlay, you "
+"will be able to store data and make permanent modifications to your live "
+"operating system.  Without it, you will not be able to save data that will "
+"persist after a reboot."
+msgstr "USB aygıtınızda ilave alan oluşturarak verilerinizi saklayabilir ve çalışan işletim sisteminde kalıcı değişiklikler yapabilirsiniz.  Eğer böyle yapmazsanız bilgisayarınızı yeniden başlattığınızda silinmeyecek şekilde veri kaydedemezsiniz."
+
+#: ../liveusb/dialog.py:138
+msgid "Persistent Storage (0 Mb)"
+msgstr "Kalıcı Depolama (0 Mb)"
