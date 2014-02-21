@@ -1,7 +1,7 @@
 from distutils.core import setup
 import sys, os
 
-VERSION = '3.12.0'
+VERSION = '3.12.1'
 
 LOCALE_DIR= '/usr/share/locale'
 
@@ -43,12 +43,12 @@ if sys.platform == 'win32':
         name = 'liveusb-creator',
         version = VERSION,
         packages = ['liveusb', 'liveusb/urlgrabber'],
-        scripts = ['liveusb-creator'], 
+        scripts = ['liveusb-creator'],
         license = 'GNU General Public License (GPL)',
         url = 'https://fedorahosted.org/liveusb-creator',
         description = 'This tool installs a LiveCD ISO on to a USB stick',
         long_description = 'The liveusb-creator is a cross-platform tool for easily installing live operating systems on to USB flash drives',
-        platforms = ['Windows'], 
+        platforms = ['Windows'],
         maintainer = 'Luke Macken',
         maintainer_email = 'lmacken@redhat.com',
         windows = [
@@ -94,7 +94,7 @@ else:
         platforms = ['Linux'],
         maintainer = 'Luke Macken',
         maintainer_email = 'lmacken@redhat.com',
-        data_files = [("/usr/share/applications",["data/liveusb-creator.desktop"]), 
+        data_files = [("/usr/share/applications",["data/liveusb-creator.desktop"]),
                       ('/usr/share/pixmaps',["data/fedorausb.png"]),
                       ] + [(os.path.join(LOCALE_DIR, locale),
                             [os.path.join('po', 'locale', locale, 'liveusb-creator.mo')])

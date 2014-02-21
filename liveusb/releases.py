@@ -3,46 +3,34 @@ from urlgrabber import urlread
 from urlgrabber.grabber import URLGrabError
 
 FEDORA_RELEASES = 'http://dl.fedoraproject.org/pub/fedora/linux/releases/'
-ARCHES = ('i386', 'i686', 'x86_64')
+ARCHES = ('armhfp', 'x86_64', 'i686', 'i386')
 
 # A backup list of releases, just in case we can't fetch them.
 fedora_releases = [
-    {'name': 'Fedora 18 i686 Desktop',
-     'sha256': '7c7f453c15a5d13df95bf8caab6277e5aab1c6353eb242b1cf00344b61869d26',
-     'url': 'http://dl.fedoraproject.org/pub/fedora/linux/releases/18/Live/i386/Fedora-18-i686-Live-Desktop.iso'},
-    {'name': 'Fedora 18 i686 KDE',
-     'sha256': 'f172192566d0e12c29a741a568a917c5d8643aa781fdf06598b12a217a58cb74',
-     'url': 'http://dl.fedoraproject.org/pub/fedora/linux/releases/18/Live/i386/Fedora-18-i686-Live-KDE.iso'},
-    {'name': 'Fedora 18 x86_64 Desktop',
-     'sha256': 'a276e06d244e04b765f0a35532d9036ad84f340b0bdcc32e0233a8fbc31d5bed',
-     'url': 'http://dl.fedoraproject.org/pub/fedora/linux/releases/18/Live/x86_64/Fedora-18-x86_64-Live-Desktop.iso'},
-    {'name': 'Fedora 18 x86_64 KDE',
-     'sha256': '41d51d86ff5c272263285d00a0c3da7acbbce404b9930b0ff8bd7226e7248805',
-     'url': 'http://dl.fedoraproject.org/pub/fedora/linux/releases/18/Live/x86_64/Fedora-18-x86_64-Live-KDE.iso'},
-    {'name': 'Fedora 17 i686 Desktop',
-     'sha256': '26027f4d4686f1df186b31ce773dbb903db18f4b1aa37a1e37f0fa6ff4111f42',
-     'url': 'http://dl.fedoraproject.org/pub/fedora/linux/releases/17/Live/i686/Fedora-17-i686-Live-Desktop.iso'},
-    {'name': 'Fedora 17 i686 KDE',
-     'sha256': 'f10142bb0a4d91a0d8320a925fa33ab3a87d9764b03137bb30506830c1068583',
-     'url': 'http://dl.fedoraproject.org/pub/fedora/linux/releases/17/Live/i686/Fedora-17-i686-Live-KDE.iso'},
-    {'name': 'Fedora 17 x86_64 Desktop',
-     'sha256': 'dfd19d677790fea6144bcf537cd031dfb0a50e6c56652c94bfc71ea7bb949f2c',
-     'url': 'http://dl.fedoraproject.org/pub/fedora/linux/releases/17/Live/x86_64/Fedora-17-x86_64-Live-Desktop.iso'},
-    {'name': 'Fedora 17 x86_64 KDE',
-     'sha256': '58b9abf5ef6a07b75b6a934468c783ab18e5a1236e6e5ab75dc2b39ca7680462',
-     'url': 'http://dl.fedoraproject.org/pub/fedora/linux/releases/17/Live/x86_64/Fedora-17-x86_64-Live-KDE.iso'},
-    {'name': 'Fedora 16 i686 Desktop',
-     'sha256': '561d2c15fa79c319959cfc821650c829860651d1e5b125b2a425ac9cbd3fe1bb',
-     'url': 'http://dl.fedoraproject.org/pub/fedora/linux/releases/16/Live/i686/Fedora-16-i686-Live-Desktop.iso'},
-    {'name': 'Fedora 16 i686 KDE',
-     'sha256': '822567e4b05f7be6b89c14e6165f4c9e0f388379c3f90e0bf439dd8397e87a3f',
-     'url': 'http://dl.fedoraproject.org/pub/fedora/linux/releases/16/Live/i686/Fedora-16-i686-Live-KDE.iso'},
-    {'name': 'Fedora 16 x86_64 Desktop',
-     'sha256': '632b2de39033ed1d4a61959c4002e07248793eff828ac5d60edbb7b5dcd7be5c',
-     'url': 'http://dl.fedoraproject.org/pub/fedora/linux/releases/16/Live/x86_64/Fedora-16-x86_64-Live-Desktop.iso'},
-    {'name': 'Fedora 16 x86_64 KDE',
-     'sha256': 'b10ff86610e46244b11f0a411915e80ca4fdf1e8ec20ee5b61f700feb0716ba8',
-     'url': 'http://dl.fedoraproject.org/pub/fedora/linux/releases/16/Live/x86_64/Fedora-16-x86_64-Live-KDE.iso'},
+    {'name': 'Fedora 20 x86_64 Desktop',
+     'sha256': 'cc0333be93c7ff2fb3148cb29360d2453f78913cc8aa6c6289ae6823372a77d2',
+     'url': 'http://dl.fedoraproject.org/pub/fedora/linux/releases/20/Live/x86_64/Fedora-Live-Desktop-x86_64-20-1.iso'},
+    {'name': 'Fedora 20 x86_64 KDE',
+     'sha256': '08360a253b4a40dff948e568dba1d2ae9d931797f57aa08576b8b9f1ef7e4745',
+     'url': 'https://dl.fedoraproject.org/pub/fedora/linux/releases/20/Live/x86_64/Fedora-Live-KDE-x86_64-20-1.iso'},
+    {'name': 'Fedora 20 i686 Desktop',
+     'sha256': 'b115c5653b855de2353e41ff0c72158350f14a020c041462f35ba2a47bd1e33b',
+     'url': 'https://dl.fedoraproject.org/pub/fedora/linux/releases/20/Live/i386/Fedora-Live-Desktop-i686-20-1.iso'},
+    {'name': 'Fedora 20 i686 KDE',
+     'sha256': 'd859132ea9496994ccbb5d6e60c9f40ae89ba31f8a4a1a2a883d6d45901de598',
+     'url': 'https://dl.fedoraproject.org/pub/fedora/linux/releases/20/Live/i386/Fedora-Live-KDE-i686-20-1.iso'},
+    {'name': 'Fedora 19 x86_64 Desktop',
+     'sha256': '21f0197284b9088b32d683f83a71bd42261f1df885a63b1eb87254d1ca096f12',
+     'url': 'https://dl.fedoraproject.org/pub/fedora/linux/releases/19/Live/x86_64/Fedora-Live-Desktop-x86_64-19-1.iso'},
+    {'name': 'Fedora 19 x86_64 KDE',
+     'sha256': 'f4479d5639f62d7398722c6a432ba94711b80d5011d5b64e7afebb4f4ac10cf7',
+     'url': 'https://dl.fedoraproject.org/pub/fedora/linux/releases/19/Live/x86_64/Fedora-Live-KDE-x86_64-19-1.iso'},
+    {'name': 'Fedora 19 i686 Desktop',
+     'sha256': 'ce9797802ef1f7aa670fffd04f209631c171b8ded5dc26f61df898cb9441c839',
+     'url': 'https://dl.fedoraproject.org/pub/fedora/linux/releases/19/Live/i386/Fedora-Live-Desktop-i686-19-1.iso'},
+    {'name': 'Fedora 19 i686 KDE',
+     'sha256': 'e81717564f96ee0f8c6d8b0186e7fca44da57f2ef154ea427b6d765ea139a083',
+     'url': 'https://dl.fedoraproject.org/pub/fedora/linux/releases/19/Live/i386/Fedora-Live-KDE-i686-19-1.iso'},
 ]
 
 other_releases = [
@@ -50,14 +38,14 @@ other_releases = [
     ## Custom spins
     ##
     {
-        'name': 'Sugar on a Stick v7 Quandong (x86_64)',
-        'url': 'http://dl.fedoraproject.org/pub/alt/releases/17/Spins/x86_64/Fedora-17-x86_64-Live-SoaS.iso',
-        'sha256': 'e872932ff02f20adc76252fff5fa16717b10a6d91dbee779bf4792d36c939a28',
+        'name': 'Sugar on a Stick v10 (x86_64)',
+        'url': 'https://dl.fedoraproject.org/pub/fedora/linux/releases/20/Live/x86_64/Fedora-Live-SoaS-x86_64-20-1.iso',
+        'sha256': 'b1865e40e57ed5c4bb705f95e3190c5e56ca6ed9c34f53b16e8c45ccb1233be8',
     },
     {
-        'name': 'Sugar on a Stick v7 Quandong (i686)',
-        'url': 'http://dl.fedoraproject.org/pub/alt/releases/17/Spins/i686/Fedora-17-i686-Live-SoaS.iso',
-        'sha256': '04a7824f36a4015985e328da450534a40a4babb0d0a2c8959e0bc9103b06721e',
+        'name': 'Sugar on a Stick v10 (i686)',
+        'url': 'https://dl.fedoraproject.org/pub/fedora/linux/releases/20/Live/i386/Fedora-Live-SoaS-i686-20-1.iso',
+        'sha256': 'efe76d842a7e19a5ee66461bf51a9cf649d426d007841a5f06f14851dceab389',
     },
 ]
 
@@ -85,8 +73,10 @@ def get_fedora_releases():
                                 if filename[0] != '*':
                                     continue
                                 filename = filename[1:]
-                                chunks = filename[:-4].split('-')
+                                chunks = filename[:-6].split('-')
                                 chunks.remove('Live')
+                                release = chunks.pop()
+                                chunks.insert(1,release)
                                 name = ' '.join(chunks)
                                 fedora_releases.append(dict(
                                     name=name,
