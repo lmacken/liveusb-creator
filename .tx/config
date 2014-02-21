@@ -1,0 +1,9 @@
+[main]
+host = https://www.transifex.com
+
+[liveusb-creator.default]
+file_filter = po/<lang>.po
+source_file = po/liveusb-creator.pot
+source_lang = en
+type = PO
+
