@@ -70,7 +70,7 @@ msgstr "تەواوبوو (%s)"
 
 #: ../liveusb/gui.py:190 ../liveusb/gui.py:193
 msgid "LiveUSB creation failed!"
-msgstr "دروستکردنی لایڤ "یو ئێس بی" سەرکەوتوو نەبوو"
+msgstr "دروستکردنی لایڤ 'یو ئێس بی' سەرکەوتوو نەبوو"
 
 #: ../liveusb/gui.py:316
 #, python-format
@@ -116,7 +116,7 @@ msgstr "دەتوانیت دوبارە هەوڵبدەیت بۆ بەردەوامب
 
 #: ../liveusb/gui.py:392
 msgid "Select Live ISO"
-msgstr "لایڤ "ئای ئێس ئۆ" هەڵبژێرە"
+msgstr "لایڤ 'ئای ئێس ئۆ' هەڵبژێرە"
 
 #: ../liveusb/gui.py:399
 msgid ""
@@ -129,7 +129,7 @@ msgstr ""
 #: ../liveusb/gui.py:404
 #, python-format
 msgid "ISO selected: %s"
-msgstr ""ئای ئێس ئۆ" هەڵبژێردرا: %s"
+msgstr "'ئای ئێس ئۆ' هەڵبژێردرا: %s"
 
 #: ../liveusb/creator.py:146
 #, python-format
@@ -185,7 +185,7 @@ msgstr "فایلی سیستەمی پاڵپشت نەکراو: %s"
 
 #: ../liveusb/creator.py:400
 msgid "Unable to find LiveOS on ISO"
-msgstr "ناتوانرێت لایف ئۆ ئێس لەسەر "ئای ئێس ئۆ"کە بدۆزرێتەوە"
+msgstr "ناتوانرێت لایف ئۆ ئێس لەسەر 'ئای ئێس ئۆ'کە بدۆزرێتەوە"
 
 #: ../liveusb/creator.py:472
 msgid "Unable to find any removable devices"
@@ -233,7 +233,7 @@ msgstr ""
 
 #: ../liveusb/dialog.py:125
 msgid "Create Live USB"
-msgstr "لایڤ "یو ئێس بی" دروست بکە"
+msgstr "لایڤ 'یو ئێس بی' دروست بکە"
 
 #: ../liveusb/dialog.py:126
 msgid "This is the status console, where all messages get written to."
