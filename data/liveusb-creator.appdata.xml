@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2014 Richard Hughes <richard@hughsie.com> -->
 
-<!-- HOUSEKEEPING, REMOVE THIS COMMENT WHEN THIS GOES UPSTREAM
-BugReportURL: https://github.com/lmacken/liveusb-creator/issues/12
-SentUpstream: 2014-09-18
--->
-
 <application>
   <id type="desktop">liveusb-creator.desktop</id>
   <metadata_license>CC0-1.0</metadata_license>
