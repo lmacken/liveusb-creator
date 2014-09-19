@@ -1,8 +1,14 @@
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
+%if (0%{?fedora} && 0%{?fedora} < 19) || (0%{?rhel} && 0%{?rhel} < 7)
+%global with_desktop_vendor_tag 1
+%else
+%global with_desktop_vendor_tag 0
+%endif
+
 Name:           liveusb-creator
 Version:        3.12.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A liveusb creator
 
 Group:          Applications/System
@@ -14,11 +20,16 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 ExcludeArch:    ppc
 ExcludeArch:    ppc64
+ExcludeArch:    %{arm}
 
 BuildRequires:  python-devel, python-setuptools, PyQt4-devel, desktop-file-utils gettext
 Requires:       syslinux, PyQt4, usermode, isomd5sum
 Requires:       python-urlgrabber
 Requires:       pyparted >= 2.0
+Requires:       syslinux-extlinux
+Requires:       udisks
+# https://bugzilla.redhat.com/show_bug.cgi?id=976415
+Requires:       usermode-gtk
 
 %description
 A liveusb creator from Live Fedora images
@@ -45,10 +56,15 @@ cp %{name}.pam %{buildroot}%{_sysconfdir}/pam.d/%{name}
 mkdir -p %{buildroot}%{_sysconfdir}/security/console.apps
 cp %{name}.console %{buildroot}%{_sysconfdir}/security/console.apps/%{name}
 
-desktop-file-install --vendor="fedora"                    \
+desktop-file-install \
+%if %{with_desktop_vendor_tag}
+  --vendor fedora \
+%endif
 --dir=%{buildroot}%{_datadir}/applications           \
 %{buildroot}/%{_datadir}/applications/liveusb-creator.desktop
+%if %{with_desktop_vendor_tag}
 rm -rf %{buildroot}/%{_datadir}/applications/liveusb-creator.desktop
+%endif
 
 %find_lang %{name}
 
@@ -61,24 +77,60 @@ rm -rf %{buildroot}
 %{python_sitelib}/*
 %{_bindir}/%{name}
 %{_sbindir}/%{name}
-%{_datadir}/applications/fedora-liveusb-creator.desktop
+%{_datadir}/applications/*liveusb-creator.desktop
 %{_datadir}/pixmaps/fedorausb.png
 #%{_datadir}/locale/*/LC_MESSAGES/liveusb-creator.mo
 %config(noreplace) %{_sysconfdir}/pam.d/%{name}
 %config(noreplace) %{_sysconfdir}/security/console.apps/%{name}
 
 %changelog
-* Fri Feb 21 2014 Luke Macken <lmacken@redhat.com> - 3.12.1-1
-- Update to 3.12.1, with many new translations
+* Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.12.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
-* Tue Jan 15 2013 Luke Macken <lmacken@redhat.com> - 3.11.8-1
+* Fri Feb 21 2014 Luke Macken <lmacken@redhat.com> 3.12.1-1
+- Update to 3.12.1 with more translations
+
+* Wed Oct 16 2013 Luke Macken <lmacken@redhat.com> 3.12.0-1
+- Update to 3.12.0
+
+* Wed Aug 14 2013 Luke Macken <lmacken@redhat.com> 3.11.8-6
+- Fix the ExcludeArch for arm
+
+* Sat Aug 10 2013 Luke Macken <lmacken@redhat.com> 3.11.8-5
+- Exclude building for armhfp, since syslinux is not available.
+
+* Sat Aug 03 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.11.8-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
+
+* Wed Jun 26 2013 Adam Williamson <awilliam@redhat.com> - 3.11.8-3
+- require usermode-gtk (or else it doesn't run from menus): #976415
+
+* Fri Apr 26 2013 Jon Ciesla <limburgher@gmail.com> - 3.11.8-2
+- Drop desktop vendor tag.
+
+* Mon Apr 22 2013 Luke Macken <lmacken@redhat.com> - 3.11.8-1
 - Update to 3.11.8
 
+* Thu Feb 14 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.11.7-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
+
+* Thu Jul 19 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.11.7-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
+
+* Tue Jun 12 2012 Luke Macken <lmacken@redhat.com> - 3.11.7-1
+- Update to 3.11.7
+
+* Mon Mar 19 2012 Luke Macken <lmacken@redhat.com> - 3.11.6-3
+- Add an explicit udisks requirement (#796489)
+
+* Fri Jan 13 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.11.6-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
+
 * Tue Nov 08 2011 Luke Macken <lmacken@redhat.com> - 3.11.6-1
-- Update our release list for F16
+- Update to 3.11.6
 
 * Wed Nov 02 2011 Luke Macken <lmacken@redhat.com> - 3.11.5-1
-- Update to the 3.11.5 release
+- Update to 3.11.5
 
 * Tue Jun 21 2011 Luke Macken <lmacken@redhat.com> - 3.11.4-1
 - 3.11.4 bugfix release
@@ -87,16 +139,26 @@ rm -rf %{buildroot}
 - 3.11.3 bugfix release
 
 * Sun Jun 12 2011 Luke Macken <lmacken@redhat.com> - 3.11.2-1
-- 3.11.2 minor bugfix release
+- Fix traceback that occurs when extlinux is not installed (#712722)
 
 * Tue May 24 2011 Luke Macken <lmacken@redhat.com> - 3.11.1-1
-- 3.11.1 release
+- Bump to support downloading Fedora 15
 
 * Mon Apr 25 2011 Luke Macken <lmacken@redhat.com> - 3.11.0-1
-- 3.11.0 release
+- Latest upstream release
 
-* Mon Jan 24 2011 Luke Macken <lmacken@redhat.com> - 3.10.0-1
-- 3.10.0 upstream release
+* Tue Feb 08 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.9.3-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
+
+* Mon Jan 10 2011 Luke Macken <lmacken@redhat.com> - 3.9.3-1
+- Update to 3.9.3
+- Require syslinux-extlinux (#664093, #665002)
+
+* Wed Jul 21 2010 David Malcolm <dmalcolm@redhat.com> - 3.9.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Features/Python_2.7/MassRebuild
+
+* Tue Jun 15 2010 Luke Macken <lmacken@redhat.com> - 3.9.2-1
+- 3.9.2
 
 * Tue Dec 08 2009 Luke Macken <lmacken@redhat.com> - 3.9.1-1
 - 3.9.1 bugfix release
