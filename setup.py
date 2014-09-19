@@ -96,6 +96,7 @@ else:
         maintainer_email = 'lmacken@redhat.com',
         data_files = [("/usr/share/applications",["data/liveusb-creator.desktop"]),
                       ('/usr/share/pixmaps',["data/fedorausb.png"]),
+                      ('/usr/share/appdata',['data/liveusb-creator.appdata.xml']),
                       ] + [(os.path.join(LOCALE_DIR, locale),
                             [os.path.join('po', 'locale', locale, 'liveusb-creator.mo')])
                             for locale in locales]
