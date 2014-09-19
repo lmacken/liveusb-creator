@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2014 Richard Hughes <richard@hughsie.com> -->
+
+<!-- HOUSEKEEPING, REMOVE THIS COMMENT WHEN THIS GOES UPSTREAM
+BugReportURL: https://github.com/lmacken/liveusb-creator/issues/12
+SentUpstream: 2014-09-18
+-->
+
+<application>
+  <id type="desktop">liveusb-creator.desktop</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <description>
+    <p>
+      The LiveUSB Creator is a tool for easily installing live operating systems
+      on to USB flash drives.
+    </p>
+    <p>
+      Live USB Creator detects all of your removable devices and supports a
+      completely non-destructive install.
+      There is no need to deal with formatting or partitioning your USB key.
+      You can also allocate extra space on your USB stick, allowing you to save
+      files and make modifications to your live operating system that will
+      persist after you reboot.
+      This essentially lets you carry your own personalized Fedora with you at
+      all times.
+    </p>
+  </description>
+  <url type="homepage">https://fedorahosted.org/liveusb-creator/</url>
+  <screenshots>
+    <screenshot type="default">https://fedorahosted.org/liveusb-creator/raw-attachment/wiki/img/liveusb-creator.png</screenshot>
+  </screenshots>
+  <!-- FIXME: change this to an upstream email address for spec updates
+  <updatecontact>someone_who_cares@upstream_project.org</updatecontact>
+   -->
+</application>
