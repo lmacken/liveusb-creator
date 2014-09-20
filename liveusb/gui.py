@@ -339,11 +339,14 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
     def refresh_releases(self):
         self.live.log.info(_('Refreshing releases...'))
         global releases
-        releases = get_fedora_releases()
-        self.downloadCombo.clear()
-        for release in [release['name'] for release in releases]:
-            self.downloadCombo.addItem(release)
-        self.live.log.info(_('Releases updated!'))
+        try:
+            releases = get_fedora_releases()
+            self.downloadCombo.clear()
+            for release in [release['name'] for release in releases]:
+                self.downloadCombo.addItem(release)
+            self.live.log.info(_('Releases updated!'))
+        except Exception, e:
+            self.live.log.error(_('Unable to fetch releases: %s') % e)
 
     def connect_slots(self):
         self.connect(self, QtCore.SIGNAL('triggered()'), self.terminate)
