@@ -57,7 +57,9 @@ def get_fedora_releases():
     fedora_releases = []
     try:
         html = urlread(FEDORA_RELEASES)
-        for release in re.findall(r'<a href="(\d+)/">', html)[-2:][::-1]:
+        versions = re.findall(r'<a href="(\d+)/">', html)
+        latest = sorted([int(v) for v in versions], reverse=True)[0:2]
+        for release in latest:
             for arch in ARCHES:
                 arch_url = FEDORA_RELEASES + '%s/Live/%s/' % (release, arch)
                 try:
