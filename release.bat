@@ -16,7 +16,7 @@ cd ..
 
 python -OO setup.py py2exe
 
-copy README.txt dist
+copy README.rst dist
 copy data\fedora.ico dist\liveusb-creator.ico
 copy data\vcredist_x86.exe dist\
 copy data\liveusb-creator.nsi dist\liveusb-creator.nsi
