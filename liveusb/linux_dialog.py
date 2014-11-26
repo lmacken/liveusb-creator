@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'data/liveusb-creator.ui'
 #
-# Created: Tue Jan 15 12:09:54 2013
-#      by: PyQt4 UI code generator 4.9.6
+# Created: Wed Nov 26 10:48:14 2014
+#      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -26,7 +26,7 @@ except AttributeError:
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName(_fromUtf8("Dialog"))
-        Dialog.resize(422, 388)
+        Dialog.resize(422, 419)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -34,17 +34,17 @@ class Ui_Dialog(object):
         Dialog.setSizePolicy(sizePolicy)
         self.startButton = QtGui.QPushButton(Dialog)
         self.startButton.setEnabled(True)
-        self.startButton.setGeometry(QtCore.QRect(130, 350, 158, 34))
+        self.startButton.setGeometry(QtCore.QRect(130, 380, 158, 34))
         self.startButton.setObjectName(_fromUtf8("startButton"))
         self.textEdit = QtGui.QTextEdit(Dialog)
-        self.textEdit.setGeometry(QtCore.QRect(10, 200, 401, 111))
+        self.textEdit.setGeometry(QtCore.QRect(10, 230, 401, 111))
         font = QtGui.QFont()
         font.setPointSize(8)
         self.textEdit.setFont(font)
         self.textEdit.setReadOnly(True)
         self.textEdit.setObjectName(_fromUtf8("textEdit"))
         self.progressBar = QtGui.QProgressBar(Dialog)
-        self.progressBar.setGeometry(QtCore.QRect(10, 320, 401, 23))
+        self.progressBar.setGeometry(QtCore.QRect(10, 350, 401, 23))
         self.progressBar.setProperty("value", 0)
         self.progressBar.setObjectName(_fromUtf8("progressBar"))
         self.downloadGroup = QtGui.QGroupBox(Dialog)
@@ -83,7 +83,7 @@ class Ui_Dialog(object):
         self.isoBttn.setGeometry(QtCore.QRect(11, 18, 141, 25))
         self.isoBttn.setObjectName(_fromUtf8("isoBttn"))
         self.groupBox_2 = QtGui.QGroupBox(Dialog)
-        self.groupBox_2.setGeometry(QtCore.QRect(10, 140, 191, 51))
+        self.groupBox_2.setGeometry(QtCore.QRect(10, 130, 191, 51))
         font = QtGui.QFont()
         font.setPointSize(8)
         self.groupBox_2.setFont(font)
@@ -101,7 +101,7 @@ class Ui_Dialog(object):
         self.refreshDevicesButton.setFlat(True)
         self.refreshDevicesButton.setObjectName(_fromUtf8("refreshDevicesButton"))
         self.overlayTitle = QtGui.QGroupBox(Dialog)
-        self.overlayTitle.setGeometry(QtCore.QRect(210, 140, 201, 51))
+        self.overlayTitle.setGeometry(QtCore.QRect(210, 130, 201, 51))
         font = QtGui.QFont()
         font.setPointSize(8)
         self.overlayTitle.setFont(font)
@@ -117,6 +117,19 @@ class Ui_Dialog(object):
         self.label.setText(_fromUtf8(""))
         self.label.setPixmap(QtGui.QPixmap(_fromUtf8(":/liveusb-header.png")))
         self.label.setObjectName(_fromUtf8("label"))
+        self.groupBox_3 = QtGui.QGroupBox(Dialog)
+        self.groupBox_3.setGeometry(QtCore.QRect(10, 180, 401, 41))
+        font = QtGui.QFont()
+        font.setPointSize(8)
+        self.groupBox_3.setFont(font)
+        self.groupBox_3.setObjectName(_fromUtf8("groupBox_3"))
+        self.nonDestructiveButton = QtGui.QRadioButton(self.groupBox_3)
+        self.nonDestructiveButton.setGeometry(QtCore.QRect(50, 10, 131, 26))
+        self.nonDestructiveButton.setChecked(True)
+        self.nonDestructiveButton.setObjectName(_fromUtf8("nonDestructiveButton"))
+        self.destructiveButton = QtGui.QRadioButton(self.groupBox_3)
+        self.destructiveButton.setGeometry(QtCore.QRect(210, 10, 171, 26))
+        self.destructiveButton.setObjectName(_fromUtf8("destructiveButton"))
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -138,5 +151,10 @@ class Ui_Dialog(object):
         self.groupBox_2.setTitle(_translate("Dialog", "Target Device", None))
         self.overlayTitle.setWhatsThis(_translate("Dialog", "By allocating extra space on your USB stick for a persistent overlay, you will be able to store data and make permanent modifications to your live operating system.  Without it, you will not be able to save data that will persist after a reboot.", "comment!"))
         self.overlayTitle.setTitle(_translate("Dialog", "Persistent Storage (0 MB)", None))
+        self.groupBox_3.setTitle(_translate("Dialog", "Method", None))
+        self.nonDestructiveButton.setToolTip(_translate("Dialog", "This method uses the \'cp\' command to copy the files from the ISO on to your USB key, without deleting any existing files.", None))
+        self.nonDestructiveButton.setText(_translate("Dialog", "Non-destructive (cp)", None))
+        self.destructiveButton.setToolTip(_translate("Dialog", "This method uses the \'dd\' comand to copy the ISO directly to your USB device, destroying any pre-existing data/partitions. This method tends to be more reliable in terms of booting, especially with UEFI systems.", None))
+        self.destructiveButton.setText(_translate("Dialog", "Overwrite device (dd)", None))
 
 import resources_rc

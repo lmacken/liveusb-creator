@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>422</width>
-    <height>388</height>
+    <height>419</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -26,7 +26,7 @@
    <property name="geometry">
     <rect>
      <x>130</x>
-     <y>350</y>
+     <y>380</y>
      <width>158</width>
      <height>34</height>
     </rect>
@@ -42,7 +42,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>200</y>
+     <y>230</y>
      <width>401</width>
      <height>111</height>
     </rect>
@@ -63,7 +63,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>320</y>
+     <y>350</y>
      <width>401</width>
      <height>23</height>
     </rect>
@@ -188,7 +188,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>140</y>
+     <y>130</y>
      <width>191</width>
      <height>51</height>
     </rect>
@@ -248,7 +248,7 @@
    <property name="geometry">
     <rect>
      <x>210</x>
-     <y>140</y>
+     <y>130</y>
      <width>201</width>
      <height>51</height>
     </rect>
@@ -299,6 +299,59 @@
    <property name="pixmap">
     <pixmap resource="resources.qrc">:/liveusb-header.png</pixmap>
    </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_3">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>180</y>
+     <width>401</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+    </font>
+   </property>
+   <property name="title">
+    <string>Method</string>
+   </property>
+   <widget class="QRadioButton" name="nonDestructiveButton">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>10</y>
+      <width>131</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>This method uses the 'cp' command to copy the files from the ISO on to your USB key, without deleting any existing files.</string>
+    </property>
+    <property name="text">
+     <string>Non-destructive (cp)</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="destructiveButton">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>10</y>
+      <width>171</width>
+      <height>26</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>This method uses the 'dd' comand to copy the ISO directly to your USB device, destroying any pre-existing data/partitions. This method tends to be more reliable in terms of booting, especially with UEFI systems.</string>
+    </property>
+    <property name="text">
+     <string>Overwrite device (dd)</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources>

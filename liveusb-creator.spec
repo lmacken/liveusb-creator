@@ -72,7 +72,7 @@ rm -rf %{buildroot}
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
-%doc README.txt LICENSE.txt
+%doc README.rst LICENSE.txt
 %{python_sitelib}/*
 %{_bindir}/%{name}
 %{_sbindir}/%{name}
