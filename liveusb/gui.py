@@ -299,6 +299,9 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         self.confirmed = False
         self.mbr_reset_confirmed = False
 
+        if self.opts.destructive:
+            self.destructiveButton.setChecked(True)
+
         # Intercept all liveusb INFO log messages, and display them in the gui
         self.handler = LiveUSBLogHandler(lambda x: self.textEdit.append(x))
         self.live.log.addHandler(self.handler)
