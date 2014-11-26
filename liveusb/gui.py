@@ -640,6 +640,7 @@ class LiveUSBWindow(QtGui.QMainWindow, LiveUSBInterface):
             self.live.log.info('%s ' % os.path.basename(self.live.iso) +
                                _("selected"))
             self._refresh_overlay_slider()
+            self.downloadGroup.setEnabled(False)
 
     def terminate(self):
         """ Terminate any processes that we have spawned """
