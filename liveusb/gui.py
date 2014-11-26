@@ -190,10 +190,12 @@ class LiveUSBThread(QtCore.QThread):
 
             # If we're going to dd the image
             if self.parent.destructiveButton.isChecked():
+                self.parent.progressBar.setRange(0, 0)
                 self.live.dd_image()
                 self.live.log.removeHandler(handler)
                 duration = str(datetime.now() - now).split('.')[0]
                 self.status(_("Complete! (%s)") % duration)
+                self.parent.progressBar.setRange(0, 1)
                 return
 
             self.live.verify_filesystem()
