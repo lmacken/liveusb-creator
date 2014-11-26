@@ -580,6 +580,13 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                         #self.live.unmount_device()
                         self.enable_widgets(True)
                         return
+        else:
+            # Require confirmation for destructive installs
+            if not self.confirmed:
+                self.status(_("WARNING: You are about to perform a destructive install. This will destroy all data and partitions on your USB drive. Press 'Create Live USB' again to continue."))
+                self.confirmed = True
+                self.enable_widgets(True)
+                return
 
         # Remove the log handler, because our live thread will register its own
         self.live.log.removeHandler(self.handler)
