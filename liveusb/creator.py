@@ -438,6 +438,17 @@ class LiveUSBCreator(object):
     def is_admin(self):
         raise NotImplementedError
 
+    def dd_image(self):
+        self.log.info(_('Overwriting device with live image'))
+        parent = self.drive['parent']
+        if parent:
+            drive = parent
+        else:
+            drive = self.drive['device']
+        cmd = 'dd if="%s" of="%s" bs=1M' % (self.iso, drive)
+        self.log.info(_('Running') + ' %s' % cmd)
+        self.popen(cmd)
+
 
 class LinuxLiveUSBCreator(LiveUSBCreator):
 
