@@ -449,6 +449,40 @@ class LiveUSBCreator(object):
         self.log.debug(_('Running') + ' %s' % cmd)
         self.popen(cmd)
 
+    def calculate_liveos_checksum(self):
+        """ Calculate the hash of the extracted LiveOS """
+        chunk_size = 1024 # FIXME: optimize this.  we hit bugs when this is *not* 1024
+        checksums = []
+        mnt = self.drive['mount']
+        if not os.path.isdir(mnt):
+            dev = self.drive['device']
+            if os.path.isdir(dev):
+                mnt = dev  # on Windows
+            else:
+                self.log.error('Cannot find mount point for %s', self.drive)
+        for img in (os.path.join('LiveOS', 'osmin.img'),
+                    os.path.join('LiveOS', 'squashfs.img'),
+                    os.path.join('syslinux', 'initrd0.img'),
+                    os.path.join('syslinux', 'vmlinuz0'),
+                    os.path.join('syslinux', 'isolinux.bin')):
+            hash = getattr(hashlib, self.opts.hash, 'sha1')()
+            liveos = os.path.join(mnt, img)
+            device = file(liveos, 'rb')
+            self.log.info("Calculating the %s of %s" % (hash.name, liveos))
+            bytes = 1
+            while bytes:
+                data = device.read(chunk_size)
+                hash.update(data)
+                bytes = len(data)
+            checksum = hash.hexdigest()
+            checksums.append(checksum)
+            self.log.info('%s(%s) = %s' % (hash.name, liveos, checksum))
+
+        # Take a checksum of all of the checksums
+        hash = getattr(hashlib, self.opts.hash, 'sha1')()
+        map(hash.update, checksums)
+        self.log.info("%s = %s" % (hash.name, hash.hexdigest()))
+
 
 class LinuxLiveUSBCreator(LiveUSBCreator):
 
@@ -1216,33 +1250,6 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         hexdigest = checksum.hexdigest()
         self.log.info("sha1(%s) = %s" % (self.drive['device'], hexdigest))
         return hexdigest
-
-    def calculate_liveos_checksum(self):
-        """ Calculate the hash of the extracted LiveOS """
-        chunk_size = 1024 # FIXME: optimize this.  we hit bugs when this is *not* 1024
-        checksums = []
-        for img in (os.path.join('LiveOS', 'osmin.img'),
-                    os.path.join('LiveOS', 'squashfs.img'),
-                    os.path.join('syslinux', 'initrd0.img'),
-                    os.path.join('syslinux', 'vmlinuz0'),
-                    os.path.join('syslinux', 'isolinux.bin')):
-            hash = getattr(hashlib, self.opts.hash, 'sha1')()
-            liveos = os.path.join(self.drive['device'], img)
-            device = file(liveos, 'rb')
-            self.log.info("Calculating the %s of %s" % (hash.name, liveos))
-            bytes = 1
-            while bytes:
-                data = device.read(chunk_size)
-                hash.update(data)
-                bytes = len(data)
-            checksum = hash.hexdigest()
-            checksums.append(checksum)
-            self.log.info('%s(%s) = %s' % (hash.name, liveos, checksum))
-
-        # Take a checksum of all of the checksums
-        hash = getattr(hashlib, self.opts.hash, 'sha1')()
-        map(hash.update, checksums)
-        self.log.info("%s = %s" % (hash.name, hash.hexdigest()))
 
     def format_device(self):
         """ Format the selected partition as FAT32 """
