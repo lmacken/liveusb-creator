@@ -445,7 +445,7 @@ class LiveUSBCreator(object):
             drive = parent
         else:
             drive = self.drive['device']
-        cmd = 'dd if="%s" of="%s" bs=1M iflag=direct oflag=dsync conv=fdatasync' % (self.iso, drive)
+        cmd = 'dd if="%s" of="%s" bs=1M iflag=direct oflag=direct conv=fdatasync' % (self.iso, drive)
         self.log.debug(_('Running') + ' %s' % cmd)
         self.popen(cmd)
 
