@@ -7,8 +7,8 @@
 %endif
 
 Name:           liveusb-creator
-Version:        3.12.1
-Release:        2%{?dist}
+Version:        3.13.0
+Release:        1%{?dist}
 Summary:        A liveusb creator
 
 Group:          Applications/System
@@ -84,6 +84,9 @@ rm -rf %{buildroot}
 %config(noreplace) %{_sysconfdir}/security/console.apps/%{name}
 
 %changelog
+* Wed Nov 26 2014 Luke Macken <lmacken@redhat.com> - 3.13.0-1
+- Latest upstream release with bug fixes and interface improvements.
+
 * Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 3.12.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
