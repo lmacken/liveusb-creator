@@ -188,6 +188,14 @@ class LiveUSBThread(QtCore.QThread):
             #    self.live.unmount_device()
             #    self.live.format_device()
 
+            # If we're going to dd the image
+            if self.parent.destructiveButton.isChecked():
+                self.live.dd_image()
+                self.live.log.removeHandler(handler)
+                duration = str(datetime.now() - now).split('.')[0]
+                self.status(_("Complete! (%s)") % duration)
+                return
+
             self.live.verify_filesystem()
             if not self.live.drive['uuid'] and not self.live.label:
                 self.status(_("Error: Cannot set the label or obtain "
@@ -372,6 +380,10 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
                      self.maxprogress)
         self.connect(self.download_progress, QtCore.SIGNAL("progress(int)"),
                      self.progress)
+        self.connect(self.destructiveButton, QtCore.SIGNAL("toggled(bool)"),
+                     self.method_destructive_toggled)
+        self.connect(self.nonDestructiveButton, QtCore.SIGNAL("toggled(bool)"),
+                     self.method_nondestructive_toggled)
         if hasattr(self, 'refreshDevicesButton'):
             self.connect(self.refreshDevicesButton, QtCore.SIGNAL("clicked()"),
                          self.populate_devices)
@@ -478,6 +490,8 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         self.overlaySlider.setEnabled(enabled)
         self.isoBttn.setEnabled(enabled)
         self.downloadCombo.setEnabled(enabled)
+        self.destructiveButton.setEnabled(enabled)
+        self.nonDestructiveButton.setEnabled(enabled)
         if hasattr(self, 'refreshDevicesButton'):
             self.refreshDevicesButton.setEnabled(enabled)
         if hasattr(self, 'refreshReleasesButton'):
@@ -502,64 +516,65 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
         self.live.drive = self.get_selected_drive()
 
         # Unmount the device and check the MBR
-        if self.live.blank_mbr():
-            if not self.mbr_reset_confirmed:
-                self.status(_("The Master Boot Record on your device is blank. "
-                              "Pressing 'Create LiveUSB' again will reset the "
-                              "MBR on this device."))
-                self.mbr_reset_confirmed = True
-                self.enable_widgets(True)
-                return
-            if self.live.drive['mount']:
-                self.live.dest = self.live.drive['mount']
-                self.live.unmount_device()
-            self.live.reset_mbr()
-        elif not self.live.mbr_matches_syslinux_bin():
-            if self.opts.reset_mbr:
+        if self.nonDestructiveButton.isChecked():
+            if self.live.blank_mbr():
+                if not self.mbr_reset_confirmed:
+                    self.status(_("The Master Boot Record on your device is blank. "
+                                  "Pressing 'Create LiveUSB' again will reset the "
+                                  "MBR on this device."))
+                    self.mbr_reset_confirmed = True
+                    self.enable_widgets(True)
+                    return
+                if self.live.drive['mount']:
+                    self.live.dest = self.live.drive['mount']
+                    self.live.unmount_device()
                 self.live.reset_mbr()
-            else:
-                self.live.log.warn(_("Warning: The Master Boot Record on your device "
-                              "does not match your system's syslinux MBR.  If you "
-                              "have trouble booting this stick, try running the "
-                              "liveusb-creator with the --reset-mbr option."))
+            elif not self.live.mbr_matches_syslinux_bin():
+                if self.opts.reset_mbr:
+                    self.live.reset_mbr()
+                else:
+                    self.live.log.warn(_("Warning: The Master Boot Record on your device "
+                                  "does not match your system's syslinux MBR.  If you "
+                                  "have trouble booting this stick, try running the "
+                                  "liveusb-creator with the --reset-mbr option."))
 
-        try:
-            self.live.mount_device()
-            self._refresh_overlay_slider() # To reflect the drives free space
-        except LiveUSBError, e:
-            self.status(e.args[0])
-            self.enable_widgets(True)
-            return
-        except OSError, e:
-            self.status(_('Unable to mount device'))
-            self.enable_widgets(True)
-            return
-
-        if self.live.existing_liveos():
-            if not self.confirmed:
-                self.status(_("Your device already contains a LiveOS.\nIf you "
-                              "continue, this will be overwritten."))
-                if self.live.existing_overlay() and self.overlaySlider.value():
-                    self.status(_("Warning: Creating a new persistent overlay "
-                                  "will delete your existing one."))
-                self.status(_("Press 'Create Live USB' again if you wish to "
-                              "continue."))
-                self.confirmed = True
-                #self.live.unmount_device()
+            try:
+                self.live.mount_device()
+                self._refresh_overlay_slider() # To reflect the drives free space
+            except LiveUSBError, e:
+                self.status(e.args[0])
                 self.enable_widgets(True)
                 return
-            else:
-                # The user has confirmed that they wish to overwrite their
-                # existing Live OS.  Here we delete it first, in order to
-                # accurately calculate progress.
-                self.confirmed = False
-                try:
-                    self.live.delete_liveos()
-                except LiveUSBError, e:
-                    self.status(e.args[0])
+            except OSError, e:
+                self.status(_('Unable to mount device'))
+                self.enable_widgets(True)
+                return
+
+            if self.live.existing_liveos():
+                if not self.confirmed:
+                    self.status(_("Your device already contains a LiveOS.\nIf you "
+                                  "continue, this will be overwritten."))
+                    if self.live.existing_overlay() and self.overlaySlider.value():
+                        self.status(_("Warning: Creating a new persistent overlay "
+                                      "will delete your existing one."))
+                    self.status(_("Press 'Create Live USB' again if you wish to "
+                                  "continue."))
+                    self.confirmed = True
                     #self.live.unmount_device()
                     self.enable_widgets(True)
                     return
+                else:
+                    # The user has confirmed that they wish to overwrite their
+                    # existing Live OS.  Here we delete it first, in order to
+                    # accurately calculate progress.
+                    self.confirmed = False
+                    try:
+                        self.live.delete_liveos()
+                    except LiveUSBError, e:
+                        self.status(e.args[0])
+                        #self.live.unmount_device()
+                        self.enable_widgets(True)
+                        return
 
         # Remove the log handler, because our live thread will register its own
         self.live.log.removeHandler(self.handler)
@@ -617,3 +632,11 @@ class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
     def terminate(self):
         """ Terminate any processes that we have spawned """
         self.live.terminate()
+
+    def method_destructive_toggled(self, enabled):
+        if enabled:
+            self.overlayTitle.setEnabled(False)
+
+    def method_nondestructive_toggled(self, enabled):
+        if enabled:
+            self.overlayTitle.setEnabled(True)
