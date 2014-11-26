@@ -343,7 +343,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Over-write device (dd)</string>
+     <string>Overwrite device (dd)</string>
     </property>
    </widget>
   </widget>
