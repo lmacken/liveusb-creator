@@ -1,8 +1,11 @@
 <RCC>
-    <qresource>
-        <file>liveusb-header.png</file>
-    </qresource>
-    <qresource>
-        <file>refresh.png</file>
-    </qresource>
+  <qresource>
+    <file>liveusb-header-left.png</file>
+    <file>liveusb-header-right.png</file>
+    <file>liveusb-header-bg.png</file>
+    <file>liveusb-header.png</file>
+  </qresource>
+  <qresource>
+    <file>refresh.png</file>
+  </qresource>
 </RCC>

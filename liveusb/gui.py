@@ -57,7 +57,7 @@ class LiveUSBApp(QtGui.QApplication):
     """ Main application class """
     def __init__(self, opts, args):
         QtGui.QApplication.__init__(self, args)
-        self.mywindow = LiveUSBDialog(opts, args)
+        self.mywindow = LiveUSBWindow(opts, args)
         self.mywindow.show()
         try:
             self.exec_()
@@ -275,12 +275,12 @@ class LiveUSBLogHandler(logging.Handler):
             self.cb(record.msg)
 
 
-class LiveUSBDialog(QtGui.QDialog, LiveUSBInterface):
+class LiveUSBWindow(QtGui.QMainWindow, LiveUSBInterface):
     """ Our main dialog class """
 
     def __init__(self, opts, args):
         self.in_process = False
-        QtGui.QDialog.__init__(self)
+        QtGui.QMainWindow.__init__(self)
         LiveUSBInterface.__init__(self)
         self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
         self.opts = opts
