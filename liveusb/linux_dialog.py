@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'data/liveusb-creator.ui'
 #
-# Created: Tue Nov 25 20:32:45 2014
+# Created: Wed Nov 26 10:48:14 2014
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -152,7 +152,9 @@ class Ui_Dialog(object):
         self.overlayTitle.setWhatsThis(_translate("Dialog", "By allocating extra space on your USB stick for a persistent overlay, you will be able to store data and make permanent modifications to your live operating system.  Without it, you will not be able to save data that will persist after a reboot.", "comment!"))
         self.overlayTitle.setTitle(_translate("Dialog", "Persistent Storage (0 MB)", None))
         self.groupBox_3.setTitle(_translate("Dialog", "Method", None))
+        self.nonDestructiveButton.setToolTip(_translate("Dialog", "This method uses the \'cp\' command to copy the files from the ISO on to your USB key, without deleting any existing files.", None))
         self.nonDestructiveButton.setText(_translate("Dialog", "Non-destructive (cp)", None))
+        self.destructiveButton.setToolTip(_translate("Dialog", "This method uses the \'dd\' comand to copy the ISO directly to your USB device, destroying any pre-existing data/partitions. This method tends to be more reliable in terms of booting, especially with UEFI systems.", None))
         self.destructiveButton.setText(_translate("Dialog", "Overwrite device (dd)", None))
 
 import resources_rc

@@ -326,6 +326,9 @@
       <height>26</height>
      </rect>
     </property>
+    <property name="toolTip">
+     <string>This method uses the 'cp' command to copy the files from the ISO on to your USB key, without deleting any existing files.</string>
+    </property>
     <property name="text">
      <string>Non-destructive (cp)</string>
     </property>
@@ -341,6 +344,9 @@
       <width>171</width>
       <height>26</height>
      </rect>
+    </property>
+    <property name="toolTip">
+     <string>This method uses the 'dd' comand to copy the ISO directly to your USB device, destroying any pre-existing data/partitions. This method tends to be more reliable in terms of booting, especially with UEFI systems.</string>
     </property>
     <property name="text">
      <string>Overwrite device (dd)</string>
