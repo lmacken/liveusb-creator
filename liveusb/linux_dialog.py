@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'data/liveusb-creator.ui'
 #
-# Created: Tue Nov 25 16:22:22 2014
+# Created: Tue Nov 25 20:32:45 2014
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -153,6 +153,6 @@ class Ui_Dialog(object):
         self.overlayTitle.setTitle(_translate("Dialog", "Persistent Storage (0 MB)", None))
         self.groupBox_3.setTitle(_translate("Dialog", "Method", None))
         self.nonDestructiveButton.setText(_translate("Dialog", "Non-destructive (cp)", None))
-        self.destructiveButton.setText(_translate("Dialog", "Over-write device (dd)", None))
+        self.destructiveButton.setText(_translate("Dialog", "Overwrite device (dd)", None))
 
 import resources_rc
