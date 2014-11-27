@@ -359,7 +359,7 @@ class LiveUSBWindow(QtGui.QMainWindow, LiveUSBInterface):
                 self.downloadCombo.addItem(release)
             self.live.log.info(_('Releases updated!'))
         except Exception, e:
-            self.live.log.error(_('Unable to fetch releases: %s') % e)
+            self.live.log.error(_('Unable to fetch releases: %r') % e)
 
     def connect_slots(self):
         self.connect(self, QtCore.SIGNAL('triggered()'), self.terminate)
@@ -483,9 +483,7 @@ class LiveUSBWindow(QtGui.QMainWindow, LiveUSBInterface):
         self.progressBar.setMaximum(value)
 
     def status(self, text):
-        if isinstance(text, Exception):
-            text = text.args[0]
-        elif isinstance(text, int):
+        if not isinstance(text, basestring):
             text = str(text)
         self.textEdit.append(text)
 

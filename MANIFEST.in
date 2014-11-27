@@ -3,10 +3,12 @@ include Makefile
 include LICENSE.txt
 include liveusb-creator
 include setup.py
-include liveusb-creator.console
-include liveusb-creator.pam
+include org.fedoraproject.pkexec.run-liveusb-creator.policy
+include liveusb-creator_polkit
 include liveusb-creator.spec
 
 graft liveusb
 graft data
 graft po
+
+global-exclude *.pyc *.sw*
