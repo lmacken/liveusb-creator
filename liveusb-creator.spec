@@ -8,7 +8,7 @@
 
 Name:           liveusb-creator
 Version:        3.13.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A liveusb creator
 
 Group:          Applications/System
@@ -23,13 +23,16 @@ ExcludeArch:    ppc64
 ExcludeArch:    %{arm}
 
 BuildRequires:  python-devel, python-setuptools, PyQt4-devel, desktop-file-utils gettext
-Requires:       syslinux, PyQt4, usermode, isomd5sum
+
+Requires:       syslinux
+Requires:       PyQt4
+Requires:       isomd5sum
 Requires:       python-urlgrabber
 Requires:       pyparted >= 2.0
 Requires:       syslinux-extlinux
 Requires:       udisks
-# https://bugzilla.redhat.com/show_bug.cgi?id=976415
-Requires:       usermode-gtk
+Requires:       polkit
+Requires:       polkit-gnome
 
 %description
 A liveusb creator from Live Fedora images
@@ -46,14 +49,18 @@ rm -rf %{buildroot}
 %{__python} setup.py install -O1 --skip-build --root %{buildroot}
 %{__rm} -r liveusb/urlgrabber
 
-# Adjust for console-helper magic
+# program needs root, move to sbin
 mkdir -p %{buildroot}%{_sbindir}
 mv %{buildroot}%{_bindir}/%{name} %{buildroot}%{_sbindir}/%{name}
-ln -s ../bin/consolehelper %{buildroot}%{_bindir}/%{name}
-mkdir -p %{buildroot}%{_sysconfdir}/pam.d
-cp %{name}.pam %{buildroot}%{_sysconfdir}/pam.d/%{name}
-mkdir -p %{buildroot}%{_sysconfdir}/security/console.apps
-cp %{name}.console %{buildroot}%{_sysconfdir}/security/console.apps/%{name}
+
+# polkit stuff
+mkdir -p %{buildroot}%{_datadir}/polkit-1/actions
+%{__install} -p -m644 \
+	org.fedoraproject.pkexec.run-liveusb-creator.policy \
+	%{buildroot}%{_datadir}/polkit-1/actions/
+%{__install} -p -m755 \
+	liveusb-creator_polkit \
+	%{buildroot}%{_bindir}/
 
 desktop-file-install \
 %if %{with_desktop_vendor_tag}
@@ -74,16 +81,18 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %doc README.rst LICENSE.txt
 %{python_sitelib}/*
-%{_bindir}/%{name}
-%{_sbindir}/%{name}
+%{_bindir}/*
+%{_sbindir}/*
 %{_datadir}/applications/*liveusb-creator.desktop
 %{_datadir}/pixmaps/fedorausb.png
 %{_datadir}/appdata/%{name}.appdata.xml
 #%{_datadir}/locale/*/LC_MESSAGES/liveusb-creator.mo
-%config(noreplace) %{_sysconfdir}/pam.d/%{name}
-%config(noreplace) %{_sysconfdir}/security/console.apps/%{name}
+%{_datadir}/polkit-1/actions/org.fedoraproject.pkexec.run-liveusb-creator.policy
 
 %changelog
+* Thu Nov 27 2014 Gene Czarcinski <gczarcinski@gmail.com> 3.13.0-2
+- convert to using polkit (pkexec) instead of consolehelper
+
 * Wed Nov 26 2014 Luke Macken <lmacken@redhat.com> - 3.13.0-1
 - Latest upstream release with bug fixes and interface improvements.
 
