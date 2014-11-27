@@ -483,9 +483,7 @@ class LiveUSBWindow(QtGui.QMainWindow, LiveUSBInterface):
         self.progressBar.setMaximum(value)
 
     def status(self, text):
-        if isinstance(text, Exception):
-            text = text.args[0]
-        elif isinstance(text, int):
+        if not isinstance(text, basestring):
             text = str(text)
         self.textEdit.append(text)
 
