@@ -370,6 +370,8 @@ class LiveUSBCreator(object):
         return os.path.exists(self.get_liveos())
 
     def get_liveos(self):
+        if not os.path.exists(self.dest):
+            raise LiveUSBError(_('Cannot find path %r') % self.dest)
         return os.path.join(self.dest + os.path.sep, "LiveOS")
 
     def existing_overlay(self):
