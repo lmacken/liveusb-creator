@@ -7,8 +7,8 @@
 %endif
 
 Name:           liveusb-creator
-Version:        3.13.0
-Release:        2%{?dist}
+Version:        3.13.1
+Release:        1%{?dist}
 Summary:        A liveusb creator
 
 Group:          Applications/System
@@ -90,6 +90,9 @@ rm -rf %{buildroot}
 %{_datadir}/polkit-1/actions/org.fedoraproject.pkexec.run-liveusb-creator.policy
 
 %changelog
+* Thu Nov 27 2014 Luke Macken <lmacken@redhat.com> - 3.13.1-1
+- Latest upstream release
+
 * Thu Nov 27 2014 Gene Czarcinski <gczarcinski@gmail.com> 3.13.0-2
 - convert to using polkit (pkexec) instead of consolehelper
 
