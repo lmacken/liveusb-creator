@@ -779,7 +779,10 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         """ Return the number of available bytes on our device """
         import statvfs
         device = device and device or self.dest
-        stat = os.statvfs(device.encode('utf-8'))
+        device = device.encode('utf-8')
+        if not os.path.exists(device):
+            raise LiveUSBError(_('Cannot find device: %s') % device)
+        stat = os.statvfs(device)
         return stat[statvfs.F_BSIZE] * stat[statvfs.F_BAVAIL]
 
     def _get_device(self, udi):
