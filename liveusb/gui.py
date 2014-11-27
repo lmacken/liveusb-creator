@@ -359,7 +359,7 @@ class LiveUSBWindow(QtGui.QMainWindow, LiveUSBInterface):
                 self.downloadCombo.addItem(release)
             self.live.log.info(_('Releases updated!'))
         except Exception, e:
-            self.live.log.error(_('Unable to fetch releases: %s') % e)
+            self.live.log.error(_('Unable to fetch releases: %r') % e)
 
     def connect_slots(self):
         self.connect(self, QtCore.SIGNAL('triggered()'), self.terminate)
