@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'data/liveusb-creator.ui'
 #
-# Created: Wed Nov 26 15:03:25 2014
+# Created: Thu Nov 27 00:54:37 2014
 #      by: PyQt4 UI code generator 4.10.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,7 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(574, 530)
+        MainWindow.resize(574, 538)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
