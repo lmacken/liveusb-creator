@@ -2,7 +2,9 @@ import re
 from urlgrabber import urlread
 from urlgrabber.grabber import URLGrabError
 
-FEDORA_RELEASES = 'http://dl.fedoraproject.org/pub/fedora/linux/releases/'
+BASE_URL = 'http://dl.fedoraproject.org'
+PUB_URL = BASE_URL + '/pub/fedora/linux/releases/'
+ALT_URL = BASE_URL + '/pub/alt/releases/'
 ARCHES = ('armhfp', 'x86_64', 'i686', 'i386')
 
 # A backup list of releases, just in case we can't fetch them.
@@ -56,22 +58,27 @@ def get_fedora_releases():
     global releases
     fedora_releases = []
     try:
-        html = urlread(FEDORA_RELEASES)
+        html = urlread(PUB_URL)
         versions = re.findall(r'<a href="(\d+)/">', html)
         latest = sorted([int(v) for v in versions], reverse=True)[0:2]
         for release in latest:
             if release >= 21:
-                products = ('Workstation', 'Server', 'Cloud', 'Live')
+                products = ('Workstation', 'Server', 'Cloud', 'Live', 'Spins')
             else:
-                products = ('Live',)
+                products = ('Live', 'Spins')
             for product in products:
                 for arch in ARCHES:
+                    baseurl = PUB_URL
                     if product == 'Live':
                         isodir = '/'
+                    elif product == 'Spins':
+                        baseurl = ALT_URL
+                        isodir = '/'
                     else:
-                        isodir = 'iso/'
-                    arch_url = FEDORA_RELEASES + '%s/%s/%s/%s' % (release,
+                        isodir = '/iso/'
+                    arch_url = baseurl + '%s/%s/%s%s' % (release,
                             product, arch, isodir)
+                    print(arch_url)
                     try:
                         files = urlread(arch_url)
                     except URLGrabError:
