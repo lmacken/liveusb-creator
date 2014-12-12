@@ -60,33 +60,40 @@ def get_fedora_releases():
         versions = re.findall(r'<a href="(\d+)/">', html)
         latest = sorted([int(v) for v in versions], reverse=True)[0:2]
         for release in latest:
-            for arch in ARCHES:
-                arch_url = FEDORA_RELEASES + '%s/Live/%s/' % (release, arch)
-                try:
-                    files = urlread(arch_url)
-                except URLGrabError:
-                    continue
-                for link in re.findall(r'<a href="(.*)">', files):
-                    if link.endswith('-CHECKSUM'):
-                        checksum = urlread(arch_url + link)
-                        for line in checksum.split('\n'):
-                            try:
-                                sha256, filename = line.split()
-                                if filename[0] != '*':
-                                    continue
-                                filename = filename[1:]
-                                chunks = filename[:-6].split('-')
-                                chunks.remove('Live')
-                                release = chunks.pop()
-                                chunks.insert(1,release)
-                                name = ' '.join(chunks)
-                                fedora_releases.append(dict(
-                                    name=name,
-                                    url=arch_url + filename,
-                                    sha256=sha256,
-                                ))
-                            except ValueError:
-                                pass
+            if release >= 21:
+                products = ('Workstation', 'Server', 'Cloud', 'Live')
+            else:
+                products = ('Live',)
+            for product in products:
+                for arch in ARCHES:
+                    if product == 'Live':
+                        isodir = '/'
+                    else:
+                        isodir = 'iso/'
+                    arch_url = FEDORA_RELEASES + '%s/%s/%s/%s' % (release,
+                            product, arch, isodir)
+                    try:
+                        files = urlread(arch_url)
+                    except URLGrabError:
+                        continue
+                    for link in re.findall(r'<a href="(.*)">', files):
+                        if link.endswith('-CHECKSUM'):
+                            print('Reading %s' % arch_url + link)
+                            checksum = urlread(arch_url + link)
+                            for line in checksum.split('\n'):
+                                try:
+                                    sha256, filename = line.split()
+                                    if filename[0] != '*':
+                                        continue
+                                    filename = filename[1:]
+                                    name = filename.replace('.iso', '')
+                                    fedora_releases.append(dict(
+                                        name=name,
+                                        url=arch_url + filename,
+                                        sha256=sha256,
+                                    ))
+                                except ValueError:
+                                    pass
         releases = fedora_releases + other_releases
     except:
         # Can't fetch releases from the internet.
