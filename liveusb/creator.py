@@ -925,7 +925,8 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         mbr = None
         for mbr_bin in ('/usr/lib/syslinux/mbr.bin',
                         '/usr/share/syslinux/mbr.bin',
-                        '/usr/lib/syslinux/bios/mbr.bin'):
+                        '/usr/lib/syslinux/bios/mbr.bin',
+                        '/usr/lib/syslinux/mbr/mbr.bin'):
             if os.path.exists(mbr_bin):
                 mbr = mbr_bin
         return mbr
