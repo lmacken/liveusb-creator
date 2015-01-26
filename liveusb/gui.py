@@ -31,7 +31,7 @@ import urlparse
 
 from time import sleep
 from datetime import datetime
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtWidgets
 
 from liveusb import LiveUSBCreator, LiveUSBError, LiveUSBInterface, _
 from liveusb.releases import releases, get_fedora_releases
@@ -53,10 +53,10 @@ MAX_FAT32 = 3999
 MAX_EXT = 2097152
 
 
-class LiveUSBApp(QtGui.QApplication):
+class LiveUSBApp(QtWidgets.QApplication):
     """ Main application class """
     def __init__(self, opts, args):
-        QtGui.QApplication.__init__(self, args)
+        QtWidgets.QApplication.__init__(self, args)
         self.mywindow = LiveUSBWindow(opts, args)
         self.mywindow.show()
         try:
@@ -98,6 +98,8 @@ class ReleaseDownloader(QtCore.QThread):
 
 
 class DownloadProgress(QtCore.QObject, BaseMeter):
+    maxprogress = QtCore.pyqtSignal(int)
+    progress = QtCore.pyqtSignal(int)
     """ A QObject urlgrabber BaseMeter class.
 
     This class is called automatically by urlgrabber with our download details.
@@ -106,20 +108,22 @@ class DownloadProgress(QtCore.QObject, BaseMeter):
     """
     def start(self, filename=None, url=None, basename=None, size=None,
               now=None, text=None):
-        self.emit(QtCore.SIGNAL("maxprogress(int)"), size)
+        self.maxprogress.emit(size)
 
     def update(self, amount_read, now=None):
         """ Update our download progressbar.
 
         :read: the number of bytes read so far
         """
-        self.emit(QtCore.SIGNAL("progress(int)"), amount_read)
+        self.progress.emit(amount_read)
 
     def end(self, amount_read):
         self.update(amount_read)
 
 
 class ProgressThread(QtCore.QThread):
+    maxprogress = QtCore.pyqtSignal(int)
+    progress = QtCore.pyqtSignal(int)
     """ A thread that monitors the progress of Live USB creation.
 
     This thread periodically checks the amount of free space left on the
@@ -137,13 +141,13 @@ class ProgressThread(QtCore.QThread):
         self.drive = drive
         self.get_free_bytes = freebytes
         self.orig_free = self.get_free_bytes()
-        self.emit(QtCore.SIGNAL("maxprogress(int)"), self.totalsize)
+        self.maxprogress.emit(self.totalsize)
 
     def run(self):
         while self.alive:
             free = self.get_free_bytes()
             value = (self.orig_free - free) / 1024
-            self.emit(QtCore.SIGNAL("progress(int)"), value)
+            self.progress.emit(value)
             if value >= self.totalsize:
                 break
             sleep(3)
@@ -152,20 +156,21 @@ class ProgressThread(QtCore.QThread):
         self.alive = False
 
     def terminate(self):
-        self.emit(QtCore.SIGNAL("progress(int)"), self.totalsize)
+        self.progress.emit(self.totalsize)
         QtCore.QThread.terminate(self)
 
 
 class LiveUSBThread(QtCore.QThread):
 
-    def __init__(self, live, progress, parent=None):
+    def __init__(self, live, progressThread, parent=None):
         QtCore.QThread.__init__(self, parent)
-        self.progress = progress
+        self.progressThread = progressThread
         self.parent = parent
         self.live = live
 
-    def status(self, text):
-        self.emit(QtCore.SIGNAL("status(PyQt_PyObject)"), text)
+    status = QtCore.pyqtSignal(str)
+    maxprogress = QtCore.pyqtSignal(int)
+    progress = QtCore.pyqtSignal(int)
 
     def run(self):
         handler = LiveUSBLogHandler(self.status)
@@ -194,13 +199,13 @@ class LiveUSBThread(QtCore.QThread):
                 self.live.dd_image()
                 self.live.log.removeHandler(handler)
                 duration = str(datetime.now() - now).split('.')[0]
-                self.status(_("Complete! (%s)") % duration)
+                self.status.emit(_("Complete! (%s)") % duration)
                 self.parent.progressBar.setRange(0, 1)
                 return
 
             self.live.verify_filesystem()
             if not self.live.drive['uuid'] and not self.live.label:
-                self.status(_("Error: Cannot set the label or obtain "
+                self.status.emit(_("Error: Cannot set the label or obtain "
                               "the UUID of your device.  Unable to continue."))
                 self.live.log.removeHandler(handler)
                 return
@@ -216,15 +221,15 @@ class LiveUSBThread(QtCore.QThread):
                 # If we know about this ISO, and it's SHA1 -- verify it
                 release = self.live.get_release_from_iso()
                 if release and ('sha1' in release or 'sha256' in release):
-                    if not self.live.verify_iso_sha1(progress=self):
+                    if not self.live.verify_iso_sha1(progressThread=self):
                         self.live.log.removeHandler(handler)
                         return
 
             # Setup the progress bar
-            self.progress.set_data(size=self.live.totalsize,
+            self.progressThread.set_data(size=self.live.totalsize,
                                    drive=self.live.drive['device'],
                                    freebytes=self.live.get_free_bytes)
-            self.progress.start()
+            self.progressThread.start()
 
             self.live.extract_iso()
             self.live.create_persistent_overlay()
@@ -233,32 +238,32 @@ class LiveUSBThread(QtCore.QThread):
             self.live.bootable_partition()
 
             if self.parent.opts.device_checksum:
-                self.live.calculate_device_checksum(progress=self)
+                self.live.calculate_device_checksum(progressThread=self)
             if self.parent.opts.liveos_checksum:
                 self.live.calculate_liveos_checksum()
 
-            self.progress.stop()
+            self.progressThread.stop()
 
             # Flush all filesystem buffers and unmount
             self.live.flush_buffers()
             self.live.unmount_device()
 
             duration = str(datetime.now() - now).split('.')[0]
-            self.status(_("Complete! (%s)" % duration))
+            self.status.emit(_("Complete! (%s)" % duration))
 
         except Exception, e:
-            self.status(e.args[0])
-            self.status(_("LiveUSB creation failed!"))
+            self.status.emit(e.args[0])
+            self.status.emit(_("LiveUSB creation failed!"))
             self.live.log.exception(e)
 
         self.live.log.removeHandler(handler)
-        self.progress.terminate()
+        self.progressThread.terminate()
 
     def set_max_progress(self, maximum):
-        self.emit(QtCore.SIGNAL("maxprogress(int)"), maximum)
+        maxprogress.emit(maximum)
 
     def update_progress(self, value):
-        self.emit(QtCore.SIGNAL("progress(int)"), value)
+        progress.emit(value)
 
     def __del__(self):
         self.wait()
@@ -275,12 +280,12 @@ class LiveUSBLogHandler(logging.Handler):
             self.cb(record.msg)
 
 
-class LiveUSBWindow(QtGui.QMainWindow, LiveUSBInterface):
+class LiveUSBWindow(QtWidgets.QMainWindow, LiveUSBInterface):
     """ Our main dialog class """
 
     def __init__(self, opts, args):
         self.in_process = False
-        QtGui.QMainWindow.__init__(self)
+        QtWidgets.QMainWindow.__init__(self)
         LiveUSBInterface.__init__(self)
         self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
         self.opts = opts
@@ -293,7 +298,7 @@ class LiveUSBWindow(QtGui.QMainWindow, LiveUSBInterface):
         self.progress_thread = ProgressThread()
         self.download_progress = DownloadProgress()
         self.live_thread = LiveUSBThread(live=self.live,
-                                         progress=self.progress_thread,
+                                         progressThread=self.progress_thread,
                                          parent=self)
         self.connect_slots()
         self.confirmed = False
@@ -362,39 +367,25 @@ class LiveUSBWindow(QtGui.QMainWindow, LiveUSBInterface):
             self.live.log.error(_('Unable to fetch releases: %r') % e)
 
     def connect_slots(self):
-        self.connect(self, QtCore.SIGNAL('triggered()'), self.terminate)
-        self.connect(self.isoBttn, QtCore.SIGNAL("clicked()"), self.selectfile)
-        self.connect(self.startButton, QtCore.SIGNAL("clicked()"), self.begin)
-        self.connect(self.overlaySlider, QtCore.SIGNAL("valueChanged(int)"),
-                     self.overlay_value)
-        self.connect(self.live_thread, QtCore.SIGNAL("status(PyQt_PyObject)"),
-                     self.status)
-        self.connect(self.live_thread, QtCore.SIGNAL("finished()"),
-                     lambda: self.enable_widgets(True))
-        self.connect(self.live_thread, QtCore.SIGNAL("terminated()"),
-                     lambda: self.enable_widgets(True))
-        self.connect(self.live_thread, QtCore.SIGNAL("progress(int)"),
-                     self.progress)
-        self.connect(self.live_thread, QtCore.SIGNAL("maxprogress(int)"),
-                     self.maxprogress)
-        self.connect(self.progress_thread, QtCore.SIGNAL("progress(int)"),
-                     self.progress)
-        self.connect(self.progress_thread, QtCore.SIGNAL("maxprogress(int)"),
-                     self.maxprogress)
-        self.connect(self.download_progress, QtCore.SIGNAL("maxprogress(int)"),
-                     self.maxprogress)
-        self.connect(self.download_progress, QtCore.SIGNAL("progress(int)"),
-                     self.progress)
-        self.connect(self.destructiveButton, QtCore.SIGNAL("toggled(bool)"),
-                     self.method_destructive_toggled)
-        self.connect(self.nonDestructiveButton, QtCore.SIGNAL("toggled(bool)"),
-                     self.method_nondestructive_toggled)
+        #self.triggered.connect(self.terminate)
+        self.isoBttn.clicked.connect(self.selectfile)
+        self.startButton.clicked.connect(self.begin)
+        self.overlaySlider.valueChanged.connect(self.overlay_value)
+        self.live_thread.status.connect(self.status)
+        self.live_thread.finished.connect(lambda: self.enable_widgets(True))
+        self.live_thread.finished.connect(lambda: self.enable_widgets(True))
+        self.live_thread.progress.connect(self.progress)
+        self.live_thread.maxprogress.connect(self.maxprogress)
+        self.progress_thread.progress.connect(self.progress)
+        self.progress_thread.maxprogress.connect(self.maxprogress)
+        self.download_progress.progress.connect(self.progress)
+        self.download_progress.maxprogress.connect(self.maxprogress)
+        self.destructiveButton.toggled.connect(self.method_destructive_toggled)
+        self.nonDestructiveButton.toggled.connect(self.method_nondestructive_toggled)
         if hasattr(self, 'refreshDevicesButton'):
-            self.connect(self.refreshDevicesButton, QtCore.SIGNAL("clicked()"),
-                         self.populate_devices)
+            self.refreshDevicesButton.clicked.connect(self.populate_devices)
         if hasattr(self, 'refreshReleasesButton'):
-            self.connect(self.refreshReleasesButton, QtCore.SIGNAL("clicked()"),
-                         self.refresh_releases)
+            self.refreshReleasesButton.clicked.connect(self.refresh_releases)
 
         # If we have access to HAL & DBus, intercept some useful signals
         if hasattr(self.live, 'udisks'):
@@ -403,7 +394,7 @@ class LiveUSBWindow(QtGui.QMainWindow, LiveUSBInterface):
             self.live.udisks.connect_to_signal('DeviceRemoved',
                                             self.populate_devices)
 
-    @QtCore.pyqtSignature("QString")
+    @QtCore.pyqtSlot(str)
     def on_driveBox_currentIndexChanged(self, drive):
         """ Change the maximum overlay size when each drive is selected.
 
@@ -624,11 +615,12 @@ class LiveUSBWindow(QtGui.QMainWindow, LiveUSBInterface):
 
     def selectfile(self, isofile=None):
         if not isofile:
-            isofile = QtGui.QFileDialog.getOpenFileName(self,
+            isofile = QtWidgets.QFileDialog.getOpenFileName(self,
                          _("Select Live ISO"), ".", "ISO (*.iso)" )
         if isofile:
             try:
-                self.live.set_iso(isofile)
+                self.status(isofile[0])
+                self.live.set_iso(isofile[0])
             except Exception, e:
                 self.live.log.error(e.args[0])
                 self.status(_("Unable to encode the filename of your livecd.  "

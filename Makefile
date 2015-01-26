@@ -13,9 +13,9 @@ rpm: dist
 	rpmbuild -ba ~/rpmbuild/SPECS/liveusb-creator.spec
 
 gui:
-	pyrcc4 data/resources.qrc -o liveusb/resources_rc.py
-	pyuic4 data/liveusb-creator.ui -o liveusb/windows_dialog.py
-	pyuic4 data/liveusb-creator-linux.ui -o liveusb/linux_dialog.py
+	pyrcc5 data/resources.qrc -o liveusb/resources_rc.py
+	pyuic5 data/liveusb-creator.ui -o liveusb/windows_dialog.py
+	pyuic5 data/liveusb-creator-linux.ui -o liveusb/linux_dialog.py
 
 pyflakes:
 	pyflakes liveusb/*.py

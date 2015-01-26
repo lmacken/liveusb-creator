@@ -410,7 +410,7 @@ class LiveUSBCreator(object):
         self.isosize = os.stat(self.iso)[ST_SIZE]
 
     def _to_unicode(self, obj, encoding='utf-8'):
-        if hasattr(obj, 'toUtf8'): # PyQt4.QtCore.QString
+        if hasattr(obj, 'toUtf8'): # PyQt5.QtCore.QString
             obj = str(obj.toUtf8())
         if isinstance(obj, basestring):
             if not isinstance(obj, unicode):
@@ -824,9 +824,9 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         eventually be expanded to support other platforms as well.
         """
         try:
-            from PyQt4 import QtCore
+            from PyQt5 import QtCore
         except ImportError:
-            self.log.warning("PyQt4 module not installed; skipping KDE "
+            self.log.warning("PyQt5 module not installed; skipping KDE "
                              "proxy detection")
             return
         kioslaverc = QtCore.QDir.homePath() + '/.kde/share/config/kioslaverc'
