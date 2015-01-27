@@ -4,7 +4,15 @@ Rectangle {
     id: root
 
     property alias currentIndex: osListView.currentIndex
-    signal triggered
+    signal stepForward(int index)
+
+    anchors {
+        fill: parent
+        bottomMargin: 48
+        rightMargin: 64
+        topMargin: anchors.bottomMargin
+        leftMargin: anchors.rightMargin
+    }
 
     clip: true
     border {
@@ -24,7 +32,7 @@ Rectangle {
             x: 1
             y: 1
             color: "transparent"
-            Rectangle {
+            Image {
                 id: iconRect
                 anchors {
                     top: parent.top
@@ -35,10 +43,9 @@ Rectangle {
                     bottomMargin: anchors.topMargin
                 }
                 width: height
+                smooth: true
 
-                color: "transparent"
-                border.color: "#c3c3c3"
-                border.width: 1
+                source: icon
             }
             Item {
                 id: textRect
@@ -85,7 +92,7 @@ Rectangle {
                 anchors.fill: parent
                 onClicked: {
                     root.currentIndex = index
-                    root.triggered()
+                    root.stepForward(index)
                 }
                 onPressed: {
                     parent.color = "#ededed"

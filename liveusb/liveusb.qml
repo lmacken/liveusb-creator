@@ -6,8 +6,16 @@ import QtQuick.Dialogs 1.2
 import "components"
 
 ApplicationWindow {
+    id: mainWindow
     width: 800
     height: 480
+
+    SystemPalette {
+        id: palette
+    }
+
+    property int currentImageIndex: 1
+    property bool canGoBack: false
 
     ListModel {
         id: osList
@@ -20,25 +28,25 @@ ApplicationWindow {
         ListElement {
             name: "Fedora Workstation"
             description: "Fedora Workstation 21 64bit"
-            icon: ""
+            icon: "http://upload.wikimedia.org/wikipedia/commons/3/3f/Fedora_logo.svg"
             hasDetails: true
         }
         ListElement {
             name: "Fedora Workstation"
             description: "Fedora Workstation 20 64bit"
-            icon: ""
+            icon: "http://upload.wikimedia.org/wikipedia/commons/3/3f/Fedora_logo.svg"
             hasDetails: true
         }
         ListElement {
             name: "Ubuntu Desktop"
             description: "Ubuntu 14.04.1 LTS 64bit"
-            icon: ""
+            icon: "http://logonoid.com/images/ubuntu-logo.png"
             hasDetails: true
         }
         ListElement {
             name: "Ubuntu Desktop"
             description: "Ubuntu 14.10 64bit"
-            icon: ""
+            icon: "http://logonoid.com/images/ubuntu-logo.png"
             hasDetails: true
         }
     }
@@ -52,6 +60,50 @@ ApplicationWindow {
             top: parent.top
             right: parent.right
             left: parent.left
+        }
+
+        Button {
+            id: backButton
+            visible: canGoBack
+            width: height
+            anchors {
+                left: parent.left
+                top: parent.top
+                bottom: parent.bottom
+                margins: 6
+            }
+            Item {
+                anchors.centerIn: parent
+                rotation: -45
+                transformOrigin: Item.Center
+                width: 10
+                height: 10
+                Rectangle {
+                    x: 1.5
+                    y: 1.5
+                    width: 2
+                    height: 9
+                    radius: 2
+                    color: "#444444"
+                }
+                Rectangle {
+                    y: 1.5
+                    x: 1.5
+                    width: 9
+                    height: 2
+                    radius: 2
+                    color: "#444444"
+                }
+            }
+            onClicked: {
+                canGoBack = false
+                contentLoader.source = "components/ImageList.qml"
+            }
+        }
+
+        Text {
+            text: "OS Boot Imager"
+            anchors.centerIn: parent
         }
 
         ComboBox {
@@ -73,6 +125,23 @@ ApplicationWindow {
                 top: parent.top
                 bottom: parent.bottom
                 margins: 6
+            }
+            Item {
+                anchors.centerIn: parent
+                width: 10
+                height: 10
+                Column {
+                    spacing: 2
+                    Repeater {
+                        model: 3
+                        delegate: Rectangle {
+                            height: 2
+                            width: 10
+                            radius: 2
+                            color: "#444444"
+                        }
+                    }
+                }
             }
         }
 
@@ -117,20 +186,25 @@ ApplicationWindow {
                     color: "#a1a1a1"
                 }
             }
+            onClicked: mainWindow.close()
         }
 
     }
 
-    ImageList {
+    Loader {
+        id: contentLoader
         anchors {
-            top: parent.top
-            bottom: parent.bottom
-            left: parent.left
-            right: parent.right
-            topMargin: 48
-            bottomMargin: anchors.topMargin
-            leftMargin: 64
-            rightMargin: anchors.leftMargin
+            fill: parent
+        }
+
+        source: "components/ImageList.qml"
+    }
+    Connections {
+        target: contentLoader.item
+        onStepForward: {
+            currentImageIndex = index
+            canGoBack = true
+            contentLoader.source = "components/ImageDetails.qml"
         }
     }
 }
