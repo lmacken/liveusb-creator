@@ -26,13 +26,17 @@ Rectangle {
         clip: true
         anchors.fill: parent
         model: osList
-        delegate: Rectangle {
+        delegate: imageDelegate
+    }
+    Component {
+        id: imageDelegate
+        Rectangle {
             width: parent.width - 2
             height: 84
             x: 1
             y: 1
             color: "transparent"
-            Image {
+            IndicatedImage {
                 id: iconRect
                 anchors {
                     top: parent.top

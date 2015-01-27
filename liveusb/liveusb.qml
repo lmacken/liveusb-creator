@@ -62,7 +62,7 @@ ApplicationWindow {
             left: parent.left
         }
 
-        Button {
+        BackButton {
             id: backButton
             visible: canGoBack
             width: height
@@ -72,32 +72,9 @@ ApplicationWindow {
                 bottom: parent.bottom
                 margins: 6
             }
-            Item {
-                anchors.centerIn: parent
-                rotation: -45
-                transformOrigin: Item.Center
-                width: 10
-                height: 10
-                Rectangle {
-                    x: 1.5
-                    y: 1.5
-                    width: 2
-                    height: 9
-                    radius: 2
-                    color: "#444444"
-                }
-                Rectangle {
-                    y: 1.5
-                    x: 1.5
-                    width: 9
-                    height: 2
-                    radius: 2
-                    color: "#444444"
-                }
-            }
             onClicked: {
                 canGoBack = false
-                contentLoader.source = "components/ImageList.qml"
+                contentList.currentIndex--
             }
         }
 
@@ -108,7 +85,7 @@ ApplicationWindow {
 
         ComboBox {
             anchors {
-                right: searchButton.left
+                right: menuButton.left
                 top: parent.top
                 bottom: parent.bottom
                 margins: 6
@@ -117,31 +94,14 @@ ApplicationWindow {
             model: ["64bit (detected)", "32bit"]
         }
 
-        Button {
-            id: searchButton
+        MenuButton {
+            id: menuButton
             width: height
             anchors {
                 right: spacer.left
                 top: parent.top
                 bottom: parent.bottom
                 margins: 6
-            }
-            Item {
-                anchors.centerIn: parent
-                width: 10
-                height: 10
-                Column {
-                    spacing: 2
-                    Repeater {
-                        model: 3
-                        delegate: Rectangle {
-                            height: 2
-                            width: 10
-                            radius: 2
-                            color: "#444444"
-                        }
-                    }
-                }
             }
         }
 
@@ -157,7 +117,7 @@ ApplicationWindow {
             }
         }
 
-        Button {
+        QuitButton {
             id: quitButton
             //flat: true
             anchors {
@@ -167,45 +127,44 @@ ApplicationWindow {
                 margins: 6
             }
             width: height
-            Item {
-                anchors.fill: parent
-                rotation: 45
-                transformOrigin: Item.Center
-                Rectangle {
-                    width: 2
-                    height: 12
-                    radius: 1
-                    anchors.centerIn: parent
-                    color: "#a1a1a1"
-                }
-                Rectangle {
-                    width: 12
-                    height: 2
-                    radius: 1
-                    anchors.centerIn: parent
-                    color: "#a1a1a1"
-                }
-            }
             onClicked: mainWindow.close()
         }
 
     }
 
-    Loader {
-        id: contentLoader
-        anchors {
-            fill: parent
+    ListView {
+        id: contentList
+        anchors.fill: parent
+        model: ["components/ImageList.qml", "components/ImageDetails.qml"]
+        orientation: ListView.Horizontal
+        snapMode: ListView.SnapOneItem
+        interactive: false
+        highlightMoveVelocity: 1500
+        cacheBuffer: 2*width
+        delegate: Item {
+            id: contentComponent
+            width: contentList.width
+            height: contentList.height
+            Loader {
+                id: contentLoader
+                source: contentList.model[index]
+                anchors.fill: parent
+            }
+            Connections {
+                target: contentLoader.item
+                onStepForward: {
+                    contentList.currentIndex = 1
+                    canGoBack = true
+                }
+            }
         }
-
-        source: "components/ImageList.qml"
     }
-    Connections {
-        target: contentLoader.item
-        onStepForward: {
-            currentImageIndex = index
-            canGoBack = true
-            contentLoader.source = "components/ImageDetails.qml"
-        }
+
+
+    BusyIndicator {
+        id: loaderIndicator
+        anchors.centerIn: parent
+        visible: true
     }
 }
 

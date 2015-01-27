@@ -90,6 +90,7 @@ Dialog {
 
                 }
                 ComboBox {
+                    Layout.preferredWidth: implicitWidth * 2
                     model: ListModel {
                         ListElement { text: "SanDisk Cruzer 2.0 GB Drive"; device:"sdj1" }
                     }

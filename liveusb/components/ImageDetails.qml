@@ -25,7 +25,7 @@ Item {
                     anchors.right: parent.right
                     spacing: 32
                     Layout.alignment: Qt.AlignLeft
-                    Image {
+                    IndicatedImage {
                         id: iconRect
                         source: "http://upload.wikimedia.org/wikipedia/commons/3/3f/Fedora_logo.svg"
                         sourceSize.width: 64
@@ -87,18 +87,20 @@ Item {
                         text: "Boot with Boxes"
                     }
                 }
-                Image {
+                IndicatedImage {
                     Layout.fillWidth: true
                     fillMode: Image.PreserveAspectFit
                     source: "http://fedora.cz/wp-content/uploads/2013/12/fedora-20-gnome-10.png"
                     sourceSize.width: width
-                    //height: width / sourceSize.width * sourceSize.height / 5
                 }
             }
         }
     }
     DownloadDialog {
         id: dialog
+    }
+    Component.onCompleted: {
+        loaderIndicator.visible = false
     }
 }
 
