@@ -65,6 +65,30 @@ ApplicationWindow {
             icon: "http://logonoid.com/images/ubuntu-logo.png"
             hasDetails: true
         }
+        ListElement {
+            name: "Fedora Workstation"
+            description: "Fedora Workstation 21 64bit"
+            icon: "http://upload.wikimedia.org/wikipedia/commons/3/3f/Fedora_logo.svg"
+            hasDetails: true
+        }
+        ListElement {
+            name: "Fedora Workstation"
+            description: "Fedora Workstation 20 64bit"
+            icon: "http://upload.wikimedia.org/wikipedia/commons/3/3f/Fedora_logo.svg"
+            hasDetails: true
+        }
+        ListElement {
+            name: "Ubuntu Desktop"
+            description: "Ubuntu 14.04.1 LTS 64bit"
+            icon: "http://logonoid.com/images/ubuntu-logo.png"
+            hasDetails: true
+        }
+        ListElement {
+            name: "Ubuntu Desktop"
+            description: "Ubuntu 14.10 64bit"
+            icon: "http://logonoid.com/images/ubuntu-logo.png"
+            hasDetails: true
+        }
     }
 
     Rectangle {
@@ -72,11 +96,7 @@ ApplicationWindow {
         color: palette.window
         //radius: 8
         clip: true
-        border {
-            width: 1
-            color: "#a1a1a1"
-        }
-
+/*
         Rectangle {
             id: toolBar
             height: 48
@@ -128,22 +148,12 @@ ApplicationWindow {
                     contentList.currentIndex--
                 }
             }
-/*
+
             Text {
                 text: "OS Boot Imager"
                 anchors.centerIn: parent
             }
-*/
-            AdwaitaComboBox {
-                anchors {
-                    right: menuButton.left
-                    top: parent.top
-                    bottom: parent.bottom
-                    margins: 6
-                }
-                width: 148
-                model: ["64bit (detected)", "32bit"]
-            }
+
 
             MenuButton {
                 id: menuButton
@@ -156,7 +166,7 @@ ApplicationWindow {
                     margins: 6
                 }
             }
-/*
+
             Rectangle {
                 id: spacer
                 width: 1
@@ -181,13 +191,13 @@ ApplicationWindow {
                 width: height
                 onClicked: mainWindow.close()
             }
-*/
-        }
+
+        }*/
 
         ListView {
             id: contentList
             anchors{
-                top: toolBar.bottom
+                top: parent.top
                 bottom: parent.bottom
                 left: parent.left
                 right: parent.right

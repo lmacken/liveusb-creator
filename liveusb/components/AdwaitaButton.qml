@@ -9,7 +9,20 @@ Button {
 
     style: ButtonStyle {
         background: AdwaitaRectangle {
-
+            color: root.color
+            Component.onCompleted: {
+                if (root.color != palette.button)
+                    gradient = emptyGrad
+            }
+            Gradient {
+                id: emptyGrad
+            }
+        }
+        label: Text {
+            color: root.textColor
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            text: control.text
         }
     }
 }

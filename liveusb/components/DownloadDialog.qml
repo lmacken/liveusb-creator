@@ -9,13 +9,19 @@ Dialog {
     title: "Write Fedora Workstation to USB"
 
     contentItem: Rectangle {
-        ToolBar {
+        Item {
             id: dialogToolBar
-            height: 48
+            height: 42
+            anchors {
+                left: parent.left
+                right: parent.right
+                bottom: parent.bottom
+            }
 
             AdwaitaButton {
+                id: cancelButton
                 anchors {
-                    left: parent.left
+                    right: acceptButton.left
                     top: parent.top
                     bottom: parent.bottom
                     margins: 6
@@ -24,11 +30,8 @@ Dialog {
                 text: "Cancel"
                 onClicked: root.close()
             }
-            Text {
-                anchors.centerIn: parent
-                text: "Write Fedora Workstation to USB"
-            }
             AdwaitaButton {
+                id: acceptButton
                 anchors {
                     right: parent.right
                     top: parent.top
@@ -47,10 +50,10 @@ Dialog {
             id: layout
             spacing: 24
             anchors {
-                top: dialogToolBar.bottom
+                top: parent.top
                 left: parent.left
                 right: parent.right
-                bottom: parent.bottom
+                bottom: dialogToolBar.top
                 topMargin: 48
                 leftMargin: 64
                 rightMargin: anchors.leftMargin

@@ -14,6 +14,12 @@ ComboBox {
                 scale: 1.3
             }
         }
+        label: Text {
+            x: 4
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignLeft
+            text: control.currentText
+        }
     }
 }
 

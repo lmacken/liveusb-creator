@@ -24,7 +24,7 @@ Rectangle {
     //color: control.clicked ? Qt.lighter(root.color, 1.0) : root.color
     border {
         width: 1
-        color: "#888"
+        color: "#b2b2b2"
     }
 
     SystemPalette {
