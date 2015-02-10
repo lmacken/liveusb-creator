@@ -5,6 +5,8 @@ import QtQuick.Layouts 1.1
 Item {
     id: root
 
+    signal stepForward
+
     ScrollView {
         anchors {
             fill: parent
@@ -78,11 +80,11 @@ Item {
                             color: "gray"
                         }
                     }
-                    Button {
+                    AdwaitaButton {
                         text: "Write to USB disk"
                         onClicked: dialog.visible = true
                     }
-                    Button {
+                    AdwaitaButton {
                         enabled: false
                         text: "Boot with Boxes"
                     }
@@ -98,9 +100,6 @@ Item {
     }
     DownloadDialog {
         id: dialog
-    }
-    Component.onCompleted: {
-        loaderIndicator.visible = false
     }
 }
 

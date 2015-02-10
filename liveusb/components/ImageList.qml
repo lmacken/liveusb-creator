@@ -65,7 +65,7 @@ Rectangle {
                         left: parent.left
                         bottomMargin: 2
                     }
-                    font.weight: Font.Bold
+                    // font.weight: Font.Bold
                 }
                 Text {
                     text: description
@@ -75,7 +75,7 @@ Rectangle {
                         topMargin: 2
                     }
                     color: "#a1a1a1"
-                    font.weight: Font.Bold
+                    // font.weight: Font.Bold
                 }
             }
             Arrow {

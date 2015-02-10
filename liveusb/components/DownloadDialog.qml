@@ -13,7 +13,7 @@ Dialog {
             id: dialogToolBar
             height: 48
 
-            Button {
+            AdwaitaButton {
                 anchors {
                     left: parent.left
                     top: parent.top
@@ -28,7 +28,7 @@ Dialog {
                 anchors.centerIn: parent
                 text: "Write Fedora Workstation to USB"
             }
-            Button {
+            AdwaitaButton {
                 anchors {
                     right: parent.right
                     top: parent.top
@@ -70,7 +70,7 @@ Dialog {
                     horizontalAlignment: Text.AlignHCenter
                     text: "Downloading (895MB left)"
                 }
-                ProgressBar {
+                AdwaitaProgressBar {
                     Layout.fillWidth: true
                     value: 0.2
                 }
