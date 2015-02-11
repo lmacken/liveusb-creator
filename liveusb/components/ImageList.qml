@@ -1,17 +1,23 @@
 import QtQuick 2.4
 import QtQuick.Controls 1.3
 import QtQuick.Controls.Styles 1.3
+import QtQuick.Layouts 1.1
 
 Item {
     id: root
 
     property alias currentIndex: osListView.currentIndex
+    property bool viewFullList: false
+    property real fadeDuration: 200
+
     signal stepForward(int index)
 
     anchors.fill: parent
     clip: true
 
     Rectangle {
+        enabled: root.viewFullList
+        opacity: root.viewFullList ? 1.0 : 0.0
         id: searchBox
         border {
             color: "#c3c3c3"
@@ -86,6 +92,14 @@ Item {
     }
 
     AdwaitaComboBox {
+        enabled: root.viewFullList
+        opacity: root.viewFullList ? 1.0 : 0.0
+        Behavior on opacity {
+            NumberAnimation {
+                duration: root.fadeDuration
+            }
+        }
+
         id: archSelect
         anchors {
             right: parent.right
@@ -99,6 +113,7 @@ Item {
     }
 
     Rectangle {
+        clip: true
         z: -1
         anchors {
             top: parent.top
@@ -112,13 +127,86 @@ Item {
             color: "#c3c3c3"
             width: 1
         }
-        height: parent.height - 54 + 4
+        height: root.viewFullList ? parent.height - 54 + 4 : parent.height - 108
+        Behavior on height {
+            NumberAnimation {
+                duration: root.fadeDuration
+            }
+        }
+
+        Item {
+            anchors.fill: parent
+            enabled: !root.viewFullList
+            opacity: root.viewFullList ? 0.0 : 1.0
+            Behavior on opacity {
+                NumberAnimation {
+                    duration: root.fadeDuration
+                }
+            }
+            Column {
+                id: selectedOsColumn
+                anchors {
+                    top: parent.top
+                    left: parent.left
+                    right: parent.right
+                }
+                Repeater {
+                    model: selectedOsList
+                    delegate: imageDelegate
+                }
+            }
+            Rectangle {
+                anchors {
+                    top: selectedOsColumn.bottom
+                    bottom: parent.bottom
+                    left: parent.left
+                    right: parent.right
+                    margins: 1
+                }
+                radius: 3
+                Column {
+                    anchors.centerIn: parent
+                    spacing: 2
+                    Repeater {
+                        model: 3
+                        Rectangle {
+                            height: 4
+                            width: 4
+                            color: "#bebebe"
+                        }
+                    }
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        root.viewFullList = true
+                    }
+                    onPressed: {
+                        parent.color = "#ededed"
+                    }
+                    onReleased: {
+                        parent.color = "transparent"
+                    }
+                    onCanceled: {
+                        parent.color = "transparent"
+                    }
+                }
+            }
+        }
 
         radius: 6
         color: "white"
     }
 
     ScrollView {
+        id: fullList
+        enabled: root.viewFullList
+        opacity: root.viewFullList ? 1.0 : 0.0
+        Behavior on opacity {
+            NumberAnimation {
+                duration: root.fadeDuration
+            }
+        }
         anchors.fill: parent
         ListView {
             id: osListView

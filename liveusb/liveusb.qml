@@ -34,6 +34,34 @@ ApplicationWindow {
     }
 
     ListModel {
+        id: selectedOsList
+        ListElement {
+            name: "Custom OS..."
+            description: "<pick from file chooser>"
+            icon: ""
+            hasDetails: false
+        }
+        ListElement {
+            name: "Fedora Workstation"
+            description: "Fedora Workstation 21 64bit"
+            icon: "http://upload.wikimedia.org/wikipedia/commons/3/3f/Fedora_logo.svg"
+            hasDetails: true
+        }
+        ListElement {
+            name: "Fedora Workstation"
+            description: "Fedora Workstation 20 64bit"
+            icon: "http://upload.wikimedia.org/wikipedia/commons/3/3f/Fedora_logo.svg"
+            hasDetails: true
+        }
+        ListElement {
+            name: "Ubuntu Desktop"
+            description: "Ubuntu 14.04.1 LTS 64bit"
+            icon: "http://logonoid.com/images/ubuntu-logo.png"
+            hasDetails: true
+        }
+    }
+
+    ListModel {
         id: osList
         ListElement {
             name: "Custom OS..."
