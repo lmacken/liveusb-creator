@@ -9,40 +9,6 @@ Dialog {
     title: "Write Fedora Workstation to USB"
 
     contentItem: Rectangle {
-        Item {
-            id: dialogToolBar
-            height: 42
-            anchors {
-                left: parent.left
-                right: parent.right
-                bottom: parent.bottom
-            }
-
-            AdwaitaButton {
-                id: cancelButton
-                anchors {
-                    right: acceptButton.left
-                    top: parent.top
-                    bottom: parent.bottom
-                    margins: 6
-                }
-                width: implicitWidth * 1.2
-                text: "Cancel"
-                onClicked: root.close()
-            }
-            AdwaitaButton {
-                id: acceptButton
-                anchors {
-                    right: parent.right
-                    top: parent.top
-                    bottom: parent.bottom
-                    margins: 6
-                }
-                width: implicitWidth * 1.2
-                enabled: false
-                text: "Write to disk"
-            }
-        }
         color: palette.window
         implicitWidth: 600
         implicitHeight: 300
@@ -50,14 +16,11 @@ Dialog {
             id: layout
             spacing: 24
             anchors {
-                top: parent.top
-                left: parent.left
-                right: parent.right
-                bottom: dialogToolBar.top
+                fill: parent
                 topMargin: 48
                 leftMargin: 64
                 rightMargin: anchors.leftMargin
-                bottomMargin: anchors.topMargin
+                bottomMargin: anchors.topMargin * 2
             }
 
             Text {
@@ -92,12 +55,50 @@ Dialog {
                 Arrow {
 
                 }
-                ComboBox {
+                AdwaitaComboBox {
                     Layout.preferredWidth: implicitWidth * 2
                     model: ListModel {
                         ListElement { text: "SanDisk Cruzer 2.0 GB Drive"; device:"sdj1" }
                     }
                 }
+            }
+        }
+        Item {
+            id: dialogToolBar
+            height: 32
+            anchors {
+                left: parent.left
+                right: parent.right
+                bottom: parent.bottom
+                bottomMargin: 24
+                leftMargin: 16
+                rightMargin: anchors.leftMargin
+            }
+
+            AdwaitaButton {
+                id: cancelButton
+                anchors {
+                    right: acceptButton.left
+                    top: parent.top
+                    bottom: parent.bottom
+                    rightMargin: 6
+                }
+                width: implicitWidth * 1.2
+                text: "Cancel"
+                onClicked: root.close()
+            }
+            AdwaitaButton {
+                id: acceptButton
+                anchors {
+                    right: parent.right
+                    top: parent.top
+                    bottom: parent.bottom
+                }
+                color: "red"
+                textColor: enabled ? "white" : palette.text
+                width: implicitWidth * 1.2
+                enabled: false
+                text: "Write to disk"
             }
         }
     }

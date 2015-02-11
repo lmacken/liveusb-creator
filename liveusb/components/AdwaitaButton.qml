@@ -9,17 +9,11 @@ Button {
 
     style: ButtonStyle {
         background: AdwaitaRectangle {
-            color: root.color
-            Component.onCompleted: {
-                if (root.color != palette.button)
-                    gradient = emptyGrad
-            }
-            Gradient {
-                id: emptyGrad
-            }
+            tint: control.enabled ? (root.color == palette.button) ? "transparent" : root.color : "white"
+            border.color: control.enabled ? "#777777" : "#c2c2c2"
         }
         label: Text {
-            color: root.textColor
+            color: control.enabled ? root.textColor : "gray"
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
             text: control.text

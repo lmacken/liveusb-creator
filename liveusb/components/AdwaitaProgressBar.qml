@@ -13,6 +13,7 @@ ProgressBar {
                 width: 1
             }
             radius: 3
+            clip: true
             gradient: Gradient {
                 GradientStop { position: 0.0; color: "#b2b2b2" }
                 GradientStop { position: 1.0; color: "#d4d4d4" }

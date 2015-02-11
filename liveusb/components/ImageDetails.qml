@@ -41,7 +41,8 @@ Item {
         }
         AdwaitaButton {
             text: "Write to USB disk"
-            color: "#729FCF"
+            //color: "#729FCF"
+            color: Qt.darker("#729fcf", 1.25)
             textColor: "white"
             width: implicitWidth + 16
             onClicked: dialog.visible = true
