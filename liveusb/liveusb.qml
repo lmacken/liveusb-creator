@@ -7,17 +7,15 @@ import "components"
 
 ApplicationWindow {
     id: mainWindow
-    width: 800
-    height: 480
+    minimumWidth: 800
+    minimumHeight: 480
+    maximumHeight: minimumHeight
+    maximumWidth: minimumWidth
     title: "OS Boot imager"
 
     SystemPalette {
         id: palette
     }
-
-    flags: Qt.TransparentMode
-    color: "transparent"
-
 
     property int currentImageIndex: 1
     property bool canGoBack: false

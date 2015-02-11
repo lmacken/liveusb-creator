@@ -91,10 +91,12 @@ Item {
                             Text {
                                 Layout.fillWidth: true
                                 anchors.left: parent.left
+                                font.pointSize: 11
                                 text: "Fedora Workstation 21"
                             }
                             Text {
                                 anchors.right: parent.right
+                                font.pointSize: 11
                                 text: "953MB"
                                 color: "gray"
                             }
