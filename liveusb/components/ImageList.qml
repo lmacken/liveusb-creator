@@ -8,7 +8,7 @@ Item {
 
     property alias currentIndex: osListView.currentIndex
     property bool viewFullList: false
-    property real fadeDuration: 200
+    property real fadeDuration: 250
 
     signal stepForward(int index)
 
@@ -213,8 +213,10 @@ Item {
             clip: true
             anchors {
                 fill: parent
+                leftMargin: 64
+                rightMargin: anchors.leftMargin
                 topMargin: 54
-                bottomMargin: -54
+                bottomMargin: -anchors.topMargin
             }
             footer: Item {
                 height: 54
@@ -255,9 +257,9 @@ Item {
             width: parent.width
             height: 84
             Rectangle {
-                width: parent.width - 2 - 128
+                width: parent.width - 2
                 height: parent.height
-                x: 64 + 1
+                x: 1
                 color: "transparent"
                 IndicatedImage {
                     id: iconRect
