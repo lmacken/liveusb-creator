@@ -9,7 +9,7 @@ Button {
 
     style: ButtonStyle {
         background: AdwaitaRectangle {
-            tint: control.enabled ? (root.color == palette.button) ? "transparent" : root.color : "white"
+            color: root.color
             border.color: control.enabled ? "#777777" : "#c2c2c2"
         }
         label: Text {
