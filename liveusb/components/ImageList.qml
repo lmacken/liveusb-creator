@@ -8,7 +8,7 @@ Item {
 
     property alias currentIndex: osListView.currentIndex
     property bool viewFullList: false
-    property real fadeDuration: 250
+    property real fadeDuration: 200
 
     signal stepForward(int index)
 
@@ -20,7 +20,7 @@ Item {
         opacity: root.viewFullList ? 1.0 : 0.0
         id: searchBox
         border {
-            color: "#c3c3c3"
+            color: searchInput.activeFocus ? "#4a90d9" : "#c3c3c3"
             width: 1
         }
         radius: 6
@@ -71,6 +71,7 @@ Item {
             }
         }
         TextInput {
+            id: searchInput
             anchors {
                 left: magnifyingGlass.right
                 top: parent.top
@@ -82,7 +83,7 @@ Item {
                 anchors.fill: parent
                 color: "light gray"
                 text: "find an operating system image"
-                visible: !parent.focus
+                visible: !parent.activeFocus && parent.text.length == 0
                 verticalAlignment: Text.AlignVCenter
             }
             verticalAlignment: TextInput.AlignVCenter

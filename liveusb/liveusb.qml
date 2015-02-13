@@ -11,7 +11,7 @@ ApplicationWindow {
     minimumHeight: 480
     maximumHeight: minimumHeight
     maximumWidth: minimumWidth
-    title: "OS Boot imager"
+    title: "LiveUSB Creator"
 
     SystemPalette {
         id: palette
@@ -36,7 +36,7 @@ ApplicationWindow {
         ListElement {
             name: "Custom OS..."
             description: "<pick from file chooser>"
-            icon: ""
+            icon: "/usr/share/icons/Adwaita/64x64/actions/document-open-symbolic.symbolic.png"
             hasDetails: false
         }
         ListElement {
@@ -230,9 +230,11 @@ ApplicationWindow {
             }
             model: ["components/ImageList.qml", "components/ImageDetails.qml"]
             orientation: ListView.Horizontal
-            snapMode: ListView.SnapOneItem
+            snapMode: ListView.SnapToItem
+            highlightFollowsCurrentItem: true
             interactive: false
             highlightMoveVelocity: 3 * contentList.width
+            highlightResizeDuration: 0
             cacheBuffer: 2*width
             delegate: Item {
                 id: contentComponent
