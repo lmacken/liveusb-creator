@@ -14,8 +14,6 @@ rpm: dist
 
 gui:
 	pyrcc5 data/resources.qrc -o liveusb/resources_rc.py
-	pyuic5 data/liveusb-creator.ui -o liveusb/windows_dialog.py
-	pyuic5 data/liveusb-creator-linux.ui -o liveusb/linux_dialog.py
 
 pyflakes:
 	pyflakes liveusb/*.py
