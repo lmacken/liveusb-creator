@@ -3,6 +3,8 @@ import QtQuick.Controls 1.3
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 
+import LiveUSB 1.0
+
 import "components"
 
 ApplicationWindow {
@@ -13,11 +15,17 @@ ApplicationWindow {
     maximumWidth: minimumWidth
     title: "LiveUSB Creator"
 
+    Component.onCompleted: {
+        console.log(liveUSBData.releases)
+        console.log(liveUSBData.releases[0])
+        console.log(liveUSBData.releases[0].name)
+    }
+
     SystemPalette {
         id: palette
     }
 
-    property int currentImageIndex: 1
+    property int currentImageIndex: 0
     property bool canGoBack: false
 
     Behavior on x {
@@ -30,7 +38,7 @@ ApplicationWindow {
             duration: 80
         }
     }
-
+/*
     ListModel {
         id: selectedOsList
         ListElement {
@@ -58,6 +66,7 @@ ApplicationWindow {
             hasDetails: true
         }
     }
+*/
 
     ListModel {
         id: osList
@@ -248,6 +257,7 @@ ApplicationWindow {
                 Connections {
                     target: contentLoader.item
                     onStepForward: {
+                        mainWindow.currentImageIndex = index
                         contentList.currentIndex = 1
                         canGoBack = true
                     }

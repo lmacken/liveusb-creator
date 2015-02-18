@@ -75,12 +75,17 @@ Item {
                     anchors.right: parent.right
                     spacing: 32
                     Layout.alignment: Qt.AlignLeft
-                    IndicatedImage {
-                        id: iconRect
-                        source: "http://upload.wikimedia.org/wikipedia/commons/3/3f/Fedora_logo.svg"
-                        sourceSize.width: 64
-                        sourceSize.height: 64
-                        fillMode: Image.PreserveAspectFit
+                    Item {
+                        width: 64
+                        height: 64
+                        IndicatedImage {
+                            id: iconRect
+                            anchors.centerIn: parent
+                            source: liveUSBData.releases[mainWindow.currentImageIndex].logo
+                            sourceSize.width: parent.width
+                            sourceSize.height: parent.height
+                            fillMode: Image.PreserveAspectFit
+                        }
                     }
 
                     ColumnLayout {
@@ -91,21 +96,22 @@ Item {
                                 Layout.fillWidth: true
                                 anchors.left: parent.left
                                 font.pointSize: 11
-                                text: "Fedora Workstation 21"
+                                text: liveUSBData.releases[mainWindow.currentImageIndex].name
                             }
                             Text {
                                 anchors.right: parent.right
                                 font.pointSize: 11
-                                text: "953MB"
+                                text: liveUSBData.releases[mainWindow.currentImageIndex].size > 0 ? (liveUSBData.releases[mainWindow.currentImageIndex].size + " MB") : ""
                                 color: "gray"
                             }
                         }
                         Text {
-                            text: "64bit"
+                            text: liveUSBData.releases[mainWindow.currentImageIndex].arch
                             color: "gray"
                         }
                         Text {
-                            text: "Released on December 21st 2014"
+                            // I'm sorry, everyone, I can't find a better way to determine if the date is valid
+                            text: liveUSBData.releases[mainWindow.currentImageIndex].releaseDate.toLocaleDateString().length > 0 ? ("Released on " + liveUSBData.releases[mainWindow.currentImageIndex].releaseDate.toLocaleDateString()) : ""
                             font.pointSize: 8
                             color: "gray"
                         }
@@ -115,14 +121,18 @@ Item {
                     Layout.fillWidth: true
                     width: Layout.width
                     wrapMode: Text.WordWrap
-                    text: "Lorem ipsum, quia dolor sit, amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur?"
+                    text: liveUSBData.releases[mainWindow.currentImageIndex].fullDescription
                     font.pointSize: 9
                 }
-                IndicatedImage {
-                    Layout.fillWidth: true
-                    fillMode: Image.PreserveAspectFit
-                    source: "http://fedora.cz/wp-content/uploads/2013/12/fedora-20-gnome-10.png"
-                    sourceSize.width: width
+                Repeater {
+                    id: screenshotRepeater
+                    model: ["http://fedora.cz/wp-content/uploads/2013/12/fedora-20-gnome-10.png", "http://fedora.cz/wp-content/uploads/2013/12/fedora-20-gnome-10.png"]
+                    IndicatedImage {
+                        Layout.fillWidth: true
+                        fillMode: Image.PreserveAspectFit
+                        source: screenshotRepeater.model[index]
+                        sourceSize.width: width
+                    }
                 }
             }
         }

@@ -152,7 +152,7 @@ Item {
                     right: parent.right
                 }
                 Repeater {
-                    model: selectedOsList
+                    model: liveUSBData.titleReleases
                     delegate: imageDelegate
                 }
             }
@@ -223,7 +223,7 @@ Item {
                 height: 54
             }
 
-            model: osList
+            model: liveUSBData.releases
             delegate: imageDelegate
         }
         style: ScrollViewStyle {
@@ -275,7 +275,7 @@ Item {
                     width: height
                     smooth: true
 
-                    source: icon
+                    source: logo
                 }
                 Item {
                     id: textRect
@@ -294,7 +294,7 @@ Item {
                         // font.weight: Font.Bold
                     }
                     Text {
-                        text: description
+                        text: shortDescription
                         anchors {
                             top: parent.verticalCenter
                             left: parent.right
