@@ -39,11 +39,6 @@ def utf8_gettext(string):
 
 from liveusb.creator import LiveUSBError
 
-if sys.platform == "win32":
-    from liveusb.creator import WindowsLiveUSBCreator as LiveUSBCreator
-    from liveusb.windows_dialog import Ui_MainWindow as LiveUSBInterface
-else:
-    from liveusb.creator import LinuxLiveUSBCreator as LiveUSBCreator
-    from liveusb.linux_dialog import Ui_MainWindow as LiveUSBInterface
+from liveusb.creator import LiveUSBCreator
 
 __all__ = ("LiveUSBCreator", "LiveUSBError", "LiveUSBWindow", "_", "utf8_gettext")

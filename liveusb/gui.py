@@ -31,12 +31,12 @@ import urlparse
 
 from time import sleep
 from datetime import datetime
-from PyQt5.QtCore import pyqtProperty, QObject, QUrl
+from PyQt5.QtCore import pyqtProperty, QObject, QUrl, QDateTime, pyqtSignal
 from PyQt5.QtWidgets import QApplication
-from PyQt5.QtQml import qmlRegisterType, QQmlComponent, QQmlApplicationEngine
+from PyQt5.QtQml import qmlRegisterType, qmlRegisterUncreatableType, QQmlComponent, QQmlApplicationEngine, QQmlListProperty
 from PyQt5.QtQuick import QQuickView
 
-from liveusb import LiveUSBCreator, LiveUSBError, LiveUSBInterface, _
+from liveusb import LiveUSBCreator, LiveUSBError, _
 from liveusb.releases import releases, get_fedora_releases
 
 if sys.platform == 'win32':
@@ -56,12 +56,95 @@ MAX_FAT16 = 2047
 MAX_FAT32 = 3999
 MAX_EXT = 2097152
 
+class Release(QObject):
+    nameChanged = pyqtSignal()
+    logoChanged = pyqtSignal()
+    sizeChanged = pyqtSignal()
+    archChanged = pyqtSignal()
+    fullNameChanged = pyqtSignal()
+    releaseDateChanged = pyqtSignal()
+    shortDescriptionChanged = pyqtSignal()
+    fullDescriptionChanged = pyqtSignal()
+    hasDetailsChanged = pyqtSignal()
+
+    def __init__(self, parent=None, name = '', logo = '', size = 0, arch = '', fullName = '', releaseDate = QDateTime(), shortDescription = '', fullDescription = '', hasDetails = True):
+        QObject.__init__(self, parent)
+
+        self._name = name
+        self._logo = logo
+        self._size = size
+        self._arch = arch
+        self._fullName = fullName
+        self._releaseDate = releaseDate
+        self._shortDescription = shortDescription
+        self._fullDescription = fullDescription
+        self._hasDetails = hasDetails
+
+    @pyqtProperty(str, notify=nameChanged)
+    def name(self):
+        return self._name
+
+    @pyqtProperty(str, notify=logoChanged)
+    def logo(self):
+        return self._logo
+
+    @pyqtProperty(int, notify=sizeChanged)
+    def size(self):
+        return self._size
+
+    @pyqtProperty(str, notify=archChanged)
+    def arch(self):
+        return self._arch
+
+    @pyqtProperty(str, notify=fullNameChanged)
+    def fullName(self):
+        return self._fullName
+
+    @pyqtProperty('QDateTime', notify=releaseDateChanged)
+    def releaseDate(self):
+        return self._releaseDate
+
+    @pyqtProperty(str, notify=shortDescriptionChanged)
+    def shortDescription(self):
+        return self._shortDescription
+
+    @pyqtProperty(str, notify=fullDescriptionChanged)
+    def fullDescription(self):
+        return self._fullDescription
+
+    @pyqtProperty(bool, notify=hasDetailsChanged)
+    def hasDetails(self):
+        return self._hasDetails
+
+
+class LiveUSBData(QObject):
+    releasesChanged = pyqtSignal()
+
+    def __init__(self, opts):
+        QObject.__init__(self)
+        self.live = LiveUSBCreator(opts=opts)
+        self.releaseData = [Release(self, name='Custom OS...', shortDescription='<pick from file chooser>', fullDescription='Here you can choose a OS image from your hard drive to be written to your flash disk', hasDetails=False)]
+        for release in [release['name'] for release in releases]:
+            self.releaseData.append(Release(self, name=release, logo='http://upload.wikimedia.org/wikipedia/commons/3/3f/Fedora_logo.svg', fullDescription='Lorem ipsum, quia dolor sit, amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur?'))
+        #self.titleReleaseData = releaseData[0
+
+    @pyqtProperty(QQmlListProperty, notify=releasesChanged)
+    def releases(self):
+        return QQmlListProperty(Release, self, self.releaseData)
+
+    @pyqtProperty(QQmlListProperty, notify=releasesChanged)
+    def titleReleases(self):
+        return QQmlListProperty(Release, self, self.releaseData[0:4])
 
 class LiveUSBApp(QApplication):
     """ Main application class """
     def __init__(self, opts, args):
         QApplication.__init__(self, args)
+        qmlRegisterUncreatableType(Release, "LiveUSB", 1, 0, "Release", "Not creatable directly, use the liveUSBData instance instead")
+        qmlRegisterUncreatableType(LiveUSBData, "LiveUSB", 1, 0, "Data", "Use the liveUSBData root instance")
         view = QQmlApplicationEngine()
+        self.data = LiveUSBData(opts)
+        view.rootContext().setContextProperty("liveUSBData", self.data);
         view.load(QUrl('liveusb/liveusb.qml'))
         view.rootObjects()[0].show()
         self.exec_()
