@@ -67,8 +67,9 @@ class Release(QObject):
     shortDescriptionChanged = pyqtSignal()
     fullDescriptionChanged = pyqtSignal()
     hasDetailsChanged = pyqtSignal()
+    screenshotsChanged = pyqtSignal()
 
-    def __init__(self, parent=None, name = '', logo = '', size = 0, arch = '', fullName = '', releaseDate = QDateTime(), shortDescription = '', fullDescription = '', hasDetails = True):
+    def __init__(self, parent=None, name = '', logo = '', size = 0, arch = '', fullName = '', releaseDate = QDateTime(), shortDescription = '', fullDescription = '', hasDetails = True, screenshots = []):
         QObject.__init__(self, parent)
 
         self._name = name
@@ -80,6 +81,7 @@ class Release(QObject):
         self._shortDescription = shortDescription
         self._fullDescription = fullDescription
         self._hasDetails = hasDetails
+        self._screenshots = screenshots
 
     @pyqtProperty(str, notify=nameChanged)
     def name(self):
@@ -89,7 +91,7 @@ class Release(QObject):
     def logo(self):
         return self._logo
 
-    @pyqtProperty(int, notify=sizeChanged)
+    @pyqtProperty(float, notify=sizeChanged)
     def size(self):
         return self._size
 
@@ -117,6 +119,10 @@ class Release(QObject):
     def hasDetails(self):
         return self._hasDetails
 
+    @pyqtProperty(QQmlListProperty, notify=screenshotsChanged)
+    def screenshots(self):
+        return QQmlListProperty(str, self, self._screenshots)
+
 
 class LiveUSBData(QObject):
     releasesChanged = pyqtSignal()
@@ -128,8 +134,10 @@ class LiveUSBData(QObject):
         for release in releases:
             self.releaseData.append(Release(self,
                                             name='Fedora '+release['variant'],
-                                            shortDescription='Fedora '+release['variant']+' '+release['version']+(' 32bit' if release['arch']=='i686' else ' 64bit'),
-                                            arch=release['arch']))
+                                            shortDescription='Fedora '+release['variant']+' '+release['version']+(' 64bit' if release['arch']=='x86_64' else ' 32bit'),
+                                            arch=release['arch'],
+                                            size=release['size']
+                                    ))
 
     @pyqtProperty(QQmlListProperty, notify=releasesChanged)
     def releases(self):

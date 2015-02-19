@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.2
 import QtQuick.Layouts 1.1
+import QtQuick.Dialogs 1.2
 
 Item {
     id: root
@@ -44,7 +45,8 @@ Item {
             color: "#729fcf"
             textColor: "white"
             width: implicitWidth + 16
-            onClicked: dialog.visible = true
+            onClicked: dlDialog.visible = true
+            enabled: mainWindow.currentImageIndex != 0 || fileDialog.fileUrl.length > 0
             anchors {
                 right: parent.right
                 top: parent.top
@@ -101,7 +103,13 @@ Item {
                             Text {
                                 anchors.right: parent.right
                                 font.pointSize: 11
-                                text: liveUSBData.releases[mainWindow.currentImageIndex].size > 0 ? (liveUSBData.releases[mainWindow.currentImageIndex].size + " MB") : ""
+                                property double size: liveUSBData.releases[mainWindow.currentImageIndex].size
+                                text: size <= 0 ? "" :
+                                      (size < 1024) ? (size + " B") :
+                                      (size < (1024 * 1024)) ? ((size / 1024).toFixed(1) + " KB") :
+                                      (size < (1024 * 1024 * 1024)) ? ((size / 1024 / 1024).toFixed(1) + " MB") :
+                                      ((size / 1024 / 1024 / 1024).toFixed(1) + " GB")
+
                                 color: "gray"
                             }
                         }
@@ -126,13 +134,19 @@ Item {
                 }
                 Repeater {
                     id: screenshotRepeater
-                    model: ["http://fedora.cz/wp-content/uploads/2013/12/fedora-20-gnome-10.png", "http://fedora.cz/wp-content/uploads/2013/12/fedora-20-gnome-10.png"]
+                    model: liveUSBData.releases[mainWindow.currentImageIndex].screenshots
                     IndicatedImage {
                         Layout.fillWidth: true
                         fillMode: Image.PreserveAspectFit
                         source: screenshotRepeater.model[index]
                         sourceSize.width: width
                     }
+                }
+                AdwaitaButton {
+                    text: "Find the image"
+                    Layout.alignment: Qt.AlignHCenter
+                    visible: mainWindow.currentImageIndex == 0
+                    onClicked: fileDialog.visible = true
                 }
             }
         }
@@ -163,7 +177,10 @@ Item {
         }
     }
     DownloadDialog {
-        id: dialog
+        id: dlDialog
+    }
+    FileDialog {
+        id: fileDialog
     }
 }
 
