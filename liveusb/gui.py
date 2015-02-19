@@ -83,6 +83,14 @@ class Release(QObject):
         self._hasDetails = hasDetails
         self._screenshots = screenshots
 
+        if self._logo == '':
+            if self._name == 'Fedora Workstation':
+                self._logo = '../../data/logo-color-workstation.png'
+            if self._name == 'Fedora Server':
+                self._logo = '../../data/logo-color-server.png'
+            if self._name == 'Fedora Cloud':
+                self._logo = '../../data/logo-color-cloud.png'
+
     @pyqtProperty(str, notify=nameChanged)
     def name(self):
         return self._name
@@ -130,7 +138,7 @@ class LiveUSBData(QObject):
     def __init__(self, opts):
         QObject.__init__(self)
         self.live = LiveUSBCreator(opts=opts)
-        self.releaseData = [Release(self, name='Custom OS...', shortDescription='<pick from file chooser>', fullDescription='Here you can choose a OS image from your hard drive to be written to your flash disk', hasDetails=False)]
+        self.releaseData = [Release(self, name='Custom OS...', shortDescription='<pick from file chooser>', fullDescription='Here you can choose a OS image from your hard drive to be written to your flash disk', hasDetails=False, logo='../../data/icon-folder.svg')]
         for release in releases:
             self.releaseData.append(Release(self,
                                             name='Fedora '+release['variant'],
