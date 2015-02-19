@@ -19,6 +19,7 @@
 #
 # Author(s): Luke Macken <lmacken@redhat.com>
 #            Kushal Das <kushal@fedoraproject.org>
+#            Martin Bříza <mbriza@redhat.com>
 
 """
 A cross-platform graphical interface for the LiveUSBCreator
@@ -124,9 +125,11 @@ class LiveUSBData(QObject):
         QObject.__init__(self)
         self.live = LiveUSBCreator(opts=opts)
         self.releaseData = [Release(self, name='Custom OS...', shortDescription='<pick from file chooser>', fullDescription='Here you can choose a OS image from your hard drive to be written to your flash disk', hasDetails=False)]
-        for release in [release['name'] for release in releases]:
-            self.releaseData.append(Release(self, name=release, logo='http://upload.wikimedia.org/wikipedia/commons/3/3f/Fedora_logo.svg', fullDescription='Lorem ipsum, quia dolor sit, amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt, ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, qui dolorem eum fugiat, quo voluptas nulla pariatur?'))
-        #self.titleReleaseData = releaseData[0
+        for release in releases:
+            self.releaseData.append(Release(self,
+                                            name='Fedora '+release['variant'],
+                                            shortDescription='Fedora '+release['variant']+' '+release['version']+(' 32bit' if release['arch']=='i686' else ' 64bit'),
+                                            arch=release['arch']))
 
     @pyqtProperty(QQmlListProperty, notify=releasesChanged)
     def releases(self):

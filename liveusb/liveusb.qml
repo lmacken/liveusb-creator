@@ -15,12 +15,6 @@ ApplicationWindow {
     maximumWidth: minimumWidth
     title: "LiveUSB Creator"
 
-    Component.onCompleted: {
-        console.log(liveUSBData.releases)
-        console.log(liveUSBData.releases[0])
-        console.log(liveUSBData.releases[0].name)
-    }
-
     SystemPalette {
         id: palette
     }
