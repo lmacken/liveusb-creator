@@ -259,8 +259,10 @@ Item {
             height: 84
             Rectangle {
                 width: parent.width - 2
-                height: parent.height
+                height: index == 0 ? parent.height - 1 : parent.height
                 x: 1
+                y: index == 0 ? 1 : 0
+                radius: 4
                 color: "transparent"
                 IndicatedImage {
                     id: iconRect
@@ -320,6 +322,13 @@ Item {
                 }
                 MouseArea {
                     anchors.fill: parent
+                    hoverEnabled: true
+                    onHoveredChanged: {
+                        if (containsMouse && !pressed)
+                            parent.color = "#f8f8f8"
+                        if (!containsMouse)
+                            parent.color = "transparent"
+                    }
                     onClicked: {
                         root.currentIndex = index
                         root.stepForward(index)
