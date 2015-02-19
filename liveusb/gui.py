@@ -32,7 +32,7 @@ import urlparse
 
 from time import sleep
 from datetime import datetime
-from PyQt5.QtCore import pyqtProperty, QObject, QUrl, QDateTime, pyqtSignal
+from PyQt5.QtCore import pyqtProperty, pyqtSlot, QObject, QUrl, QDateTime, pyqtSignal
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtQml import qmlRegisterType, qmlRegisterUncreatableType, QQmlComponent, QQmlApplicationEngine, QQmlListProperty
 from PyQt5.QtQuick import QQuickView
@@ -72,7 +72,7 @@ class Release(QObject):
     def __init__(self, parent=None, name = '', logo = '', size = 0, arch = '', fullName = '', releaseDate = QDateTime(), shortDescription = '', fullDescription = '', hasDetails = True, screenshots = []):
         QObject.__init__(self, parent)
 
-        self._name = name
+        self._name = name.replace('_', ' ')
         self._logo = logo
         self._size = size
         self._arch = arch
@@ -86,10 +86,12 @@ class Release(QObject):
         if self._logo == '':
             if self._name == 'Fedora Workstation':
                 self._logo = '../../data/logo-color-workstation.png'
-            if self._name == 'Fedora Server':
+            elif self._name == 'Fedora Server':
                 self._logo = '../../data/logo-color-server.png'
-            if self._name == 'Fedora Cloud':
+            elif self._name == 'Fedora Cloud':
                 self._logo = '../../data/logo-color-cloud.png'
+            else:
+                self._logo = '../../data/logo-fedora.svg'
 
     @pyqtProperty(str, notify=nameChanged)
     def name(self):
@@ -155,10 +157,28 @@ class LiveUSBData(QObject):
     def titleReleases(self):
         return QQmlListProperty(Release, self, self.releaseData[0:4])
 
+class ImageDownloader(QObject):
+    percentageChanged = pyqtSignal()
+
+    def __init(self, parent, url, opts):
+        QObject.__init__(self, parent)
+
+        self._url = url
+        self._percentage = 0
+
+    @pyqtSlot
+    def start(self):
+        pass
+
+    @pyqtProperty(int, notify=percentageChanged)
+    def percentage(self):
+        return self._percentage
+
 class LiveUSBApp(QApplication):
     """ Main application class """
     def __init__(self, opts, args):
         QApplication.__init__(self, args)
+        qmlRegisterUncreatableType(ImageDownloader, "LiveUSB", 1, 0, "Downloader", "Not creatable directly, use the liveUSBData instance instead")
         qmlRegisterUncreatableType(Release, "LiveUSB", 1, 0, "Release", "Not creatable directly, use the liveUSBData instance instead")
         qmlRegisterUncreatableType(LiveUSBData, "LiveUSB", 1, 0, "Data", "Use the liveUSBData root instance")
         view = QQmlApplicationEngine()
