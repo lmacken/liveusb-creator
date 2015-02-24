@@ -19,7 +19,7 @@ ApplicationWindow {
         id: palette
     }
 
-    property int currentImageIndex: 0
+    //property int currentImageIndex: 0
     property bool canGoBack: false
 
     Behavior on x {
@@ -251,7 +251,7 @@ ApplicationWindow {
                 Connections {
                     target: contentLoader.item
                     onStepForward: {
-                        mainWindow.currentImageIndex = index
+                        liveUSBData.currentIndex = index
                         contentList.currentIndex = 1
                         canGoBack = true
                     }

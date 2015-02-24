@@ -32,7 +32,7 @@ import urlparse
 
 from time import sleep
 from datetime import datetime
-from PyQt5.QtCore import pyqtProperty, pyqtSlot, QObject, QUrl, QDateTime, pyqtSignal
+from PyQt5.QtCore import pyqtProperty, pyqtSlot, QObject, QUrl, QDateTime, pyqtSignal, QThread
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtQml import qmlRegisterType, qmlRegisterUncreatableType, QQmlComponent, QQmlApplicationEngine, QQmlListProperty
 from PyQt5.QtQuick import QQuickView
@@ -58,18 +58,9 @@ MAX_FAT32 = 3999
 MAX_EXT = 2097152
 
 class Release(QObject):
-    nameChanged = pyqtSignal()
-    logoChanged = pyqtSignal()
-    sizeChanged = pyqtSignal()
-    archChanged = pyqtSignal()
-    fullNameChanged = pyqtSignal()
-    releaseDateChanged = pyqtSignal()
-    shortDescriptionChanged = pyqtSignal()
-    fullDescriptionChanged = pyqtSignal()
-    hasDetailsChanged = pyqtSignal()
     screenshotsChanged = pyqtSignal()
 
-    def __init__(self, parent=None, name = '', logo = '', size = 0, arch = '', fullName = '', releaseDate = QDateTime(), shortDescription = '', fullDescription = '', hasDetails = True, screenshots = []):
+    def __init__(self, parent=None, name = '', logo = '', size = 0, arch = '', fullName = '', releaseDate = QDateTime(), shortDescription = '', fullDescription = '', hasDetails = True, screenshots = [], url=''):
         QObject.__init__(self, parent)
 
         self._name = name.replace('_', ' ')
@@ -82,6 +73,7 @@ class Release(QObject):
         self._fullDescription = fullDescription
         self._hasDetails = hasDetails
         self._screenshots = screenshots
+        self._url = url
 
         if self._logo == '':
             if self._name == 'Fedora Workstation':
@@ -90,42 +82,48 @@ class Release(QObject):
                 self._logo = '../../data/logo-color-server.png'
             elif self._name == 'Fedora Cloud':
                 self._logo = '../../data/logo-color-cloud.png'
+            elif self._name == 'Fedora KDE':
+                self._logo = '../../data/logo-plasma5.png'
+            elif self._name == 'Fedora Xfce':
+                self._logo = '../../data/logo-xfce.svg'
+            elif self._name == 'Fedora LXDE':
+                self._logo = '../../data/logo-lxde.png'
             else:
                 self._logo = '../../data/logo-fedora.svg'
 
-    @pyqtProperty(str, notify=nameChanged)
+    @pyqtProperty(str, constant=True)
     def name(self):
         return self._name
 
-    @pyqtProperty(str, notify=logoChanged)
+    @pyqtProperty(str, constant=True)
     def logo(self):
         return self._logo
 
-    @pyqtProperty(float, notify=sizeChanged)
+    @pyqtProperty(float, constant=True)
     def size(self):
         return self._size
 
-    @pyqtProperty(str, notify=archChanged)
+    @pyqtProperty(str, constant=True)
     def arch(self):
         return self._arch
 
-    @pyqtProperty(str, notify=fullNameChanged)
+    @pyqtProperty(str, constant=True)
     def fullName(self):
         return self._fullName
 
-    @pyqtProperty('QDateTime', notify=releaseDateChanged)
+    @pyqtProperty('QDateTime', constant=True)
     def releaseDate(self):
         return self._releaseDate
 
-    @pyqtProperty(str, notify=shortDescriptionChanged)
+    @pyqtProperty(str, constant=True)
     def shortDescription(self):
         return self._shortDescription
 
-    @pyqtProperty(str, notify=fullDescriptionChanged)
+    @pyqtProperty(str, constant=True)
     def fullDescription(self):
         return self._fullDescription
 
-    @pyqtProperty(bool, notify=hasDetailsChanged)
+    @pyqtProperty(bool, constant=True)
     def hasDetails(self):
         return self._hasDetails
 
@@ -133,20 +131,120 @@ class Release(QObject):
     def screenshots(self):
         return QQmlListProperty(str, self, self._screenshots)
 
+    @pyqtProperty(str, constant=True)
+    def url(self):
+        return self._url
+
+class IsoDownloaderThread(QThread):
+    def __init__(self, url, progress, proxies):
+        QThread.__init__(self)
+        self.url = url
+        self.progress = progress
+        self.proxies = proxies
+
+    def run(self):
+        self.grabber = URLGrabber(progress_obj=self.progress, proxies=self.proxies)
+        home = os.getenv('HOME', 'USERPROFILE')
+        filename = os.path.basename(urlparse.urlparse(self.url).path)
+        for folder in ('Downloads', 'My Documents'):
+            if os.path.isdir(os.path.join(home, folder)):
+                filename = os.path.join(home, folder, filename)
+                break
+        try:
+            iso = self.grabber.urlgrab(self.url, reget='simple')
+        except URLGrabError, e:
+            pass
+            self.emit(QtCore.SIGNAL("dlcomplete(PyQt_PyObject)"), e.strerror)
+        else:
+            pass
+            self.emit(QtCore.SIGNAL("dlcomplete(PyQt_PyObject)"), iso)
+
+class IsoDownloader(QObject, BaseMeter):
+    maxProgressChanged = pyqtSignal()
+    progressChanged = pyqtSignal()
+    statusChanged = pyqtSignal()
+
+    _status = "Initializing"
+    _maximum = -1.0
+    _current = -1.0
+
+    """ A QObject urlgrabber BaseMeter class.
+
+    This class is called automatically by urlgrabber with our download details.
+    This class then sends signals to our main dialog window to update the
+    progress bar.
+    """
+    def __init__(self, parent, live):
+        QObject.__init__(self, parent)
+
+        self._live = live
+
+    def start(self, filename=None, url=None, basename=None, size=None, now=None, text=None):
+        self._maximum = size
+        self._status = "Starting"
+        self.statusChanged.emit()
+
+    def update(self, amount_read, now=None):
+        """ Update our download progressbar.
+
+        :read: the number of bytes read so far
+        """
+        if self._current < amount_read:
+            self._current = amount_read
+            self.progressChanged.emit()
+        self._status = "Downloading"
+        self.statusChanged.emit()
+
+    def end(self, amount_read):
+        self._current = amount_read
+        self.progressChanged.emit()
+
+    @pyqtSlot(str)
+    def run(self, url):
+        self._grabber = IsoDownloaderThread(url, self, self._live.get_proxies())
+        self._grabber.start()
+
+    @pyqtSlot()
+    def cancel(self):
+        self._grabber.terminate()
+        self._status = "Initializing..."
+        self._maximum = -1.0
+        self._current = 1.0
+        self.statusChanged.emit()
+        self.progressChanged.emit()
+        self.maxProgressChanged.emit()
+
+    @pyqtProperty(str, notify=statusChanged)
+    def status(self):
+        return self._status
+
+    @pyqtProperty(float, notify=maxProgressChanged)
+    def maxProgress(self):
+        return self._maximum
+
+    @pyqtProperty(float, notify=progressChanged)
+    def progress(self):
+        return self._current
+
 
 class LiveUSBData(QObject):
     releasesChanged = pyqtSignal()
+    currentImageChanged = pyqtSignal()
+
+    _currentIndex = 0
 
     def __init__(self, opts):
         QObject.__init__(self)
         self.live = LiveUSBCreator(opts=opts)
+        self._downloader = IsoDownloader(self, self.live)
         self.releaseData = [Release(self, name='Custom OS...', shortDescription='<pick from file chooser>', fullDescription='Here you can choose a OS image from your hard drive to be written to your flash disk', hasDetails=False, logo='../../data/icon-folder.svg')]
         for release in releases:
             self.releaseData.append(Release(self,
                                             name='Fedora '+release['variant'],
                                             shortDescription='Fedora '+release['variant']+' '+release['version']+(' 64bit' if release['arch']=='x86_64' else ' 32bit'),
                                             arch=release['arch'],
-                                            size=release['size']
+                                            size=release['size'],
+                                            url=release['url']
                                     ))
 
     @pyqtProperty(QQmlListProperty, notify=releasesChanged)
@@ -157,28 +255,28 @@ class LiveUSBData(QObject):
     def titleReleases(self):
         return QQmlListProperty(Release, self, self.releaseData[0:4])
 
-class ImageDownloader(QObject):
-    percentageChanged = pyqtSignal()
+    @pyqtProperty(IsoDownloader, constant=True)
+    def downloader(self):
+        return self._downloader
 
-    def __init(self, parent, url, opts):
-        QObject.__init__(self, parent)
+    @pyqtProperty(int, notify=currentImageChanged)
+    def currentIndex(self):
+        return self._currentIndex
 
-        self._url = url
-        self._percentage = 0
+    @currentIndex.setter
+    def currentIndex(self, value):
+        self._currentIndex = value
+        self.currentImageChanged.emit()
 
-    @pyqtSlot
-    def start(self):
-        pass
-
-    @pyqtProperty(int, notify=percentageChanged)
-    def percentage(self):
-        return self._percentage
+    @pyqtProperty(Release, notify=currentImageChanged)
+    def currentImage(self):
+        return self.releaseData[self._currentIndex]
 
 class LiveUSBApp(QApplication):
     """ Main application class """
     def __init__(self, opts, args):
         QApplication.__init__(self, args)
-        qmlRegisterUncreatableType(ImageDownloader, "LiveUSB", 1, 0, "Downloader", "Not creatable directly, use the liveUSBData instance instead")
+        qmlRegisterUncreatableType(IsoDownloader, "LiveUSB", 1, 0, "Downloader", "Not creatable directly, use the liveUSBData instance instead")
         qmlRegisterUncreatableType(Release, "LiveUSB", 1, 0, "Release", "Not creatable directly, use the liveUSBData instance instead")
         qmlRegisterUncreatableType(LiveUSBData, "LiveUSB", 1, 0, "Data", "Use the liveUSBData root instance")
         view = QQmlApplicationEngine()

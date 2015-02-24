@@ -27,18 +27,24 @@ Dialog {
                 Layout.fillWidth: true
                 width: layout.width
                 wrapMode: Text.WordWrap
-                text: "Writing the image of Fedora Workstation will delete everything that's currently on the drive."
+                text: "Writing the image of " + liveUSBData.currentImage.name +" will delete everything that's currently on the drive."
             }
 
             ColumnLayout {
                 Text {
                     Layout.fillWidth: true
                     horizontalAlignment: Text.AlignHCenter
-                    text: "Downloading (895MB left)"
+                    property double leftSize: liveUSBData.downloader.maxProgress - liveUSBData.downloader.progress
+                    property string leftStr: leftSize <= 0 ? "" :
+                                             (leftSize < 1024) ? (leftSize + " B") :
+                                             (leftSize < (1024 * 1024)) ? ((leftSize / 1024).toFixed(1) + " KB") :
+                                             (leftSize < (1024 * 1024 * 1024)) ? ((leftSize / 1024 / 1024).toFixed(1) + " MB") :
+                                             ((leftSize / 1024 / 1024 / 1024).toFixed(1) + " GB")
+                    text: liveUSBData.downloader.status + (liveUSBData.downloader.maxProgress > 0 ? " (" + leftStr + " left)" : "")
                 }
                 AdwaitaProgressBar {
                     Layout.fillWidth: true
-                    value: 0.2
+                    value: liveUSBData.downloader.progress / liveUSBData.downloader.maxProgress
                 }
             }
 
@@ -46,8 +52,8 @@ Dialog {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignCenter
                 spacing: 32
-                Image {
-                    source: "http://upload.wikimedia.org/wikipedia/commons/3/3f/Fedora_logo.svg"
+                IndicatedImage {
+                    source: liveUSBData.currentImage.logo
                     sourceSize.width: 64
                     sourceSize.height: 64
                     fillMode: Image.PreserveAspectFit
@@ -85,7 +91,10 @@ Dialog {
                 }
                 width: implicitWidth * 1.2
                 text: "Cancel"
-                onClicked: root.close()
+                onClicked: {
+                    liveUSBData.downloader.cancel()
+                    root.close()
+                }
             }
             AdwaitaButton {
                 id: acceptButton

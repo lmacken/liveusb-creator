@@ -276,6 +276,7 @@ Item {
                     }
                     width: height
                     smooth: true
+                    fillMode: Image.PreserveAspectFit
 
                     source: logo
                 }

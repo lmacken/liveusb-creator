@@ -45,7 +45,11 @@ Item {
             color: "#729fcf"
             textColor: "white"
             width: implicitWidth + 16
-            onClicked: dlDialog.visible = true
+            onClicked: {
+                dlDialog.visible = true
+                console.log(liveUSBData.currentImage.url)
+                liveUSBData.downloader.run(liveUSBData.currentImage.url)
+            }
             enabled: mainWindow.currentImageIndex != 0 || fileDialog.fileUrl.length > 0
             anchors {
                 right: parent.right
@@ -83,7 +87,7 @@ Item {
                         IndicatedImage {
                             id: iconRect
                             anchors.centerIn: parent
-                            source: liveUSBData.releases[mainWindow.currentImageIndex].logo
+                            source: liveUSBData.currentImage.logo
                             sourceSize.width: parent.width
                             sourceSize.height: parent.height
                             fillMode: Image.PreserveAspectFit
@@ -98,12 +102,12 @@ Item {
                                 Layout.fillWidth: true
                                 anchors.left: parent.left
                                 font.pointSize: 11
-                                text: liveUSBData.releases[mainWindow.currentImageIndex].name
+                                text: liveUSBData.currentImage.name
                             }
                             Text {
                                 anchors.right: parent.right
                                 font.pointSize: 11
-                                property double size: liveUSBData.releases[mainWindow.currentImageIndex].size
+                                property double size: liveUSBData.currentImage.size
                                 text: size <= 0 ? "" :
                                       (size < 1024) ? (size + " B") :
                                       (size < (1024 * 1024)) ? ((size / 1024).toFixed(1) + " KB") :
@@ -114,12 +118,12 @@ Item {
                             }
                         }
                         Text {
-                            text: liveUSBData.releases[mainWindow.currentImageIndex].arch
+                            text: liveUSBData.currentImage.arch
                             color: "gray"
                         }
                         Text {
                             // I'm sorry, everyone, I can't find a better way to determine if the date is valid
-                            text: liveUSBData.releases[mainWindow.currentImageIndex].releaseDate.toLocaleDateString().length > 0 ? ("Released on " + liveUSBData.releases[mainWindow.currentImageIndex].releaseDate.toLocaleDateString()) : ""
+                            text: liveUSBData.currentImage.releaseDate.toLocaleDateString().length > 0 ? ("Released on " + liveUSBData.currentImage.releaseDate.toLocaleDateString()) : ""
                             font.pointSize: 8
                             color: "gray"
                         }
@@ -129,12 +133,12 @@ Item {
                     Layout.fillWidth: true
                     width: Layout.width
                     wrapMode: Text.WordWrap
-                    text: liveUSBData.releases[mainWindow.currentImageIndex].fullDescription
+                    text: liveUSBData.currentImage.fullDescription
                     font.pointSize: 9
                 }
                 Repeater {
                     id: screenshotRepeater
-                    model: liveUSBData.releases[mainWindow.currentImageIndex].screenshots
+                    model: liveUSBData.currentImage.screenshots
                     IndicatedImage {
                         Layout.fillWidth: true
                         fillMode: Image.PreserveAspectFit
