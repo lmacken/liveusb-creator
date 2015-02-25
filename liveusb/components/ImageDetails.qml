@@ -47,7 +47,6 @@ Item {
             width: implicitWidth + 16
             onClicked: {
                 dlDialog.visible = true
-                console.log(liveUSBData.currentImage.url)
                 liveUSBData.downloader.run(liveUSBData.currentImage.url)
             }
             enabled: mainWindow.currentImageIndex != 0 || fileDialog.fileUrl.length > 0

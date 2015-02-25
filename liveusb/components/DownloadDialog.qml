@@ -106,7 +106,7 @@ Dialog {
                 color: "red"
                 textColor: enabled ? "white" : palette.text
                 width: implicitWidth * 1.2
-                enabled: false
+                enabled: liveUSBData.downloader.readyToWrite
                 text: "Write to disk"
             }
         }

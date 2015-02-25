@@ -136,6 +136,9 @@ class Release(QObject):
         return self._url
 
 class IsoDownloaderThread(QThread):
+    downloadFinished = pyqtSignal(str)
+    downloadError = pyqtSignal(str)
+
     def __init__(self, url, progress, proxies):
         QThread.__init__(self)
         self.url = url
@@ -153,20 +156,26 @@ class IsoDownloaderThread(QThread):
         try:
             iso = self.grabber.urlgrab(self.url, reget='simple')
         except URLGrabError, e:
-            pass
-            self.emit(QtCore.SIGNAL("dlcomplete(PyQt_PyObject)"), e.strerror)
+            # TODO find out if this errno is _really_ benign
+            if e.errno == 9: # Requested byte range not satisfiable.
+                self.downloadFinished.emit(filename)
+            else:
+                self.downloadError.emit(e.strerror)
         else:
-            pass
-            self.emit(QtCore.SIGNAL("dlcomplete(PyQt_PyObject)"), iso)
+            self.downloadFinished.emit(iso)
 
 class IsoDownloader(QObject, BaseMeter):
     maxProgressChanged = pyqtSignal()
     progressChanged = pyqtSignal()
     statusChanged = pyqtSignal()
+    readyToWriteChanged = pyqtSignal()
+    isoPathChanged = pyqtSignal()
 
-    _status = "Initializing"
+    _status = 'Initializing'
     _maximum = -1.0
     _current = -1.0
+    _readyToWrite = False
+    _isoPath = ''
 
     """ A QObject urlgrabber BaseMeter class.
 
@@ -181,7 +190,7 @@ class IsoDownloader(QObject, BaseMeter):
 
     def start(self, filename=None, url=None, basename=None, size=None, now=None, text=None):
         self._maximum = size
-        self._status = "Starting"
+        self._status = 'Starting'
         self.statusChanged.emit()
 
     def update(self, amount_read, now=None):
@@ -192,7 +201,7 @@ class IsoDownloader(QObject, BaseMeter):
         if self._current < amount_read:
             self._current = amount_read
             self.progressChanged.emit()
-        self._status = "Downloading"
+        self._status = 'Downloading'
         self.statusChanged.emit()
 
     def end(self, amount_read):
@@ -200,16 +209,43 @@ class IsoDownloader(QObject, BaseMeter):
         self.progressChanged.emit()
 
     @pyqtSlot(str)
+    def childFinished(self, iso):
+        print(iso)
+        self._status = 'Ready to write'
+        self._maximum = -1.0
+        self._current = -1.0
+        self._readyToWrite = True
+        self._isoPath = iso
+        self.statusChanged.emit()
+        self.progressChanged.emit()
+        self.maxProgressChanged.emit()
+        self.readyToWriteChanged.emit()
+        self.isoPathChanged.emit()
+
+    @pyqtSlot(str)
+    def childError(self, err):
+        self._status = 'Error: ' + err
+        self._maximum = -1.0
+        self._current = -1.0
+        self.statusChanged.emit()
+        self.progressChanged.emit()
+        self.maxProgressChanged.emit()
+
+    @pyqtSlot(str)
     def run(self, url):
         self._grabber = IsoDownloaderThread(url, self, self._live.get_proxies())
         self._grabber.start()
+        self._grabber.downloadFinished.connect(self.childFinished)
+        self._grabber.downloadError.connect(self.childError)
 
     @pyqtSlot()
     def cancel(self):
         self._grabber.terminate()
-        self._status = "Initializing..."
+        self._status = 'Initializing...'
         self._maximum = -1.0
-        self._current = 1.0
+        self._current = -1.0
+        self._readyToWrite = False
+        self._isoPath = ''
         self.statusChanged.emit()
         self.progressChanged.emit()
         self.maxProgressChanged.emit()
@@ -225,6 +261,19 @@ class IsoDownloader(QObject, BaseMeter):
     @pyqtProperty(float, notify=progressChanged)
     def progress(self):
         return self._current
+
+    @pyqtProperty(bool, notify=readyToWriteChanged)
+    def readyToWrite(self):
+        return self._readyToWrite
+
+    @pyqtProperty(str, notify=isoPathChanged)
+    def isoPath(self):
+        return self._isoPath
+
+class WriterThread(QThread):
+
+    def __init__(self, live, parent):
+        QThread.__init__(self, parent)
 
 
 class LiveUSBData(QObject):
@@ -271,6 +320,8 @@ class LiveUSBData(QObject):
     @pyqtProperty(Release, notify=currentImageChanged)
     def currentImage(self):
         return self.releaseData[self._currentIndex]
+
+
 
 class LiveUSBApp(QApplication):
     """ Main application class """
