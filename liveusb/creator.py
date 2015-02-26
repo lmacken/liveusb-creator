@@ -529,6 +529,8 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                         list(dev.Get(device, 'PartitionFlags'))),
                     'parent': None,
                     'size': int(dev.Get(device, 'DeviceSize')),
+                    'model': str(dev.Get(device, 'DriveModel')),
+                    'vendor': str(dev.Get(device, 'DriveVendor'))
                 }
 
                 # Only pay attention to USB devices, unless --force'd
