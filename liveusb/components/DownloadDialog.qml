@@ -42,9 +42,20 @@ Dialog {
                                              ((leftSize / 1024 / 1024 / 1024).toFixed(1) + " GB")
                     text: liveUSBData.currentImage.status + (liveUSBData.currentImage.download.maxProgress > 0 ? " (" + leftStr + " left)" : "")
                 }
-                AdwaitaProgressBar {
+                Item {
                     Layout.fillWidth: true
-                    value: liveUSBData.currentImage.download.progress / liveUSBData.currentImage.download.maxProgress
+                    height: childrenRect.height
+                    AdwaitaProgressBar {
+                        width: parent.width
+                        value: liveUSBData.currentImage.download.running ? liveUSBData.currentImage.download.progress / liveUSBData.currentImage.download.maxProgress : 0
+                        visible: !liveUSBData.currentImage.writer.running
+                    }
+                    AdwaitaProgressBar {
+                        width: parent.width
+                        value: liveUSBData.currentImage.writer.running ? liveUSBData.currentImage.writer.progress / liveUSBData.currentImage.writer.maxProgress : 0
+                        visible: !liveUSBData.currentImage.download.running
+                        progressColor: "red"
+                    }
                 }
             }
 
@@ -63,9 +74,7 @@ Dialog {
                 }
                 AdwaitaComboBox {
                     Layout.preferredWidth: implicitWidth * 2
-                    model: ListModel {
-                        ListElement { text: "SanDisk Cruzer 2.0 GB Drive"; device:"sdj1" }
-                    }
+                    model: liveUSBData.usbDrives
                 }
             }
         }

@@ -48,9 +48,10 @@ else:
     from urlgrabber.progress import BaseMeter
 
 try:
-    import dbus.mainloop.qt
-    dbus.mainloop.qt.DBusQtMainLoop(set_as_default=True)
-except:
+    import dbus.mainloop.pyqt5
+    dbus.mainloop.pyqt5.DBusQtMainLoop(set_as_default=True)
+except Exception, e:
+    print(e)
     pass
 
 MAX_FAT16 = 2047
@@ -168,6 +169,39 @@ class ReleaseDownload(QObject, BaseMeter):
     def path(self):
         return self._path
 
+class ReleaseWriter(QObject):
+    runningChanged = pyqtSignal()
+    currentChanged = pyqtSignal()
+    maximumChanged = pyqtSignal()
+
+    _running = False
+    _current = -1.0
+    _maximum = -1.0
+
+    def __init__(self, parent):
+        QObject.__init__(self, parent)
+
+    def reset(self):
+        self._running = False
+        self._current = -1.0
+        self._maximum = -1.0
+        self.runningChanged.emit()
+        self.currentChanged.emit()
+        self.maximumChanged.emit()
+
+    @pyqtProperty(bool, notify=runningChanged)
+    def running(self):
+        return self._running
+
+    @pyqtProperty(float, notify=maximumChanged)
+    def maxProgress(self):
+        return self._maximum
+
+    @pyqtProperty(float, notify=currentChanged)
+    def progress(self):
+        return self._current
+
+
 class Release(QObject):
     screenshotsChanged = pyqtSignal()
     pathChanged = pyqtSignal()
@@ -208,6 +242,8 @@ class Release(QObject):
 
         self._download = ReleaseDownload(self)
         self._download.pathChanged.connect(self.pathChanged)
+
+        self._writer = ReleaseWriter(self)
 
         self._download.runningChanged.connect(self.statusChanged)
 
@@ -275,6 +311,10 @@ class Release(QObject):
     @pyqtProperty(ReleaseDownload, constant=True)
     def download(self):
         return self._download
+
+    @pyqtProperty(ReleaseWriter, constant=True)
+    def writer(self):
+        return self._writer
 
     @pyqtProperty(str, notify=statusChanged)
     def status(self):
@@ -382,10 +422,25 @@ class LiveUSBLogHandler(logging.Handler):
         if record.levelname in ('INFO', 'ERROR', 'WARN'):
             self.cb(record.msg)
 
+class USBDrive(QObject):
+
+    def __init__(self, parent, name, path):
+        QObject.__init__(self, parent)
+        self._name = name
+        self._path = path
+
+    @pyqtProperty(str, constant=True)
+    def text(self):
+        return self._name
+
+    @pyqtProperty(str, constant=True)
+    def path(self):
+        return self._path
 
 class LiveUSBData(QObject):
     releasesChanged = pyqtSignal()
     currentImageChanged = pyqtSignal()
+    usbDrivesChanged = pyqtSignal()
 
     _currentIndex = 0
 
@@ -402,6 +457,41 @@ class LiveUSBData(QObject):
                                             size=release['size'],
                                             url=release['url']
                                     ))
+        self._usbDrives = []
+
+        def USBDeviceCallback():
+            self._usbDrives = []
+            for device, info in self.live.drives.items():
+                name = ''
+                if info['vendor'] and info['model']:
+                    name = info['vendor'] + ' ' + info['model']
+                elif info['label']:
+                    name = info['label']
+                else:
+                    name = device
+
+                # TODO for some reason it gives me 4MB for my 4GB drive... and the rounding is off on my 8GB drive
+                if info['size']:
+                    name += str(info['size'])
+                    pass
+                    if info['size'] < 1024:
+                        name += ' (%d B)' % (info['size'])
+                    elif info['size'] < 1024 * 1024:
+                        name += ' (%d KB)' % (info['size'] / 1024)
+                    elif info['size'] < 1024 * 1024 * 1024:
+                        name += ' (%d MB)' % (info['size'] / 1024 / 1024)
+                    elif info['size'] < 1024 * 1024 * 1024 * 1024:
+                        name += ' (%d GB)' % (info['size'] / 1024 / 1024 / 1024)
+                    else:
+                        name += ' (%d TB)' % (info['size'] / 1024 / 1024 / 1024 / 1024)
+
+                self._usbDrives.append(USBDrive(self, name, device))
+            self.usbDrivesChanged.emit()
+        try:
+            self.live.detect_removable_drives(callback=USBDeviceCallback)
+        except LiveUSBError, e:
+            pass # TODO
+
 
     @pyqtProperty(QQmlListProperty, notify=releasesChanged)
     def releases(self):
@@ -424,6 +514,12 @@ class LiveUSBData(QObject):
     def currentImage(self):
         return self.releaseData[self._currentIndex]
 
+    @pyqtProperty(USBDrive, notify=usbDrivesChanged)
+    def usbDrives(self):
+        print(self._usbDrives)
+        return QQmlListProperty(USBDrive, self, self._usbDrives)
+
+
 
 
 class LiveUSBApp(QApplication):
@@ -431,7 +527,9 @@ class LiveUSBApp(QApplication):
     def __init__(self, opts, args):
         QApplication.__init__(self, args)
         qmlRegisterUncreatableType(ReleaseDownload, "LiveUSB", 1, 0, "Download", "Not creatable directly, use the liveUSBData instance instead")
+        qmlRegisterUncreatableType(ReleaseWriter, "LiveUSB", 1, 0, "Writer", "Not creatable directly, use the liveUSBData instance instead")
         qmlRegisterUncreatableType(Release, "LiveUSB", 1, 0, "Release", "Not creatable directly, use the liveUSBData instance instead")
+        qmlRegisterUncreatableType(USBDrive, "LiveUSB", 1, 0, "Drive", "Not creatable directly, use the liveUSBData instance instead")
         qmlRegisterUncreatableType(LiveUSBData, "LiveUSB", 1, 0, "Data", "Use the liveUSBData root instance")
         view = QQmlApplicationEngine()
         self.data = LiveUSBData(opts)
