@@ -836,7 +836,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         settings.beginGroup('Proxy Settings')
         proxies = {}
         # check for KProtocolManager::ManualProxy (the only one we support)
-        if settings.value('ProxyType').toInt()[0] == 1:
+        if settings.value('ProxyType') and settings.value('ProxyType').toInt()[0] == 1:
             httpProxy = settings.value('httpProxy').toString()
             if httpProxy != '':
                 proxies['http'] = httpProxy
