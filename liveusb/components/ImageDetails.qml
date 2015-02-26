@@ -47,7 +47,7 @@ Item {
             width: implicitWidth + 16
             onClicked: {
                 dlDialog.visible = true
-                liveUSBData.downloader.run(liveUSBData.currentImage.url)
+                liveUSBData.currentImage.get()
             }
             enabled: mainWindow.currentImageIndex != 0 || fileDialog.fileUrl.length > 0
             anchors {
@@ -148,7 +148,7 @@ Item {
                 AdwaitaButton {
                     text: "Find the image"
                     Layout.alignment: Qt.AlignHCenter
-                    visible: mainWindow.currentImageIndex == 0
+                    visible: liveUSBData.currentImage.isLocal
                     onClicked: fileDialog.visible = true
                 }
             }

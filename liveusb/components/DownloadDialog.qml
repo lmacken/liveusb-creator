@@ -34,17 +34,17 @@ Dialog {
                 Text {
                     Layout.fillWidth: true
                     horizontalAlignment: Text.AlignHCenter
-                    property double leftSize: liveUSBData.downloader.maxProgress - liveUSBData.downloader.progress
+                    property double leftSize: liveUSBData.currentImage.download.maxProgress - liveUSBData.currentImage.download.progress
                     property string leftStr: leftSize <= 0 ? "" :
                                              (leftSize < 1024) ? (leftSize + " B") :
                                              (leftSize < (1024 * 1024)) ? ((leftSize / 1024).toFixed(1) + " KB") :
                                              (leftSize < (1024 * 1024 * 1024)) ? ((leftSize / 1024 / 1024).toFixed(1) + " MB") :
                                              ((leftSize / 1024 / 1024 / 1024).toFixed(1) + " GB")
-                    text: liveUSBData.downloader.status + (liveUSBData.downloader.maxProgress > 0 ? " (" + leftStr + " left)" : "")
+                    text: liveUSBData.currentImage.status + (liveUSBData.currentImage.download.maxProgress > 0 ? " (" + leftStr + " left)" : "")
                 }
                 AdwaitaProgressBar {
                     Layout.fillWidth: true
-                    value: liveUSBData.downloader.progress / liveUSBData.downloader.maxProgress
+                    value: liveUSBData.currentImage.download.progress / liveUSBData.currentImage.download.maxProgress
                 }
             }
 
@@ -92,7 +92,7 @@ Dialog {
                 width: implicitWidth * 1.2
                 text: "Cancel"
                 onClicked: {
-                    liveUSBData.downloader.cancel()
+                    liveUSBData.currentImage.download.cancel()
                     root.close()
                 }
             }
@@ -106,7 +106,7 @@ Dialog {
                 color: "red"
                 textColor: enabled ? "white" : palette.text
                 width: implicitWidth * 1.2
-                enabled: liveUSBData.downloader.readyToWrite
+                enabled: liveUSBData.currentImage.readyToWrite
                 text: "Write to disk"
             }
         }

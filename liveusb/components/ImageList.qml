@@ -308,7 +308,7 @@ Item {
                     }
                 }
                 Arrow {
-                    visible: hasDetails
+                    visible: !isLocal
                     anchors {
                         verticalCenter: parent.verticalCenter
                         right: parent.right
