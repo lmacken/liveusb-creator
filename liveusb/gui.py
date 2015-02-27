@@ -472,7 +472,6 @@ class LiveUSBData(QObject):
 
                 # TODO for some reason it gives me 4MB for my 4GB drive... and the rounding is off on my 8GB drive
                 if info['size']:
-                    name += str(info['size'])
                     pass
                     if info['size'] < 1024:
                         name += ' (%d B)' % (info['size'])
@@ -514,10 +513,14 @@ class LiveUSBData(QObject):
     def currentImage(self):
         return self.releaseData[self._currentIndex]
 
-    @pyqtProperty(USBDrive, notify=usbDrivesChanged)
+    @pyqtProperty(QQmlListProperty, notify=usbDrivesChanged)
     def usbDrives(self):
-        print(self._usbDrives)
         return QQmlListProperty(USBDrive, self, self._usbDrives)
+
+    @pyqtProperty('QStringList', notify=usbDrivesChanged)
+    def usbDriveNames(self):
+        return list(i.text for i in self._usbDrives)
+
 
 
 

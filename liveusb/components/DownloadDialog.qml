@@ -74,7 +74,7 @@ Dialog {
                 }
                 AdwaitaComboBox {
                     Layout.preferredWidth: implicitWidth * 2
-                    model: liveUSBData.usbDrives
+                    model: liveUSBData.usbDriveNames
                 }
             }
         }
