@@ -169,163 +169,7 @@ class ReleaseDownload(QObject, BaseMeter):
     def path(self):
         return self._path
 
-class ReleaseWriter(QObject):
-    runningChanged = pyqtSignal()
-    currentChanged = pyqtSignal()
-    maximumChanged = pyqtSignal()
-
-    _running = False
-    _current = -1.0
-    _maximum = -1.0
-
-    def __init__(self, parent):
-        QObject.__init__(self, parent)
-
-    def reset(self):
-        self._running = False
-        self._current = -1.0
-        self._maximum = -1.0
-        self.runningChanged.emit()
-        self.currentChanged.emit()
-        self.maximumChanged.emit()
-
-    @pyqtProperty(bool, notify=runningChanged)
-    def running(self):
-        return self._running
-
-    @pyqtProperty(float, notify=maximumChanged)
-    def maxProgress(self):
-        return self._maximum
-
-    @pyqtProperty(float, notify=currentChanged)
-    def progress(self):
-        return self._current
-
-
-class Release(QObject):
-    screenshotsChanged = pyqtSignal()
-    pathChanged = pyqtSignal()
-    statusChanged = pyqtSignal()
-
-    def __init__(self, parent=None, live=None, name = '', logo = '', size = 0, arch = '', fullName = '', releaseDate = QDateTime(), shortDescription = '', fullDescription = '', isLocal = False, screenshots = [], url=''):
-        QObject.__init__(self, parent)
-
-        self.live = live
-        self._name = name.replace('_', ' ')
-        self._logo = logo
-        self._size = size
-        self._arch = arch
-        self._fullName = fullName
-        self._releaseDate = releaseDate
-        self._shortDescription = shortDescription
-        self._fullDescription = fullDescription
-        self._isLocal = isLocal
-        self._screenshots = screenshots
-        self._url = url
-        self._path = ''
-
-        if self._logo == '':
-            if self._name == 'Fedora Workstation':
-                self._logo = '../../data/logo-color-workstation.png'
-            elif self._name == 'Fedora Server':
-                self._logo = '../../data/logo-color-server.png'
-            elif self._name == 'Fedora Cloud':
-                self._logo = '../../data/logo-color-cloud.png'
-            elif self._name == 'Fedora KDE':
-                self._logo = '../../data/logo-plasma5.png'
-            elif self._name == 'Fedora Xfce':
-                self._logo = '../../data/logo-xfce.svg'
-            elif self._name == 'Fedora LXDE':
-                self._logo = '../../data/logo-lxde.png'
-            else:
-                self._logo = '../../data/logo-fedora.svg'
-
-        self._download = ReleaseDownload(self)
-        self._download.pathChanged.connect(self.pathChanged)
-
-        self._writer = ReleaseWriter(self)
-
-        self._download.runningChanged.connect(self.statusChanged)
-
-
-    @pyqtSlot()
-    def get(self):
-        self._download.run()
-
-    @pyqtSlot()
-    def write(self):
-        pass
-
-    @pyqtProperty(str, constant=True)
-    def name(self):
-        return self._name
-
-    @pyqtProperty(str, constant=True)
-    def logo(self):
-        return self._logo
-
-    @pyqtProperty(float, constant=True)
-    def size(self):
-        return self._size
-
-    @pyqtProperty(str, constant=True)
-    def arch(self):
-        return self._arch
-
-    @pyqtProperty(str, constant=True)
-    def fullName(self):
-        return self._fullName
-
-    @pyqtProperty(QDateTime, constant=True)
-    def releaseDate(self):
-        return self._releaseDate
-
-    @pyqtProperty(str, constant=True)
-    def shortDescription(self):
-        return self._shortDescription
-
-    @pyqtProperty(str, constant=True)
-    def fullDescription(self):
-        return self._fullDescription
-
-    @pyqtProperty(bool, constant=True)
-    def isLocal(self):
-        return self._isLocal
-
-    @pyqtProperty(QQmlListProperty, notify=screenshotsChanged)
-    def screenshots(self):
-        return QQmlListProperty(str, self, self._screenshots)
-
-    @pyqtProperty(str, constant=True)
-    def url(self):
-        return self._url
-
-    @pyqtProperty(str, notify=pathChanged)
-    def path(self):
-        return self._download.path
-
-    @pyqtProperty(bool, notify=pathChanged)
-    def readyToWrite(self):
-        return len(self.path) != 0
-
-    @pyqtProperty(ReleaseDownload, constant=True)
-    def download(self):
-        return self._download
-
-    @pyqtProperty(ReleaseWriter, constant=True)
-    def writer(self):
-        return self._writer
-
-    @pyqtProperty(str, notify=statusChanged)
-    def status(self):
-        if not self._download.running and not self.readyToWrite:
-            return 'Starting'
-        elif self._download.running:
-            return 'Downloading'
-        elif self.readyToWrite:
-            return 'Ready to write'
-
-class WriterThread(QThread):
+class ReleaseWriterThread(QThread):
     status = pyqtSignal(str)
 
     _useDD = False
@@ -412,6 +256,177 @@ class WriterThread(QThread):
         duration = str(datetime.now() - now).split('.')[0]
         self.status.emit(_("Complete! (%s)" % duration))
 
+class ReleaseWriter(QObject):
+    runningChanged = pyqtSignal()
+    currentChanged = pyqtSignal()
+    maximumChanged = pyqtSignal()
+
+    _running = False
+    _current = -1.0
+    _maximum = -1.0
+
+    def __init__(self, parent):
+        QObject.__init__(self, parent)
+        self._worker = ReleaseWriterThread(parent.live, self)
+
+    def reset(self):
+        self._running = False
+        self._current = -1.0
+        self._maximum = -1.0
+        self.runningChanged.emit()
+        self.currentChanged.emit()
+        self.maximumChanged.emit()
+
+    @pyqtSlot()
+    def run(self):
+        self._running = True
+        self._current = 0.0
+        self._maximum = 100.0
+        self.runningChanged.emit()
+        self.currentChanged.emit()
+        self.maximumChanged.emit()
+
+    @pyqtProperty(bool, notify=runningChanged)
+    def running(self):
+        return self._running
+
+    @pyqtProperty(float, notify=maximumChanged)
+    def maxProgress(self):
+        return self._maximum
+
+    @pyqtProperty(float, notify=currentChanged)
+    def progress(self):
+        return self._current
+
+
+class Release(QObject):
+    screenshotsChanged = pyqtSignal()
+    pathChanged = pyqtSignal()
+    statusChanged = pyqtSignal()
+
+    def __init__(self, parent=None, live=None, name = '', logo = '', size = 0, arch = '', fullName = '', releaseDate = QDateTime(), shortDescription = '', fullDescription = '', isLocal = False, screenshots = [], url=''):
+        QObject.__init__(self, parent)
+
+        self.live = live
+        self._name = name.replace('_', ' ')
+        self._logo = logo
+        self._size = size
+        self._arch = arch
+        self._fullName = fullName
+        self._releaseDate = releaseDate
+        self._shortDescription = shortDescription
+        self._fullDescription = fullDescription
+        self._isLocal = isLocal
+        self._screenshots = screenshots
+        self._url = url
+        self._path = ''
+
+        if self._logo == '':
+            if self._name == 'Fedora Workstation':
+                self._logo = '../../data/logo-color-workstation.png'
+            elif self._name == 'Fedora Server':
+                self._logo = '../../data/logo-color-server.png'
+            elif self._name == 'Fedora Cloud':
+                self._logo = '../../data/logo-color-cloud.png'
+            elif self._name == 'Fedora KDE':
+                self._logo = '../../data/logo-plasma5.png'
+            elif self._name == 'Fedora Xfce':
+                self._logo = '../../data/logo-xfce.svg'
+            elif self._name == 'Fedora LXDE':
+                self._logo = '../../data/logo-lxde.png'
+            else:
+                self._logo = '../../data/logo-fedora.svg'
+
+        self._download = ReleaseDownload(self)
+        self._download.pathChanged.connect(self.pathChanged)
+
+        self._writer = ReleaseWriter(self)
+
+        self._download.runningChanged.connect(self.statusChanged)
+        self._writer.runningChanged.connect(self.statusChanged)
+
+
+    @pyqtSlot()
+    def get(self):
+        self._download.run()
+
+    @pyqtSlot()
+    def write(self):
+        self._writer.run()
+
+    @pyqtProperty(str, constant=True)
+    def name(self):
+        return self._name
+
+    @pyqtProperty(str, constant=True)
+    def logo(self):
+        return self._logo
+
+    @pyqtProperty(float, constant=True)
+    def size(self):
+        return self._size
+
+    @pyqtProperty(str, constant=True)
+    def arch(self):
+        return self._arch
+
+    @pyqtProperty(str, constant=True)
+    def fullName(self):
+        return self._fullName
+
+    @pyqtProperty(QDateTime, constant=True)
+    def releaseDate(self):
+        return self._releaseDate
+
+    @pyqtProperty(str, constant=True)
+    def shortDescription(self):
+        return self._shortDescription
+
+    @pyqtProperty(str, constant=True)
+    def fullDescription(self):
+        return self._fullDescription
+
+    @pyqtProperty(bool, constant=True)
+    def isLocal(self):
+        return self._isLocal
+
+    @pyqtProperty(QQmlListProperty, notify=screenshotsChanged)
+    def screenshots(self):
+        return QQmlListProperty(str, self, self._screenshots)
+
+    @pyqtProperty(str, constant=True)
+    def url(self):
+        return self._url
+
+    @pyqtProperty(str, notify=pathChanged)
+    def path(self):
+        return self._download.path
+
+    @pyqtProperty(bool, notify=pathChanged)
+    def readyToWrite(self):
+        return len(self.path) != 0
+
+    @pyqtProperty(ReleaseDownload, constant=True)
+    def download(self):
+        return self._download
+
+    @pyqtProperty(ReleaseWriter, constant=True)
+    def writer(self):
+        return self._writer
+
+    @pyqtProperty(str, notify=statusChanged)
+    def status(self):
+        if not self._download.running and not self.readyToWrite and not self._writer.running:
+            return 'Starting'
+        elif self._download.running:
+            return 'Downloading'
+        elif self.readyToWrite and not self._writer.running:
+            return 'Ready to write'
+        elif self._writer.running:
+            return 'Writing'
+        else:
+            return 'Finished'
+
 class LiveUSBLogHandler(logging.Handler):
 
     def __init__(self, cb):
@@ -441,8 +456,10 @@ class LiveUSBData(QObject):
     releasesChanged = pyqtSignal()
     currentImageChanged = pyqtSignal()
     usbDrivesChanged = pyqtSignal()
+    currentDriveChanged = pyqtSignal()
 
     _currentIndex = 0
+    _currentDrive = 0
 
     def __init__(self, opts):
         QObject.__init__(self)
@@ -506,8 +523,9 @@ class LiveUSBData(QObject):
 
     @currentIndex.setter
     def currentIndex(self, value):
-        self._currentIndex = value
-        self.currentImageChanged.emit()
+        if value != self._currentIndex:
+            self._currentIndex = value
+            self.currentImageChanged.emit()
 
     @pyqtProperty(Release, notify=currentImageChanged)
     def currentImage(self):
@@ -521,8 +539,15 @@ class LiveUSBData(QObject):
     def usbDriveNames(self):
         return list(i.text for i in self._usbDrives)
 
+    @pyqtProperty(int, notify=currentDriveChanged)
+    def currentDrive(self):
+        return self._currentDrive
 
-
+    @currentDrive.setter
+    def currentDrive(self, value):
+        if value != self._currentDrive:
+            self._currentDrive = value
+            self.currentDriveChanged.emit()
 
 
 class LiveUSBApp(QApplication):

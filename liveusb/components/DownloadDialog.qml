@@ -75,6 +75,8 @@ Dialog {
                 AdwaitaComboBox {
                     Layout.preferredWidth: implicitWidth * 2
                     model: liveUSBData.usbDriveNames
+                    currentIndex: liveUSBData.currentDrive
+                    onCurrentIndexChanged: liveUSBData.currentDrive = currentIndex
                 }
             }
         }
@@ -117,6 +119,7 @@ Dialog {
                 width: implicitWidth * 1.2
                 enabled: liveUSBData.currentImage.readyToWrite
                 text: "Write to disk"
+                onClicked: liveUSBData.currentImage.write()
             }
         }
     }
