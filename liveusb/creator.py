@@ -275,7 +275,7 @@ class LiveUSBCreator(object):
         usblabel = 'LABEL=' + self.label
         for line in infile.readlines():
             if "LABEL" in line:
-                line = re.sub("LABEL=[^ ]*", usblabel, line)
+                line = re.sub("LABEL=[^ :]*", usblabel, line)
                 line = re.sub("rootfstype=[^ ]*",
                               "rootfstype=%s" % self.fstype,
                               line)
