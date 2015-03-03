@@ -487,19 +487,22 @@ class LiveUSBData(QObject):
                 else:
                     name = device
 
+                gb = 1000.0 # if it's decided to use base 2 values, change this
+
                 # TODO for some reason it gives me 4MB for my 4GB drive... and the rounding is off on my 8GB drive
-                if info['size']:
+                print(info['fullSize'])
+                if info['fullSize']:
                     pass
-                    if info['size'] < 1024:
-                        name += ' (%d B)' % (info['size'])
-                    elif info['size'] < 1024 * 1024:
-                        name += ' (%d KB)' % (info['size'] / 1024)
-                    elif info['size'] < 1024 * 1024 * 1024:
-                        name += ' (%d MB)' % (info['size'] / 1024 / 1024)
-                    elif info['size'] < 1024 * 1024 * 1024 * 1024:
-                        name += ' (%d GB)' % (info['size'] / 1024 / 1024 / 1024)
+                    if info['fullSize'] < gb:
+                        name += ' (%.1f B)' % (info['fullSize'])
+                    elif info['fullSize'] < gb * gb:
+                        name += ' (%.1f KB)' % (info['fullSize'] / gb)
+                    elif info['fullSize'] < gb * gb * gb:
+                        name += ' (%.1f MB)' % (info['fullSize'] / gb / gb)
+                    elif info['fullSize'] < gb * gb * gb * gb:
+                        name += ' (%.1f GB)' % (info['fullSize'] / gb / gb / gb)
                     else:
-                        name += ' (%d TB)' % (info['size'] / 1024 / 1024 / 1024 / 1024)
+                        name += ' (%.1f TB)' % (info['fullSize'] / gb / gb / gb / gb)
 
                 self._usbDrives.append(USBDrive(self, name, device))
             self.usbDrivesChanged.emit()

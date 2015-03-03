@@ -529,6 +529,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                         list(dev.Get(device, 'PartitionFlags'))),
                     'parent': None,
                     'size': int(dev.Get(device, 'DeviceSize')),
+                    'fullSize': int(dev.Get(device, 'DeviceSize')),
                     'model': str(dev.Get(device, 'DriveModel')),
                     'vendor': str(dev.Get(device, 'DriveVendor'))
                 }
@@ -561,6 +562,11 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                     data['parent'] = str(dbus.Interface(self._get_device(parent),
                             'org.freedesktop.DBus.Properties').Get(parent,
                                 'DeviceFile'))
+                    print(data['parent'])
+                    data['fullSize'] = int(dbus.Interface(self._get_device(parent),
+                            'org.freedesktop.DBus.Properties').Get(parent,
+                                'DeviceSize'))
+                    print(data['fullSize'])
 
                 mount = data['mount']
                 if mount:
