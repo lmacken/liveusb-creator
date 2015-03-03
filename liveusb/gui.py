@@ -489,8 +489,6 @@ class LiveUSBData(QObject):
 
                 gb = 1000.0 # if it's decided to use base 2 values, change this
 
-                # TODO for some reason it gives me 4MB for my 4GB drive... and the rounding is off on my 8GB drive
-                print(info['fullSize'])
                 if info['fullSize']:
                     pass
                     if info['fullSize'] < gb:

@@ -562,11 +562,9 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                     data['parent'] = str(dbus.Interface(self._get_device(parent),
                             'org.freedesktop.DBus.Properties').Get(parent,
                                 'DeviceFile'))
-                    print(data['parent'])
                     data['fullSize'] = int(dbus.Interface(self._get_device(parent),
                             'org.freedesktop.DBus.Properties').Get(parent,
                                 'DeviceSize'))
-                    print(data['fullSize'])
 
                 mount = data['mount']
                 if mount:
