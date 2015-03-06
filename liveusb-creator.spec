@@ -7,7 +7,7 @@
 %endif
 
 Name:           liveusb-creator
-Version:        3.13.1
+Version:        3.13.3
 Release:        1%{?dist}
 Summary:        A liveusb creator
 
