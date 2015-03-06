@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
-# Copyright © 2008-2013  Red Hat, Inc. All rights reserved.
-# Copyright © 2008-2013  Luke Macken <lmacken@redhat.com>
+# Copyright © 2008-2015  Red Hat, Inc. All rights reserved.
+# Copyright © 2008-2015  Luke Macken <lmacken@redhat.com>
 #
 # This copyrighted material is made available to anyone wishing to use, modify,
 # copy, or redistribute it subject to the terms and conditions of the GNU
@@ -275,7 +275,7 @@ class LiveUSBCreator(object):
         usblabel = 'LABEL=' + self.label
         for line in infile.readlines():
             if "LABEL" in line:
-                line = re.sub("LABEL=[^ ]*", usblabel, line)
+                line = re.sub("LABEL=[^ :]*", usblabel, line)
                 line = re.sub("rootfstype=[^ ]*",
                               "rootfstype=%s" % self.fstype,
                               line)
@@ -925,7 +925,8 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         mbr = None
         for mbr_bin in ('/usr/lib/syslinux/mbr.bin',
                         '/usr/share/syslinux/mbr.bin',
-                        '/usr/lib/syslinux/bios/mbr.bin'):
+                        '/usr/lib/syslinux/bios/mbr.bin',
+                        '/usr/lib/syslinux/mbr/mbr.bin'):
             if os.path.exists(mbr_bin):
                 mbr = mbr_bin
         return mbr
