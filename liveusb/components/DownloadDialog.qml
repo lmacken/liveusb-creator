@@ -73,10 +73,11 @@ Dialog {
 
                 }
                 AdwaitaComboBox {
-                    Layout.preferredWidth: implicitWidth * 2
+                    Layout.preferredWidth: implicitWidth * 2.3
                     model: liveUSBData.usbDriveNames
                     currentIndex: liveUSBData.currentDrive
                     onCurrentIndexChanged: liveUSBData.currentDrive = currentIndex
+                    enabled: !liveUSBData.currentImage.writer.running
                 }
             }
         }
@@ -102,6 +103,7 @@ Dialog {
                 }
                 width: implicitWidth * 1.2
                 text: "Cancel"
+                enabled: !liveUSBData.currentImage.writer.running
                 onClicked: {
                     liveUSBData.currentImage.download.cancel()
                     root.close()
@@ -117,7 +119,7 @@ Dialog {
                 color: "red"
                 textColor: enabled ? "white" : palette.text
                 width: implicitWidth * 1.2
-                enabled: liveUSBData.currentImage.readyToWrite
+                enabled: liveUSBData.currentImage.readyToWrite && !liveUSBData.currentImage.writer.running
                 text: "Write to disk"
                 onClicked: liveUSBData.currentImage.write()
             }

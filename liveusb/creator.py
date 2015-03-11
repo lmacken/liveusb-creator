@@ -68,7 +68,7 @@ class LiveUSBCreator(object):
     ext_fstypes = set(['ext2', 'ext3', 'ext4'])
     valid_fstypes = set(['vfat', 'msdos']) | ext_fstypes
 
-    drive = property(fget=lambda self: self.drives[self._drive],
+    drive = property(fget=lambda self: self.drives[self._drive] if self._drive and len(self.drives) else None,
                      fset=lambda self, d: self._set_drive(d))
 
     def __init__(self, opts):
@@ -389,6 +389,9 @@ class LiveUSBCreator(object):
                 return release
 
     def _set_drive(self, drive):
+        if drive == None:
+            self._drive = None
+            return
         if not self.drives.has_key(drive):
             raise LiveUSBError(_("Cannot find device %s" % drive))
         self.log.debug("%s selected: %s" % (drive, self.drives[drive]))

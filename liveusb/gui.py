@@ -72,10 +72,6 @@ class ReleaseDownloadThread(QThread):
         self.grabber = URLGrabber(progress_obj=self.progress, proxies=self.proxies)
         home = os.getenv('HOME', 'USERPROFILE')
         filename = os.path.basename(urlparse.urlparse(self.url).path)
-        for folder in ('Downloads', 'My Documents'):
-            if os.path.isdir(os.path.join(home, folder)):
-                filename = os.path.join(home, folder, filename)
-                break
         try:
             iso = self.grabber.urlgrab(self.url, reget='simple')
         except URLGrabError, e:
@@ -135,6 +131,8 @@ class ReleaseDownload(QObject, BaseMeter):
     def childFinished(self, iso):
         self._path = iso
         self._running = False
+        print(iso)
+        self.parent().live.iso = iso
         self.pathChanged.emit()
         self.runningChanged.emit()
 
@@ -169,71 +167,100 @@ class ReleaseDownload(QObject, BaseMeter):
     def path(self):
         return self._path
 
-class ReleaseWriterThread(QThread):
-    status = pyqtSignal(str)
+class ReleaseWriterProgressThread(QThread):
 
-    _useDD = False
+    alive = True
+    get_free_bytes = None
+    drive = None
+    totalSize = 0
+    orig_free = 0
 
-    def __init__(self, live, parent, useDD = False):
-        QThread.__init__(self, parent)
-
-        self.live = live
-        self.parent = parent
-        self._useDD = useDD
+    def set_data(self, size, drive, freebytes):
+        self.totalSize = size / 1024
+        self.drive = drive
+        self.get_free_bytes = freebytes
+        self.orig_free = self.get_free_bytes()
+        self.parent().maxprogress = self.totalSize
 
     def run(self):
-        handler = LiveUSBLogHandler(self.status)
-        self.live.log.addHandler(handler)
+        while self.alive:
+            print("ping")
+            free = self.get_free_bytes()
+            value = (self.orig_free - free) / 1024
+            self.parent().progress = value
+            if (value >= self.totalSize):
+                break
+            sleep(3)
+
+    def stop(self):
+        self.alive = False
+
+    def terminate(self):
+        self.parent().progress = self.totalSize
+        self.terminate()
+
+
+class ReleaseWriterThread(QThread):
+
+    def __init__(self, parent, progressThread, useDD = False):
+        QThread.__init__(self, parent)
+
+        self.live = parent.live
+        self.parent = parent
+        self.progressThread = progressThread
+        self._useDD = useDD
+
+
+    def run(self):
+        #handler = LiveUSBLogHandler(self.parent.status)
+        #self.live.log.addHandler(handler)
         now = datetime.now()
         try:
             if self._useDD:
-                self.ddImage(handler, now)
+                self.ddImage(now)
             else:
-                self.copyImage(handler, now)
+                self.copyImage(now)
         except Exception, e:
-            self.status.emit(e.args[0])
-            self.status.emit(_("LiveUSB creation failed!"))
+            self.parent.status = _("LiveUSB creation failed!")
+            self.parent.status += " " + e.message
             self.live.log.exception(e)
 
-        self.live.log.removeHandler(handler)
+        #self.live.log.removeHandler(handler)
         self.progressThread.terminate()
 
-    def ddImage(self, handler, now):
-        self.parent.progressBar.setRange(0, 0)
+    def ddImage(self, now):
         self.live.dd_image()
-        self.live.log.removeHandler(handler)
+        #self.live.log.removeHandler(handler)
         duration = str(datetime.now() - now).split('.')[0]
-        self.status.emit(_("Complete! (%s)") % duration)
-        self.parent.progressBar.setRange(0, 1)
         return
 
-    def copyImage(self, handler, now):
+    def copyImage(self, now):
         self.live.verify_filesystem()
         if not self.live.drive['uuid'] and not self.live.label:
-            self.status.emit(_("Error: Cannot set the label or obtain "
-                          "the UUID of your device.  Unable to continue."))
-            self.live.log.removeHandler(handler)
+            self.parent.status = _("Error: Cannot set the label or obtain "
+                          "the UUID of your device.  Unable to continue.")
+            #self.live.log.removeHandler(handler)
             return
 
         self.live.check_free_space()
 
-        if not self.parent.opts.noverify:
+        if not self.live.opts.noverify:
             # Verify the MD5 checksum inside of the ISO image
             if not self.live.verify_iso_md5():
-                self.live.log.removeHandler(handler)
+                #self.live.log.removeHandler(handler)
                 return
 
             # If we know about this ISO, and it's SHA1 -- verify it
             release = self.live.get_release_from_iso()
             if release and ('sha1' in release or 'sha256' in release):
-                if not self.live.verify_iso_sha1(progressThread=self):
-                    self.live.log.removeHandler(handler)
+                if not self.live.verify_iso_sha1(self):
+                    #self.live.log.removeHandler(handler)
                     return
 
         # Setup the progress bar
         self.progressThread.set_data(size=self.live.totalsize,
-                               drive=self.live.drive['device'],
-                               freebytes=self.live.get_free_bytes)
+                                     drive=self.live.drive['device'],
+                                     freebytes=self.live.get_free_bytes)
         self.progressThread.start()
 
         self.live.extract_iso()
@@ -242,9 +269,9 @@ class ReleaseWriterThread(QThread):
         self.live.install_bootloader()
         self.live.bootable_partition()
 
-        if self.parent.opts.device_checksum:
+        if self.live.opts.device_checksum:
             self.live.calculate_device_checksum(progressThread=self)
-        if self.parent.opts.liveos_checksum:
+        if self.live.opts.liveos_checksum:
             self.live.calculate_liveos_checksum()
 
         self.progressThread.stop()
@@ -254,20 +281,30 @@ class ReleaseWriterThread(QThread):
         self.live.unmount_device()
 
         duration = str(datetime.now() - now).split('.')[0]
-        self.status.emit(_("Complete! (%s)" % duration))
+        self.parent.status = _("Complete! (%s)" % duration)
+
+    def set_max_progress(self, maximum):
+        self.parent.maxprogress = maximum
+
+    def update_progress(self, value):
+        self.parent.progress = value
 
 class ReleaseWriter(QObject):
     runningChanged = pyqtSignal()
     currentChanged = pyqtSignal()
     maximumChanged = pyqtSignal()
+    statusChanged = pyqtSignal()
 
     _running = False
     _current = -1.0
     _maximum = -1.0
+    _status = ""
 
     def __init__(self, parent):
         QObject.__init__(self, parent)
-        self._worker = ReleaseWriterThread(parent.live, self)
+        self.live = parent.live
+        self.progressWatcher = ReleaseWriterProgressThread(self)
+        self.worker = ReleaseWriterThread(self, self.progressWatcher, False)
 
     def reset(self):
         self._running = False
@@ -278,13 +315,49 @@ class ReleaseWriter(QObject):
         self.maximumChanged.emit()
 
     @pyqtSlot()
-    def run(self):
+    def run(self, useDD = False):
         self._running = True
         self._current = 0.0
         self._maximum = 100.0
         self.runningChanged.emit()
         self.currentChanged.emit()
         self.maximumChanged.emit()
+
+        if useDD:
+            self.status = _("WARNING: You are about to perform a destructive install. This will destroy all data and partitions on your USB drive. Press 'Create Live USB' again to continue.")
+
+        else:
+            if self.live.blank_mbr():
+                print("AAA")
+            elif not self.live.mbr_matches_syslinux_bin():
+                if False: # TODO
+                    self.live.reset_mbr()
+                else:
+                    self.live.log.warn(_("Warning: The Master Boot Record on your device "
+                                  "does not match your system's syslinux MBR.  If you "
+                                  "have trouble booting this stick, try running the "
+                                  "liveusb-creator with the --reset-mbr option."))
+
+            try:
+                self.live.mount_device()
+                self.status = 'Mounted on ' + self.live.dest
+            except LiveUSBError, e:
+                self.status(e.args[0])
+                self._running = False
+                self.runningChanged.emit()
+            except OSError, e:
+                self.status = _('Unable to mount device')
+                self._running = False
+                self.runningChanged.emit()
+
+            if self.live.existing_liveos():
+                self.status = _("Your device already contains a LiveOS.\nIf you "
+                                "continue, this will be overwritten.")
+                self.status += _("Press 'Create Live USB' again if you wish to "
+                                 "continue.")
+                #TODO
+
+        self.worker.start()
 
     @pyqtProperty(bool, notify=runningChanged)
     def running(self):
@@ -294,9 +367,31 @@ class ReleaseWriter(QObject):
     def maxProgress(self):
         return self._maximum
 
+    @maxProgress.setter
+    def maxProgress(self, value):
+        if (value != self._maximum):
+            self._maximum = value
+            self.maximumChanged.emit()
+
     @pyqtProperty(float, notify=currentChanged)
     def progress(self):
         return self._current
+
+    @progress.setter
+    def progress(self, value):
+        if (value != self._current):
+            self._current = value
+            self.currentChanged.emit()
+
+    @pyqtProperty(str, notify=statusChanged)
+    def status(self):
+        return self._status
+
+    @status.setter
+    def status(self, s):
+        if self._status != s:
+            self._status = s
+            self.statusChanged.emit()
 
 
 class Release(QObject):
@@ -439,18 +534,18 @@ class LiveUSBLogHandler(logging.Handler):
 
 class USBDrive(QObject):
 
-    def __init__(self, parent, name, path):
+    def __init__(self, parent, name, drive):
         QObject.__init__(self, parent)
         self._name = name
-        self._path = path
+        self._drive = drive
 
     @pyqtProperty(str, constant=True)
     def text(self):
         return self._name
 
     @pyqtProperty(str, constant=True)
-    def path(self):
-        return self._path
+    def drive(self):
+        return self._drive
 
 class LiveUSBData(QObject):
     releasesChanged = pyqtSignal()
@@ -476,38 +571,50 @@ class LiveUSBData(QObject):
                                     ))
         self._usbDrives = []
 
-        def USBDeviceCallback():
-            self._usbDrives = []
-            for device, info in self.live.drives.items():
-                name = ''
-                if info['vendor'] and info['model']:
-                    name = info['vendor'] + ' ' + info['model']
-                elif info['label']:
-                    name = info['label']
-                else:
-                    name = device
-
-                gb = 1000.0 # if it's decided to use base 2 values, change this
-
-                if info['fullSize']:
-                    pass
-                    if info['fullSize'] < gb:
-                        name += ' (%.1f B)' % (info['fullSize'])
-                    elif info['fullSize'] < gb * gb:
-                        name += ' (%.1f KB)' % (info['fullSize'] / gb)
-                    elif info['fullSize'] < gb * gb * gb:
-                        name += ' (%.1f MB)' % (info['fullSize'] / gb / gb)
-                    elif info['fullSize'] < gb * gb * gb * gb:
-                        name += ' (%.1f GB)' % (info['fullSize'] / gb / gb / gb)
-                    else:
-                        name += ' (%.1f TB)' % (info['fullSize'] / gb / gb / gb / gb)
-
-                self._usbDrives.append(USBDrive(self, name, device))
-            self.usbDrivesChanged.emit()
         try:
-            self.live.detect_removable_drives(callback=USBDeviceCallback)
+            self.live.detect_removable_drives(callback=self.USBDeviceCallback)
         except LiveUSBError, e:
             pass # TODO
+
+    def USBDeviceCallback(self):
+        tmpDrives = []
+        previouslySelected = ""
+        if len(self._usbDrives) > 0:
+            previouslySelected = self._usbDrives[self._currentDrive].drive['device']
+        for drive, info in self.live.drives.items():
+            name = ''
+            if info['vendor'] and info['model']:
+                name = info['vendor'] + ' ' + info['model']
+            elif info['label']:
+                name = info['label']
+            else:
+                name = info['device']
+
+            gb = 1000.0 # if it's decided to use base 2 values, change this
+
+            if info['fullSize']:
+                pass
+                if info['fullSize'] < gb:
+                    name += ' (%.1f B)'  % (info['fullSize'] / (gb ** 0))
+                elif info['fullSize'] < gb * gb:
+                    name += ' (%.1f KB)' % (info['fullSize'] / (gb ** 1))
+                elif info['fullSize'] < gb * gb * gb:
+                    name += ' (%.1f MB)' % (info['fullSize'] / (gb ** 2))
+                elif info['fullSize'] < gb * gb * gb * gb:
+                    name += ' (%.1f GB)' % (info['fullSize'] / (gb ** 3))
+                else:
+                    name += ' (%.1f TB)' % (info['fullSize'] / (gb ** 4))
+
+            tmpDrives.append(USBDrive(self, name, info))
+
+        if tmpDrives != self._usbDrives:
+            self._usbDrives = tmpDrives
+            self.usbDrivesChanged.emit()
+
+            self.currentDrive = 0
+            for i, drive in enumerate(self._usbDrives):
+                if drive.drive['device'] == previouslySelected:
+                    self.currentDrive = i
 
 
     @pyqtProperty(QQmlListProperty, notify=releasesChanged)
@@ -546,8 +653,16 @@ class LiveUSBData(QObject):
 
     @currentDrive.setter
     def currentDrive(self, value):
-        if value != self._currentDrive:
+        if len(self._usbDrives) == 0:
+            self._currentDrive
+            return
+        if value > len(self._usbDrives):
+            value = 0
+            self.currentDriveChanged.emit()
+        if len(self._usbDrives) != 0 and (self._currentDrive != value or self.live.drive != self._usbDrives[value].drive['device']):
             self._currentDrive = value
+            if len(self._usbDrives) > 0:
+                self.live.drive = self._usbDrives[self._currentDrive].drive['device']
             self.currentDriveChanged.emit()
 
 
