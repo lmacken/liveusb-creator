@@ -251,6 +251,8 @@ class LiveUSBCreator(object):
         overlaysize = self.overlay * 1024**2
         self.log.debug('overlaysize = %d' % overlaysize)
         self.totalsize = overlaysize + self.isosize
+        print(self.totalsize)
+        print(freebytes)
         if self.totalsize > freebytes:
             raise LiveUSBError(_("Not enough free space on device." +
                                  "\n%dMB ISO + %dMB overlay > %dMB free space" %

@@ -132,7 +132,7 @@ class ReleaseDownload(QObject, BaseMeter):
         self._path = iso
         self._running = False
         print(iso)
-        self.parent().live.iso = iso
+        self.parent().live.set_iso(iso)
         self.pathChanged.emit()
         self.runningChanged.emit()
 
@@ -221,12 +221,11 @@ class ReleaseWriterThread(QThread):
             else:
                 self.copyImage(now)
         except Exception, e:
-            self.parent.status = _("LiveUSB creation failed!")
-            self.parent.status += " " + e.message
+            self.parent.status = e.args[0]
             self.live.log.exception(e)
 
+        self.parent.running = False
         #self.live.log.removeHandler(handler)
-        self.progressThread.terminate()
 
     def ddImage(self, now):
         self.live.dd_image()
@@ -242,6 +241,7 @@ class ReleaseWriterThread(QThread):
             #self.live.log.removeHandler(handler)
             return
 
+        self.parent.status = _("Checking the source image")
         self.live.check_free_space()
 
         if not self.live.opts.noverify:
@@ -257,6 +257,7 @@ class ReleaseWriterThread(QThread):
                     #self.live.log.removeHandler(handler)
                     return
 
+        self.parent.status = _("Unpacking the image")
         # Setup the progress bar
         self.progressThread.set_data(size=self.live.totalsize,
                                      drive=self.live.drive['device'],
@@ -264,11 +265,14 @@ class ReleaseWriterThread(QThread):
         self.progressThread.start()
 
         self.live.extract_iso()
+
+        self.parent.status = _("Writing the data")
         self.live.create_persistent_overlay()
         self.live.update_configs()
         self.live.install_bootloader()
         self.live.bootable_partition()
 
+        self.parent.status = _("Checking the written data")
         if self.live.opts.device_checksum:
             self.live.calculate_device_checksum(progressThread=self)
         if self.live.opts.liveos_checksum:
@@ -282,6 +286,8 @@ class ReleaseWriterThread(QThread):
 
         duration = str(datetime.now() - now).split('.')[0]
         self.parent.status = _("Complete! (%s)" % duration)
+
+        self.progressThread.terminate()
 
     def set_max_progress(self, maximum):
         self.parent.maxprogress = maximum
@@ -323,6 +329,8 @@ class ReleaseWriter(QObject):
         self.currentChanged.emit()
         self.maximumChanged.emit()
 
+        self.status = "Writing"
+
         if useDD:
             self.status = _("WARNING: You are about to perform a destructive install. This will destroy all data and partitions on your USB drive. Press 'Create Live USB' again to continue.")
 
@@ -340,7 +348,7 @@ class ReleaseWriter(QObject):
 
             try:
                 self.live.mount_device()
-                self.status = 'Mounted on ' + self.live.dest
+                self.status = 'Drive mounted'
             except LiveUSBError, e:
                 self.status(e.args[0])
                 self._running = False
@@ -353,8 +361,6 @@ class ReleaseWriter(QObject):
             if self.live.existing_liveos():
                 self.status = _("Your device already contains a LiveOS.\nIf you "
                                 "continue, this will be overwritten.")
-                self.status += _("Press 'Create Live USB' again if you wish to "
-                                 "continue.")
                 #TODO
 
         self.worker.start()
@@ -362,6 +368,14 @@ class ReleaseWriter(QObject):
     @pyqtProperty(bool, notify=runningChanged)
     def running(self):
         return self._running
+
+    @running.setter
+    def running(self, value):
+        if self._running != value:
+            self._running = value
+            self.runningChanged.emit()
+        if not self._running:
+            self.status = ""
 
     @pyqtProperty(float, notify=maximumChanged)
     def maxProgress(self):
@@ -439,6 +453,7 @@ class Release(QObject):
 
         self._download.runningChanged.connect(self.statusChanged)
         self._writer.runningChanged.connect(self.statusChanged)
+        self._writer.statusChanged.connect(self.statusChanged)
 
 
     @pyqtSlot()
@@ -517,8 +532,8 @@ class Release(QObject):
             return 'Downloading'
         elif self.readyToWrite and not self._writer.running:
             return 'Ready to write'
-        elif self._writer.running:
-            return 'Writing'
+        elif self._writer.status:
+            return self._writer.status
         else:
             return 'Finished'
 
