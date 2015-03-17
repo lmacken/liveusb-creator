@@ -32,7 +32,7 @@ import urlparse
 
 from time import sleep
 from datetime import datetime
-from PyQt5.QtCore import pyqtProperty, pyqtSlot, QObject, QUrl, QDateTime, pyqtSignal, QThread
+from PyQt5.QtCore import pyqtProperty, pyqtSlot, QObject, QUrl, QDateTime, pyqtSignal, QThread, QAbstractListModel
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtQml import qmlRegisterType, qmlRegisterUncreatableType, QQmlComponent, QQmlApplicationEngine, QQmlListProperty
 from PyQt5.QtQuick import QQuickView
@@ -102,11 +102,10 @@ class ReleaseDownload(QObject, BaseMeter):
         self._running = False
         self._current = -1.0
         self._maximum = -1.0
-        self._path = ''
+        self.path = ''
         self.runningChanged.emit()
         self.currentChanged.emit()
         self.maximumChanged.emit()
-        self.pathChanged.emit()
 
     def start(self, filename=None, url=None, basename=None, size=None, now=None, text=None):
         self._maximum = size
@@ -129,11 +128,9 @@ class ReleaseDownload(QObject, BaseMeter):
 
     @pyqtSlot(str)
     def childFinished(self, iso):
-        self._path = iso
+        self.path = iso
         self._running = False
         print(iso)
-        self.parent().live.set_iso(iso)
-        self.pathChanged.emit()
         self.runningChanged.emit()
 
     @pyqtSlot(str)
@@ -142,9 +139,10 @@ class ReleaseDownload(QObject, BaseMeter):
 
     @pyqtSlot(str)
     def run(self):
-        self._grabber.start()
-        self._grabber.downloadFinished.connect(self.childFinished)
-        self._grabber.downloadError.connect(self.childError)
+        if len(self.parent().path) <= 0:
+            self._grabber.start()
+            self._grabber.downloadFinished.connect(self.childFinished)
+            self._grabber.downloadError.connect(self.childError)
 
     @pyqtSlot()
     def cancel(self):
@@ -166,6 +164,13 @@ class ReleaseDownload(QObject, BaseMeter):
     @pyqtProperty(str, notify=pathChanged)
     def path(self):
         return self._path
+
+    @path.setter
+    def path(self, value):
+        if self._path != value:
+            self._path = value
+            self.parent().live.set_iso(value)
+            self.pathChanged.emit()
 
 class ReleaseWriterProgressThread(QThread):
 
@@ -410,8 +415,8 @@ class ReleaseWriter(QObject):
 
 class Release(QObject):
     screenshotsChanged = pyqtSignal()
-    pathChanged = pyqtSignal()
     statusChanged = pyqtSignal()
+    pathChanged = pyqtSignal()
 
     def __init__(self, parent=None, live=None, name = '', logo = '', size = 0, arch = '', fullName = '', releaseDate = QDateTime(), shortDescription = '', fullDescription = '', isLocal = False, screenshots = [], url=''):
         QObject.__init__(self, parent)
@@ -446,6 +451,13 @@ class Release(QObject):
             else:
                 self._logo = '../../data/logo-fedora.svg'
 
+        if self._name == "Fedora Workstation":
+            self._fullDescription = "Fedora Workstation is a reliable, user-friendly, and powerful operating system for your laptop or desktop computer. It supports a wide range of developers, from hobbyists and students to professionals in corporate environments."
+        if self._name == "Fedora Server":
+            self._fullDescription = "Fedora Server is a powerful, flexible operating system that includes the best and latest datacenter technologies. It puts you in control of all your infrastructure and services."
+        if self._name == "Fedora Cloud":
+            self._fullDescription = "Fedora Cloud provides a minimal image of Fedora for use in public and private cloud environments. It includes just the bare essentials, so you get enough to run your cloud application -- and nothing more."
+
         self._download = ReleaseDownload(self)
         self._download.pathChanged.connect(self.pathChanged)
 
@@ -458,7 +470,8 @@ class Release(QObject):
 
     @pyqtSlot()
     def get(self):
-        self._download.run()
+        if len(self._url) <= 0:
+            self._download.run()
 
     @pyqtSlot()
     def write(self):
@@ -512,6 +525,14 @@ class Release(QObject):
     def path(self):
         return self._download.path
 
+    @path.setter
+    def path(self, value):
+        if value.startswith('file://'):
+            value = value.replace('file://', '', 1)
+        if self._path != value:
+            self._download.path = value
+            self.pathChanged.emit();
+
     @pyqtProperty(bool, notify=pathChanged)
     def readyToWrite(self):
         return len(self.path) != 0
@@ -536,6 +557,10 @@ class Release(QObject):
             return self._writer.status
         else:
             return 'Finished'
+
+class ReleaseListModel(QAbstractListModel):
+    def __init__(self, parent):
+        QAbstractListModel.__init__(self, parent)
 
 class LiveUSBLogHandler(logging.Handler):
 

@@ -49,7 +49,7 @@ Item {
                 dlDialog.visible = true
                 liveUSBData.currentImage.get()
             }
-            enabled: mainWindow.currentImageIndex != 0 || fileDialog.fileUrl.length > 0
+            enabled: !liveUSBData.currentImage.isLocal || liveUSBData.currentImage.readyToWrite
             anchors {
                 right: parent.right
                 top: parent.top
@@ -184,6 +184,10 @@ Item {
     }
     FileDialog {
         id: fileDialog
+        onAccepted: {
+            console.log(fileUrl)
+            liveUSBData.currentImage.path = fileUrl
+        }
     }
 }
 
