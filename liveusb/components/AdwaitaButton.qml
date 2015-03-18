@@ -11,6 +11,7 @@ Button {
         background: AdwaitaRectangle {
             color: root.color
             border.color: control.enabled ? "#777777" : "#c2c2c2"
+            width: implicitWidth + 16
         }
         label: Text {
             color: control.enabled ? root.textColor : "gray"

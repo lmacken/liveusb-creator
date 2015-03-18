@@ -119,6 +119,17 @@ Item {
                         Text {
                             text: liveUSBData.currentImage.arch
                             color: "gray"
+
+                            AdwaitaButton {
+                                text: "Select the file"
+                                Layout.alignment: Qt.AlignHCenter
+                                visible: liveUSBData.currentImage.isLocal
+                                onClicked: {
+                                    fileDialog.visible = false // for some reason it got stuck in the closed state once in a while, so ensure it's actually closed
+                                    fileDialog.visible = true
+                                }
+                                width: implicitWidth + 16
+                            }
                         }
                         Text {
                             // I'm sorry, everyone, I can't find a better way to determine if the date is valid
@@ -132,7 +143,9 @@ Item {
                     Layout.fillWidth: true
                     width: Layout.width
                     wrapMode: Text.WordWrap
-                    text: liveUSBData.currentImage.fullDescription
+                    text: liveUSBData.currentImage.isLocal ?
+                              ("Selected image: " + (liveUSBData.currentImage.path ? (((String)(liveUSBData.currentImage.path)).split("/").slice(-1)[0]) : "None"))
+                              : liveUSBData.currentImage.fullDescription
                     font.pointSize: 9
                 }
                 Repeater {
@@ -144,12 +157,6 @@ Item {
                         source: screenshotRepeater.model[index]
                         sourceSize.width: width
                     }
-                }
-                AdwaitaButton {
-                    text: "Find the image"
-                    Layout.alignment: Qt.AlignHCenter
-                    visible: liveUSBData.currentImage.isLocal
-                    onClicked: fileDialog.visible = true
                 }
             }
         }
@@ -184,6 +191,7 @@ Item {
     }
     FileDialog {
         id: fileDialog
+        nameFilters: [ "Image files (*.iso)", "All files (*)"]
         onAccepted: {
             console.log(fileUrl)
             liveUSBData.currentImage.path = fileUrl

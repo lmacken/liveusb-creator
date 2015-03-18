@@ -417,6 +417,7 @@ class Release(QObject):
     screenshotsChanged = pyqtSignal()
     statusChanged = pyqtSignal()
     pathChanged = pyqtSignal()
+    sizeChanged = pyqtSignal()
 
     def __init__(self, parent=None, live=None, name = '', logo = '', size = 0, arch = '', fullName = '', releaseDate = QDateTime(), shortDescription = '', fullDescription = '', isLocal = False, screenshots = [], url=''):
         QObject.__init__(self, parent)
@@ -485,9 +486,15 @@ class Release(QObject):
     def logo(self):
         return self._logo
 
-    @pyqtProperty(float, constant=True)
+    @pyqtProperty(float, notify=sizeChanged)
     def size(self):
         return self._size
+
+    @size.setter
+    def size(self, value):
+        if value != self._size:
+            self._size = value
+            self.sizeChanged.emit()
 
     @pyqtProperty(str, constant=True)
     def arch(self):
@@ -532,6 +539,7 @@ class Release(QObject):
         if self._path != value:
             self._download.path = value
             self.pathChanged.emit();
+            self.size = self.live.isosize
 
     @pyqtProperty(bool, notify=pathChanged)
     def readyToWrite(self):
