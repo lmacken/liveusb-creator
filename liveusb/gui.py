@@ -32,7 +32,7 @@ import urlparse
 
 from time import sleep
 from datetime import datetime
-from PyQt5.QtCore import pyqtProperty, pyqtSlot, QObject, QUrl, QDateTime, pyqtSignal, QThread, QAbstractListModel
+from PyQt5.QtCore import pyqtProperty, pyqtSlot, QObject, QUrl, QDateTime, pyqtSignal, QThread, QAbstractListModel, QSortFilterProxyModel, QModelIndex, Qt
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtQml import qmlRegisterType, qmlRegisterUncreatableType, QQmlComponent, QQmlApplicationEngine, QQmlListProperty
 from PyQt5.QtQuick import QQuickView
@@ -568,8 +568,61 @@ class Release(QObject):
             return 'Finished'
 
 class ReleaseListModel(QAbstractListModel):
-    def __init__(self, parent):
+    def __init__(self, parent, title=False):
         QAbstractListModel.__init__(self, parent)
+        self._title = title
+
+    def rowCount(self, parent=QModelIndex()):
+        if self._title:
+            return min(4, len(self.parent().releaseData))
+        else:
+            return len(self.parent().releaseData)
+
+    def roleNames(self):
+        return {Qt.UserRole + 1 : "release"}
+
+    def data(self, index, role=Qt.DisplayRole):
+        if index.isValid():
+            return self.parent().releaseData[index.row()]
+        return None
+
+class ReleaseListProxy(QSortFilterProxyModel):
+    archChanged = pyqtSignal()
+
+    _archFilter = ''
+    _nameFilter = ''
+
+    _archMap = {'64bit' : 'x86_64', '32bit' : 'i686'}
+
+
+    def __init__(self, parent, sourceModel):
+        QSortFilterProxyModel.__init__(self, parent)
+        self.setSourceModel(sourceModel)
+
+    def filterAcceptsRow(self, sourceRow, sourceParent):
+        row = self.sourceModel().index(sourceRow, 0, sourceParent).data()
+        if len(self._archFilter) == 0 or row.arch == self._archFilter:
+            if len(self._nameFilter) == 0 or self._nameFilter in row.name:
+                return True
+        return False
+
+    @pyqtProperty('QStringList', constant=True)
+    def possibleArchs(self):
+        return self._archMap.keys()
+
+    @pyqtProperty(str, notify=archChanged)
+    def currentArch(self):
+        return self._archFilter
+
+    @currentArch.setter
+    def currentArch(self, value):
+        # TODO key/value !
+        if self._archFilter != value:
+            self._archFilter = value
+            self.archChanged.emit()
+
+
+
 
 class LiveUSBLogHandler(logging.Handler):
 
@@ -608,6 +661,9 @@ class LiveUSBData(QObject):
     def __init__(self, opts):
         QObject.__init__(self)
         self.live = LiveUSBCreator(opts=opts)
+        self._releaseModel = ReleaseListModel(self)
+        self._releaseProxy = ReleaseListProxy(self, self._releaseModel)
+        self._titleReleaseModel = ReleaseListModel(self, True)
         self.releaseData = [Release(self, self.live, name='Custom OS...', shortDescription='<pick from file chooser>', fullDescription='Here you can choose a OS image from your hard drive to be written to your flash disk', isLocal=True, logo='../../data/icon-folder.svg')]
         for release in releases:
             self.releaseData.append(Release(self,
@@ -665,14 +721,17 @@ class LiveUSBData(QObject):
                 if drive.drive['device'] == previouslySelected:
                     self.currentDrive = i
 
+    @pyqtProperty(ReleaseListModel, notify=releasesChanged)
+    def releaseModel(self):
+        return self._releaseModel
 
-    @pyqtProperty(QQmlListProperty, notify=releasesChanged)
-    def releases(self):
-        return QQmlListProperty(Release, self, self.releaseData)
+    @pyqtProperty(ReleaseListProxy, notify=releasesChanged)
+    def releaseProxyModel(self):
+        return self._releaseProxy
 
-    @pyqtProperty(QQmlListProperty, notify=releasesChanged)
-    def titleReleases(self):
-        return QQmlListProperty(Release, self, self.releaseData[0:4])
+    @pyqtProperty(ReleaseListModel, notify=releasesChanged)
+    def titleReleaseModel(self):
+        return self._titleReleaseModel
 
     @pyqtProperty(int, notify=currentImageChanged)
     def currentIndex(self):
@@ -721,6 +780,7 @@ class LiveUSBApp(QApplication):
         QApplication.__init__(self, args)
         qmlRegisterUncreatableType(ReleaseDownload, "LiveUSB", 1, 0, "Download", "Not creatable directly, use the liveUSBData instance instead")
         qmlRegisterUncreatableType(ReleaseWriter, "LiveUSB", 1, 0, "Writer", "Not creatable directly, use the liveUSBData instance instead")
+        qmlRegisterUncreatableType(ReleaseListModel, "LiveUSB", 1, 0, "ReleaseModel", "Not creatable directly, use the liveUSBData instance instead")
         qmlRegisterUncreatableType(Release, "LiveUSB", 1, 0, "Release", "Not creatable directly, use the liveUSBData instance instead")
         qmlRegisterUncreatableType(USBDrive, "LiveUSB", 1, 0, "Drive", "Not creatable directly, use the liveUSBData instance instead")
         qmlRegisterUncreatableType(LiveUSBData, "LiveUSB", 1, 0, "Data", "Use the liveUSBData root instance")

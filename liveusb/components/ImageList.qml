@@ -110,7 +110,7 @@ Item {
         }
         height: 36
         width: 148
-        model: ["64bit (detected)", "32bit"]
+        model: liveUSBData.releaseProxyModel.possibleArchs
     }
 
     Rectangle {
@@ -152,7 +152,7 @@ Item {
                     right: parent.right
                 }
                 Repeater {
-                    model: liveUSBData.titleReleases
+                    model: liveUSBData.titleReleaseModel
                     delegate: imageDelegate
                 }
             }
@@ -223,7 +223,7 @@ Item {
                 height: 54
             }
 
-            model: liveUSBData.releases
+            model: liveUSBData.releaseProxyModel
             delegate: imageDelegate
         }
         style: ScrollViewStyle {
@@ -278,7 +278,7 @@ Item {
                     smooth: true
                     fillMode: Image.PreserveAspectFit
 
-                    source: logo
+                    source: release.logo
                 }
                 Item {
                     id: textRect
@@ -288,7 +288,7 @@ Item {
                         leftMargin: 28
                     }
                     Text {
-                        text: name
+                        text: release.name
                         anchors {
                             bottom: parent.verticalCenter
                             left: parent.left
@@ -297,7 +297,7 @@ Item {
                         // font.weight: Font.Bold
                     }
                     Text {
-                        text: shortDescription
+                        text: release.shortDescription
                         anchors {
                             top: parent.verticalCenter
                             left: parent.right
@@ -308,7 +308,7 @@ Item {
                     }
                 }
                 Arrow {
-                    visible: !isLocal
+                    visible: !release.isLocal
                     anchors {
                         verticalCenter: parent.verticalCenter
                         right: parent.right
