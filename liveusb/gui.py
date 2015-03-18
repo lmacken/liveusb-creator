@@ -464,6 +464,7 @@ class Release(QObject):
 
         self._writer = ReleaseWriter(self)
 
+        self.pathChanged.connect(self.statusChanged)
         self._download.runningChanged.connect(self.statusChanged)
         self._writer.runningChanged.connect(self.statusChanged)
         self._writer.statusChanged.connect(self.statusChanged)
@@ -471,7 +472,7 @@ class Release(QObject):
 
     @pyqtSlot()
     def get(self):
-        if len(self._url) <= 0:
+        if len(self._path) <= 0:
             self._download.run()
 
     @pyqtSlot()
