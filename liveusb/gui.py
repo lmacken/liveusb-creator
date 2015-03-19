@@ -130,7 +130,6 @@ class ReleaseDownload(QObject, BaseMeter):
     def childFinished(self, iso):
         self.path = iso
         self._running = False
-        print(iso)
         self.runningChanged.emit()
 
     @pyqtSlot(str)
@@ -189,7 +188,6 @@ class ReleaseWriterProgressThread(QThread):
 
     def run(self):
         while self.alive:
-            print("ping")
             free = self.get_free_bytes()
             value = (self.orig_free - free) / 1024
             self.parent().progress = value
@@ -419,9 +417,10 @@ class Release(QObject):
     pathChanged = pyqtSignal()
     sizeChanged = pyqtSignal()
 
-    def __init__(self, parent=None, live=None, name = '', logo = '', size = 0, arch = '', fullName = '', releaseDate = QDateTime(), shortDescription = '', fullDescription = '', isLocal = False, screenshots = [], url=''):
+    def __init__(self, parent, index, live=None, name = '', logo = '', size = 0, arch = '', fullName = '', releaseDate = QDateTime(), shortDescription = '', fullDescription = '', isLocal = False, screenshots = [], url=''):
         QObject.__init__(self, parent)
 
+        self._index = index
         self.live = live
         self._name = name.replace('_', ' ')
         self._logo = logo
@@ -478,6 +477,10 @@ class Release(QObject):
     @pyqtSlot()
     def write(self):
         self._writer.run()
+
+    @pyqtProperty(int, constant=True)
+    def index(self):
+        return self._index
 
     @pyqtProperty(str, constant=True)
     def name(self):
@@ -574,7 +577,7 @@ class ReleaseListModel(QAbstractListModel):
 
     def rowCount(self, parent=QModelIndex()):
         if self._title:
-            return min(4, len(self.parent().releaseData))
+            return min(6, len(self.parent().releaseData))
         else:
             return len(self.parent().releaseData)
 
@@ -588,11 +591,12 @@ class ReleaseListModel(QAbstractListModel):
 
 class ReleaseListProxy(QSortFilterProxyModel):
     archChanged = pyqtSignal()
+    nameFilterChanged = pyqtSignal()
 
-    _archFilter = ''
+    _archFilter = ['x86_64']
     _nameFilter = ''
 
-    _archMap = {'64bit' : 'x86_64', '32bit' : 'i686'}
+    _archMap = {'64bit': ['x86_64'], '32bit': ['i686','i386']}
 
 
     def __init__(self, parent, sourceModel):
@@ -601,28 +605,40 @@ class ReleaseListProxy(QSortFilterProxyModel):
 
     def filterAcceptsRow(self, sourceRow, sourceParent):
         row = self.sourceModel().index(sourceRow, 0, sourceParent).data()
-        if len(self._archFilter) == 0 or row.arch == self._archFilter:
-            if len(self._nameFilter) == 0 or self._nameFilter in row.name:
+        if len(self._archFilter) == 0 or row.arch.lower() in [x.lower() for x in self._archFilter] or row.isLocal:
+            if len(self._nameFilter) == 0 or self._nameFilter.lower() in row.name.lower():
                 return True
         return False
+
+    @pyqtProperty(str, notify=nameFilterChanged)
+    def nameFilter(self):
+        return self._nameFilter
+
+    @nameFilter.setter
+    def nameFilter(self, value):
+        if value != self._nameFilter:
+            self._nameFilter = value
+            self.nameFilterChanged.emit()
+            self.invalidateFilter()
 
     @pyqtProperty('QStringList', constant=True)
     def possibleArchs(self):
         return self._archMap.keys()
 
     @pyqtProperty(str, notify=archChanged)
-    def currentArch(self):
-        return self._archFilter
+    def archFilter(self):
+        for name, abbrs in self._archMap.items():
+            if abbrs == self._archFilter:
+                return name
+        self.archFilter = '64bit'
+        return '64bit'
 
-    @currentArch.setter
-    def currentArch(self, value):
-        # TODO key/value !
-        if self._archFilter != value:
-            self._archFilter = value
+    @archFilter.setter
+    def archFilter(self, value):
+        if self._archMap.has_key(value) and self.archFilter != self._archMap[value]:
+            self._archFilter = self._archMap[value]
             self.archChanged.emit()
-
-
-
+            self.invalidateFilter()
 
 class LiveUSBLogHandler(logging.Handler):
 
@@ -664,12 +680,14 @@ class LiveUSBData(QObject):
         self._releaseModel = ReleaseListModel(self)
         self._releaseProxy = ReleaseListProxy(self, self._releaseModel)
         self._titleReleaseModel = ReleaseListModel(self, True)
-        self.releaseData = [Release(self, self.live, name='Custom OS...', shortDescription='<pick from file chooser>', fullDescription='Here you can choose a OS image from your hard drive to be written to your flash disk', isLocal=True, logo='../../data/icon-folder.svg')]
+        self._titleReleaseProxy = ReleaseListProxy(self, self._titleReleaseModel)
+        self.releaseData = [Release(self, 0, self.live, name='Custom OS...', shortDescription='<pick from file chooser>', fullDescription='Here you can choose a OS image from your hard drive to be written to your flash disk', isLocal=True, logo='../../data/icon-folder.svg')]
         for release in releases:
             self.releaseData.append(Release(self,
+                                            len(self.releaseData),
                                             self.live,
                                             name='Fedora '+release['variant'],
-                                            shortDescription='Fedora '+release['variant']+' '+release['version']+(' 64bit' if release['arch']=='x86_64' else ' 32bit'),
+                                            shortDescription='Fedora'+(' Minimal ' if release['netinst'] and not release['variant'] == 'Cloud' else ' ')+release['variant']+' '+release['version']+(' 64bit' if release['arch']=='x86_64' else ' 32bit'),
                                             arch=release['arch'],
                                             size=release['size'],
                                             url=release['url']
@@ -731,7 +749,7 @@ class LiveUSBData(QObject):
 
     @pyqtProperty(ReleaseListModel, notify=releasesChanged)
     def titleReleaseModel(self):
-        return self._titleReleaseModel
+        return self._titleReleaseProxy
 
     @pyqtProperty(int, notify=currentImageChanged)
     def currentIndex(self):

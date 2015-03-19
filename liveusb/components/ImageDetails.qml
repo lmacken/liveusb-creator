@@ -193,7 +193,6 @@ Item {
         id: fileDialog
         nameFilters: [ "Image files (*.iso)", "All files (*)"]
         onAccepted: {
-            console.log(fileUrl)
             liveUSBData.currentImage.path = fileUrl
         }
     }

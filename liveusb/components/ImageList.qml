@@ -87,7 +87,8 @@ Item {
                 verticalAlignment: Text.AlignVCenter
             }
             verticalAlignment: TextInput.AlignVCenter
-
+            text: liveUSBData.releaseProxyModel.nameFilter
+            onTextChanged: liveUSBData.releaseProxyModel.nameFilter = text
             clip: true
         }
     }
@@ -111,6 +112,21 @@ Item {
         height: 36
         width: 148
         model: liveUSBData.releaseProxyModel.possibleArchs
+        onCurrentIndexChanged:  {
+            liveUSBData.releaseProxyModel.archFilter = currentText
+        }
+        function update() {
+            for (var i = 0; i < liveUSBData.releaseProxyModel.possibleArchs.length; i++) {
+                if (liveUSBData.releaseProxyModel.possibleArchs[i] == liveUSBData.releaseProxyModel.archFilter)
+                    currentIndex = i
+            }
+        }
+
+        Connections {
+            target: liveUSBData.releaseProxyModel
+            onArchFilterChanged: archSelect.update()
+        }
+        Component.onCompleted: update()
     }
 
     Rectangle {
@@ -225,6 +241,21 @@ Item {
 
             model: liveUSBData.releaseProxyModel
             delegate: imageDelegate
+
+            remove: Transition {
+                NumberAnimation { properties: "x"; to: -width; duration: 300 }
+            }
+            removeDisplaced: Transition {
+                PauseAnimation { duration: 300 }
+                NumberAnimation { properties: "x,y"; duration: 300 }
+            }
+            add: Transition {
+                NumberAnimation { properties: "x"; from: -width; duration: 300 }
+            }
+            addDisplaced: Transition {
+                PauseAnimation { duration: 300 }
+                NumberAnimation { properties: "x,y"; duration: 300 }
+            }
         }
         style: ScrollViewStyle {
             incrementControl: Item {}
@@ -332,7 +363,7 @@ Item {
                     }
                     onClicked: {
                         root.currentIndex = index
-                        root.stepForward(index)
+                        root.stepForward(release.index)
                     }
                     onPressed: {
                         parent.color = "#ededed"
