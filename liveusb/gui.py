@@ -172,7 +172,6 @@ class ReleaseDownload(QObject, BaseMeter):
             self.pathChanged.emit()
 
 class ReleaseWriterProgressThread(QThread):
-
     alive = True
     get_free_bytes = None
     drive = None
@@ -184,13 +183,14 @@ class ReleaseWriterProgressThread(QThread):
         self.drive = drive
         self.get_free_bytes = freebytes
         self.orig_free = self.get_free_bytes()
-        self.parent().maxprogress = self.totalSize
+        self.parent().maxProgress = self.totalSize
 
     def run(self):
         while self.alive:
             free = self.get_free_bytes()
             value = (self.orig_free - free) / 1024
             self.parent().progress = value
+            print(self.totalSize, value)
             if (value >= self.totalSize):
                 break
             sleep(3)
@@ -290,10 +290,10 @@ class ReleaseWriterThread(QThread):
         duration = str(datetime.now() - now).split('.')[0]
         self.parent.status = _("Complete! (%s)" % duration)
 
-        self.progressThread.terminate()
+        #self.progressThread.terminate()
 
     def set_max_progress(self, maximum):
-        self.parent.maxprogress = maximum
+        self.parent.maxProgress = maximum
 
     def update_progress(self, value):
         self.parent.progress = value
@@ -386,6 +386,7 @@ class ReleaseWriter(QObject):
 
     @maxProgress.setter
     def maxProgress(self, value):
+        print("MAXPROGRESS", value)
         if (value != self._maximum):
             self._maximum = value
             self.maximumChanged.emit()
@@ -396,6 +397,7 @@ class ReleaseWriter(QObject):
 
     @progress.setter
     def progress(self, value):
+        print("PROGRESS", value)
         if (value != self._current):
             self._current = value
             self.currentChanged.emit()
