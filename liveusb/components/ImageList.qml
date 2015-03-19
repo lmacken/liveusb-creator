@@ -246,14 +246,12 @@ Item {
                 NumberAnimation { properties: "x"; to: -width; duration: 300 }
             }
             removeDisplaced: Transition {
-                PauseAnimation { duration: 300 }
                 NumberAnimation { properties: "x,y"; duration: 300 }
             }
             add: Transition {
                 NumberAnimation { properties: "x"; from: -width; duration: 300 }
             }
             addDisplaced: Transition {
-                PauseAnimation { duration: 300 }
                 NumberAnimation { properties: "x,y"; duration: 300 }
             }
         }
