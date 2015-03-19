@@ -761,8 +761,15 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         LiveUSBCreator.install_bootloader(self)
         self.log.info(_("Installing bootloader..."))
         syslinux_path = os.path.join(self.dest, "syslinux")
+        try:
+            shutil.rmtree(syslinux_path)
+        except OSError, e:
+            pass
         shutil.move(os.path.join(self.dest, "isolinux"), syslinux_path)
-        os.unlink(os.path.join(syslinux_path, "isolinux.cfg"))
+        try:
+            os.unlink(os.path.join(syslinux_path, "isolinux.cfg"))
+        except OSError, e:
+            pass
 
         # Syslinux doesn't guarantee the API for its com32 modules (#492370)
         for com32mod in ('vesamenu.c32', 'menu.c32'):
