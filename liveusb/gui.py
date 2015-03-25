@@ -128,6 +128,7 @@ class ReleaseDownload(QObject, BaseMeter):
 
     @pyqtSlot(str)
     def childFinished(self, iso):
+        self.reset()
         self.path = iso
         self._running = False
         self.runningChanged.emit()
@@ -190,7 +191,6 @@ class ReleaseWriterProgressThread(QThread):
             free = self.get_free_bytes()
             value = (self.orig_free - free) / 1024
             self.parent().progress = value
-            print(self.totalSize, value)
             if (value >= self.totalSize):
                 break
             sleep(3)
@@ -234,6 +234,7 @@ class ReleaseWriterThread(QThread):
         self.live.dd_image()
         #self.live.log.removeHandler(handler)
         duration = str(datetime.now() - now).split('.')[0]
+        self.progressThread.stop()
         return
 
     def copyImage(self, now):
@@ -284,13 +285,17 @@ class ReleaseWriterThread(QThread):
         self.progressThread.stop()
 
         # Flush all filesystem buffers and unmount
+        self.parent.status = "Flushing buffers"
         self.live.flush_buffers()
+        self.parent.status = "Unmounting"
         self.live.unmount_device()
+        self.parent.status = "Finished!"
+        self.parent.finished = True
 
         duration = str(datetime.now() - now).split('.')[0]
-        self.parent.status = _("Complete! (%s)" % duration)
+        #self.parent.status = "Complete! (%s)" % duration
 
-        #self.progressThread.terminate()
+        self.progressThread.stop()
 
     def set_max_progress(self, maximum):
         self.parent.maxProgress = maximum
@@ -303,11 +308,13 @@ class ReleaseWriter(QObject):
     currentChanged = pyqtSignal()
     maximumChanged = pyqtSignal()
     statusChanged = pyqtSignal()
+    finishedChanged = pyqtSignal()
 
     _running = False
     _current = -1.0
     _maximum = -1.0
     _status = ""
+    _finished = False
 
     def __init__(self, parent):
         QObject.__init__(self, parent)
@@ -368,6 +375,12 @@ class ReleaseWriter(QObject):
 
         self.worker.start()
 
+    @pyqtSlot()
+    def cancel(self):
+        self.progressWatcher.stop()
+        self.worker.terminate()
+        self.reset()
+
     @pyqtProperty(bool, notify=runningChanged)
     def running(self):
         return self._running
@@ -377,8 +390,6 @@ class ReleaseWriter(QObject):
         if self._running != value:
             self._running = value
             self.runningChanged.emit()
-        if not self._running:
-            self.status = ""
 
     @pyqtProperty(float, notify=maximumChanged)
     def maxProgress(self):
@@ -386,7 +397,6 @@ class ReleaseWriter(QObject):
 
     @maxProgress.setter
     def maxProgress(self, value):
-        print("MAXPROGRESS", value)
         if (value != self._maximum):
             self._maximum = value
             self.maximumChanged.emit()
@@ -397,7 +407,6 @@ class ReleaseWriter(QObject):
 
     @progress.setter
     def progress(self, value):
-        print("PROGRESS", value)
         if (value != self._current):
             self._current = value
             self.currentChanged.emit()
@@ -411,6 +420,16 @@ class ReleaseWriter(QObject):
         if self._status != s:
             self._status = s
             self.statusChanged.emit()
+
+    @pyqtProperty(bool, notify=finishedChanged)
+    def finished(self):
+        return self._finished
+
+    @finished.setter
+    def finished(self, value):
+        if self._finished != value:
+            self._finished = value
+            self.finishedChanged.emit()
 
 
 class Release(QObject):
@@ -565,7 +584,7 @@ class Release(QObject):
             return 'Starting'
         elif self._download.running:
             return 'Downloading'
-        elif self.readyToWrite and not self._writer.running:
+        elif self.readyToWrite and not self._writer.running and not self._writer.finished:
             return 'Ready to write'
         elif self._writer.status:
             return self._writer.status
@@ -792,6 +811,8 @@ class LiveUSBData(QObject):
             if len(self._usbDrives) > 0:
                 self.live.drive = self._usbDrives[self._currentDrive].drive['device']
             self.currentDriveChanged.emit()
+            for r in self.releaseData:
+                r.download.finished = False
 
 
 class LiveUSBApp(QApplication):

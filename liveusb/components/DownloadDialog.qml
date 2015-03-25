@@ -106,6 +106,7 @@ Dialog {
                 enabled: !liveUSBData.currentImage.writer.running
                 onClicked: {
                     liveUSBData.currentImage.download.cancel()
+                    liveUSBData.currentImage.writer.cancel()
                     root.close()
                 }
             }
@@ -123,6 +124,20 @@ Dialog {
                 text: "Write to disk"
                 onClicked: liveUSBData.currentImage.write()
             }
+        }
+        Dialog {
+            id: confirmDialog
+            Item {
+                implicitWidth: 800
+                implicitHeight: 240
+                Text {
+                    text: "Your drive already contains a live operating system. Do you wish to continue?"
+                }
+                Text {
+                    text: "By continuing, the existing OS will be overwritten."
+                }
+            }
+            standardButtons: StandardButton.Yes | StandardButton.No
         }
     }
 }
