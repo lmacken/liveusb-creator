@@ -418,7 +418,7 @@ class Release(QObject):
         self._screenshots = screenshots
         self._url = url
         self._path = ''
-        self._info = ''
+        self._info = []
 
         if self._logo == '':
             if self._name == 'Fedora Workstation':
@@ -468,10 +468,10 @@ class Release(QObject):
     @pyqtSlot()
     def inspectDestination(self):
         if self.live.blank_mbr():
-            self.info = _("The Master Boot Record on your device is blank. Writing the image will reset the MBR on this device")
+            self.addInfo(_("The Master Boot Record on your device is blank. Writing the image will reset the MBR on this device"))
         elif not self.live.mbr_matches_syslinux_bin():
-            self.info = _("The Master Boot Record on your device does not match your system's syslinux MBR.\n"
-                          "If you have trouble booting it, try setting the \"Reset the MBR\" advanced option.")
+            self.addInfo(_("The Master Boot Record on your device does not match your system's syslinux MBR.<br>"
+                          "If you have trouble booting it, try setting the \"Reset the MBR\" advanced option."))
 
         try:
             self.live.mount_device()
@@ -480,12 +480,12 @@ class Release(QObject):
             self._running = False
             self.runningChanged.emit()
         except OSError, e:
-            self.info = _('Unable to mount device')
+            self.addInfo(_('Unable to mount device'))
             self._running = False
             self.runningChanged.emit()
 
         if self.live.existing_liveos():
-            self.info += _("\nYour device already contains a LiveOS. If you continue, it will be overwritten.")
+            self.addInfo(_("\nYour device already contains a LiveOS. If you continue, it will be overwritten."))
             #TODO
 
         self.live.verify_filesystem()
@@ -587,7 +587,7 @@ class Release(QObject):
         else:
             return 'Finished'
 
-    @pyqtProperty(str, notify=infoChanged)
+    @pyqtProperty('QStringList', notify=infoChanged)
     def info(self):
         return self._info
 
@@ -595,6 +595,11 @@ class Release(QObject):
     def info(self, value):
         if self._info != value:
             self._info = value
+            self.infoChanged.emit()
+
+    def addInfo(self, value):
+        if value not in self._info:
+            self._info.append(value)
             self.infoChanged.emit()
 
 class ReleaseListModel(QAbstractListModel):

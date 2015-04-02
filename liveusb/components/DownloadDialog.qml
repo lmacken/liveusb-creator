@@ -8,7 +8,7 @@ Dialog {
     id: root
     title: "Write " + liveUSBData.currentImage.name + " to USB"
 
-    height: layout.height + 64 + (group.checked ? 48 : 0)
+    height: layout.height + 48 + (group.checked ? 48 : 0)
     standardButtons: StandardButton.NoButton
 
     width: 640
@@ -24,14 +24,21 @@ Dialog {
                 top: parent.top
                 left: parent.left
                 right: parent.right
-                topMargin: 48
-                leftMargin: 64
+                topMargin: 32
+                leftMargin: 48
                 rightMargin: anchors.leftMargin
             }
-            Text {
-                wrapMode: Text.WordWrap
-                //text: "Writing the image of " + liveUSBData.currentImage.name +" will delete everything that's currently on the drive."
-                text: liveUSBData.currentImage.info
+            Column {
+                spacing: 8
+                width: parent.width
+                Repeater {
+                    model: liveUSBData.currentImage.info
+                    Text {
+                        wrapMode: Text.WordWrap
+                        textFormat: Text.RichText
+                        text: liveUSBData.currentImage.info[index]
+                    }
+                }
             }
 
             ColumnLayout {
@@ -125,7 +132,7 @@ Dialog {
                 right: parent.right
                 bottom: parent.bottom
                 bottomMargin: 24
-                leftMargin: 16
+                leftMargin: 24
                 rightMargin: anchors.leftMargin
             }
 
