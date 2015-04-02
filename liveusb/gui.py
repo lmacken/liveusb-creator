@@ -205,6 +205,7 @@ class ReleaseWriterProgressThread(QThread):
 
 class ReleaseWriterThread(QThread):
 
+
     def __init__(self, parent, progressThread, useDD = False):
         QThread.__init__(self, parent)
 
@@ -231,6 +232,7 @@ class ReleaseWriterThread(QThread):
         #self.live.log.removeHandler(handler)
 
     def ddImage(self, now):
+        self.status = _("WARNING: You are about to perform a destructive install. This will destroy all data and partitions on your USB drive. Press 'Create Live USB' again to continue.")
         self.live.dd_image()
         #self.live.log.removeHandler(handler)
         duration = str(datetime.now() - now).split('.')[0]
@@ -238,12 +240,6 @@ class ReleaseWriterThread(QThread):
         return
 
     def copyImage(self, now):
-        self.live.verify_filesystem()
-        if not self.live.drive['uuid'] and not self.live.label:
-            self.parent.status = _("Error: Cannot set the label or obtain "
-                          "the UUID of your device.  Unable to continue.")
-            #self.live.log.removeHandler(handler)
-            return
 
         self.parent.status = _("Checking the source image")
         self.live.check_free_space()
@@ -338,41 +334,7 @@ class ReleaseWriter(QObject):
         self.runningChanged.emit()
         self.currentChanged.emit()
         self.maximumChanged.emit()
-
         self.status = "Writing"
-
-        if useDD:
-            self.status = _("WARNING: You are about to perform a destructive install. This will destroy all data and partitions on your USB drive. Press 'Create Live USB' again to continue.")
-
-        else:
-            if self.live.blank_mbr():
-                print("AAA")
-            elif not self.live.mbr_matches_syslinux_bin():
-                if False: # TODO
-                    self.live.reset_mbr()
-                else:
-                    self.live.log.warn(_("Warning: The Master Boot Record on your device "
-                                  "does not match your system's syslinux MBR.  If you "
-                                  "have trouble booting this stick, try running the "
-                                  "liveusb-creator with the --reset-mbr option."))
-
-            try:
-                self.live.mount_device()
-                self.status = 'Drive mounted'
-            except LiveUSBError, e:
-                self.status(e.args[0])
-                self._running = False
-                self.runningChanged.emit()
-            except OSError, e:
-                self.status = _('Unable to mount device')
-                self._running = False
-                self.runningChanged.emit()
-
-            if self.live.existing_liveos():
-                self.status = _("Your device already contains a LiveOS.\nIf you "
-                                "continue, this will be overwritten.")
-                #TODO
-
         self.worker.start()
 
     @pyqtSlot()
@@ -434,6 +396,7 @@ class ReleaseWriter(QObject):
 
 class Release(QObject):
     screenshotsChanged = pyqtSignal()
+    infoChanged = pyqtSignal()
     statusChanged = pyqtSignal()
     pathChanged = pyqtSignal()
     sizeChanged = pyqtSignal()
@@ -455,6 +418,7 @@ class Release(QObject):
         self._screenshots = screenshots
         self._url = url
         self._path = ''
+        self._info = ''
 
         if self._logo == '':
             if self._name == 'Fedora Workstation':
@@ -484,6 +448,8 @@ class Release(QObject):
 
         self._writer = ReleaseWriter(self)
 
+        self._download.runningChanged.connect(self.inspectDestination)
+
         self.pathChanged.connect(self.statusChanged)
         self._download.runningChanged.connect(self.statusChanged)
         self._writer.runningChanged.connect(self.statusChanged)
@@ -498,6 +464,36 @@ class Release(QObject):
     @pyqtSlot()
     def write(self):
         self._writer.run()
+
+    @pyqtSlot()
+    def inspectDestination(self):
+        if self.live.blank_mbr():
+            self.info = _("The Master Boot Record on your device is blank. Writing the image will reset the MBR on this device")
+        elif not self.live.mbr_matches_syslinux_bin():
+            self.info = _("The Master Boot Record on your device does not match your system's syslinux MBR.\n"
+                          "If you have trouble booting it, try setting the \"Reset the MBR\" advanced option")
+
+        try:
+            self.live.mount_device()
+        except LiveUSBError, e:
+            self.info = e.args[0]
+            self._running = False
+            self.runningChanged.emit()
+        except OSError, e:
+            self.info = _('Unable to mount device')
+            self._running = False
+            self.runningChanged.emit()
+
+        if self.live.existing_liveos():
+            self.info += _("\nYour device already contains a LiveOS. If you continue, this will be overwritten.")
+            #TODO
+
+        self.live.verify_filesystem()
+        if not self.live.drive['uuid'] and not self.live.label:
+            self.parent.status = _("Error: Cannot set the label or obtain "
+                          "the UUID of your device.  Unable to continue.")
+            #self.live.log.removeHandler(handler)
+            return
 
     @pyqtProperty(int, constant=True)
     def index(self):
@@ -590,6 +586,16 @@ class Release(QObject):
             return self._writer.status
         else:
             return 'Finished'
+
+    @pyqtProperty(str, notify=infoChanged)
+    def info(self):
+        return self._info
+
+    @info.setter
+    def info(self, value):
+        if self._info != value:
+            self._info = value
+            self.infoChanged.emit()
 
 class ReleaseListModel(QAbstractListModel):
     def __init__(self, parent, title=False):
@@ -694,6 +700,9 @@ class LiveUSBData(QObject):
 
     _currentIndex = 0
     _currentDrive = 0
+
+    _options = [_("Use dd to write the image (destructive method)"), _("Reset the MBR (Master Boot Record)")]
+    _optionValues = [False, False]
 
     def __init__(self, opts):
         QObject.__init__(self)
@@ -813,6 +822,14 @@ class LiveUSBData(QObject):
             self.currentDriveChanged.emit()
             for r in self.releaseData:
                 r.download.finished = False
+
+    @pyqtProperty('QStringList', constant=True)
+    def options(self):
+        return self._options
+
+    @pyqtSlot(int, bool)
+    def setOption(self, index, value):
+        self._options[index] = value
 
 
 class LiveUSBApp(QApplication):
