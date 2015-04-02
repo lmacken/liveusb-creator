@@ -471,7 +471,7 @@ class Release(QObject):
             self.info = _("The Master Boot Record on your device is blank. Writing the image will reset the MBR on this device")
         elif not self.live.mbr_matches_syslinux_bin():
             self.info = _("The Master Boot Record on your device does not match your system's syslinux MBR.\n"
-                          "If you have trouble booting it, try setting the \"Reset the MBR\" advanced option")
+                          "If you have trouble booting it, try setting the \"Reset the MBR\" advanced option.")
 
         try:
             self.live.mount_device()
@@ -485,7 +485,7 @@ class Release(QObject):
             self.runningChanged.emit()
 
         if self.live.existing_liveos():
-            self.info += _("\nYour device already contains a LiveOS. If you continue, this will be overwritten.")
+            self.info += _("\nYour device already contains a LiveOS. If you continue, it will be overwritten.")
             #TODO
 
         self.live.verify_filesystem()
@@ -701,7 +701,7 @@ class LiveUSBData(QObject):
     _currentIndex = 0
     _currentDrive = 0
 
-    _options = [_("Use dd to write the image (destructive method)"), _("Reset the MBR (Master Boot Record)")]
+    _options = [_("Use <b>dd</b> to write the image - this will erase everything on your portable drive"), _("Reset the MBR (Master Boot Record)")]
     _optionValues = [False, False]
 
     def __init__(self, opts):
