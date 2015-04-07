@@ -206,13 +206,12 @@ class ReleaseWriterProgressThread(QThread):
 class ReleaseWriterThread(QThread):
 
 
-    def __init__(self, parent, progressThread, useDD = False):
+    def __init__(self, parent, progressThread):
         QThread.__init__(self, parent)
 
         self.live = parent.live
         self.parent = parent
         self.progressThread = progressThread
-        self._useDD = useDD
 
 
     def run(self):
@@ -232,7 +231,6 @@ class ReleaseWriterThread(QThread):
         #self.live.log.removeHandler(handler)
 
     def ddImage(self, now):
-        self.status = _("WARNING: You are about to perform a destructive install. This will destroy all data and partitions on your USB drive. Press 'Create Live USB' again to continue.")
         self.live.dd_image()
         #self.live.log.removeHandler(handler)
         duration = str(datetime.now() - now).split('.')[0]
@@ -316,7 +314,7 @@ class ReleaseWriter(QObject):
         QObject.__init__(self, parent)
         self.live = parent.live
         self.progressWatcher = ReleaseWriterProgressThread(self)
-        self.worker = ReleaseWriterThread(self, self.progressWatcher, False)
+        self.worker = ReleaseWriterThread(self, self.progressWatcher)
 
     def reset(self):
         self._running = False
@@ -327,7 +325,7 @@ class ReleaseWriter(QObject):
         self.maximumChanged.emit()
 
     @pyqtSlot()
-    def run(self, useDD = False):
+    def run(self):
         self._running = True
         self._current = 0.0
         self._maximum = 100.0
@@ -467,6 +465,9 @@ class Release(QObject):
 
     @pyqtSlot()
     def inspectDestination(self):
+        self.info = []
+        if self.parent().option('dd'):
+            self.addInfo(_("<font color=\"red\">!</font> You are about to perform a destructive install. This will destroy all data and partitions on your USB drive"))
         if self.live.blank_mbr():
             self.addInfo(_("The Master Boot Record on your device is blank. Writing the image will reset the MBR on this device"))
         elif not self.live.mbr_matches_syslinux_bin():
@@ -485,7 +486,7 @@ class Release(QObject):
             self.runningChanged.emit()
 
         if self.live.existing_liveos():
-            self.addInfo(_("\nYour device already contains a LiveOS. If you continue, it will be overwritten."))
+            self.addInfo(_("\n<font color=\"red\">!</font>Your device already contains a LiveOS. If you continue, it will be overwritten."))
             #TODO
 
         self.live.verify_filesystem()
@@ -702,12 +703,18 @@ class LiveUSBData(QObject):
     currentImageChanged = pyqtSignal()
     usbDrivesChanged = pyqtSignal()
     currentDriveChanged = pyqtSignal()
+    optionsChanged = pyqtSignal()
 
     _currentIndex = 0
     _currentDrive = 0
 
-    _options = [_("Use <b>dd</b> to write the image - this will erase everything on your portable drive"), _("Reset the MBR (Master Boot Record)")]
-    _optionValues = [False, False]
+    # man, this is just awkward... but it seems like the only way to do it in a predictable manner without creating a new class
+    _optionKeys = ['dd', 'resetMBR']
+    _optionNames = {'dd': _("Use <b>dd</b> to write the image - this will erase everything on your portable drive"),
+                    'resetMBR': _("Reset the MBR (Master Boot Record)")
+                   }
+    _optionValues = {'dd': False,
+                     'resetMBR': False}
 
     def __init__(self, opts):
         QObject.__init__(self)
@@ -829,12 +836,28 @@ class LiveUSBData(QObject):
                 r.download.finished = False
 
     @pyqtProperty('QStringList', constant=True)
-    def options(self):
-        return self._options
+    def optionNames(self):
+        ret = []
+        for i in self._optionKeys:
+            ret.append(self._optionNames[i])
+        return ret
+
+    @pyqtProperty('QVariant', notify=optionsChanged)
+    def optionValues(self):
+        ret = []
+        for i in self._optionKeys:
+            ret.append(self._optionValues[i])
+        return ret
 
     @pyqtSlot(int, bool)
     def setOption(self, index, value):
-        self._options[index] = value
+        if self._optionValues[self._optionKeys[index]] != value:
+            self._optionValues[self._optionKeys[index]] = value
+            self.optionsChanged.emit()
+
+    @pyqtSlot()
+    def option(self, index):
+        return self._optionValues[index]
 
 
 class LiveUSBApp(QApplication):
