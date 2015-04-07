@@ -473,7 +473,7 @@ class Release(QObject):
             self.addWarning(_("You are about to perform a destructive install. This will destroy all data and partitions on your USB drive"))
         if self.live.blank_mbr():
             self.addInfo(_("The Master Boot Record on your device is blank. Writing the image will reset the MBR on this device"))
-        elif not self.live.mbr_matches_syslinux_bin():
+        elif not self.live.mbr_matches_syslinux_bin() and not self.parent().option('resetMBR'):
             self.addInfo(_("The Master Boot Record on your device does not match your system's syslinux MBR.\n"
                           "If you have trouble booting it, try setting the \"Reset the MBR\" advanced option."))
 
