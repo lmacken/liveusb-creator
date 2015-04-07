@@ -394,6 +394,7 @@ class ReleaseWriter(QObject):
 
 class Release(QObject):
     screenshotsChanged = pyqtSignal()
+    warningChanged = pyqtSignal()
     infoChanged = pyqtSignal()
     statusChanged = pyqtSignal()
     pathChanged = pyqtSignal()
@@ -417,6 +418,7 @@ class Release(QObject):
         self._url = url
         self._path = ''
         self._info = []
+        self._warning = []
 
         if self._logo == '':
             if self._name == 'Fedora Workstation':
@@ -465,13 +467,14 @@ class Release(QObject):
 
     @pyqtSlot()
     def inspectDestination(self):
+        self._warning = []
         self.info = []
         if self.parent().option('dd'):
-            self.addInfo(_("<font color=\"red\">!</font> You are about to perform a destructive install. This will destroy all data and partitions on your USB drive"))
+            self.addWarning(_("You are about to perform a destructive install. This will destroy all data and partitions on your USB drive"))
         if self.live.blank_mbr():
             self.addInfo(_("The Master Boot Record on your device is blank. Writing the image will reset the MBR on this device"))
         elif not self.live.mbr_matches_syslinux_bin():
-            self.addInfo(_("The Master Boot Record on your device does not match your system's syslinux MBR.<br>"
+            self.addInfo(_("The Master Boot Record on your device does not match your system's syslinux MBR.\n"
                           "If you have trouble booting it, try setting the \"Reset the MBR\" advanced option."))
 
         try:
@@ -486,7 +489,7 @@ class Release(QObject):
             self.runningChanged.emit()
 
         if self.live.existing_liveos():
-            self.addInfo(_("\n<font color=\"red\">!</font>Your device already contains a LiveOS. If you continue, it will be overwritten."))
+            self.addWarning(_("Your device already contains a live OS. If you continue, it will be overwritten."))
             #TODO
 
         self.live.verify_filesystem()
@@ -602,6 +605,15 @@ class Release(QObject):
         if value not in self._info:
             self._info.append(value)
             self.infoChanged.emit()
+
+    @pyqtProperty('QStringList', notify=warningChanged)
+    def warning(self):
+        return self._warning
+
+    def addWarning(self, value):
+        if value not in self._warning:
+            self._warning.append(value)
+            self.warningChanged.emit()
 
 class ReleaseListModel(QAbstractListModel):
     def __init__(self, parent, title=False):
@@ -854,6 +866,7 @@ class LiveUSBData(QObject):
         if self._optionValues[self._optionKeys[index]] != value:
             self._optionValues[self._optionKeys[index]] = value
             self.optionsChanged.emit()
+            self.currentImage.inspectDestination()
 
     @pyqtSlot()
     def option(self, index):

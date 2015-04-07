@@ -29,14 +29,53 @@ Dialog {
                 rightMargin: anchors.leftMargin
             }
             Column {
-                spacing: 8
+                id: infoColumn
+                spacing: 4
                 width: parent.width
+
+                Repeater {
+                    model: liveUSBData.currentImage.warning
+                    RowLayout {
+                        width: infoColumn.width
+                        spacing: 8
+                        Text {
+                            Layout.fillHeight: true
+                            verticalAlignment: Text.AlignVCenter
+                            color: "red"
+                            text: "!"
+                            font.pointSize: 14
+                        }
+                        Text {
+                            Layout.fillHeight: true
+                            Layout.fillWidth: true
+                            verticalAlignment: Text.AlignVCenter
+                            wrapMode: Text.Wrap
+                            text: liveUSBData.currentImage.warning[index]
+                        }
+                    }
+                }
+
                 Repeater {
                     model: liveUSBData.currentImage.info
-                    Text {
-                        wrapMode: Text.WordWrap
-                        textFormat: Text.RichText
-                        text: liveUSBData.currentImage.info[index]
+                    RowLayout {
+                        width:  infoColumn.width
+                        spacing: 8
+                        // a rotated exclamation mark instead of an 'i' as for information - that's funny, right... right?!
+                        Text {
+                            Layout.fillHeight: true
+                            verticalAlignment: Text.AlignVCenter
+                            color: "blue"
+                            text: "!"
+                            rotation: 180
+                            font.pointSize: 14
+                        }
+                        Text {
+                            Layout.fillHeight: true
+                            Layout.fillWidth: true
+                            verticalAlignment: Text.AlignVCenter
+                            wrapMode: Text.Wrap
+                            text: liveUSBData.currentImage.info[index]
+                        }
                     }
                 }
             }
