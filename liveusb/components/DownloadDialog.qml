@@ -221,7 +221,7 @@ Dialog {
                 enabled: liveUSBData.currentImage.readyToWrite && !liveUSBData.currentImage.writer.running
                 text: pressedOnce ? "Are you sure?" : "Write to disk"
                 onClicked: {
-                    if(pressedOnce) {
+                    if(pressedOnce || !liveUSBData.currentImage.warning || liveUSBData.currentImage.warning.length == 0) {
                         liveUSBData.currentImage.write()
                         pressedOnce = false
                     }
