@@ -42,7 +42,7 @@ Item {
         }
         AdwaitaButton {
             text: "Write to USB disk"
-            color: "#729fcf"
+            color: "#628fcf"
             textColor: "white"
             onClicked: {
                 dlDialog.visible = true
