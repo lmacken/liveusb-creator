@@ -134,8 +134,8 @@ Dialog {
                     model: liveUSBData.usbDriveNames
                     currentIndex: liveUSBData.currentDrive
                     onCurrentIndexChanged: {
-                        liveUSBData.currentDrive = currentIndex
                         acceptButton.pressedOnce = false
+                        liveUSBData.currentDrive = currentIndex
                     }
                     enabled: !liveUSBData.currentImage.writer.running
                 }
@@ -160,9 +160,9 @@ Dialog {
                                 height: 20
                                 width: 20
                                 text: liveUSBData.optionNames[index]
-                                onCheckedChanged: {
-                                    liveUSBData.setOption(index, checked)
+                                onClicked: {
                                     acceptButton.pressedOnce = false
+                                    liveUSBData.setOption(index, checked)
                                 }
                             }
                         }
