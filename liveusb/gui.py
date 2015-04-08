@@ -219,7 +219,7 @@ class ReleaseWriterThread(QThread):
         #self.live.log.addHandler(handler)
         now = datetime.now()
         try:
-            if self._useDD:
+            if self.parent.release.liveUSBData.option('dd'):
                 self.ddImage(now)
             else:
                 self.copyImage(now)
@@ -313,6 +313,7 @@ class ReleaseWriter(QObject):
     def __init__(self, parent):
         QObject.__init__(self, parent)
         self.live = parent.live
+        self.release = parent
         self.progressWatcher = ReleaseWriterProgressThread(self)
         self.worker = ReleaseWriterThread(self, self.progressWatcher)
 
@@ -405,6 +406,7 @@ class Release(QObject):
 
         self._index = index
         self.live = live
+        self.liveUSBData = parent
         self._name = name.replace('_', ' ')
         self._logo = logo
         self._size = size
@@ -470,7 +472,7 @@ class Release(QObject):
         self._warning = []
         self.info = []
         if self.parent().option('dd'):
-            self.addWarning(_("You are about to perform a destructive install. This will destroy all data and partitions on your USB drive"))
+            self.addWarning(_("You are about to perform a destructive install. This will erase all data and partitions on your USB drive"))
         if self.live.blank_mbr():
             self.addInfo(_("The Master Boot Record on your device is blank. Writing the image will reset the MBR on this device"))
         elif not self.live.mbr_matches_syslinux_bin() and not self.parent().option('resetMBR'):
@@ -490,7 +492,6 @@ class Release(QObject):
 
         if self.live.existing_liveos():
             self.addWarning(_("Your device already contains a live OS. If you continue, it will be overwritten."))
-            #TODO
 
         self.live.verify_filesystem()
         if not self.live.drive['uuid'] and not self.live.label:

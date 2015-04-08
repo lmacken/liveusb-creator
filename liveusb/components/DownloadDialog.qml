@@ -157,13 +157,14 @@ Dialog {
                             flat: true
                             checked: false
                             checkable: true
-                            enabled: liveUSBData.optionNames && liveUSBData.optionNames[0]
+                            enabled: liveUSBData.optionNames && liveUSBData.optionNames[0] && !liveUSBData.currentImage.writer.running
                             ColumnLayout {
                                 Repeater {
                                     id: groupLayoutRepeater
                                     model: group.checked ? liveUSBData.optionValues : null
                                     CheckBox {
                                         checked: liveUSBData.optionValues[index]
+                                        enabled: !liveUSBData.currentImage.writer.running
                                         height: 20
                                         width: 20
                                         text: liveUSBData.optionNames[index]
