@@ -264,6 +264,9 @@ class ReleaseWriterThread(QThread):
 
         self.live.extract_iso()
 
+        if self.live.blank_mbr() or self.parent.release.liveUSBData.option('resetMBR'):
+            self.live.reset_mbr()
+
         self.parent.status = _("Writing the data")
         self.live.create_persistent_overlay()
         self.live.update_configs()
@@ -490,7 +493,7 @@ class Release(QObject):
             self._running = False
             self.runningChanged.emit()
 
-        if self.live.existing_liveos():
+        if self.live.existing_liveos() and not self.parent().option('dd'):
             self.addWarning(_("Your device already contains a live OS. If you continue, it will be overwritten."))
 
         self.live.verify_filesystem()
@@ -864,8 +867,14 @@ class LiveUSBData(QObject):
 
     @pyqtSlot(int, bool)
     def setOption(self, index, value):
-        if self._optionValues[self._optionKeys[index]] != value:
-            self._optionValues[self._optionKeys[index]] = value
+        key = self._optionKeys[index]
+        if self._optionValues[key] != value:
+            # dd and resetMBR options are mutually exclusive
+            if key == 'dd' and value == True:
+                self._optionValues['resetMBR'] = False
+            if key == 'resetMBR' and value == True:
+                self._optionValues['dd'] = False
+            self._optionValues[key] = value
             self.optionsChanged.emit()
             self.currentImage.inspectDestination()
 

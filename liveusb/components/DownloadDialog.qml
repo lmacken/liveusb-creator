@@ -8,7 +8,7 @@ Dialog {
     id: root
     title: "Write " + liveUSBData.currentImage.name + " to USB"
 
-    height: layout.height + 48 + (group.checked ? 48 : 0)
+    height: layout.height + 48 + (optionGroup.checked ? 48 : 0)
     standardButtons: StandardButton.NoButton
 
     width: 640
@@ -41,7 +41,7 @@ Dialog {
                         width: parent.width
 
                         Repeater {
-                            model: liveUSBData.currentImage.warning
+                            model: liveUSBData.currentImage.writer.finished ? null : liveUSBData.currentImage.warning
                             RowLayout {
                                 width: infoColumn.width
                                 spacing: 8
@@ -148,10 +148,10 @@ Dialog {
                         }
                     }
                     Item {
-                        width: group.width
-                        height: group.height + group.y
+                        width: optionGroup.width
+                        height: optionGroup.height + optionGroup.y
                         GroupBox {
-                            id: group
+                            id: optionGroup
                             y: 8
                             title: "Show Advanced Options"
                             flat: true
@@ -161,7 +161,7 @@ Dialog {
                             ColumnLayout {
                                 Repeater {
                                     id: groupLayoutRepeater
-                                    model: group.checked ? liveUSBData.optionValues : null
+                                    model: optionGroup.checked ? liveUSBData.optionValues : null
                                     CheckBox {
                                         checked: liveUSBData.optionValues[index]
                                         enabled: !liveUSBData.currentImage.writer.running
@@ -225,6 +225,7 @@ Dialog {
                     if(pressedOnce || !liveUSBData.currentImage.warning || liveUSBData.currentImage.warning.length == 0) {
                         liveUSBData.currentImage.write()
                         pressedOnce = false
+                        optionGroup.checked = false
                     }
                     else {
                         pressedOnce = true
