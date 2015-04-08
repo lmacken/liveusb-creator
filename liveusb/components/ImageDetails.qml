@@ -44,7 +44,6 @@ Item {
             text: "Write to USB disk"
             color: "#729fcf"
             textColor: "white"
-            width: implicitWidth + 16
             onClicked: {
                 dlDialog.visible = true
                 liveUSBData.currentImage.get()

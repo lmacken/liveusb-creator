@@ -11,13 +11,18 @@ Button {
         background: AdwaitaRectangle {
             color: root.color
             border.color: control.enabled ? "#777777" : "#c2c2c2"
-            width: implicitWidth + 16
         }
-        label: Text {
-            color: control.enabled ? root.textColor : "gray"
-            verticalAlignment: Text.AlignVCenter
-            horizontalAlignment: Text.AlignHCenter
-            text: control.text
+        label: Item {
+            implicitWidth: labelText.width + 16
+            Text {
+                x: 8
+                id: labelText
+                color: control.enabled ? root.textColor : "gray"
+                text: control.text
+                height: parent.height
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
         }
     }
 }

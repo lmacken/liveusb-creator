@@ -133,7 +133,10 @@ Dialog {
                     Layout.preferredWidth: implicitWidth * 2.3
                     model: liveUSBData.usbDriveNames
                     currentIndex: liveUSBData.currentDrive
-                    onCurrentIndexChanged: liveUSBData.currentDrive = currentIndex
+                    onCurrentIndexChanged: {
+                        liveUSBData.currentDrive = currentIndex
+                        acceptButton.pressedOnce = false
+                    }
                     enabled: !liveUSBData.currentImage.writer.running
                 }
             }
@@ -157,7 +160,10 @@ Dialog {
                                 height: 20
                                 width: 20
                                 text: liveUSBData.optionNames[index]
-                                onCheckedChanged: liveUSBData.setOption(index, checked)
+                                onCheckedChanged: {
+                                    liveUSBData.setOption(index, checked)
+                                    acceptButton.pressedOnce = false
+                                }
                             }
                         }
                     }
@@ -184,12 +190,12 @@ Dialog {
                     bottom: parent.bottom
                     rightMargin: 6
                 }
-                width: implicitWidth * 1.2
                 text: "Cancel"
                 enabled: !liveUSBData.currentImage.writer.running
                 onClicked: {
                     liveUSBData.currentImage.download.cancel()
                     liveUSBData.currentImage.writer.cancel()
+                    pressedOnce = false
                     root.close()
                 }
             }
@@ -200,12 +206,20 @@ Dialog {
                     top: parent.top
                     bottom: parent.bottom
                 }
+                property bool pressedOnce: false
                 color: "red"
                 textColor: enabled ? "white" : palette.text
-                width: implicitWidth * 1.2
                 enabled: liveUSBData.currentImage.readyToWrite && !liveUSBData.currentImage.writer.running
-                text: "Write to disk"
-                onClicked: liveUSBData.currentImage.write()
+                text: pressedOnce ? "Are you sure?" : "Write to disk"
+                onClicked: {
+                    if(pressedOnce) {
+                        liveUSBData.currentImage.write()
+                        pressedOnce = false
+                    }
+                    else {
+                        pressedOnce = true
+                    }
+                }
             }
         }
     }
