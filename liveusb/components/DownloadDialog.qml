@@ -8,7 +8,7 @@ Dialog {
     id: root
     title: "Write " + liveUSBData.currentImage.name + " to USB"
 
-    height: layout.height + 64
+    height: layout.height + 56
     standardButtons: StandardButton.NoButton
 
     width: 640
@@ -41,7 +41,30 @@ Dialog {
                         width: parent.width
 
                         Repeater {
-                            model: liveUSBData.currentImage.writer.finished ? null : liveUSBData.currentImage.warning
+                            model: liveUSBData.currentImage.error
+                            RowLayout {
+                                width: infoColumn.width
+                                spacing: 8
+                                Text {
+                                    Layout.fillHeight: true
+                                    verticalAlignment: Text.AlignVCenter
+                                    color: "red"
+                                    text: "!!!"
+                                    font.pointSize: 14
+                                }
+                                Text {
+                                    Layout.fillHeight: true
+                                    Layout.fillWidth: true
+                                    verticalAlignment: Text.AlignVCenter
+                                    wrapMode: Text.Wrap
+                                    text: liveUSBData.currentImage.error[index]
+                                }
+                            }
+                        }
+
+
+                        Repeater {
+                            model: (liveUSBData.currentImage.writer.finished || liveUSBData.currentImage.error.length > 0) ? null : liveUSBData.currentImage.warning
                             RowLayout {
                                 width: infoColumn.width
                                 spacing: 8
@@ -63,7 +86,7 @@ Dialog {
                         }
 
                         Repeater {
-                            model: liveUSBData.currentImage.info
+                            model: liveUSBData.currentImage.error.length > 0 ? null : liveUSBData.currentImage.info
                             RowLayout {
                                 width:  infoColumn.width
                                 spacing: 8
@@ -180,6 +203,7 @@ Dialog {
                                 Layout.fillHeight: true
                                 verticalAlignment: Text.AlignVCenter
                                 text: "Advanced options"
+                                enabled: optionGroup.enabled
                                 MouseArea {
                                     anchors.fill: parent
                                     onClicked: optionGroup.checked = !optionGroup.checked

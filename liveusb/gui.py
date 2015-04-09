@@ -224,7 +224,7 @@ class ReleaseWriterThread(QThread):
             else:
                 self.copyImage(now)
         except Exception, e:
-            self.parent.status = e.args[0]
+            self.parent.release.addError(e.args[0])
             self.live.log.exception(e)
 
         self.parent.running = False
@@ -400,6 +400,7 @@ class ReleaseWriter(QObject):
 
 class Release(QObject):
     screenshotsChanged = pyqtSignal()
+    errorChanged = pyqtSignal()
     warningChanged = pyqtSignal()
     infoChanged = pyqtSignal()
     statusChanged = pyqtSignal()
@@ -426,6 +427,7 @@ class Release(QObject):
         self._path = ''
         self._info = []
         self._warning = []
+        self._error = []
 
         if self._logo == '':
             if self._name == 'Fedora Workstation':
@@ -470,6 +472,10 @@ class Release(QObject):
 
     @pyqtSlot()
     def write(self):
+        self._warning = []
+        self._error = []
+        self.errorChanged.emit()
+        self.warningChanged.emit()
         self._writer.run()
 
     @pyqtSlot()
@@ -624,6 +630,15 @@ class Release(QObject):
         if value not in self._warning:
             self._warning.append(value)
             self.warningChanged.emit()
+
+    @pyqtProperty('QStringList', notify=errorChanged)
+    def error(self):
+        return self._error
+
+    def addError(self, value):
+        if value not in self._error:
+            self._error.append(value)
+            self.errorChanged.emit()
 
 class ReleaseListModel(QAbstractListModel):
     def __init__(self, parent, title=False):
