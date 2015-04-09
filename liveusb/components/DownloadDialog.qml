@@ -158,6 +158,10 @@ Dialog {
                             checked: false
                             checkable: true
                             enabled: liveUSBData.optionNames && liveUSBData.optionNames[0] && !liveUSBData.currentImage.writer.running
+                            onEnabledChanged: {
+                                if (!liveUSBData.currentImage.writer.running)
+                                    checked = false
+                            }
                             ColumnLayout {
                                 Repeater {
                                     id: groupLayoutRepeater
