@@ -783,6 +783,7 @@ class LiveUSBData(QObject):
                                             url=release['url']
                                     ))
         self._usbDrives = []
+        self.currentDriveChanged.connect(self.currentImage.inspectDestination)
 
         try:
             self.live.detect_removable_drives(callback=self.USBDeviceCallback)
@@ -848,8 +849,10 @@ class LiveUSBData(QObject):
     @currentIndex.setter
     def currentIndex(self, value):
         if value != self._currentIndex:
+            self.currentDriveChanged.disconnect(self.currentImage.inspectDestination)
             self._currentIndex = value
             self.currentImageChanged.emit()
+            self.currentDriveChanged.connect(self.currentImage.inspectDestination)
 
     @pyqtProperty(Release, notify=currentImageChanged)
     def currentImage(self):
