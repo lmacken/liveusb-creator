@@ -157,7 +157,37 @@ Dialog {
                             fillMode: Image.PreserveAspectFit
                         }
                         Arrow {
-
+                            id: writeArrow
+                            anchors.verticalCenter: parent.verticalCenter
+                            height: 14
+                            SequentialAnimation {
+                                running: liveUSBData.currentImage.writer.running
+                                loops: -1
+                                onStopped: {
+                                    if (liveUSBData.currentImage.writer.finished)
+                                        writeArrow.color = "#00dd00"
+                                    else
+                                        writeArrow.color = "black"
+                                }
+                                ColorAnimation {
+                                    duration: 3500
+                                    target: writeArrow
+                                    property: "color"
+                                    to: "red"
+                                }
+                                PauseAnimation {
+                                    duration: 500
+                                }
+                                ColorAnimation {
+                                    duration: 3500
+                                    target: writeArrow
+                                    property: "color"
+                                    to: "black"
+                                }
+                                PauseAnimation {
+                                    duration: 500
+                                }
+                            }
                         }
                         AdwaitaComboBox {
                             Layout.preferredWidth: implicitWidth * 2.3

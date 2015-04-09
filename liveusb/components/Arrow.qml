@@ -2,14 +2,15 @@ import QtQuick 2.4
 
 Item {
     height: 10
-    width: 5
+    width: height / 2
     clip: true
+    property color color: "black"
     Rectangle {
-        x: -8
-        y: -1
+        x: -parent.height / 5 * 4
+        y: -parent.height / 10
         rotation: 45
-        width: 10
-        height: 10
-        color: "black"
+        width: parent.height
+        height: parent.height
+        color: parent.color
     }
 }

@@ -484,6 +484,10 @@ class Release(QObject):
         self.warningChanged.emit()
         self._info = []
         self.infoChanged.emit()
+
+        if not self.live.drive:
+            return
+
         if self.parent().option('dd'):
             self.addWarning(_("You are about to perform a destructive install. This will erase all data and partitions on your USB drive"))
         else:
@@ -602,6 +606,8 @@ class Release(QObject):
             return 'Starting'
         elif self._download.running:
             return 'Downloading'
+        elif len(self._error) > 0:
+            return 'Error'
         elif self.readyToWrite and not self._writer.running and not self._writer.finished:
             return 'Ready to write'
         elif self._writer.status:
