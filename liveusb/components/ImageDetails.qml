@@ -127,7 +127,6 @@ Item {
                                     fileDialog.visible = false // for some reason it got stuck in the closed state once in a while, so ensure it's actually closed
                                     fileDialog.visible = true
                                 }
-                                width: implicitWidth + 16
                             }
                         }
                         Text {
