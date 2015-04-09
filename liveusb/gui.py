@@ -481,7 +481,9 @@ class Release(QObject):
     @pyqtSlot()
     def inspectDestination(self):
         self._warning = []
-        self.info = []
+        self.warningChanged.emit()
+        self._info = []
+        self.infoChanged.emit()
         if self.parent().option('dd'):
             self.addWarning(_("You are about to perform a destructive install. This will erase all data and partitions on your USB drive"))
         else:
@@ -894,9 +896,9 @@ class LiveUSBData(QObject):
         key = self._optionKeys[index]
         if self._optionValues[key] != value:
             # dd and resetMBR options are mutually exclusive
-            if key == 'dd' and value == True:
+            if key == 'dd' and value:
                 self._optionValues['resetMBR'] = False
-            if key == 'resetMBR' and value == True:
+            if key == 'resetMBR' and value:
                 self._optionValues['dd'] = False
             self._optionValues[key] = value
             self.optionsChanged.emit()
