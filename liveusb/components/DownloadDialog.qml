@@ -8,7 +8,7 @@ Dialog {
     id: root
     title: "Write " + liveUSBData.currentImage.name + " to USB"
 
-    height: layout.height + 48 + (optionGroup.checked ? 48 : 0)
+    height: layout.height + 64
     standardButtons: StandardButton.NoButton
 
     width: 640
@@ -147,92 +147,109 @@ Dialog {
                             enabled: !liveUSBData.currentImage.writer.running
                         }
                     }
-                    Item {
-                        width: optionGroup.width
-                        height: optionGroup.height + optionGroup.y
-                        GroupBox {
-                            id: optionGroup
-                            y: 8
-                            title: "Show Advanced Options"
-                            flat: true
-                            checked: false
-                            checkable: true
-                            enabled: liveUSBData.optionNames && liveUSBData.optionNames[0] && !liveUSBData.currentImage.writer.running
-                            onEnabledChanged: {
-                                if (!liveUSBData.currentImage.writer.running)
-                                    checked = false
+
+                    ColumnLayout {
+                        width: parent.width
+                        spacing: 12
+                        RowLayout {
+                            height: acceptButton.height
+                            width: parent.width
+                            AdwaitaButton  {
+                                id: optionGroup
+                                implicitHeight: parent.height / 8 * 5
+                                implicitWidth: parent.height / 8 * 5
+                                Layout.alignment: Qt.AlignVCenter
+                                checkable: true
+                                checked: false
+                                enabled: liveUSBData.optionNames && liveUSBData.optionNames[0] && !liveUSBData.currentImage.writer.running
+                                onEnabledChanged: {
+                                    if (!liveUSBData.currentImage.writer.running)
+                                        checked = false
+                                }
+                                Text {
+                                    anchors.fill: parent
+                                    horizontalAlignment: Text.AlignHCenter
+                                    verticalAlignment: Text.AlignVCenter
+                                    text: "+"
+                                    font.bold: true
+                                    font.pointSize: 12
+                                }
                             }
-                            ColumnLayout {
-                                Repeater {
-                                    id: groupLayoutRepeater
-                                    model: optionGroup.checked ? liveUSBData.optionValues : null
-                                    CheckBox {
-                                        checked: liveUSBData.optionValues[index]
-                                        enabled: !liveUSBData.currentImage.writer.running
-                                        height: 20
-                                        width: 20
-                                        text: liveUSBData.optionNames[index]
-                                        onClicked: {
-                                            acceptButton.pressedOnce = false
-                                            liveUSBData.setOption(index, checked)
-                                        }
+
+                            Text {
+                                Layout.fillHeight: true
+                                verticalAlignment: Text.AlignVCenter
+                                text: "Advanced options"
+                                MouseArea {
+                                    anchors.fill: parent
+                                    onClicked: optionGroup.checked = !optionGroup.checked
+                                }
+                            }
+
+                            Item {
+                                Layout.fillWidth: true
+                                height: 1
+                            }
+
+                            AdwaitaButton {
+                                id: cancelButton
+                                anchors {
+                                    right: acceptButton.left
+                                    top: parent.top
+                                    bottom: parent.bottom
+                                    rightMargin: 6
+                                }
+                                text: "Cancel"
+                                enabled: !liveUSBData.currentImage.writer.running
+                                onClicked: {
+                                    liveUSBData.currentImage.download.cancel()
+                                    liveUSBData.currentImage.writer.cancel()
+                                    acceptButton.pressedOnce = false
+                                    root.close()
+                                }
+                            }
+                            AdwaitaButton {
+                                id: acceptButton
+                                anchors {
+                                    right: parent.right
+                                    top: parent.top
+                                    bottom: parent.bottom
+                                }
+                                property bool pressedOnce: false
+                                color: "red"
+                                textColor: enabled ? "white" : palette.text
+                                enabled: liveUSBData.currentImage.readyToWrite && !liveUSBData.currentImage.writer.running
+                                text: pressedOnce ? "Are you sure?" : "Write to disk"
+                                onClicked: {
+                                    if(pressedOnce || !liveUSBData.currentImage.warning || liveUSBData.currentImage.warning.length == 0) {
+                                        liveUSBData.currentImage.write()
+                                        pressedOnce = false
+                                        optionGroup.checked = false
+                                    }
+                                    else {
+                                        pressedOnce = true
                                     }
                                 }
                             }
                         }
-                    }
-                }
-            }
-        }
-        Item {
-            id: dialogButtonBar
-            height: 32
-            anchors {
-                left: parent.left
-                right: parent.right
-                bottom: parent.bottom
-                bottomMargin: 24
-                leftMargin: 24
-                rightMargin: anchors.leftMargin
-            }
-
-            AdwaitaButton {
-                id: cancelButton
-                anchors {
-                    right: acceptButton.left
-                    top: parent.top
-                    bottom: parent.bottom
-                    rightMargin: 6
-                }
-                text: "Cancel"
-                enabled: !liveUSBData.currentImage.writer.running
-                onClicked: {
-                    liveUSBData.currentImage.download.cancel()
-                    liveUSBData.currentImage.writer.cancel()
-                    pressedOnce = false
-                    root.close()
-                }
-            }
-            AdwaitaButton {
-                id: acceptButton
-                anchors {
-                    right: parent.right
-                    top: parent.top
-                    bottom: parent.bottom
-                }
-                property bool pressedOnce: false
-                color: "red"
-                textColor: enabled ? "white" : palette.text
-                enabled: liveUSBData.currentImage.readyToWrite && !liveUSBData.currentImage.writer.running
-                text: pressedOnce ? "Are you sure?" : "Write to disk"
-                onClicked: {
-                    if(pressedOnce || !liveUSBData.currentImage.warning || liveUSBData.currentImage.warning.length == 0) {
-                        liveUSBData.currentImage.write()
-                        pressedOnce = false
-                        optionGroup.checked = false
-                    }
-                    else {
-                        pressedOnce = true
+                        Column {
+                            id: advancedOptions
+                            Repeater {
+                                id: groupLayoutRepeater
+                                model: optionGroup.checked ? liveUSBData.optionValues : null
+                                CheckBox {
+                                    checked: liveUSBData.optionValues[index]
+                                    enabled: !liveUSBData.currentImage.writer.running
+                                    height: 20
+                                    width: implicitWidth
+                                    text: liveUSBData.optionNames[index]
+                                    onClicked: {
+                                        acceptButton.pressedOnce = false
+                                        liveUSBData.setOption(index, checked)
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }

@@ -10,7 +10,7 @@ Rectangle {
         radius: parent.radius - 1
         anchors.margins: 0.5
         anchors.fill: parent
-        gradient: control.enabled ? !control.pressed ? !control.hovered ? regularGradient: hoveredGradient : downGradient : disabledGradient
+        gradient: control.enabled ? !(control.pressed || control.checked) ? !control.hovered ? regularGradient: hoveredGradient : downGradient : disabledGradient
         Gradient {
             id: disabledGradient
             GradientStop { position: 0.0; color: "light gray" }

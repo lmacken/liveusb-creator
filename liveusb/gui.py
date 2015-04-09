@@ -233,7 +233,9 @@ class ReleaseWriterThread(QThread):
     def ddImage(self, now):
         self.live.dd_image()
         #self.live.log.removeHandler(handler)
-        duration = str(datetime.now() - now).split('.')[0]
+        #duration = str(datetime.now() - now).split('.')[0]
+        self.parent.status = "Finished!"
+        self.parent.finished = True
         self.progressThread.stop()
         return
 
