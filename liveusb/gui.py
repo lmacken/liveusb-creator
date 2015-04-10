@@ -284,11 +284,9 @@ class ReleaseWriterThread(QThread):
         self.progressThread.stop()
 
         # Flush all filesystem buffers and unmount
-        self.parent.status = 'Flushing buffers'
         self.live.flush_buffers()
-        self.parent.status = 'Unmounting'
         self.live.unmount_device()
-        self.parent.status = 'Finished!'
+        self.parent.status = _('Finished!')
         self.parent.finished = True
 
         duration = str(datetime.now() - now).split('.')[0]
@@ -446,11 +444,11 @@ class Release(QObject):
                 self._logo = '../../data/logo-fedora.svg'
 
         if self._name == 'Fedora Workstation':
-            self._fullDescription = 'Fedora Workstation is a reliable, user-friendly, and powerful operating system for your laptop or desktop computer. It supports a wide range of developers, from hobbyists and students to professionals in corporate environments.'
+            self._fullDescription = _('Fedora Workstation is a reliable, user-friendly, and powerful operating system for your laptop or desktop computer. It supports a wide range of developers, from hobbyists and students to professionals in corporate environments.')
         if self._name == 'Fedora Server':
-            self._fullDescription = 'Fedora Server is a powerful, flexible operating system that includes the best and latest datacenter technologies. It puts you in control of all your infrastructure and services.'
+            self._fullDescription = _('Fedora Server is a powerful, flexible operating system that includes the best and latest datacenter technologies. It puts you in control of all your infrastructure and services.')
         if self._name == 'Fedora Cloud':
-            self._fullDescription = 'Fedora Cloud provides a minimal image of Fedora for use in public and private cloud environments. It includes just the bare essentials, so you get enough to run your cloud application -- and nothing more.'
+            self._fullDescription = _('Fedora Cloud provides a minimal image of Fedora for use in public and private cloud environments. It includes just the bare essentials, so you get enough to run your cloud application -- and nothing more.')
 
         self._download = ReleaseDownload(self)
         self._download.pathChanged.connect(self.pathChanged)
@@ -600,17 +598,17 @@ class Release(QObject):
     @pyqtProperty(str, notify=statusChanged)
     def status(self):
         if not self._download.running and not self.readyToWrite and not self._writer.running:
-            return 'Starting'
+            return _('Starting')
         elif self._download.running:
-            return 'Downloading'
+            return _('Downloading')
         elif len(self._error) > 0:
-            return 'Error'
+            return _('Error')
         elif self.readyToWrite and not self._writer.running and not self._writer.finished:
-            return 'Ready to write'
+            return _('Ready to write')
         elif self._writer.status:
             return self._writer.status
         else:
-            return 'Finished'
+            return _('Finished')
 
     @pyqtProperty('QStringList', notify=infoChanged)
     def info(self):
@@ -766,7 +764,15 @@ class LiveUSBData(QObject):
         self._releaseProxy = ReleaseListProxy(self, self._releaseModel)
         self._titleReleaseModel = ReleaseListModel(self, True)
         self._titleReleaseProxy = ReleaseListProxy(self, self._titleReleaseModel)
-        self.releaseData = [Release(self, 0, self.live, name='Custom OS...', shortDescription='<pick from file chooser>', fullDescription='Here you can choose a OS image from your hard drive to be written to your flash disk', isLocal=True, logo='../../data/icon-folder.svg')]
+        self.releaseData = [Release(self,
+                                    0,
+                                    self.live,
+                                    name=_('Custom OS...'),
+                                    shortDescription=_('<pick from file chooser>'),
+                                    fullDescription=_('Here you can choose a OS image from your hard drive to be written to your flash disk'),
+                                    isLocal=True,
+                                    logo='../../data/icon-folder.svg')
+                            ]
         for release in releases:
             self.releaseData.append(Release(self,
                                             len(self.releaseData),
