@@ -21,9 +21,9 @@
 #            Kushal Das <kushal@fedoraproject.org>
 #            Martin Bříza <mbriza@redhat.com>
 
-'''
+"""
 A cross-platform graphical interface for the LiveUSBCreator
-'''
+"""
 
 import os
 import sys
@@ -114,10 +114,10 @@ class ReleaseDownload(QObject, BaseMeter):
         self.runningChanged.emit()
 
     def update(self, amount_read, now=None):
-        ''' Update our download progressbar.
+        """ Update our download progressbar.
 
         :read: the number of bytes read so far
-        '''
+        """
         if self._current < amount_read:
             self._current = amount_read
             self.currentChanged.emit()
@@ -494,8 +494,8 @@ class Release(QObject):
             if self.live.blank_mbr():
                 self.addInfo(_('The Master Boot Record on your device is blank. Writing the image will reset the MBR on this device'))
             elif not self.live.mbr_matches_syslinux_bin() and not self.parent().option('resetMBR'):
-                self.addInfo(_('The Master Boot Record on your device does not match your system's syslinux MBR.\n'
-                              'If you have trouble booting it, try setting the \'Reset the MBR\' advanced option.'))
+                self.addInfo(_('The Master Boot Record on your device does not match your system\'s syslinux MBR.\n'
+                              'If you have trouble booting it, try setting the \"Reset the MBR\" advanced option.'))
 
         try:
             self.live.mount_device()
@@ -914,7 +914,7 @@ class LiveUSBData(QObject):
 
 
 class LiveUSBApp(QApplication):
-    ''' Main application class '''
+    """ Main application class """
     def __init__(self, opts, args):
         QApplication.__init__(self, args)
         qmlRegisterUncreatableType(ReleaseDownload, 'LiveUSB', 1, 0, 'Download', 'Not creatable directly, use the liveUSBData instance instead')
