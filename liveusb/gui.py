@@ -21,9 +21,9 @@
 #            Kushal Das <kushal@fedoraproject.org>
 #            Martin Bříza <mbriza@redhat.com>
 
-"""
+'''
 A cross-platform graphical interface for the LiveUSBCreator
-"""
+'''
 
 import os
 import sys
@@ -114,10 +114,10 @@ class ReleaseDownload(QObject, BaseMeter):
         self.runningChanged.emit()
 
     def update(self, amount_read, now=None):
-        """ Update our download progressbar.
+        ''' Update our download progressbar.
 
         :read: the number of bytes read so far
-        """
+        '''
         if self._current < amount_read:
             self._current = amount_read
             self.currentChanged.emit()
@@ -234,14 +234,14 @@ class ReleaseWriterThread(QThread):
         self.live.dd_image()
         #self.live.log.removeHandler(handler)
         #duration = str(datetime.now() - now).split('.')[0]
-        self.parent.status = "Finished!"
+        self.parent.status = 'Finished!'
         self.parent.finished = True
         self.progressThread.stop()
         return
 
     def copyImage(self, now):
 
-        self.parent.status = _("Checking the source image")
+        self.parent.status = _('Checking the source image')
         self.live.check_free_space()
 
         if not self.live.opts.noverify:
@@ -257,7 +257,7 @@ class ReleaseWriterThread(QThread):
                     #self.live.log.removeHandler(handler)
                     return
 
-        self.parent.status = _("Unpacking the image")
+        self.parent.status = _('Unpacking the image')
         # Setup the progress bar
         self.progressThread.set_data(size=self.live.totalsize,
                                      drive=self.live.drive['device'],
@@ -269,13 +269,13 @@ class ReleaseWriterThread(QThread):
         if self.live.blank_mbr() or self.parent.release.liveUSBData.option('resetMBR'):
             self.live.reset_mbr()
 
-        self.parent.status = _("Writing the data")
+        self.parent.status = _('Writing the data')
         self.live.create_persistent_overlay()
         self.live.update_configs()
         self.live.install_bootloader()
         self.live.bootable_partition()
 
-        self.parent.status = _("Checking the written data")
+        self.parent.status = _('Checking the written data')
         if self.live.opts.device_checksum:
             self.live.calculate_device_checksum(progressThread=self)
         if self.live.opts.liveos_checksum:
@@ -284,15 +284,15 @@ class ReleaseWriterThread(QThread):
         self.progressThread.stop()
 
         # Flush all filesystem buffers and unmount
-        self.parent.status = "Flushing buffers"
+        self.parent.status = 'Flushing buffers'
         self.live.flush_buffers()
-        self.parent.status = "Unmounting"
+        self.parent.status = 'Unmounting'
         self.live.unmount_device()
-        self.parent.status = "Finished!"
+        self.parent.status = 'Finished!'
         self.parent.finished = True
 
         duration = str(datetime.now() - now).split('.')[0]
-        #self.parent.status = "Complete! (%s)" % duration
+        #self.parent.status = 'Complete! (%s)' % duration
 
         self.progressThread.stop()
 
@@ -312,7 +312,7 @@ class ReleaseWriter(QObject):
     _running = False
     _current = -1.0
     _maximum = -1.0
-    _status = ""
+    _status = ''
     _finished = False
 
     def __init__(self, parent):
@@ -338,7 +338,7 @@ class ReleaseWriter(QObject):
         self.runningChanged.emit()
         self.currentChanged.emit()
         self.maximumChanged.emit()
-        self.status = "Writing"
+        self.status = 'Writing'
         self.worker.start()
 
     @pyqtSlot()
@@ -445,12 +445,12 @@ class Release(QObject):
             else:
                 self._logo = '../../data/logo-fedora.svg'
 
-        if self._name == "Fedora Workstation":
-            self._fullDescription = "Fedora Workstation is a reliable, user-friendly, and powerful operating system for your laptop or desktop computer. It supports a wide range of developers, from hobbyists and students to professionals in corporate environments."
-        if self._name == "Fedora Server":
-            self._fullDescription = "Fedora Server is a powerful, flexible operating system that includes the best and latest datacenter technologies. It puts you in control of all your infrastructure and services."
-        if self._name == "Fedora Cloud":
-            self._fullDescription = "Fedora Cloud provides a minimal image of Fedora for use in public and private cloud environments. It includes just the bare essentials, so you get enough to run your cloud application -- and nothing more."
+        if self._name == 'Fedora Workstation':
+            self._fullDescription = 'Fedora Workstation is a reliable, user-friendly, and powerful operating system for your laptop or desktop computer. It supports a wide range of developers, from hobbyists and students to professionals in corporate environments.'
+        if self._name == 'Fedora Server':
+            self._fullDescription = 'Fedora Server is a powerful, flexible operating system that includes the best and latest datacenter technologies. It puts you in control of all your infrastructure and services.'
+        if self._name == 'Fedora Cloud':
+            self._fullDescription = 'Fedora Cloud provides a minimal image of Fedora for use in public and private cloud environments. It includes just the bare essentials, so you get enough to run your cloud application -- and nothing more.'
 
         self._download = ReleaseDownload(self)
         self._download.pathChanged.connect(self.pathChanged)
@@ -489,13 +489,13 @@ class Release(QObject):
             return
 
         if self.parent().option('dd'):
-            self.addWarning(_("You are about to perform a destructive install. This will erase all data and partitions on your USB drive"))
+            self.addWarning(_('You are about to perform a destructive install. This will erase all data and partitions on your USB drive'))
         else:
             if self.live.blank_mbr():
-                self.addInfo(_("The Master Boot Record on your device is blank. Writing the image will reset the MBR on this device"))
+                self.addInfo(_('The Master Boot Record on your device is blank. Writing the image will reset the MBR on this device'))
             elif not self.live.mbr_matches_syslinux_bin() and not self.parent().option('resetMBR'):
-                self.addInfo(_("The Master Boot Record on your device does not match your system's syslinux MBR.\n"
-                              "If you have trouble booting it, try setting the \"Reset the MBR\" advanced option."))
+                self.addInfo(_('The Master Boot Record on your device does not match your system's syslinux MBR.\n'
+                              'If you have trouble booting it, try setting the \'Reset the MBR\' advanced option.'))
 
         try:
             self.live.mount_device()
@@ -509,12 +509,12 @@ class Release(QObject):
             self.runningChanged.emit()
 
         if self.live.existing_liveos() and not self.parent().option('dd'):
-            self.addWarning(_("Your device already contains a live OS. If you continue, it will be overwritten."))
+            self.addWarning(_('Your device already contains a live OS. If you continue, it will be overwritten.'))
 
         self.live.verify_filesystem()
         if not self.live.drive['uuid'] and not self.live.label:
-            self.parent.status = _("Error: Cannot set the label or obtain "
-                          "the UUID of your device.  Unable to continue.")
+            self.parent.status = _('Error: Cannot set the label or obtain '
+                          'the UUID of your device.  Unable to continue.')
             #self.live.log.removeHandler(handler)
             return
 
@@ -657,7 +657,7 @@ class ReleaseListModel(QAbstractListModel):
             return len(self.parent().releaseData)
 
     def roleNames(self):
-        return {Qt.UserRole + 1 : "release"}
+        return {Qt.UserRole + 1 : 'release'}
 
     def data(self, index, role=Qt.DisplayRole):
         if index.isValid():
@@ -752,8 +752,8 @@ class LiveUSBData(QObject):
 
     # man, this is just awkward... but it seems like the only way to do it in a predictable manner without creating a new class
     _optionKeys = ['dd', 'resetMBR']
-    _optionNames = {'dd': _("Use <b>dd</b> to write the image - this will erase everything on your portable drive"),
-                    'resetMBR': _("Reset the MBR (Master Boot Record)"),
+    _optionNames = {'dd': _('Use <b>dd</b> to write the image - this will erase everything on your portable drive'),
+                    'resetMBR': _('Reset the MBR (Master Boot Record)'),
                    }
     _optionValues = {'dd': False,
                      'resetMBR': False,
@@ -787,7 +787,7 @@ class LiveUSBData(QObject):
 
     def USBDeviceCallback(self):
         tmpDrives = []
-        previouslySelected = ""
+        previouslySelected = ''
         if len(self._usbDrives) > 0:
             previouslySelected = self._usbDrives[self._currentDrive].drive['device']
         for drive, info in self.live.drives.items():
@@ -914,18 +914,18 @@ class LiveUSBData(QObject):
 
 
 class LiveUSBApp(QApplication):
-    """ Main application class """
+    ''' Main application class '''
     def __init__(self, opts, args):
         QApplication.__init__(self, args)
-        qmlRegisterUncreatableType(ReleaseDownload, "LiveUSB", 1, 0, "Download", "Not creatable directly, use the liveUSBData instance instead")
-        qmlRegisterUncreatableType(ReleaseWriter, "LiveUSB", 1, 0, "Writer", "Not creatable directly, use the liveUSBData instance instead")
-        qmlRegisterUncreatableType(ReleaseListModel, "LiveUSB", 1, 0, "ReleaseModel", "Not creatable directly, use the liveUSBData instance instead")
-        qmlRegisterUncreatableType(Release, "LiveUSB", 1, 0, "Release", "Not creatable directly, use the liveUSBData instance instead")
-        qmlRegisterUncreatableType(USBDrive, "LiveUSB", 1, 0, "Drive", "Not creatable directly, use the liveUSBData instance instead")
-        qmlRegisterUncreatableType(LiveUSBData, "LiveUSB", 1, 0, "Data", "Use the liveUSBData root instance")
+        qmlRegisterUncreatableType(ReleaseDownload, 'LiveUSB', 1, 0, 'Download', 'Not creatable directly, use the liveUSBData instance instead')
+        qmlRegisterUncreatableType(ReleaseWriter, 'LiveUSB', 1, 0, 'Writer', 'Not creatable directly, use the liveUSBData instance instead')
+        qmlRegisterUncreatableType(ReleaseListModel, 'LiveUSB', 1, 0, 'ReleaseModel', 'Not creatable directly, use the liveUSBData instance instead')
+        qmlRegisterUncreatableType(Release, 'LiveUSB', 1, 0, 'Release', 'Not creatable directly, use the liveUSBData instance instead')
+        qmlRegisterUncreatableType(USBDrive, 'LiveUSB', 1, 0, 'Drive', 'Not creatable directly, use the liveUSBData instance instead')
+        qmlRegisterUncreatableType(LiveUSBData, 'LiveUSB', 1, 0, 'Data', 'Use the liveUSBData root instance')
         view = QQmlApplicationEngine()
         self.data = LiveUSBData(opts)
-        view.rootContext().setContextProperty("liveUSBData", self.data);
+        view.rootContext().setContextProperty('liveUSBData', self.data);
         view.load(QUrl('liveusb/liveusb.qml'))
         view.rootObjects()[0].show()
         self.exec_()
