@@ -518,9 +518,6 @@ class Release(QObject):
             #self.live.log.removeHandler(handler)
             return
 
-        if self.parent().option('writeImmediately'):
-            self.write()
-
     @pyqtProperty(int, constant=True)
     def index(self):
         return self._index
@@ -754,14 +751,12 @@ class LiveUSBData(QObject):
     _currentDrive = 0
 
     # man, this is just awkward... but it seems like the only way to do it in a predictable manner without creating a new class
-    _optionKeys = ['dd', 'resetMBR', 'writeImmediately']
+    _optionKeys = ['dd', 'resetMBR']
     _optionNames = {'dd': _("Use <b>dd</b> to write the image - this will erase everything on your portable drive"),
                     'resetMBR': _("Reset the MBR (Master Boot Record)"),
-                    'writeImmediately': _("Write the image immediately when the download is finished")
                    }
     _optionValues = {'dd': False,
                      'resetMBR': False,
-                     'writeImmediately': False
                     }
 
     def __init__(self, opts):

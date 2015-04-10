@@ -13,6 +13,14 @@ Dialog {
 
     width: 640
 
+    Connections {
+        target: liveUSBData
+        onCurrentImageChanged: {
+            writeImmediately.confirmed = false
+            acceptButton.pressedOnce = false
+        }
+    }
+
     contentItem: Rectangle {
         id: contentWrapper
         anchors.fill: parent
@@ -26,7 +34,6 @@ Dialog {
                 Column {
                     id: layout
                     spacing: 24
-                    clip: true
                     anchors {
                         top: parent.top
                         left: parent.left
@@ -232,7 +239,7 @@ Dialog {
                             Text {
                                 Layout.fillHeight: true
                                 verticalAlignment: Text.AlignVCenter
-                                text: "Advanced options"
+                                text: "Options"
                                 enabled: optionGroup.enabled
                                 MouseArea {
                                     anchors.fill: parent
@@ -272,22 +279,60 @@ Dialog {
                                 property bool pressedOnce: false
                                 color: "red"
                                 textColor: enabled ? "white" : palette.text
-                                enabled: liveUSBData.currentImage.readyToWrite && !liveUSBData.currentImage.writer.running
+                                transformOrigin: Item.Center
+                                enabled: pressedOnce || (liveUSBData.currentImage.readyToWrite && !liveUSBData.currentImage.writer.running && liveUSBData.usbDrives.length > 0)
                                 text: pressedOnce ? "Are you sure?" : "Write to disk"
                                 onClicked: {
                                     if(pressedOnce || !liveUSBData.currentImage.warning || liveUSBData.currentImage.warning.length == 0) {
-                                        liveUSBData.currentImage.write()
+                                        if (!liveUSBData.currentImage.readyToWrite) {
+                                            writeImmediately.confirmed = true
+                                        }
+                                        else {
+                                            liveUSBData.currentImage.write()
+                                            optionGroup.checked = false
+                                        }
                                         pressedOnce = false
-                                        optionGroup.checked = false
                                     }
                                     else {
                                         pressedOnce = true
+                                    }
+                                }
+                                Connections {
+                                    id: downloadWait
+                                    target: liveUSBData.currentImage
+                                    onReadyToWriteChanged: {
+                                        if (liveUSBData.currentImage.readyToWrite && writeImmediately.confirmed) {
+                                            liveUSBData.currentImage.write()
+                                            optionGroup.checked = false
+                                        }
+                                    }
+                                }
+
+                                onPressedOnceChanged: {
+                                    if (pressedOnce)
+                                        acceptButtonBounce.start()
+                                }
+                                SequentialAnimation {
+                                    id: acceptButtonBounce
+                                    NumberAnimation {
+                                        target: acceptButton
+                                        property: "scale"
+                                        duration: 80
+                                        from: 1
+                                        to: 1.2
+                                    }
+                                    NumberAnimation {
+                                        target: acceptButton
+                                        property: "scale"
+                                        duration: 40
+                                        to: 1.0
                                     }
                                 }
                             }
                         }
                         Column {
                             id: advancedOptions
+                            spacing: 0
                             Repeater {
                                 id: groupLayoutRepeater
                                 model: optionGroup.checked ? liveUSBData.optionValues : null
@@ -301,6 +346,18 @@ Dialog {
                                         acceptButton.pressedOnce = false
                                         liveUSBData.setOption(index, checked)
                                     }
+                                }
+                            }
+                            // It's better to have this one separately to have the confirmation clearer
+                            CheckBox {
+                                id: writeImmediately
+                                height: optionGroup.checked ? implicitHeight : 0
+                                visible: optionGroup.checked
+                                width: implicitWidth
+                                property bool confirmed: false
+                                text: "Write the image immediately when the download is finished"
+                                onClicked: {
+                                    acceptButton.pressedOnce = !acceptButton.pressedOnce
                                 }
                             }
                         }
