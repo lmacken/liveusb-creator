@@ -239,7 +239,7 @@ Dialog {
                             Text {
                                 Layout.fillHeight: true
                                 verticalAlignment: Text.AlignVCenter
-                                text: "Options"
+                                text: qsTr("Options")
                                 enabled: optionGroup.enabled
                                 MouseArea {
                                     anchors.fill: parent
@@ -260,7 +260,7 @@ Dialog {
                                     bottom: parent.bottom
                                     rightMargin: 6
                                 }
-                                text: "Cancel"
+                                text: qsTr("Cancel")
                                 enabled: !liveUSBData.currentImage.writer.running
                                 onClicked: {
                                     liveUSBData.currentImage.download.cancel()
@@ -281,7 +281,7 @@ Dialog {
                                 textColor: enabled ? "white" : palette.text
                                 transformOrigin: Item.Center
                                 enabled: pressedOnce || (liveUSBData.currentImage.readyToWrite && !liveUSBData.currentImage.writer.running && liveUSBData.usbDrives.length > 0)
-                                text: pressedOnce ? "Are you sure?" : "Write to disk"
+                                text: pressedOnce ? qsTr("Are you sure?") : qsTr("Write to disk")
                                 onClicked: {
                                     if(pressedOnce || !liveUSBData.currentImage.warning || liveUSBData.currentImage.warning.length == 0) {
                                         if (!liveUSBData.currentImage.readyToWrite) {
@@ -355,7 +355,7 @@ Dialog {
                                 visible: optionGroup.checked
                                 width: implicitWidth
                                 property bool confirmed: false
-                                text: "Write the image immediately when the download is finished"
+                                text: qsTr("Write the image immediately when the download is finished")
                                 onClicked: {
                                     acceptButton.pressedOnce = !acceptButton.pressedOnce
                                 }

@@ -41,7 +41,7 @@ Item {
             }
         }
         AdwaitaButton {
-            text: "Write to USB disk"
+            text: qsTr("Write to USB disk")
             color: "#628fcf"
             textColor: "white"
             onClicked: {
@@ -120,7 +120,7 @@ Item {
                             color: "gray"
 
                             AdwaitaButton {
-                                text: "Select the file"
+                                text: qsTr("Select the file")
                                 Layout.alignment: Qt.AlignHCenter
                                 visible: liveUSBData.currentImage.isLocal
                                 onClicked: {
@@ -142,7 +142,7 @@ Item {
                     width: Layout.width
                     wrapMode: Text.WordWrap
                     text: liveUSBData.currentImage.isLocal ?
-                              ("Selected image: " + (liveUSBData.currentImage.path ? (((String)(liveUSBData.currentImage.path)).split("/").slice(-1)[0]) : "None"))
+                              (qsTr("Selected image: ") + (liveUSBData.currentImage.path ? (((String)(liveUSBData.currentImage.path)).split("/").slice(-1)[0]) : qsTr("None")))
                               : liveUSBData.currentImage.fullDescription
                     font.pointSize: 9
                 }
@@ -189,7 +189,7 @@ Item {
     }
     FileDialog {
         id: fileDialog
-        nameFilters: [ "Image files (*.iso)", "All files (*)"]
+        nameFilters: [ qsTr("Image files (*.iso)"), "All files (*)"]
         onAccepted: {
             liveUSBData.currentImage.path = fileUrl
         }
