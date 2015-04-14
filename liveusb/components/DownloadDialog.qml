@@ -6,7 +6,7 @@ import QtQuick.Window 2.0
 
 Dialog {
     id: root
-    title: "Write " + liveUSBData.currentImage.name + " to USB"
+    title: qsTr("Write %1 to USB").arg(liveUSBData.currentImage.name)
 
     height: layout.height + 56
     standardButtons: StandardButton.NoButton
@@ -149,7 +149,7 @@ Dialog {
                                 width: parent.width
                                 value: liveUSBData.currentImage.writer.running ? liveUSBData.currentImage.writer.progress / liveUSBData.currentImage.writer.maxProgress : 0
                                 visible: !liveUSBData.currentImage.download.running
-                                progressColor: liveUSBData.currentImage.writer.status == "Checking the source image" ? Qt.lighter("green") : "red"
+                                progressColor: liveUSBData.currentImage.writer.checking ? Qt.lighter("green") : "red"
                             }
                         }
                     }
