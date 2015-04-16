@@ -332,14 +332,14 @@ Dialog {
                         }
                         Column {
                             id: advancedOptions
-                            spacing: 0
+                            spacing: 6
                             Repeater {
                                 id: groupLayoutRepeater
                                 model: optionGroup.checked ? liveUSBData.optionValues : null
                                 CheckBox {
                                     checked: liveUSBData.optionValues[index]
                                     enabled: !liveUSBData.currentImage.writer.running
-                                    height: 20
+                                    height: implicitHeight
                                     width: implicitWidth
                                     text: liveUSBData.optionNames[index]
                                     onClicked: {
