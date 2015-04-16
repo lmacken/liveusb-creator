@@ -924,7 +924,7 @@ class LiveUSBApp(QGuiApplication):
     def __init__(self, opts, args):
         QGuiApplication.__init__(self, args)
         translator = QTranslator()
-        translator.load(QLocale.system().name(), "i18n")
+        translator.load(QLocale.system().name(), "po")
         self.installTranslator(translator)
         qmlRegisterUncreatableType(ReleaseDownload, 'LiveUSB', 1, 0, 'Download', 'Not creatable directly, use the liveUSBData instance instead')
         qmlRegisterUncreatableType(ReleaseWriter, 'LiveUSB', 1, 0, 'Writer', 'Not creatable directly, use the liveUSBData instance instead')

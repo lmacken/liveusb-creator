@@ -41,7 +41,7 @@ Item {
             }
         }
         AdwaitaButton {
-            text: qsTranslate("", "Write to USB Disk")
+            text: qsTranslate("", "Create Live USB")
             color: "#628fcf"
             textColor: "white"
             onClicked: {
@@ -120,7 +120,7 @@ Item {
                             color: "gray"
 
                             AdwaitaButton {
-                                text: qsTranslate("", "Select the file")
+                                text: qsTranslate("", "Select Live ISO")
                                 Layout.alignment: Qt.AlignHCenter
                                 visible: liveUSBData.currentImage.isLocal
                                 onClicked: {

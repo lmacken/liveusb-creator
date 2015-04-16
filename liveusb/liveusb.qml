@@ -13,7 +13,7 @@ ApplicationWindow {
     minimumHeight: 480
     maximumHeight: minimumHeight
     maximumWidth: minimumWidth
-    title: "LiveUSB Creator"
+    title: qsTranslate("", "Fedora LiveUSB Creator")
 
     SystemPalette {
         id: palette
