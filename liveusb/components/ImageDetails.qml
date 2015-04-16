@@ -41,7 +41,7 @@ Item {
             }
         }
         AdwaitaButton {
-            text: qsTr("Write to USB disk")
+            text: qsTranslate("", "Write to USB Disk")
             color: "#628fcf"
             textColor: "white"
             onClicked: {
@@ -120,7 +120,7 @@ Item {
                             color: "gray"
 
                             AdwaitaButton {
-                                text: qsTr("Select the file")
+                                text: qsTranslate("", "Select the file")
                                 Layout.alignment: Qt.AlignHCenter
                                 visible: liveUSBData.currentImage.isLocal
                                 onClicked: {
@@ -131,7 +131,7 @@ Item {
                         }
                         Text {
                             // I'm sorry, everyone, I can't find a better way to determine if the date is valid
-                            text: liveUSBData.currentImage.releaseDate.toLocaleDateString().length > 0 ? (qsTr("Released on %s").arg(liveUSBData.currentImage.releaseDate.toLocaleDateString())) : ""
+                            text: liveUSBData.currentImage.releaseDate.toLocaleDateString().length > 0 ? (qsTranslate("", "Released on %s").arg(liveUSBData.currentImage.releaseDate.toLocaleDateString())) : ""
                             font.pointSize: 8
                             color: "gray"
                         }
@@ -142,7 +142,7 @@ Item {
                     width: Layout.width
                     wrapMode: Text.WordWrap
                     text: liveUSBData.currentImage.isLocal ?
-                              (qsTr("Selected image: %s").arg(liveUSBData.currentImage.path ? (((String)(liveUSBData.currentImage.path)).split("/").slice(-1)[0]) : qsTr("None")))
+                              (qsTranslate("", "Selected image: %1").arg(liveUSBData.currentImage.path ? (((String)(liveUSBData.currentImage.path)).split("/").slice(-1)[0]) : qsTranslate("", "None")))
                               : liveUSBData.currentImage.fullDescription
                     font.pointSize: 9
                 }
@@ -189,7 +189,7 @@ Item {
     }
     FileDialog {
         id: fileDialog
-        nameFilters: [ qsTr("Image files (*.iso)"), qsTr("All files (*)")]
+        nameFilters: [ qsTranslate("", "Image files (*.iso)"), qsTranslate("", "All files (*)")]
         onAccepted: {
             liveUSBData.currentImage.path = fileUrl
         }

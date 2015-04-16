@@ -82,7 +82,7 @@ Item {
             Text {
                 anchors.fill: parent
                 color: "light gray"
-                text: qsTr("Find an operating system image")
+                text: qsTranslate("", "Find an operating system image")
                 visible: !parent.activeFocus && parent.text.length == 0
                 verticalAlignment: Text.AlignVCenter
             }

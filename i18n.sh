@@ -17,7 +17,7 @@ xgettext \
     --qt -L Java -L Python \
     --package-name="$PACKAGE" \
     --add-comments=TRANSLATORS \
-    --keyword=qsTr \
-    --keyword=qsTr:1,2 \
+    --keyword=qsTranslate \
+    --keyword=qsTranslate:1c,2 \
     --copyright-holder="RedHat Inc." \
     --from-code="UTF-8"
