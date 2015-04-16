@@ -33,7 +33,7 @@ import urlparse
 from time import sleep
 from datetime import datetime
 from PyQt5.QtCore import pyqtProperty, pyqtSlot, QObject, QUrl, QDateTime, pyqtSignal, QThread, QAbstractListModel, QSortFilterProxyModel, QModelIndex, Qt
-from PyQt5.QtWidgets import QApplication
+from PyQt5.QtGui import QGuiApplication
 from PyQt5.QtQml import qmlRegisterType, qmlRegisterUncreatableType, QQmlComponent, QQmlApplicationEngine, QQmlListProperty
 from PyQt5.QtQuick import QQuickView
 
@@ -919,10 +919,10 @@ class LiveUSBData(QObject):
         return self._optionValues[index]
 
 
-class LiveUSBApp(QApplication):
+class LiveUSBApp(QGuiApplication):
     """ Main application class """
     def __init__(self, opts, args):
-        QApplication.__init__(self, args)
+        QGuiApplication.__init__(self, args)
         qmlRegisterUncreatableType(ReleaseDownload, 'LiveUSB', 1, 0, 'Download', 'Not creatable directly, use the liveUSBData instance instead')
         qmlRegisterUncreatableType(ReleaseWriter, 'LiveUSB', 1, 0, 'Writer', 'Not creatable directly, use the liveUSBData instance instead')
         qmlRegisterUncreatableType(ReleaseListModel, 'LiveUSB', 1, 0, 'ReleaseModel', 'Not creatable directly, use the liveUSBData instance instead')
