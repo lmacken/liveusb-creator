@@ -265,6 +265,7 @@ Dialog {
                                 onClicked: {
                                     liveUSBData.currentImage.download.cancel()
                                     liveUSBData.currentImage.writer.cancel()
+                                    writeImmediately.checked = false
                                     acceptButton.pressedOnce = false
                                     root.close()
                                 }
