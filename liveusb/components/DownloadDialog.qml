@@ -52,11 +52,23 @@ Dialog {
                             RowLayout {
                                 width: infoColumn.width
                                 spacing: 8
+                                Rectangle {
+                                    anchors.centerIn: cross
+                                    width: cross.height
+                                    height: cross.height
+                                    radius: width / 2
+                                    color: "#88ffffff"
+                                    border {
+                                        width: 1
+                                        color: "#a1a1a1"
+                                    }
+                                }
                                 Text {
+                                    id: cross
                                     Layout.fillHeight: true
                                     verticalAlignment: Text.AlignVCenter
                                     color: "red"
-                                    text: "!!!"
+                                    text: "✕"
                                     font.pointSize: 14
                                 }
                                 Text {
