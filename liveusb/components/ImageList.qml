@@ -130,8 +130,15 @@ Item {
     }
 
     Rectangle {
-        clip: true
         z: -1
+        clip: true
+        radius: 6
+        color: "white"
+
+        height: root.viewFullList ? parent.height - 54 + 4 : parent.height - 108
+        Behavior on height {
+            NumberAnimation { duration: root.fadeDuration }
+        }
         anchors {
             top: parent.top
             left: parent.left
@@ -144,86 +151,10 @@ Item {
             color: "#c3c3c3"
             width: 1
         }
-        height: root.viewFullList ? parent.height - 54 + 4 : parent.height - 108
-        Behavior on height {
-            NumberAnimation {
-                duration: root.fadeDuration
-            }
-        }
-
-        Item {
-            anchors.fill: parent
-            enabled: !root.viewFullList
-            opacity: root.viewFullList ? 0.0 : 1.0
-            Behavior on opacity {
-                NumberAnimation {
-                    duration: root.fadeDuration
-                }
-            }
-            Column {
-                id: selectedOsColumn
-                anchors {
-                    top: parent.top
-                    left: parent.left
-                    right: parent.right
-                }
-                Repeater {
-                    model: liveUSBData.titleReleaseModel
-                    delegate: imageDelegate
-                }
-            }
-            Rectangle {
-                anchors {
-                    top: selectedOsColumn.bottom
-                    bottom: parent.bottom
-                    left: parent.left
-                    right: parent.right
-                    margins: 1
-                }
-                radius: 3
-                Column {
-                    anchors.centerIn: parent
-                    spacing: 2
-                    Repeater {
-                        model: 3
-                        Rectangle {
-                            height: 4
-                            width: 4
-                            color: "#bebebe"
-                        }
-                    }
-                }
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        root.viewFullList = true
-                    }
-                    onPressed: {
-                        parent.color = "#ededed"
-                    }
-                    onReleased: {
-                        parent.color = "transparent"
-                    }
-                    onCanceled: {
-                        parent.color = "transparent"
-                    }
-                }
-            }
-        }
-
-        radius: 6
-        color: "white"
     }
 
     ScrollView {
         id: fullList
-        enabled: root.viewFullList
-        opacity: root.viewFullList ? 1.0 : 0.0
-        Behavior on opacity {
-            NumberAnimation {
-                duration: root.fadeDuration
-            }
-        }
         anchors.fill: parent
         ListView {
             id: osListView
@@ -236,10 +167,51 @@ Item {
                 bottomMargin: -anchors.topMargin
             }
             footer: Item {
-                height: 54
+                height: root.viewFullList ? 54 : 36
+                width: osListView.width
+                Rectangle {
+                    visible: !root.viewFullList
+                    anchors.fill: parent
+                    anchors.margins: 1
+                    radius: 3
+                    Column {
+                        anchors.centerIn: parent
+                        spacing: 2
+                        Repeater {
+                            model: 3
+                            Rectangle {
+                                height: 4
+                                width: 4
+                                color: "#bebebe"
+                            }
+                        }
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        onHoveredChanged: {
+                            if (containsMouse && !pressed)
+                                parent.color = "#f8f8f8"
+                            if (!containsMouse)
+                                parent.color = "transparent"
+                        }
+                        onClicked: {
+                            root.viewFullList = true
+                        }
+                        onPressed: {
+                            parent.color = "#ededed"
+                        }
+                        onReleased: {
+                            parent.color = "transparent"
+                        }
+                        onCanceled: {
+                            parent.color = "transparent"
+                        }
+                    }
+                }
             }
 
-            model: liveUSBData.releaseProxyModel
+            model: root.viewFullList ? liveUSBData.releaseProxyModel : liveUSBData.titleReleaseModel
             delegate: imageDelegate
 
             remove: Transition {
