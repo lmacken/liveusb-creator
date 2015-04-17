@@ -482,6 +482,8 @@ class Release(QObject):
         self.warningChanged.emit()
         self._info = []
         self.infoChanged.emit()
+        self._error = []
+        self.errorChanged.emit()
 
         if not self.live.drive:
             return
