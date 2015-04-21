@@ -46,6 +46,12 @@ from liveusb import _
 
 class LiveUSBError(Exception):
     """ A generic error message that is thrown by the LiveUSBCreator """
+    def __init__(self, fullMessage, shortMessage=""):
+        self.args = fullMessage
+        if shortMessage != "":
+            self.short = shortMessage
+        else:
+            self.short = fullMessage
 
 
 class LiveUSBCreator(object):

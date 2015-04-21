@@ -1,11 +1,17 @@
 <RCC>
-  <qresource>
-    <file>liveusb-header-left.png</file>
-    <file>liveusb-header-right.png</file>
-    <file>liveusb-header-bg.png</file>
-    <file>liveusb-header.png</file>
-  </qresource>
-  <qresource>
-    <file>refresh.png</file>
-  </qresource>
+    <qresource>
+        <file>liveusb-header-left.png</file>
+        <file>liveusb-header-right.png</file>
+        <file>liveusb-header-bg.png</file>
+        <file>liveusb-header.png</file>
+        <file>refresh.png</file>
+        <file>logo-color-workstation.png</file>
+        <file>logo-color-server.png</file>
+        <file>logo-color-cloud.png</file>
+        <file>logo-lxde.png</file>
+        <file>logo-plasma5.png</file>
+        <file>logo-xfce.svg</file>
+        <file>logo-fedora.svg</file>
+        <file>icon-folder.svg</file>
+    </qresource>
 </RCC>

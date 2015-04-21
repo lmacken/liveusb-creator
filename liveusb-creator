@@ -60,6 +60,9 @@ def parse_args():
     parser.add_option('-d', '--dd', dest='destructive', action='store_true', default=False,
                       help='Overwrite your device with the image using dd '
                            '(WARNING: destructive)')
+    parser.add_option('', '--directqml', dest='directqml', action='store_true', default=False,
+                      help='Use filesystem-contained QML files instead of the built in ones. '
+                            'Useful for debugging.')
     #parser.add_option('-F', '--format', dest='format', action='store_true', default=False,
     #                  help='Format the device as FAT32 (WARNING: destructive)')
     #parser.add_option('-z', '--usb-zip', dest='zip', action='store_true',

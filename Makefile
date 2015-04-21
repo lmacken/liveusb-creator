@@ -14,6 +14,7 @@ rpm: dist
 
 gui:
 	pyrcc5 data/resources.qrc -o liveusb/resources_rc.py
+	pyrcc5 liveusb/qml.qrc -o liveusb/qml_rc.py
 
 pyflakes:
 	pyflakes liveusb/*.py

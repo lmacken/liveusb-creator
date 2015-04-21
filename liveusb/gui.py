@@ -30,12 +30,14 @@ import sys
 import logging
 import urlparse
 
+import resources_rc
+import qml_rc
+
 from time import sleep
 from datetime import datetime
 from PyQt5.QtCore import pyqtProperty, pyqtSlot, QObject, QUrl, QDateTime, pyqtSignal, QThread, QAbstractListModel, QSortFilterProxyModel, QModelIndex, Qt, QTranslator, QLocale
 from PyQt5.QtGui import QGuiApplication
 from PyQt5.QtQml import qmlRegisterType, qmlRegisterUncreatableType, QQmlComponent, QQmlApplicationEngine, QQmlListProperty
-from PyQt5.QtQuick import QQuickView
 
 from liveusb import LiveUSBCreator, LiveUSBError, _
 from liveusb.releases import releases, get_fedora_releases
@@ -429,19 +431,19 @@ class Release(QObject):
 
         if self._logo == '':
             if self._name == 'Fedora Workstation':
-                self._logo = '../../data/logo-color-workstation.png'
+                self._logo = 'qrc:/logo-color-workstation.png'
             elif self._name == 'Fedora Server':
-                self._logo = '../../data/logo-color-server.png'
+                self._logo = 'qrc:/logo-color-server.png'
             elif self._name == 'Fedora Cloud':
-                self._logo = '../../data/logo-color-cloud.png'
+                self._logo = 'qrc:/logo-color-cloud.png'
             elif self._name == 'Fedora KDE':
-                self._logo = '../../data/logo-plasma5.png'
+                self._logo = 'qrc:/logo-plasma5.png'
             elif self._name == 'Fedora Xfce':
-                self._logo = '../../data/logo-xfce.svg'
+                self._logo = 'qrc:/logo-xfce.svg'
             elif self._name == 'Fedora LXDE':
-                self._logo = '../../data/logo-lxde.png'
+                self._logo = 'qrc:/logo-lxde.png'
             else:
-                self._logo = '../../data/logo-fedora.svg'
+                self._logo = 'qrc:/logo-fedora.svg'
 
         if self._name == 'Fedora Workstation':
             self._fullDescription = _('Fedora Workstation is a reliable, user-friendly, and powerful operating system for your laptop or desktop computer. It supports a wide range of developers, from hobbyists and students to professionals in corporate environments.')
@@ -773,7 +775,7 @@ class LiveUSBData(QObject):
                                     shortDescription=_('<pick from file chooser>'),
                                     fullDescription=_('Here you can choose a OS image from your hard drive to be written to your flash disk'),
                                     isLocal=True,
-                                    logo='../../data/icon-folder.svg')
+                                    logo='qrc:/icon-folder.svg')
                             ]
         for release in releases:
             self.releaseData.append(Release(self,
@@ -937,6 +939,9 @@ class LiveUSBApp(QGuiApplication):
         view = QQmlApplicationEngine()
         self.data = LiveUSBData(opts)
         view.rootContext().setContextProperty('liveUSBData', self.data);
-        view.load(QUrl('liveusb/liveusb.qml'))
+        if (opts.directqml):
+            view.load(QUrl('liveusb/liveusb.qml'))
+        else:
+            view.load(QUrl('qrc:/liveusb.qml'))
         view.rootObjects()[0].show()
         self.exec_()
