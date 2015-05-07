@@ -7,13 +7,15 @@ import LiveUSB 1.0
 
 import "components"
 
-ApplicationWindow {
+Rectangle {
     id: mainWindow
-    minimumWidth: 800
-    minimumHeight: 480
-    maximumHeight: minimumHeight
-    maximumWidth: minimumWidth
-    title: qsTranslate("", "Fedora LiveUSB Creator")
+    width: 800
+    height: 480
+    //minimumWidth: 800
+    //minimumHeight: 480
+    //maximumHeight: minimumHeight
+    //maximumWidth: minimumWidth
+    //title: qsTranslate("", "Fedora LiveUSB Creator")
 
     SystemPalette {
         id: palette

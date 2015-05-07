@@ -30,14 +30,16 @@ import sys
 import logging
 import urlparse
 
-import resources_rc
-import qml_rc
 
 from time import sleep
 from datetime import datetime
 from PyQt5.QtCore import pyqtProperty, pyqtSlot, QObject, QUrl, QDateTime, pyqtSignal, QThread, QAbstractListModel, QSortFilterProxyModel, QModelIndex, Qt, QTranslator, QLocale
 from PyQt5.QtGui import QGuiApplication
 from PyQt5.QtQml import qmlRegisterType, qmlRegisterUncreatableType, QQmlComponent, QQmlApplicationEngine, QQmlListProperty
+from PyQt5 import QtQuick
+
+import resources_rc
+import qml_rc
 
 from liveusb import LiveUSBCreator, LiveUSBError, _
 from liveusb.releases import releases, get_fedora_releases
@@ -936,12 +938,12 @@ class LiveUSBApp(QGuiApplication):
         qmlRegisterUncreatableType(Release, 'LiveUSB', 1, 0, 'Release', 'Not creatable directly, use the liveUSBData instance instead')
         qmlRegisterUncreatableType(USBDrive, 'LiveUSB', 1, 0, 'Drive', 'Not creatable directly, use the liveUSBData instance instead')
         qmlRegisterUncreatableType(LiveUSBData, 'LiveUSB', 1, 0, 'Data', 'Use the liveUSBData root instance')
-        view = QQmlApplicationEngine()
+        view = QtQuick.QQuickView()
         self.data = LiveUSBData(opts)
         view.rootContext().setContextProperty('liveUSBData', self.data);
         if (opts.directqml):
-            view.load(QUrl('liveusb/liveusb.qml'))
+            view.setSource(QUrl('liveusb/liveusb.qml'))
         else:
-            view.load(QUrl('qrc:/liveusb.qml'))
-        view.rootObjects()[0].show()
+            view.setSource(QUrl('qrc:/liveusb.qml'))
+        view.show()
         self.exec_()
