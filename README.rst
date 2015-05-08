@@ -22,6 +22,8 @@ License
 
 The liveusb-creator is licensed under the GPLv2.
 
+The liveusb-creator logo is licensed under the `CC-BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0/>`_ license.
+
 This tool is distributed with the following open source software::
 
    Python
