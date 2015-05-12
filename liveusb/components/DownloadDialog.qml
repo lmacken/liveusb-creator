@@ -209,7 +209,7 @@ Dialog {
                             }
                         }
                         AdwaitaComboBox {
-                            Layout.preferredWidth: implicitWidth * 2.3
+                            Layout.preferredWidth: implicitWidth * 2.4
                             model: liveUSBData.usbDriveNames
                             currentIndex: liveUSBData.currentDrive
                             onCurrentIndexChanged: {
@@ -217,6 +217,20 @@ Dialog {
                                 liveUSBData.currentDrive = currentIndex
                             }
                             enabled: !liveUSBData.currentImage.writer.running
+                            Row {
+                                anchors.fill: parent
+                                visible: liveUSBData.usbDriveNames.length <= 0
+                                BusyIndicator {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    height: parent.height * 0.6
+                                }
+                                Text {
+                                    height: parent.height
+                                    verticalAlignment: Text.AlignVCenter
+                                    text: qsTranslate("", "Waiting for a drive to be connected")
+                                    color: "gray"
+                                }
+                            }
                         }
                     }
 
