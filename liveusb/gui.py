@@ -804,27 +804,30 @@ class LiveUSBData(QObject):
             previouslySelected = self._usbDrives[self._currentDrive].drive['device']
         for drive, info in self.live.drives.items():
             name = ''
-            if info['vendor'] and info['model']:
+            if 'vendor' in info and 'model' in info:
                 name = info['vendor'] + ' ' + info['model']
-            elif info['label']:
+            elif 'label' in info:
                 name = info['label']
             else:
                 name = info['device']
 
             gb = 1000.0 # if it's decided to use base 2 values, change this
 
-            if info['fullSize']:
-                pass
-                if info['fullSize'] < gb:
-                    name += ' (%.1f B)'  % (info['fullSize'] / (gb ** 0))
-                elif info['fullSize'] < gb * gb:
-                    name += ' (%.1f KB)' % (info['fullSize'] / (gb ** 1))
-                elif info['fullSize'] < gb * gb * gb:
-                    name += ' (%.1f MB)' % (info['fullSize'] / (gb ** 2))
-                elif info['fullSize'] < gb * gb * gb * gb:
-                    name += ' (%.1f GB)' % (info['fullSize'] / (gb ** 3))
-                else:
-                    name += ' (%.1f TB)' % (info['fullSize'] / (gb ** 4))
+            if 'fullSize' in info:
+                usedSize = info['fullSize']
+            else:
+                usedSize = info['size']
+
+            if usedSize < gb ** 1:
+                name += ' (%.1f B)'  % (usedSize / (gb ** 0))
+            elif usedSize < gb ** 2:
+                name += ' (%.1f KB)' % (usedSize / (gb ** 1))
+            elif usedSize < gb ** 3:
+                name += ' (%.1f MB)' % (usedSize / (gb ** 2))
+            elif usedSize < gb ** 4:
+                name += ' (%.1f GB)' % (usedSize / (gb ** 3))
+            else:
+                name += ' (%.1f TB)' % (usedSize / (gb ** 4))
 
             tmpDrives.append(USBDrive(self, name, info))
 
