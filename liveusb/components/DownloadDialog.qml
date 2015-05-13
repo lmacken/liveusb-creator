@@ -209,25 +209,33 @@ Dialog {
                             }
                         }
                         AdwaitaComboBox {
-                            Layout.preferredWidth: implicitWidth * 2.4
+                            Layout.preferredWidth: implicitWidth * 2.5
                             model: liveUSBData.usbDriveNames
                             currentIndex: liveUSBData.currentDrive
                             onCurrentIndexChanged: {
                                 acceptButton.pressedOnce = false
                                 liveUSBData.currentDrive = currentIndex
                             }
+                            onModelChanged: {
+                                if (liveUSBData.usbDriveNames.length <= 0)
+                                    currentIndex = -1
+                            }
+
                             enabled: !liveUSBData.currentImage.writer.running
                             Row {
+                                spacing: 8
                                 anchors.fill: parent
+                                anchors.leftMargin: 8
                                 visible: liveUSBData.usbDriveNames.length <= 0
                                 BusyIndicator {
                                     anchors.verticalCenter: parent.verticalCenter
                                     height: parent.height * 0.6
+                                    width: height
                                 }
                                 Text {
                                     height: parent.height
                                     verticalAlignment: Text.AlignVCenter
-                                    text: qsTranslate("", "Waiting for a drive to be connected")
+                                    text: qsTranslate("", "There are no portable drives connected")
                                     color: "gray"
                                 }
                             }

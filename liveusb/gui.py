@@ -33,7 +33,7 @@ import urlparse
 
 from time import sleep
 from datetime import datetime
-from PyQt5.QtCore import pyqtProperty, pyqtSlot, QObject, QUrl, QDateTime, pyqtSignal, QThread, QAbstractListModel, QSortFilterProxyModel, QModelIndex, Qt, QTranslator, QLocale
+from PyQt5.QtCore import pyqtProperty, pyqtSlot, QObject, QUrl, QDateTime, pyqtSignal, QThread, QAbstractListModel, QSortFilterProxyModel, QModelIndex, Qt, QTranslator, QLocale, QTimer
 from PyQt5.QtGui import QGuiApplication
 from PyQt5.QtQml import qmlRegisterType, qmlRegisterUncreatableType, QQmlComponent, QQmlApplicationEngine, QQmlListProperty
 from PyQt5 import QtQuick
@@ -792,6 +792,13 @@ class LiveUSBData(QObject):
         self._usbDrives = []
         self.currentDriveChanged.connect(self.currentImage.inspectDestination)
 
+        usbTimer = QTimer(self)
+        usbTimer.setInterval(5000) # check for USB drives every 5 seconds
+        usbTimer.timeout.connect(self.USBDeviceEnumerationStart)
+        usbTimer.start()
+
+    @pyqtSlot()
+    def USBDeviceEnumerationStart(self):
         try:
             self.live.detect_removable_drives(callback=self.USBDeviceCallback)
         except LiveUSBError, e:
@@ -807,7 +814,7 @@ class LiveUSBData(QObject):
             if 'vendor' in info and 'model' in info:
                 name = info['vendor'] + ' ' + info['model']
             elif 'label' in info:
-                name = info['label']
+                name = info['device'] + ' - ' + info['label']
             else:
                 name = info['device']
 
@@ -835,7 +842,7 @@ class LiveUSBData(QObject):
             self._usbDrives = tmpDrives
             self.usbDrivesChanged.emit()
 
-            self.currentDrive = 0
+            self.currentDrive = -1
             for i, drive in enumerate(self._usbDrives):
                 if drive.drive['device'] == previouslySelected:
                     self.currentDrive = i
