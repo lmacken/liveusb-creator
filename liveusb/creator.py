@@ -489,8 +489,7 @@ class LiveUSBCreator(object):
 class LinuxLiveUSBCreator(LiveUSBCreator):
 
     bus = None # the dbus.SystemBus
-    hal = None # the org.freedesktop.Hal.Manager dbus.Interface
-    udisks = None # the org.freedesktop.UDisks dbus.Interface
+    udisks = None # the org.freedesktop.UDisks2 dbus.Interface
 
     def __init__(self, *args, **kw):
         super(LinuxLiveUSBCreator, self).__init__(*args, **kw)
@@ -503,92 +502,94 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             self.valid_fstypes -= set(['ext4'])
 
     def detect_removable_drives(self, callback=None):
-        """ Detect all removable USB storage devices using UDisks via D-Bus """
+        """ Detect all removable USB storage devices using UDisks2 via D-Bus """
         import dbus
         self.drives = {}
         self.bus = dbus.SystemBus()
-        udisks_obj = self.bus.get_object("org.freedesktop.UDisks",
-                                         "/org/freedesktop/UDisks")
-        self.udisks = dbus.Interface(udisks_obj, "org.freedesktop.UDisks")
+        udisks_obj = self.bus.get_object("org.freedesktop.UDisks2",
+                                         "/org/freedesktop/UDisks2")
+        self.udisks = dbus.Interface(udisks_obj, 'org.freedesktop.DBus.ObjectManager')
 
-        def handle_reply(devices):
-            for device in devices:
-                dev_obj = self.bus.get_object("org.freedesktop.UDisks", device)
-                dev = dbus.Interface(dev_obj, "org.freedesktop.DBus.Properties")
+        def strify(s):
+            return bytearray(s).replace(b'\x00', b'').decode('utf-8')
 
-                data = {
-                    'udi': str(device),
-                    'is_optical': bool(dev.Get(device, 'DeviceIsOpticalDisc')),
-                    'label': unicode(dev.Get(device, 'IdLabel')).replace(' ', '_'),
-                    'fstype': str(dev.Get(device, 'IdType')),
-                    'fsversion': str(dev.Get(device, 'IdVersion')),
-                    'uuid': str(dev.Get(device, 'IdUuid')),
-                    'device': str(dev.Get(device, 'DeviceFile')),
-                    'mount': map(unicode, list(dev.Get(device, 'DeviceMountPaths'))),
-                    'bootable': 'boot' in map(str,
-                        list(dev.Get(device, 'PartitionFlags'))),
-                    'parent': None,
-                    'size': int(dev.Get(device, 'DeviceSize')),
-                }
+        for name, device in self.udisks.GetManagedObjects().iteritems():
+            if ('org.freedesktop.UDisks2.Block' in device and
+                'org.freedesktop.UDisks2.Filesystem' in device):
+                self.log.debug('Found block device with filesystem on %s' % name)
+            else:
+                continue
 
-                # Only pay attention to USB devices, unless --force'd
-                iface = str(dev.Get(device, 'DriveConnectionInterface'))
-                if iface != 'usb' and self.opts.force != data['device']:
-                    self.log.warning('Skipping non-usb drive: %s' % device)
-                    continue
+            fs = device['org.freedesktop.UDisks2.Filesystem']
+            blk = device['org.freedesktop.UDisks2.Block']
 
-                # Skip optical drives
-                if data['is_optical'] and self.opts.force != data['device']:
-                    self.log.debug('Skipping optical device: %s' % data['device'])
-                    continue
+            if blk['HintSystem'] is True:
+                self.log.debug('Skipping system filesystem: %s' % name)
+                continue
+            if blk['ReadOnly'] is True:
+                self.log.debug('Skipping read-only filesystem: %s' % name)
+                continue
+            if blk['IdUsage'] != 'filesystem':
+                self.log.debug('Skipping non-filesystem device: %s' % name)
+                continue
+            if blk['HintIgnore'] is True:
+                self.log.debug('Skipping ignorable device: %s' % name)
+                continue
+            if blk['Drive'] == '/':
+                self.log.debug('Skipping root drive: %s' % name)
+                continue
 
-                # Skip things without a size
-                if not data['size'] and not self.opts.force:
-                    self.log.debug('Skipping device without size: %s' % device)
-                    continue
+            data = {
+                'udi': str(blk['Drive']),
+                'label': str(blk['IdLabel']),
+                'fstype': str(blk['IdType']),
+                'fsversion': str(blk['IdVersion']),
+                'uuid': str(blk['IdUUID']),
+                'device': strify(blk['Device']),
+                'mount': map(strify, fs['MountPoints']),
+                'size': int(blk['Size']),
+            }
+            self.log.debug('data = %r' % data)
 
-                # Skip devices with unknown filesystems
-                if data['fstype'] not in self.valid_fstypes and \
-                        self.opts.force != data['device']:
-                    self.log.debug('Skipping %s with unknown filesystem: %s' % (
-                        data['device'], data['fstype']))
-                    continue
+            if '/boot' in data['mount']:
+                self.log.debug('Skipping boot device: %s' % name)
+                continue
 
-                parent = dev.Get(device, 'PartitionSlave')
-                if parent and parent != '/':
-                    data['parent'] = str(dbus.Interface(self._get_device(parent),
-                            'org.freedesktop.DBus.Properties').Get(parent,
-                                'DeviceFile'))
+            # Skip things without a size
+            if not data['size'] and not self.opts.force:
+                self.log.debug('Skipping device without size: %s' % device)
+                continue
 
-                mount = data['mount']
-                if mount:
-                    if len(mount) > 1:
-                        self.log.warning('Multiple mount points for %s' %
-                                data['device'])
-                    mount = data['mount'] = data['mount'][0]
-                else:
-                    mount = data['mount'] = None
+            # Skip devices with unknown filesystems
+            if data['fstype'] not in self.valid_fstypes and \
+                    self.opts.force != data['device']:
+                self.log.debug('Skipping %s with unknown filesystem: %s' % (
+                    data['device'], data['fstype']))
+                continue
 
-                data['free'] = mount and \
-                        self.get_free_bytes(mount) / 1024**2 or None
+            mount = data['mount']
+            if mount:
+                if len(mount) > 1:
+                    self.log.warning('Multiple mount points for %s' %
+                            data['device'])
+                mount = data['mount'] = data['mount'][0]
+            else:
+                mount = data['mount'] = None
 
-                self.log.debug(pformat(data))
+            data['free'] = mount and \
+                    self.get_free_bytes(mount) / 1024**2 or None
 
-                self.drives[data['device']] = data
+            self.log.debug(pformat(data))
 
-            # Remove parent drives if a valid partition exists
-            for parent in [d['parent'] for d in self.drives.values()]:
-                if parent in self.drives:
-                    del(self.drives[parent])
+            self.drives[data['device']] = data
 
-            if callback:
-                callback()
+        # Remove parent drives if a valid partition exists
+        #for parent in [d['parent'] for d in self.drives.values()]:
+        #    if parent in self.drives:
+        #        del(self.drives[parent])
 
-        def handle_error(error):
-            self.log.error(str(error))
-
-        self.udisks.EnumerateDevices(reply_handler=handle_reply,
-                                     error_handler=handle_error)
+        if callback:
+            callback()
 
     def _storage_bus(self, dev):
         storage_bus = None
@@ -633,32 +634,26 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             raise LiveUSBError(_("Unsupported filesystem: %s") %
                                  self.fstype)
         self.dest = self.drive['mount']
+        mnt = None
         if not self.dest:
             try:
-                self.log.debug("Calling %s.Mount('', %s, [], ...)" % (
-                               self.drive['udi'], self.fstype))
-                dev = self._get_device(self.drive['udi'])
-                dev.FilesystemMount('', [],
-                        dbus_interface='org.freedesktop.UDisks.Device')
+                dev = self._get_device_fs(self.drive['udi'])
+                self.log.debug("Mounting %s" % self.drive['device'])
+                bd = self.bus.get_object('org.freedesktop.UDisks2',
+                                   '/org/freedesktop/UDisks2/block_devices%s' %
+                                   self.drive['device'][4:])
+                mnt = str(bd.Mount({}, dbus_interface='org.freedesktop.UDisks2.Filesystem'))
             except dbus.exceptions.DBusException, e:
-                if e.get_dbus_name() == \
-                        'org.freedesktop.Hal.Device.Volume.AlreadyMounted':
-                    self.log.debug(_('Device already mounted'))
-                else:
-                    self.log.error(_('Unknown dbus exception while trying to '
-                                     'mount device: %s') % str(e))
+                self.log.error(_('Unknown dbus exception while trying to '
+                                 'mount device: %s') % str(e))
             except Exception, e:
                 raise LiveUSBError(_("Unable to mount device: %r" % e))
 
-            # Get the new mount point
-            udi = self.drive['udi']
-            dev_obj = self.bus.get_object("org.freedesktop.UDisks", udi)
-            dev = dbus.Interface(dev_obj, "org.freedesktop.DBus.Properties")
-            mounts = map(unicode, list(dev.Get(udi, 'DeviceMountPaths')))
-            if not mounts:
+            if not os.path.exists(mnt):
                 self.log.error(_('No mount points found after mounting attempt'))
+                self.log.error("%s doesn't exist" % mnt)
             else:
-                self.dest = self.drive['mount'] = mounts[0]
+                self.dest = self.drive['mount'] = mnt
                 self.drive['free'] = self.get_free_bytes(self.dest) / 1024**2
                 self.log.debug("Mounted %s to %s " % (self.drive['device'],
                                                       self.dest))
@@ -787,11 +782,11 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         stat = os.statvfs(device)
         return stat[statvfs.F_BSIZE] * stat[statvfs.F_BAVAIL]
 
-    def _get_device(self, udi):
+    def _get_device_fs(self, udi):
         """ Return a dbus Interface to a specific UDisks device UDI """
         import dbus
-        dev_obj = self.bus.get_object("org.freedesktop.UDisks", udi)
-        return dbus.Interface(dev_obj, "org.freedesktop.UDisks.Device")
+        dev_obj = self.bus.get_object("org.freedesktop.UDisks2", udi)
+        return dbus.Interface(dev_obj, "org.freedesktop.UDisks2.Filesystem")
 
     def terminate(self):
         for pid in self.pids:
