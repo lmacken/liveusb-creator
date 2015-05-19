@@ -523,6 +523,9 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             fs = device['org.freedesktop.UDisks2.Filesystem']
             blk = device['org.freedesktop.UDisks2.Block']
 
+            if blk['HintAuto'] is False:
+                self.log.debug('Skipping non-automounting filesystem: %s' % name)
+                continue
             if blk['HintSystem'] is True:
                 self.log.debug('Skipping system filesystem: %s' % name)
                 continue
