@@ -23,6 +23,14 @@
 
 """
 A cross-platform graphical interface for the LiveUSBCreator
+
+There was a move from the procedural code that was directly changing the UI itself.
+Now, we expose a set of properties representing each object we're manipulating in the back-end.
+The exposed properties are then handled independently in the UI.
+
+For example, when the image is being written, we just change the "writing" property. The UI then locks itself up based
+on this property. Basically, this means every relevant "enabled" property of the UI elements is bound to the "writing"
+property of the backend.
 """
 
 import os
@@ -63,6 +71,7 @@ MAX_FAT32 = 3999
 MAX_EXT = 2097152
 
 class ReleaseDownloadThread(QThread):
+    """ Heavy lifting in the process the iso file download """
     downloadFinished = pyqtSignal(str)
     downloadError = pyqtSignal(str)
 
@@ -88,6 +97,9 @@ class ReleaseDownloadThread(QThread):
             self.downloadFinished.emit(iso)
 
 class ReleaseDownload(QObject, BaseMeter):
+    """ Wrapper for the iso download process.
+    It exports properties to track the percentage and the file with the result.
+    """
     runningChanged = pyqtSignal()
     currentChanged = pyqtSignal()
     maximumChanged = pyqtSignal()
@@ -177,6 +189,7 @@ class ReleaseDownload(QObject, BaseMeter):
             self.pathChanged.emit()
 
 class ReleaseWriterProgressThread(QThread):
+    """ Periodically checks how the write progresses """
     alive = True
     get_free_bytes = None
     drive = None
@@ -208,7 +221,7 @@ class ReleaseWriterProgressThread(QThread):
 
 
 class ReleaseWriterThread(QThread):
-
+    """ The actual write to the portable drive """
 
     def __init__(self, parent, progressThread):
         QThread.__init__(self, parent)
@@ -219,6 +232,7 @@ class ReleaseWriterThread(QThread):
 
 
     def run(self):
+        # TODO move this to the backend
         #handler = LiveUSBLogHandler(self.parent.status)
         #self.live.log.addHandler(handler)
         now = datetime.now()
@@ -235,6 +249,7 @@ class ReleaseWriterThread(QThread):
         #self.live.log.removeHandler(handler)
 
     def ddImage(self, now):
+        # TODO move this to the backend
         self.live.dd_image()
         #self.live.log.removeHandler(handler)
         #duration = str(datetime.now() - now).split('.')[0]
@@ -244,6 +259,7 @@ class ReleaseWriterThread(QThread):
         return
 
     def copyImage(self, now):
+        # TODO move this to the backend
 
         self.parent.status = _('Checking the source image')
         self.live.check_free_space()
@@ -305,6 +321,7 @@ class ReleaseWriterThread(QThread):
         self.parent.progress = value
 
 class ReleaseWriter(QObject):
+    """ Here we can track the progress of the writing and control it """
     runningChanged = pyqtSignal()
     currentChanged = pyqtSignal()
     maximumChanged = pyqtSignal()
@@ -401,6 +418,9 @@ class ReleaseWriter(QObject):
 
 
 class Release(QObject):
+    ''' Contains the information about the particular release of Fedora
+        I think there should be a cleanup of all the properties - there seem to be more of them than needed
+    '''
     screenshotsChanged = pyqtSignal()
     errorChanged = pyqtSignal()
     warningChanged = pyqtSignal()
@@ -650,6 +670,8 @@ class Release(QObject):
             self.errorChanged.emit()
 
 class ReleaseListModel(QAbstractListModel):
+    """ An abstraction over the list of releases to have them nicely exposed to QML and ready to be filtered
+    """
     def __init__(self, parent, title=False):
         QAbstractListModel.__init__(self, parent)
         self._title = title
@@ -669,6 +691,8 @@ class ReleaseListModel(QAbstractListModel):
         return None
 
 class ReleaseListProxy(QSortFilterProxyModel):
+    """ Filtering proxy for the release list
+    """
     archChanged = pyqtSignal()
     nameFilterChanged = pyqtSignal()
 
@@ -745,6 +769,9 @@ class USBDrive(QObject):
         return self._drive
 
 class LiveUSBData(QObject):
+    """ An entry point to all the exposed properties.
+        There is a list of images and USB drives
+    """
     releasesChanged = pyqtSignal()
     currentImageChanged = pyqtSignal()
     usbDrivesChanged = pyqtSignal()

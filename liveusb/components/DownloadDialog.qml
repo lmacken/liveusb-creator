@@ -378,7 +378,8 @@ Dialog {
                                     width: implicitWidth
                                     text: liveUSBData.optionNames[index]
                                     onClicked: {
-                                        acceptButton.pressedOnce = false
+                                        if (!writeImmediately.checked)
+                                            acceptButton.pressedOnce = false
                                         liveUSBData.setOption(index, checked)
                                     }
                                 }
@@ -391,8 +392,11 @@ Dialog {
                                 width: implicitWidth
                                 property bool confirmed: false
                                 text: qsTranslate("", "Write the image immediately when the download is finished")
-                                onClicked: {
-                                    acceptButton.pressedOnce = !acceptButton.pressedOnce
+                                onCheckedChanged: {
+                                    if (checked)
+                                        acceptButton.pressedOnce = false
+                                    else
+                                        acceptButton.pressedOnce = true
                                 }
                             }
                         }
