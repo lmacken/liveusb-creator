@@ -515,14 +515,17 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
         for name, device in self.udisks.GetManagedObjects().iteritems():
             if ('org.freedesktop.UDisks2.Block' in device and
-                'org.freedesktop.UDisks2.Filesystem' in device):
+                'org.freedesktop.UDisks2.Filesystem' in device and
+                'org.freedesktop.UDisks2.Partition' in device):
                 self.log.debug('Found block device with filesystem on %s' % name)
             else:
                 continue
 
+            partition = device['org.freedesktop.UDisks2.Partition']
             fs = device['org.freedesktop.UDisks2.Filesystem']
             blk = device['org.freedesktop.UDisks2.Block']
 
+            """
             if blk['HintAuto'] is False:
                 self.log.debug('Skipping non-automounting filesystem: %s' % name)
                 continue
@@ -538,8 +541,20 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             if blk['HintIgnore'] is True:
                 self.log.debug('Skipping ignorable device: %s' % name)
                 continue
+            """
             if blk['Drive'] == '/':
                 self.log.debug('Skipping root drive: %s' % name)
+                continue
+
+            drive_obj = self.bus.get_object("org.freedesktop.UDisks2", blk['Drive'])
+            drive = dbus.Interface(drive_obj, "org.freedesktop.DBus.Properties").GetAll("org.freedesktop.UDisks2.Drive")
+
+            # this is probably the only check we need, including Drive != "/"
+            if (not drive[u'Removable'] or
+                drive[u'Optical'] or
+                    (drive[u'ConnectionBus'] != 'usb' and
+                     drive[u'ConnectionBus'] != 'sdio')):
+                self.log.debug('Skipping a device that is not removable, connected via USB or is optical: %s' % name)
                 continue
 
             data = {
@@ -581,6 +596,11 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
             data['free'] = mount and \
                     self.get_free_bytes(mount) / 1024**2 or None
+
+            print(partition[u'Table'])
+            parent_obj = self.bus.get_object("org.freedesktop.UDisks2", partition[u'Table'])
+            parent = dbus.Interface(parent_obj, "org.freedesktop.DBus.Properties").Get("org.freedesktop.UDisks2.Block", "Device")
+            data['parent'] = strify(parent)
 
             self.log.debug(pformat(data))
 
