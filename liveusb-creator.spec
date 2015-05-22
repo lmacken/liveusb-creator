@@ -7,7 +7,7 @@
 %endif
 
 Name:           liveusb-creator
-Version:        3.13.3
+Version:        3.14.0
 Release:        1%{?dist}
 Summary:        A liveusb creator
 
@@ -90,7 +90,7 @@ rm -rf %{buildroot}
 %{_datadir}/polkit-1/actions/org.fedoraproject.pkexec.run-liveusb-creator.policy
 
 %changelog
-* Fri May 22 2015 Luke Macken <lmacken@redhat.com>
+* Fri May 22 2015 Luke Macken <lmacken@redhat.com> - 3.14.0-1
 - Require udisks2
 
 * Thu Nov 27 2014 Luke Macken <lmacken@redhat.com> - 3.13.1-1
