@@ -56,6 +56,9 @@ MAX_EXT = 2097152
 class LiveUSBApp(QtGui.QApplication):
     """ Main application class """
     def __init__(self, opts, args):
+        if sys.platform[:5] == 'linux':
+            QtGui.QApplication.setGraphicsSystem('native')
+
         QtGui.QApplication.__init__(self, args)
         self.mywindow = LiveUSBWindow(opts, args)
         self.mywindow.show()
