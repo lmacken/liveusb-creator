@@ -7,7 +7,7 @@
 %endif
 
 Name:           liveusb-creator
-Version:        3.14.0
+Version:        3.14.1
 Release:        1%{?dist}
 Summary:        A liveusb creator
 
@@ -90,6 +90,9 @@ rm -rf %{buildroot}
 %{_datadir}/polkit-1/actions/org.fedoraproject.pkexec.run-liveusb-creator.policy
 
 %changelog
+* Mon May 25 2015 Luke Macken <lmacken@redhat.com> - 3.14.0-1
+- Patched to fix black window issue on F22 (#1212180)
+
 * Fri May 22 2015 Luke Macken <lmacken@redhat.com> - 3.14.0-1
 - Require udisks2
 
