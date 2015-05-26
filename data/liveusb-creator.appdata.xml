@@ -22,7 +22,7 @@
   </description>
   <url type="homepage">https://fedorahosted.org/liveusb-creator/</url>
   <screenshots>
-    <screenshot type="default">https://fedorahosted.org/liveusb-creator/raw-attachment/wiki/img/liveusb-creator.png</screenshot>
+    <screenshot type="default">https://lmacken.fedorapeople.org/img/liveusb-creator-3.13.png</screenshot>
   </screenshots>
   <updatecontact>lmacken@redhat.com</updatecontact>
 </application>
