@@ -44,19 +44,34 @@ def get_fedora_releases():
                             print('Reading %s' % arch_url + link)
                             checksum = urlread(arch_url + link)
                             for line in checksum.split('\n'):
-                                try:
-                                    sha256, filename = line.split()
-                                    if filename[0] != '*':
-                                        continue
-                                    filename = filename[1:]
-                                    name = filename.replace('.iso', '')
-                                    fedora_releases.append(dict(
-                                        name=name,
-                                        url=arch_url + filename,
-                                        sha256=sha256,
-                                    ))
-                                except ValueError:
-                                    pass
+                                if release >= 22:
+                                    # SHA256 (filename) = checksum
+                                    if '=' in line:
+                                        try:
+                                            hash_type, filename, _, sha256 = line.split()
+                                            filename = filename[1:-1]
+                                            name = filename.replace('.iso', '')
+                                            fedora_releases.append(dict(
+                                                name=name,
+                                                url=arch_url + filename,
+                                                sha256=sha256,
+                                            ))
+                                        except ValueError:
+                                            pass
+                                else:
+                                    try:
+                                        sha256, filename = line.split()
+                                        if filename[0] != '*':
+                                            continue
+                                        filename = filename[1:]
+                                        name = filename.replace('.iso', '')
+                                        fedora_releases.append(dict(
+                                            name=name,
+                                            url=arch_url + filename,
+                                            sha256=sha256,
+                                        ))
+                                    except ValueError:
+                                        pass
         releases = fedora_releases
     except:
         traceback.print_exc()
