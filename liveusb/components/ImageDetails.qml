@@ -143,7 +143,8 @@ Item {
                     wrapMode: Text.WordWrap
                     text: liveUSBData.currentImage.isLocal ?
                               (qsTranslate("", "Selected image: %1").arg(liveUSBData.currentImage.path ? (((String)(liveUSBData.currentImage.path)).split("/").slice(-1)[0]) : qsTranslate("", "None")))
-                              : liveUSBData.currentImage.fullDescription
+                              : liveUSBData.currentImage.description
+                    textFormat: Text.RichText
                     font.pointSize: 9
                 }
                 Repeater {
@@ -152,7 +153,7 @@ Item {
                     IndicatedImage {
                         Layout.fillWidth: true
                         fillMode: Image.PreserveAspectFit
-                        source: screenshotRepeater.model[index]
+                        source: modelData
                         sourceSize.width: width
                     }
                 }

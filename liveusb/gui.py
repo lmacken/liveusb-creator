@@ -429,28 +429,35 @@ class Release(QObject):
     pathChanged = pyqtSignal()
     sizeChanged = pyqtSignal()
 
-    def __init__(self, parent, index, live=None, name = '', logo = '', size = 0, arch = '', fullName = '', releaseDate = QDateTime(), shortDescription = '', fullDescription = '', isLocal = False, screenshots = [], url=''):
+    def __init__(self, parent, index, live, data):
         QObject.__init__(self, parent)
 
         self._index = index
         self.live = live
         self.liveUSBData = parent
+
+        self._data = data
+        """
         self._name = name.replace('_', ' ')
         self._logo = logo
         self._size = size
         self._arch = arch
         self._fullName = fullName
         self._releaseDate = releaseDate
-        self._shortDescription = shortDescription
+        self._summary = summary
         self._fullDescription = fullDescription
         self._isLocal = isLocal
         self._screenshots = screenshots
         self._url = url
+        """
+
         self._path = ''
+
         self._info = []
         self._warning = []
         self._error = []
 
+        """
         if self._logo == '':
             if self._name == 'Fedora Workstation':
                 self._logo = 'qrc:/logo-color-workstation.png'
@@ -473,6 +480,8 @@ class Release(QObject):
             self._fullDescription = _('Fedora Server is a powerful, flexible operating system that includes the best and latest datacenter technologies. It puts you in control of all your infrastructure and services.')
         if self._name == 'Fedora Cloud':
             self._fullDescription = _('Fedora Cloud provides a minimal image of Fedora for use in public and private cloud environments. It includes just the bare essentials, so you get enough to run your cloud application -- and nothing more.')
+
+        """
 
         self._download = ReleaseDownload(self)
         self._download.pathChanged.connect(self.pathChanged)
@@ -548,53 +557,49 @@ class Release(QObject):
 
     @pyqtProperty(str, constant=True)
     def name(self):
-        return self._name
+        return self._data['name']
 
     @pyqtProperty(str, constant=True)
     def logo(self):
-        return self._logo
+        return self._data['logo']
 
     @pyqtProperty(float, notify=sizeChanged)
     def size(self):
-        return self._size
+        return self._data['size']
 
     @size.setter
     def size(self, value):
         if value != self._size:
-            self._size = value
+            self._data['size'] = value
             self.sizeChanged.emit()
 
     @pyqtProperty(str, constant=True)
     def arch(self):
-        return self._arch
-
-    @pyqtProperty(str, constant=True)
-    def fullName(self):
-        return self._fullName
+        return self._data['arch']
 
     @pyqtProperty(QDateTime, constant=True)
     def releaseDate(self):
-        return self._releaseDate
+        return QDateTime.fromString(self._data['releaseDate'])
 
     @pyqtProperty(str, constant=True)
-    def shortDescription(self):
-        return self._shortDescription
+    def summary(self):
+        return self._data['summary']
 
     @pyqtProperty(str, constant=True)
-    def fullDescription(self):
-        return self._fullDescription
+    def description(self):
+        return self._data['description']
 
     @pyqtProperty(bool, constant=True)
     def isLocal(self):
-        return self._isLocal
+        return self._data['source'] == 'Local'
 
-    @pyqtProperty(QQmlListProperty, notify=screenshotsChanged)
+    @pyqtProperty('QStringList', notify=screenshotsChanged)
     def screenshots(self):
-        return QQmlListProperty(str, self, self._screenshots)
+        return self._data['screenshots']
 
     @pyqtProperty(str, constant=True)
     def url(self):
-        return self._url
+        return self._data['url']
 
     @pyqtProperty(str, notify=pathChanged)
     def path(self):
@@ -678,7 +683,7 @@ class ReleaseListModel(QAbstractListModel):
 
     def rowCount(self, parent=QModelIndex()):
         if self._title:
-            return min(6, len(self.parent().releaseData))
+            return min(4, len(self.parent().releaseData))
         else:
             return len(self.parent().releaseData)
 
@@ -797,24 +802,14 @@ class LiveUSBData(QObject):
         self._releaseProxy = ReleaseListProxy(self, self._releaseModel)
         self._titleReleaseModel = ReleaseListModel(self, True)
         self._titleReleaseProxy = ReleaseListProxy(self, self._titleReleaseModel)
-        self.releaseData = [Release(self,
-                                    0,
-                                    self.live,
-                                    name=_('Custom OS...'),
-                                    shortDescription=_('<pick from file chooser>'),
-                                    fullDescription=_('Here you can choose a OS image from your hard drive to be written to your flash disk'),
-                                    isLocal=True,
-                                    logo='qrc:/icon-folder.svg')
-                            ]
+
+        self.releaseData = []
+
         for release in releases:
             self.releaseData.append(Release(self,
                                             len(self.releaseData),
                                             self.live,
-                                            name='Fedora '+release['variant'],
-                                            shortDescription='Fedora'+(' Minimal ' if release['netinst'] and not release['variant'] == 'Cloud' else ' ')+release['variant']+' '+release['version']+(' 64bit' if release['arch']=='x86_64' else ' 32bit'),
-                                            arch=release['arch'],
-                                            size=release['size'],
-                                            url=release['url']
+                                            release
                                     ))
         self._usbDrives = []
         self.currentDriveChanged.connect(self.currentImage.inspectDestination)

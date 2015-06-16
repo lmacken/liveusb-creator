@@ -286,7 +286,10 @@ Item {
                     anchors {
                         verticalCenter: parent.verticalCenter
                         left: iconRect.right
+                        right: arrow.left
+                        bottom: parent.bottom
                         leftMargin: 28
+                        rightMargin: 14
                     }
                     Text {
                         text: release.name
@@ -298,17 +301,20 @@ Item {
                         // font.weight: Font.Bold
                     }
                     Text {
-                        text: release.shortDescription
+                        text: release.summary
                         anchors {
                             top: parent.verticalCenter
-                            left: parent.right
+                            left: parent.left
+                            right: parent.right
                             topMargin: 2
                         }
+                        wrapMode: Text.Wrap
                         color: "#a1a1a1"
                         // font.weight: Font.Bold
                     }
                 }
                 Arrow {
+                    id: arrow
                     visible: !release.isLocal
                     anchors {
                         verticalCenter: parent.verticalCenter
