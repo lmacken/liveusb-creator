@@ -709,7 +709,6 @@ class ReleaseListProxy(QSortFilterProxyModel):
         self.setSourceModel(sourceModel)
 
     def rowCount(self, parent=QModelIndex()):
-        print (self._frontPage, self.sourceModel().rowCount(parent))
         if self._frontPage and self.sourceModel().rowCount(parent) > 4:
             return 4
         return self.sourceModel().rowCount(parent)
@@ -758,7 +757,6 @@ class ReleaseListProxy(QSortFilterProxyModel):
     @isFront.setter
     def isFront(self, value):
         if value != self._frontPage:
-            print "WOT"
             self._frontPage = value
             self.isFrontChanged.emit()
             self.invalidate()
