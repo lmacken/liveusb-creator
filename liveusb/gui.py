@@ -677,15 +677,11 @@ class Release(QObject):
 class ReleaseListModel(QAbstractListModel):
     """ An abstraction over the list of releases to have them nicely exposed to QML and ready to be filtered
     """
-    def __init__(self, parent, title=False):
+    def __init__(self, parent):
         QAbstractListModel.__init__(self, parent)
-        self._title = title
 
     def rowCount(self, parent=QModelIndex()):
-        if self._title:
-            return min(4, len(self.parent().releaseData))
-        else:
-            return len(self.parent().releaseData)
+        return len(self.parent().releaseData)
 
     def roleNames(self):
         return {Qt.UserRole + 1 : 'release'}
@@ -700,16 +696,23 @@ class ReleaseListProxy(QSortFilterProxyModel):
     """
     archChanged = pyqtSignal()
     nameFilterChanged = pyqtSignal()
+    isFrontChanged = pyqtSignal()
 
     _archFilter = ['x86_64']
     _nameFilter = ''
+    _frontPage = True
 
     _archMap = {'64bit': ['x86_64'], '32bit': ['i686','i386']}
-
 
     def __init__(self, parent, sourceModel):
         QSortFilterProxyModel.__init__(self, parent)
         self.setSourceModel(sourceModel)
+
+    def rowCount(self, parent=QModelIndex()):
+        print (self._frontPage, self.sourceModel().rowCount(parent))
+        if self._frontPage and self.sourceModel().rowCount(parent) > 4:
+            return 4
+        return self.sourceModel().rowCount(parent)
 
     def filterAcceptsRow(self, sourceRow, sourceParent):
         row = self.sourceModel().index(sourceRow, 0, sourceParent).data()
@@ -747,6 +750,19 @@ class ReleaseListProxy(QSortFilterProxyModel):
             self._archFilter = self._archMap[value]
             self.archChanged.emit()
             self.invalidateFilter()
+
+    @pyqtProperty(bool, notify=isFrontChanged)
+    def isFront(self):
+        return self._frontPage
+
+    @isFront.setter
+    def isFront(self, value):
+        if value != self._frontPage:
+            print "WOT"
+            self._frontPage = value
+            self.isFrontChanged.emit()
+            self.invalidate()
+
 
 class LiveUSBLogHandler(logging.Handler):
 
@@ -800,8 +816,6 @@ class LiveUSBData(QObject):
         self.live = LiveUSBCreator(opts=opts)
         self._releaseModel = ReleaseListModel(self)
         self._releaseProxy = ReleaseListProxy(self, self._releaseModel)
-        self._titleReleaseModel = ReleaseListModel(self, True)
-        self._titleReleaseProxy = ReleaseListProxy(self, self._titleReleaseModel)
 
         self.releaseData = []
 
@@ -876,10 +890,6 @@ class LiveUSBData(QObject):
     @pyqtProperty(ReleaseListProxy, notify=releasesChanged)
     def releaseProxyModel(self):
         return self._releaseProxy
-
-    @pyqtProperty(ReleaseListModel, notify=releasesChanged)
-    def titleReleaseModel(self):
-        return self._titleReleaseProxy
 
     @pyqtProperty(int, notify=currentImageChanged)
     def currentIndex(self):

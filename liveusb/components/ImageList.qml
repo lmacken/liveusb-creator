@@ -7,7 +7,6 @@ Item {
     id: root
 
     property alias currentIndex: osListView.currentIndex
-    property bool viewFullList: false
     property real fadeDuration: 200
 
     signal stepForward(int index)
@@ -16,8 +15,8 @@ Item {
     clip: true
 
     Rectangle {
-        enabled: root.viewFullList
-        opacity: root.viewFullList ? 1.0 : 0.0
+        enabled: !liveUSBData.releaseProxyModel.isFront
+        opacity: !liveUSBData.releaseProxyModel.isFront ? 1.0 : 0.0
         id: searchBox
         border {
             color: searchInput.activeFocus ? "#4a90d9" : "#c3c3c3"
@@ -94,8 +93,8 @@ Item {
     }
 
     AdwaitaComboBox {
-        enabled: root.viewFullList
-        opacity: root.viewFullList ? 1.0 : 0.0
+        enabled: !liveUSBData.releaseProxyModel.isFront
+        opacity: !liveUSBData.releaseProxyModel.isFront ? 1.0 : 0.0
         Behavior on opacity {
             NumberAnimation {
                 duration: root.fadeDuration
@@ -135,7 +134,7 @@ Item {
         radius: 6
         color: "white"
 
-        height: root.viewFullList ? parent.height - 54 + 4 : parent.height - 108
+        height: !liveUSBData.releaseProxyModel.isFront ? parent.height - 54 + 4 : parent.height - 108
         Behavior on height {
             NumberAnimation { duration: root.fadeDuration }
         }
@@ -167,10 +166,10 @@ Item {
                 bottomMargin: -anchors.topMargin
             }
             footer: Item {
-                height: root.viewFullList ? 54 : 36
+                height: !liveUSBData.releaseProxyModel.isFront ? 54 : 36
                 width: osListView.width
                 Rectangle {
-                    visible: !root.viewFullList
+                    visible: liveUSBData.releaseProxyModel.isFront
                     anchors.fill: parent
                     anchors.margins: 1
                     radius: 3
@@ -196,7 +195,7 @@ Item {
                                 parent.color = "transparent"
                         }
                         onClicked: {
-                            root.viewFullList = true
+                            liveUSBData.releaseProxyModel.isFront = false
                         }
                         onPressed: {
                             parent.color = "#ededed"
@@ -211,7 +210,7 @@ Item {
                 }
             }
 
-            model: root.viewFullList ? liveUSBData.releaseProxyModel : liveUSBData.titleReleaseModel
+            model: liveUSBData.releaseProxyModel
             delegate: imageDelegate
 
             remove: Transition {
@@ -221,7 +220,7 @@ Item {
                 NumberAnimation { properties: "x,y"; duration: 300 }
             }
             add: Transition {
-                NumberAnimation { properties: "x"; from: -width; duration: 300 }
+                NumberAnimation { properties: liveUSBData.releaseProxyModel.isFront ? "y" : "x"; from: liveUSBData.releaseProxyModel.isFront ? 0 : -width; duration: 300 }
             }
             addDisplaced: Transition {
                 NumberAnimation { properties: "x,y"; duration: 300 }
