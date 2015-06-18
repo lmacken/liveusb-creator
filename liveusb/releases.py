@@ -95,6 +95,7 @@ def getProductDetails(url, name):
             product['description'] += '</blockquote>'
         elif i.html() and len(i.html()) > 0: # can't remove empty tags with :empty for some reason
             product['description'] += str(i)
+            product['description'].replace('h2', 'h4')
             product['description'].replace('h3', 'h4')
 
     if name == "Workstation":

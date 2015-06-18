@@ -161,7 +161,7 @@ Item {
             anchors {
                 fill: parent
                 leftMargin: 64
-                rightMargin: anchors.leftMargin
+                rightMargin: anchors.leftMargin - (fullList.width - fullList.viewport.width)
                 topMargin: 54
                 bottomMargin: -anchors.topMargin
             }
