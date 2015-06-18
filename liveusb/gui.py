@@ -716,7 +716,7 @@ class ReleaseListProxy(QSortFilterProxyModel):
     def filterAcceptsRow(self, sourceRow, sourceParent):
         row = self.sourceModel().index(sourceRow, 0, sourceParent).data()
         if len(self._archFilter) == 0 or row.arch.lower() in [x.lower() for x in self._archFilter] or row.isLocal:
-            if len(self._nameFilter) == 0 or self._nameFilter.lower() in row.name.lower():
+            if len(self._nameFilter) == 0 or self._nameFilter.lower() in row.name.lower() or self._nameFilter.lower() in row.summary.lower():
                 return True
         return False
 
