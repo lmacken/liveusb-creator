@@ -246,7 +246,7 @@ Item {
                 implicitHeight: 7
                 radius: 4
             }
-            transientScrollBars: true
+            transientScrollBars: false
             handleOverlap: 1
             minimumHandleLength: 10
         }
