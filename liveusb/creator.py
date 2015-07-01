@@ -501,9 +501,11 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                     'that does not support the ext4 filesystem'))
             self.valid_fstypes -= set(['ext4'])
 
-    def detect_removable_drives(self, callback=None):
+    def detect_removable_drives(self, callbackAdded=None, callbackRemoved=None):
         """ Detect all removable USB storage devices using UDisks2 via D-Bus """
         import dbus
+        self.callbackAdded = callbackAdded
+        self.callbackRemoved = callbackRemoved
         self.drives = {}
         self.bus = dbus.SystemBus()
         udisks_obj = self.bus.get_object("org.freedesktop.UDisks2",
@@ -513,38 +515,21 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         def strify(s):
             return bytearray(s).replace(b'\x00', b'').decode('utf-8')
 
-        for name, device in self.udisks.GetManagedObjects().iteritems():
+        def handleAdded(name, device):
             if ('org.freedesktop.UDisks2.Block' in device and
                 'org.freedesktop.UDisks2.Filesystem' in device and
                 'org.freedesktop.UDisks2.Partition' in device):
                 self.log.debug('Found block device with filesystem on %s' % name)
             else:
-                continue
+                return
 
             partition = device['org.freedesktop.UDisks2.Partition']
             fs = device['org.freedesktop.UDisks2.Filesystem']
             blk = device['org.freedesktop.UDisks2.Block']
 
-            """
-            if blk['HintAuto'] is False:
-                self.log.debug('Skipping non-automounting filesystem: %s' % name)
-                continue
-            if blk['HintSystem'] is True:
-                self.log.debug('Skipping system filesystem: %s' % name)
-                continue
-            if blk['ReadOnly'] is True:
-                self.log.debug('Skipping read-only filesystem: %s' % name)
-                continue
-            if blk['IdUsage'] != 'filesystem':
-                self.log.debug('Skipping non-filesystem device: %s' % name)
-                continue
-            if blk['HintIgnore'] is True:
-                self.log.debug('Skipping ignorable device: %s' % name)
-                continue
-            """
             if blk['Drive'] == '/':
                 self.log.debug('Skipping root drive: %s' % name)
-                continue
+                return
 
             drive_obj = self.bus.get_object("org.freedesktop.UDisks2", blk['Drive'])
             drive = dbus.Interface(drive_obj, "org.freedesktop.DBus.Properties").GetAll("org.freedesktop.UDisks2.Drive")
@@ -555,7 +540,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                     (drive[u'ConnectionBus'] != 'usb' and
                      drive[u'ConnectionBus'] != 'sdio')):
                 self.log.debug('Skipping a device that is not removable, connected via USB or is optical: %s' % name)
-                continue
+                return
 
             data = {
                 'udi': str(blk['Drive']),
@@ -571,19 +556,19 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
             if '/boot' in data['mount']:
                 self.log.debug('Skipping boot device: %s' % name)
-                continue
+                return
 
             # Skip things without a size
             if not data['size'] and not self.opts.force:
                 self.log.debug('Skipping device without size: %s' % device)
-                continue
+                return
 
             # Skip devices with unknown filesystems
             if data['fstype'] not in self.valid_fstypes and \
                     self.opts.force != data['device']:
                 self.log.debug('Skipping %s with unknown filesystem: %s' % (
                     data['device'], data['fstype']))
-                continue
+                return
 
             mount = data['mount']
             if mount:
@@ -597,22 +582,43 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             data['free'] = mount and \
                     self.get_free_bytes(mount) / 1024**2 or None
 
-            print(partition[u'Table'])
             parent_obj = self.bus.get_object("org.freedesktop.UDisks2", partition[u'Table'])
             parent = dbus.Interface(parent_obj, "org.freedesktop.DBus.Properties").Get("org.freedesktop.UDisks2.Block", "Device")
             data['parent'] = strify(parent)
 
             self.log.debug(pformat(data))
 
-            self.drives[data['device']] = data
+            self.drives[name] = data
 
-        # Remove parent drives if a valid partition exists
-        #for parent in [d['parent'] for d in self.drives.values()]:
-        #    if parent in self.drives:
-        #        del(self.drives[parent])
+            if self.callbackAdded:
+                self.callbackAdded()
 
-        if callback:
-            callback()
+        def handleRemoved(path, interfaces):
+
+            print ("KEYS!", path, self.drives.keys())
+            if self.drives.has_key(path):
+                print("PRE REMOVED", path, interfaces)
+                del self.drives[path]
+                print("POST REMOVED", path, interfaces)
+
+            if self.callbackRemoved:
+                self.callbackRemoved()
+            #blk = device['org.freedesktop.UDisks2.Block']
+            #if path.startswith("/org/freedesktop/UDisks2"):
+
+            #if 'org.freedesktop.UDisks2.Block' in interfaces:
+                #object = self.bus.get_object("org.freedesktop.UDisks2", path)
+                #device = dbus.Interface(object, "org.freedesktop.UDisks2.Block").GetAll("Drive")
+                #print device
+            #print("FOUND:", device['org.freedesktop.UDisks2.Block'])
+            #print("GOT:", self.drives.keys())
+            #callbackRemoved()
+
+        self.bus.add_signal_receiver(handleAdded, "InterfacesAdded", "org.freedesktop.DBus.ObjectManager", "org.freedesktop.UDisks2", "/org/freedesktop/UDisks2")
+        self.bus.add_signal_receiver(handleRemoved, "InterfacesRemoved", "org.freedesktop.DBus.ObjectManager", "org.freedesktop.UDisks2", "/org/freedesktop/UDisks2")
+
+        for name, device in self.udisks.GetManagedObjects().iteritems():
+            handleAdded(name, device)
 
     def _storage_bus(self, dev):
         storage_bus = None

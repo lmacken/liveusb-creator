@@ -327,23 +327,26 @@ class LiveUSBWindow(QtGui.QMainWindow, LiveUSBInterface):
         self.driveBox.clear()
         #self.textEdit.clear()
 
-        def add_devices():
-            if not len(self.live.drives):
+        def update_devices():
+            self.driveBox.clear()
+            if len(self.live.drives) <= 0:
                 self.textEdit.setPlainText(_("Unable to find any USB drives"))
                 self.startButton.setEnabled(False)
                 return
             for device, info in self.live.drives.items():
                 if info['label']:
-                    self.driveBox.addItem("%s (%s)" % (device, info['label']))
+                    self.driveBox.addItem("%s (%s)" % (info['device'], info['label']))
                 else:
                     self.driveBox.addItem(device)
             self.startButton.setEnabled(True)
 
         try:
-            self.live.detect_removable_drives(callback=add_devices)
+            self.live.detect_removable_drives(callbackAdded=update_devices,callbackRemoved=update_devices)
         except LiveUSBError, e:
             self.textEdit.setPlainText(e.args[0])
             self.startButton.setEnabled(False)
+
+        update_devices()
 
     def populate_releases(self):
         for release in [release['name'] for release in releases]:
@@ -416,7 +419,10 @@ class LiveUSBWindow(QtGui.QMainWindow, LiveUSBInterface):
         drive = unicode(drive)
         if not drive:
             return
-        self._refresh_overlay_slider(drive.split()[0])
+        print self.live.drives
+        for key in self.live.drives:
+            if self.live.drives[key]['device'] == drive.split()[0]:
+                self._refresh_overlay_slider(key)
 
     def _refresh_overlay_slider(self, drive=None):
         """
@@ -507,7 +513,9 @@ class LiveUSBWindow(QtGui.QMainWindow, LiveUSBInterface):
     def get_selected_drive(self):
         text = self.live._to_unicode(self.driveBox.currentText()).split()
         if text:
-            return text[0]
+            for key, drive in self.live.drives:
+                if drive['device'] == text:
+                    return key
 
     def begin(self):
         """ Begin the liveusb creation process.
