@@ -761,7 +761,6 @@ class ReleaseListProxy(QSortFilterProxyModel):
             self.isFrontChanged.emit()
             self.invalidate()
 
-
 class LiveUSBLogHandler(logging.Handler):
 
     def __init__(self, cb):
@@ -826,17 +825,8 @@ class LiveUSBData(QObject):
         self._usbDrives = []
         self.currentDriveChanged.connect(self.currentImage.inspectDestination)
 
-        usbTimer = QTimer(self)
-        usbTimer.setInterval(5000) # check for USB drives every 5 seconds
-        usbTimer.timeout.connect(self.USBDeviceEnumerationStart)
-        usbTimer.start()
+        self.live.detect_removable_drives(callbackAdded=self.USBDeviceCallback, callbackRemoved=self.USBDeviceCallback)
 
-    @pyqtSlot()
-    def USBDeviceEnumerationStart(self):
-        try:
-            self.live.detect_removable_drives(callback=self.USBDeviceCallback)
-        except LiveUSBError, e:
-            pass # TODO
 
     def USBDeviceCallback(self):
         tmpDrives = []
@@ -920,12 +910,14 @@ class LiveUSBData(QObject):
     @currentDrive.setter
     def currentDrive(self, value):
         if len(self._usbDrives) == 0:
-            self._currentDrive
+            self._currentDrive = -1
+            self.currentDriveChanged.emit()
+            self.live.drive = None
             return
         if value > len(self._usbDrives):
             value = 0
-            self.currentDriveChanged.emit()
-        if len(self._usbDrives) != 0 and (self._currentDrive != value or self.live.drive != self._usbDrives[value].drive['device']):
+        print ("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", value, len(self._usbDrives))
+        if self._currentDrive != value or self.live.drives[self.live.drive]['device'] != self._usbDrives[value].drive['device']:
             self._currentDrive = value
             if len(self._usbDrives) > 0:
                 self.live.drive = self._usbDrives[self._currentDrive].drive['device']
