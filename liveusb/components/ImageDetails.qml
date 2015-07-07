@@ -116,7 +116,7 @@ Item {
                             }
                         }
                         Text {
-                            text: liveUSBData.currentImage.arch
+                            text: liveUSBData.releaseProxyModel.archFilter
                             color: "gray"
 
                             AdwaitaButton {

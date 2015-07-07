@@ -86,6 +86,7 @@ class ReleaseDownloadThread(QThread):
         home = os.getenv('HOME', 'USERPROFILE')
         filename = os.path.basename(urlparse.urlparse(self.url).path)
         try:
+            print self.url
             iso = self.grabber.urlgrab(self.url, reget='simple')
         except URLGrabError, e:
             # TODO find out if this errno is _really_ benign
@@ -437,51 +438,11 @@ class Release(QObject):
         self.liveUSBData = parent
 
         self._data = data
-        """
-        self._name = name.replace('_', ' ')
-        self._logo = logo
-        self._size = size
-        self._arch = arch
-        self._fullName = fullName
-        self._releaseDate = releaseDate
-        self._summary = summary
-        self._fullDescription = fullDescription
-        self._isLocal = isLocal
-        self._screenshots = screenshots
-        self._url = url
-        """
-
         self._path = ''
 
         self._info = []
         self._warning = []
         self._error = []
-
-        """
-        if self._logo == '':
-            if self._name == 'Fedora Workstation':
-                self._logo = 'qrc:/logo-color-workstation.png'
-            elif self._name == 'Fedora Server':
-                self._logo = 'qrc:/logo-color-server.png'
-            elif self._name == 'Fedora Cloud':
-                self._logo = 'qrc:/logo-color-cloud.png'
-            elif self._name == 'Fedora KDE':
-                self._logo = 'qrc:/logo-plasma5.png'
-            elif self._name == 'Fedora Xfce':
-                self._logo = 'qrc:/logo-xfce.svg'
-            elif self._name == 'Fedora LXDE':
-                self._logo = 'qrc:/logo-lxde.png'
-            else:
-                self._logo = 'qrc:/logo-fedora.svg'
-
-        if self._name == 'Fedora Workstation':
-            self._fullDescription = _('Fedora Workstation is a reliable, user-friendly, and powerful operating system for your laptop or desktop computer. It supports a wide range of developers, from hobbyists and students to professionals in corporate environments.')
-        if self._name == 'Fedora Server':
-            self._fullDescription = _('Fedora Server is a powerful, flexible operating system that includes the best and latest datacenter technologies. It puts you in control of all your infrastructure and services.')
-        if self._name == 'Fedora Cloud':
-            self._fullDescription = _('Fedora Cloud provides a minimal image of Fedora for use in public and private cloud environments. It includes just the bare essentials, so you get enough to run your cloud application -- and nothing more.')
-
-        """
 
         self._download = ReleaseDownload(self)
         self._download.pathChanged.connect(self.pathChanged)
@@ -565,17 +526,19 @@ class Release(QObject):
 
     @pyqtProperty(float, notify=sizeChanged)
     def size(self):
-        return self._data['size']
+        if 'x86_64' in self._data['variants'].keys():
+            return self._data['variants']['x86_64']['size']
+        return self._data['variants']['']['size']
 
     @size.setter
     def size(self, value):
         if value != self._size:
-            self._data['size'] = value
+            self._data['x86_64']['size'] = value
             self.sizeChanged.emit()
 
     @pyqtProperty(str, constant=True)
     def arch(self):
-        return self._data['arch']
+        return self._data['variants'].keys()
 
     @pyqtProperty(QDateTime, constant=True)
     def releaseDate(self):
@@ -599,7 +562,9 @@ class Release(QObject):
 
     @pyqtProperty(str, constant=True)
     def url(self):
-        return self._data['url']
+        if 'x86_64' in self._data['variants'].keys():
+            return self._data['variants']['x86_64']['url']
+        return self._data['variants']['']['url']
 
     @pyqtProperty(str, notify=pathChanged)
     def path(self):
@@ -702,7 +667,7 @@ class ReleaseListProxy(QSortFilterProxyModel):
     _nameFilter = ''
     _frontPage = True
 
-    _archMap = {'64bit': ['x86_64'], '32bit': ['i686','i386']}
+    _archMap = {'64bit': ['x86_64'], '32bit': ['i686','i386'], 'ARM': ['armv7hl']}
 
     def __init__(self, parent, sourceModel):
         QSortFilterProxyModel.__init__(self, parent)
@@ -715,7 +680,7 @@ class ReleaseListProxy(QSortFilterProxyModel):
 
     def filterAcceptsRow(self, sourceRow, sourceParent):
         row = self.sourceModel().index(sourceRow, 0, sourceParent).data()
-        if len(self._archFilter) == 0 or row.arch.lower() in [x.lower() for x in self._archFilter] or row.isLocal:
+        if len(self._archFilter) == 0 or row.isLocal or set(row.arch) & set(self._archFilter):
             if len(self._nameFilter) == 0 or self._nameFilter.lower() in row.name.lower() or self._nameFilter.lower() in row.summary.lower():
                 return True
         return False
@@ -870,6 +835,7 @@ class LiveUSBData(QObject):
             for i, drive in enumerate(self._usbDrives):
                 if drive.drive['device'] == previouslySelected:
                     self.currentDrive = i
+            self.currentDriveChanged.emit()
 
     @pyqtProperty(ReleaseListModel, notify=releasesChanged)
     def releaseModel(self):
@@ -910,14 +876,13 @@ class LiveUSBData(QObject):
     @currentDrive.setter
     def currentDrive(self, value):
         if len(self._usbDrives) == 0:
+            self.live.drive = None
             self._currentDrive = -1
             self.currentDriveChanged.emit()
-            self.live.drive = None
             return
-        if value > len(self._usbDrives):
+        elif value > len(self._usbDrives):
             value = 0
-        print ("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", value, len(self._usbDrives))
-        if self._currentDrive != value or self.live.drives[self.live.drive]['device'] != self._usbDrives[value].drive['device']:
+        if self._currentDrive != value:# or not self.live.drive or self.live.drives[self.live.drive]['device'] != self._usbDrives[value].drive['device']:
             self._currentDrive = value
             if len(self._usbDrives) > 0:
                 self.live.drive = self._usbDrives[self._currentDrive].drive['device']

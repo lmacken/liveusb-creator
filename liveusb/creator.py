@@ -679,25 +679,11 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 self.callbackAdded()
 
         def handleRemoved(path, interfaces):
-
-            print ("KEYS!", path, self.drives.keys())
             if self.drives.has_key(path):
-                print("PRE REMOVED", path, interfaces)
                 del self.drives[path]
-                print("POST REMOVED", path, interfaces)
 
             if self.callbackRemoved:
                 self.callbackRemoved()
-            #blk = device['org.freedesktop.UDisks2.Block']
-            #if path.startswith("/org/freedesktop/UDisks2"):
-
-            #if 'org.freedesktop.UDisks2.Block' in interfaces:
-                #object = self.bus.get_object("org.freedesktop.UDisks2", path)
-                #device = dbus.Interface(object, "org.freedesktop.UDisks2.Block").GetAll("Drive")
-                #print device
-            #print("FOUND:", device['org.freedesktop.UDisks2.Block'])
-            #print("GOT:", self.drives.keys())
-            #callbackRemoved()
 
         self.bus.add_signal_receiver(handleAdded, "InterfacesAdded", "org.freedesktop.DBus.ObjectManager", "org.freedesktop.UDisks2", "/org/freedesktop/UDisks2")
         self.bus.add_signal_receiver(handleRemoved, "InterfacesRemoved", "org.freedesktop.DBus.ObjectManager", "org.freedesktop.UDisks2", "/org/freedesktop/UDisks2")
