@@ -128,21 +128,32 @@ Item {
         Component.onCompleted: update()
     }
 
+    ParallelAnimation {
+        id: moveUp
+        NumberAnimation {
+            target: whiteBackground
+            property: "y"
+            to: 54
+        }
+    }
+
     Rectangle {
+        id: whiteBackground
         z: -1
         clip: true
         radius: 6
         color: "white"
+        y: liveUSBData.releaseProxyModel.isFront ? parent.height / 2 - height / 2 : 54
 
-        height: !liveUSBData.releaseProxyModel.isFront ? parent.height - 54 + 4 : parent.height - 108
-        Behavior on height {
+        //height: !liveUSBData.releaseProxyModel.isFront ? parent.height - 54 + 4 : parent.height - 108
+        height: liveUSBData.releaseProxyModel.isFront ? 84 * 4 + 36 : parent.height
+
+        /*Behavior on height {
             NumberAnimation { duration: root.fadeDuration }
-        }
+        }*/
         anchors {
-            top: parent.top
             left: parent.left
             right: parent.right
-            topMargin: 54
             rightMargin: 64
             leftMargin: anchors.rightMargin
         }
@@ -162,8 +173,7 @@ Item {
                 fill: parent
                 leftMargin: 64
                 rightMargin: anchors.leftMargin - (fullList.width - fullList.viewport.width)
-                topMargin: 54
-                bottomMargin: -anchors.topMargin
+                topMargin: whiteBackground.y
             }
             footer: Item {
                 height: !liveUSBData.releaseProxyModel.isFront ? 54 : 36
@@ -195,6 +205,7 @@ Item {
                                 parent.color = "transparent"
                         }
                         onClicked: {
+                            moveUp.start()
                             liveUSBData.releaseProxyModel.isFront = false
                         }
                         onPressed: {
@@ -214,7 +225,7 @@ Item {
             delegate: imageDelegate
 
             remove: Transition {
-                NumberAnimation { properties: "x"; to: -width; duration: 300 }
+                NumberAnimation { properties: "x"; to: width; duration: 300 }
             }
             removeDisplaced: Transition {
                 NumberAnimation { properties: "x,y"; duration: 300 }

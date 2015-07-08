@@ -9,10 +9,14 @@ import "components"
 
 ApplicationWindow {
     id: mainWindow
+    /*
     minimumWidth: 800
     minimumHeight: 480
     maximumHeight: minimumHeight
     maximumWidth: minimumWidth
+    */
+    width: 800
+    height: 480
     title: qsTranslate("", "Fedora LiveUSB Creator")
 
     SystemPalette {
