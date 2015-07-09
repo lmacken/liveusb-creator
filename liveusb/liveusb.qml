@@ -9,12 +9,8 @@ import "components"
 
 ApplicationWindow {
     id: mainWindow
-    /*
     minimumWidth: 800
     minimumHeight: 480
-    maximumHeight: minimumHeight
-    maximumWidth: minimumWidth
-    */
     width: 800
     height: 480
     title: qsTranslate("", "Fedora LiveUSB Creator")
@@ -24,17 +20,6 @@ ApplicationWindow {
     }
 
     property bool canGoBack: false
-
-    Behavior on x {
-        NumberAnimation {
-            duration: 80
-        }
-    }
-    Behavior on y {
-        NumberAnimation {
-            duration: 80
-        }
-    }
 
     Rectangle {
         anchors.fill: parent
@@ -54,6 +39,7 @@ ApplicationWindow {
             orientation: ListView.Horizontal
             snapMode: ListView.SnapToItem
             highlightFollowsCurrentItem: true
+            highlightRangeMode: ListView.StrictlyEnforceRange
             interactive: false
             highlightMoveVelocity: 3 * contentList.width
             highlightResizeDuration: 0
