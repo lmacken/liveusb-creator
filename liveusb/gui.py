@@ -769,7 +769,7 @@ class LiveUSBData(QObject):
                     'resetMBR': _('Reset the MBR (Master Boot Record)'),
                    }
     _optionValues = {'dd': False,
-                     'resetMBR': False,
+                     'resetMBR': True,
                     }
 
     def __init__(self, opts):
