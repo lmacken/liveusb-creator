@@ -238,6 +238,12 @@ class ReleaseWriterThread(QThread):
         #self.live.log.addHandler(handler)
         now = datetime.now()
         try:
+            self.live.verify_filesystem()
+            if not self.live.drive['uuid'] and not self.live.label:
+                self.parent.parent.error = _('Error: Cannot set the label or obtain '
+                              'the UUID of your device.  Unable to continue.')
+                self.parent.running = False
+                return
             if self.parent.release.liveUSBData.option('dd'):
                 self.ddImage(now)
             else:
@@ -504,13 +510,6 @@ class Release(QObject):
 
         if self.live.existing_liveos() and not self.parent().option('dd'):
             self.addWarning(_('Your device already contains a live OS. If you continue, it will be overwritten.'))
-
-        self.live.verify_filesystem()
-        if not self.live.drive['uuid'] and not self.live.label:
-            self.parent.status = _('Error: Cannot set the label or obtain '
-                          'the UUID of your device.  Unable to continue.')
-            #self.live.log.removeHandler(handler)
-            return
 
     @pyqtProperty(int, constant=True)
     def index(self):
