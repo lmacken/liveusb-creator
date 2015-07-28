@@ -20,6 +20,7 @@ ApplicationWindow {
     }
 
     property bool canGoBack: false
+    property real margin: 64 + (width - 800) / 4
 
     Rectangle {
         anchors.fill: parent

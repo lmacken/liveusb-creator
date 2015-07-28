@@ -22,7 +22,7 @@ Item {
             top: parent.top
             left: parent.left
             right: parent.right
-            leftMargin: 64
+            leftMargin: mainWindow.margin
             rightMargin: anchors.leftMargin
         }
         height: 64
@@ -67,8 +67,8 @@ Item {
 
         contentItem: Item {
             y: 72
-            x: 64
-            width: root.width - 2 * 64
+            x: mainWindow.margin
+            width: root.width - 2 * mainWindow.margin
             height: childrenRect.height + 64 + 32
 
             ColumnLayout {

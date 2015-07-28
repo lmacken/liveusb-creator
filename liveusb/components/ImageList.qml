@@ -29,7 +29,7 @@ Item {
             left: parent.left
             right: archSelect.left
             topMargin: 12
-            leftMargin: 64
+            leftMargin: mainWindow.margin
             rightMargin: 4
         }
         height: 36
@@ -105,7 +105,7 @@ Item {
         anchors {
             right: parent.right
             top: parent.top
-            rightMargin: 64
+            rightMargin: mainWindow.margin
             topMargin: 12
         }
         height: 36
@@ -154,7 +154,7 @@ Item {
         anchors {
             left: parent.left
             right: parent.right
-            rightMargin: 64
+            rightMargin: mainWindow.margin
             leftMargin: anchors.rightMargin
         }
         border {
@@ -171,7 +171,7 @@ Item {
             clip: true
             anchors {
                 fill: parent
-                leftMargin: 64
+                leftMargin: mainWindow.margin
                 rightMargin: anchors.leftMargin - (fullList.width - fullList.viewport.width)
                 topMargin: whiteBackground.y
             }
