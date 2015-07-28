@@ -63,7 +63,6 @@ try:
     import dbus.mainloop.pyqt5
     dbus.mainloop.pyqt5.DBusQtMainLoop(set_as_default=True)
 except Exception, e:
-    print(e)
     pass
 
 MAX_FAT16 = 2047
@@ -86,7 +85,6 @@ class ReleaseDownloadThread(QThread):
         home = os.getenv('HOME', 'USERPROFILE')
         filename = os.path.basename(urlparse.urlparse(self.url).path)
         try:
-            print self.url
             iso = self.grabber.urlgrab(self.url, reget='simple')
         except URLGrabError, e:
             # TODO find out if this errno is _really_ benign

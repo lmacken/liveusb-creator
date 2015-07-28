@@ -194,7 +194,7 @@ def get_fedora_flavors():
     releases += getProducts('https://getfedora.org/')
     releases += getSpins("http://spins.fedoraproject.org", "Spins")
     releases += getSpins("http://labs.fedoraproject.org", "Labs")
-    print releases
+    return releases
 
 def get_fedora_releases():
     global releases
