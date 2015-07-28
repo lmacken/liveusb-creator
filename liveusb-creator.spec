@@ -1,4 +1,5 @@
 
+
 # -*- mode: python -*-
 from PyInstaller.hooks.hookutils import qt5_qml_data
 
@@ -53,3 +54,4 @@ coll = COLLECT(exe,
                strip=False,
                upx=True,
                name='liveusb-creator')
+
