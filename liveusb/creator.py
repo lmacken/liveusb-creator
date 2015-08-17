@@ -516,11 +516,10 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                     'that does not support the ext4 filesystem'))
             self.valid_fstypes -= set(['ext4'])
 
-    def detect_removable_drives(self, callbackAdded=None, callbackRemoved=None):
+    def detect_removable_drives(self, callback=None):
         """ Detect all removable USB storage devices using UDisks2 via D-Bus """
         import dbus
-        self.callbackAdded = callbackAdded
-        self.callbackRemoved = callbackRemoved
+        self.callback = callback
         self.drives = {}
         self.bus = dbus.SystemBus()
         """
@@ -675,15 +674,15 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
             self.drives[name] = data
 
-            if self.callbackAdded:
-                self.callbackAdded()
+            if self.callback:
+                self.callback()
 
         def handleRemoved(path, interfaces):
             if self.drives.has_key(path):
                 del self.drives[path]
 
-            if self.callbackRemoved:
-                self.callbackRemoved()
+            if self.callback:
+                self.callback()
 
         self.bus.add_signal_receiver(handleAdded, "InterfacesAdded", "org.freedesktop.DBus.ObjectManager", "org.freedesktop.UDisks2", "/org/freedesktop/UDisks2")
         self.bus.add_signal_receiver(handleRemoved, "InterfacesRemoved", "org.freedesktop.DBus.ObjectManager", "org.freedesktop.UDisks2", "/org/freedesktop/UDisks2")
@@ -1131,8 +1130,6 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
             except Exception, e:
                 self.log.exception(e)
                 self.log.error(_("Error probing device"))
-        if not len(self.drives):
-            raise LiveUSBError(_("Unable to find any removable devices"))
         if callback:
             callback()
 

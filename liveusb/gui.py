@@ -787,7 +787,7 @@ class LiveUSBData(QObject):
         self._usbDrives = []
         self.currentDriveChanged.connect(self.currentImage.inspectDestination)
 
-        self.live.detect_removable_drives(callbackAdded=self.USBDeviceCallback, callbackRemoved=self.USBDeviceCallback)
+        self.live.detect_removable_drives(callback=self.USBDeviceCallback)
 
 
     def USBDeviceCallback(self):

@@ -13,7 +13,7 @@ def stripDebug(list):
 
 a = Analysis(['liveusb-creator'],
              pathex=['Z:\\home\\mbriza\\upstream\\liveusb-creator'],
-             hiddenimports=[],
+             hiddenimports=['pyquery'],
              hookspath=None,
              runtime_hooks=None)
 pyz = PYZ(a.pure)
