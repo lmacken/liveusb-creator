@@ -17,7 +17,7 @@ Group:          Applications/System
 License:        GPLv2
 URL:            https://fedorahosted.org/liveusb-creator
 #Source0:        https://github.com/lmacken/liveusb-creator/archive/#{commit}.tar.gz
-Source0:        %{commit}.tar.gz
+Source0:        liveusb-creator-3dbca8fd.tar
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
@@ -44,7 +44,7 @@ Requires:       PolicyKit-authentication-agent
 A liveusb creator from Live Fedora images
 
 %prep
-%setup -q -n %{name}-%{commit}
+%setup -q -n %{name}
 
 %build
 %{__python} setup.py build
@@ -96,6 +96,12 @@ rm -rf %{buildroot}
 %{_datadir}/polkit-1/actions/org.fedoraproject.pkexec.run-liveusb-creator.policy
 
 %changelog
+* Tue Aug 18 2015 mbriza <mbriza@redhat.com> - 3.15.0-0.1.newui.afdc2a1c.20150818git3dbca8fd
+- Update to git: 3dbca8fd
+
+* Tue Aug 18 2015 mbriza <mbriza@redhat.com> - 3.15.0-0.1.newui.afdc2a1c.20150818git3dbca8fd
+- Update to git: 3dbca8fd
+
 * Tue May 26 2015 Luke Macken <lmacken@redhat.com> - 3.14.2-1
 - Updated the release list and parser for F22
 
