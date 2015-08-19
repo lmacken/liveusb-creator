@@ -24,9 +24,9 @@ for data in a.datas:
         a.datas.remove(data)
 
 newqml = []
-newqml += Tree("C:\\Qt\\Qt5.4.1\\5.4\\mingw491_32\\qml\\QtQuick", prefix = 'QtQuick')
-newqml += Tree("C:\\Qt\\Qt5.4.1\\5.4\\mingw491_32\\qml\\QtQuick.2", prefix = 'QtQuick.2')
-newqml += Tree("C:\\Qt\\Qt5.4.1\\5.4\\mingw491_32\\qml\\QtQml", prefix = 'QtQml')
+newqml += Tree("C:\\Qt\\5.5\\mingw492_32\\qml\\QtQuick", prefix = 'QtQuick')
+newqml += Tree("C:\\Qt\\5.5\\mingw492_32\\qml\\QtQuick.2", prefix = 'QtQuick.2')
+newqml += Tree("C:\\Qt\\5.5\\mingw492_32\\qml\\QtQml", prefix = 'QtQml')
 
 # there seems to be a bug somewhere leaving a bunch of libraries in the lists nevertheless, so let's run the cleanup thrice o\
 stripDebug(a.binaries)
