@@ -671,8 +671,8 @@ class ReleaseListProxy(QSortFilterProxyModel):
         self.setSourceModel(sourceModel)
 
     def rowCount(self, parent=QModelIndex()):
-        if self._frontPage and self.sourceModel().rowCount(parent) > 4:
-            return 4
+        if self._frontPage and self.sourceModel().rowCount(parent) > 3:
+            return 3
         return self.sourceModel().rowCount(parent)
 
     def filterAcceptsRow(self, sourceRow, sourceParent):

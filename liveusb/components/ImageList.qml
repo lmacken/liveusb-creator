@@ -128,25 +128,24 @@ Item {
         Component.onCompleted: update()
     }
 
-    ParallelAnimation {
-        id: moveUp
-        NumberAnimation {
-            target: whiteBackground
-            property: "y"
-            to: 54
-        }
-    }
-
     Rectangle {
         id: whiteBackground
         z: -1
         clip: true
         radius: 6
         color: "white"
-        y: liveUSBData.releaseProxyModel.isFront ? parent.height / 2 - height / 2 : 54
+        y: liveUSBData.releaseProxyModel.isFront || moveUp.running ? parent.height / 2 - height / 2 : 54
+        Behavior on y {
+            id: moveUp
+            enabled: false
+
+            NumberAnimation {
+                onStopped: moveUp.enabled = false
+            }
+        }
 
         //height: !liveUSBData.releaseProxyModel.isFront ? parent.height - 54 + 4 : parent.height - 108
-        height: liveUSBData.releaseProxyModel.isFront ? 84 * 4 + 36 : parent.height
+        height: liveUSBData.releaseProxyModel.isFront ? 84 * 3 + 36 : parent.height
 
         /*Behavior on height {
             NumberAnimation { duration: root.fadeDuration }
@@ -184,6 +183,7 @@ Item {
                     anchors.margins: 1
                     radius: 3
                     Column {
+                        id: threeDotDots
                         anchors.centerIn: parent
                         spacing: 2
                         Repeater {
@@ -195,17 +195,44 @@ Item {
                             }
                         }
                     }
+                    Text {
+                        id: threeDotText
+                        anchors.left: threeDotDots.right
+                        anchors.verticalCenter: threeDotDots.verticalCenter
+                        anchors.leftMargin: 12
+                        width: 0
+                        Behavior on width {
+                            NumberAnimation {
+                                duration: 120
+                            }
+                        }
+                        clip: true
+                        text: qsTranslate("", "Display additional Fedora flavors")
+                        color: "gray"
+                    }
+                    Timer {
+                        id: threeDotTimer
+                        interval: 200
+                        onTriggered: {
+                            threeDotText.width = threeDotText.implicitWidth
+                        }
+                    }
                     MouseArea {
                         anchors.fill: parent
                         hoverEnabled: true
                         onHoveredChanged: {
-                            if (containsMouse && !pressed)
+                            if (containsMouse && !pressed) {
                                 parent.color = "#f8f8f8"
-                            if (!containsMouse)
+                                threeDotTimer.start()
+                            }
+                            if (!containsMouse) {
                                 parent.color = "transparent"
+                                threeDotTimer.stop()
+                                threeDotText.width = 0
+                            }
                         }
                         onClicked: {
-                            moveUp.start()
+                            moveUp.enabled = true
                             liveUSBData.releaseProxyModel.isFront = false
                         }
                         onPressed: {
