@@ -10,14 +10,14 @@
 
 Name:           liveusb-creator
 Version:        3.15.0
-Release:        0.1.newui.afdc2a1c%{?dist}
+Release:        0.1.newui.afdc2a1c.20150820git992323ba%{?dist}
 Summary:        A liveusb creator
 
 Group:          Applications/System
 License:        GPLv2
 URL:            https://fedorahosted.org/liveusb-creator
 #Source0:        https://github.com/lmacken/liveusb-creator/archive/#{commit}.tar.gz
-Source0:        liveusb-creator-3dbca8fd.tar
+Source0:        liveusb-creator-992323ba.tar
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
@@ -39,6 +39,7 @@ Requires:       polkit
 # DE's are expected to provide a polkit agent these days, so could consider
 # removing this too, see https://bugzilla.redhat.com/1171583
 Requires:       PolicyKit-authentication-agent
+Requires:       python-pyquery
 
 %description
 A liveusb creator from Live Fedora images
@@ -96,6 +97,9 @@ rm -rf %{buildroot}
 %{_datadir}/polkit-1/actions/org.fedoraproject.pkexec.run-liveusb-creator.policy
 
 %changelog
+* Thu Aug 20 2015 mbriza <mbriza@redhat.com> - 3.15.0-0.1.newui.afdc2a1c.20150820git992323ba
+- Update to git: 992323ba
+
 * Tue Aug 18 2015 mbriza <mbriza@redhat.com> - 3.15.0-0.1.newui.afdc2a1c.20150818git3dbca8fd
 - Update to git: 3dbca8fd
 

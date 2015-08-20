@@ -13,5 +13,32 @@
         <file>logo-xfce.svg</file>
         <file>logo-fedora.svg</file>
         <file>icon-folder.svg</file>
+        <file>cinnamon_icon.png</file>
+        <file>astronomy_icon_black.png</file>
+        <file>astronomy_icon_grey.png</file>
+        <file>astronomy_icon_green.png</file>
+        <file>design-suite_icon_black.png</file>
+        <file>design-suite_icon_grey.png</file>
+        <file>design-suite_icon_green.png</file>
+        <file>games_icon_black.png</file>
+        <file>games_icon_grey.png</file>
+        <file>games_icon_green.png</file>
+        <file>jam_icon_black.png</file>
+        <file>jam_icon_grey.png</file>
+        <file>jam_icon_green.png</file>
+        <file>kde_icon.png</file>
+        <file>lxde_icon.png</file>
+        <file>mate_icon.png</file>
+        <file>robotics-suite_icon_black.png</file>
+        <file>robotics-suite_icon_grey.png</file>
+        <file>robotics-suite_icon_green.png</file>
+        <file>scientific_icon_black.png</file>
+        <file>scientific_icon_grey.png</file>
+        <file>scientific_icon_green.png</file>
+        <file>security-lab_icon_black.png</file>
+        <file>security-lab_icon_grey.png</file>
+        <file>security-lab_icon_green.png</file>
+        <file>soas_icon.png</file>
+        <file>xfce_icon.png</file>
     </qresource>
 </RCC>
