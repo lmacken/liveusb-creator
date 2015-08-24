@@ -99,7 +99,7 @@ Item {
                             Text {
                                 Layout.fillWidth: true
                                 anchors.left: parent.left
-                                font.pointSize: 11
+                                font.pointSize: 13
                                 text: liveUSBData.currentImage.name
                             }
                             Text {
@@ -118,6 +118,7 @@ Item {
                         Item {
                             height: childrenRect.height
                             RowLayout {
+                                anchors.verticalCenter: parent.verticalCenter
                                 visible: liveUSBData.currentImage.arch.length
                                 ExclusiveGroup {
                                     id: archEG
