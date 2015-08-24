@@ -178,12 +178,16 @@ Item {
                 height: !liveUSBData.releaseProxyModel.isFront ? 54 : 36
                 width: osListView.width
                 Rectangle {
+                    clip: true
                     visible: liveUSBData.releaseProxyModel.isFront
                     anchors.fill: parent
                     anchors.margins: 1
                     radius: 3
                     Column {
                         id: threeDotDots
+                        property bool hidden: false
+                        opacity: hidden ? 0.0 : 1.0
+                        Behavior on opacity { NumberAnimation { duration: 60 } }
                         anchors.centerIn: parent
                         spacing: 2
                         Repeater {
@@ -197,15 +201,9 @@ Item {
                     }
                     Text {
                         id: threeDotText
-                        anchors.left: threeDotDots.right
-                        anchors.verticalCenter: threeDotDots.verticalCenter
-                        anchors.leftMargin: 12
-                        width: 0
-                        Behavior on width {
-                            NumberAnimation {
-                                duration: 120
-                            }
-                        }
+                        y: threeDotDots.hidden ? parent.height / 2 - height / 2 : -height
+                        anchors.horizontalCenter: threeDotDots.horizontalCenter
+                        Behavior on y { NumberAnimation { duration: 60 } }
                         clip: true
                         text: qsTranslate("", "Display additional Fedora flavors")
                         color: "gray"
@@ -214,7 +212,7 @@ Item {
                         id: threeDotTimer
                         interval: 200
                         onTriggered: {
-                            threeDotText.width = threeDotText.implicitWidth
+                            threeDotDots.hidden = true
                         }
                     }
                     MouseArea {
@@ -228,7 +226,7 @@ Item {
                             if (!containsMouse) {
                                 parent.color = "transparent"
                                 threeDotTimer.stop()
-                                threeDotText.width = 0
+                                threeDotDots.hidden = false
                             }
                         }
                         onClicked: {

@@ -434,6 +434,8 @@ class Release(QObject):
     pathChanged = pyqtSignal()
     sizeChanged = pyqtSignal()
 
+    _archMap = {'64bit': ['x86_64'], '32bit': ['i686','i386'], 'ARM': ['armv7hl']}
+
     def __init__(self, parent, index, live, data):
         QObject.__init__(self, parent)
 
@@ -533,9 +535,14 @@ class Release(QObject):
             self._data['x86_64']['size'] = value
             self.sizeChanged.emit()
 
-    @pyqtProperty(str, constant=True)
+    @pyqtProperty('QStringList', constant=True)
     def arch(self):
-        return self._data['variants'].keys()
+        ret = list()
+        for key in self._archMap.keys():
+            for variant in self._archMap[key]:
+                if variant in self._data['variants'].keys():
+                    ret.append(str(key))
+        return ret
 
     @pyqtProperty(QDateTime, constant=True)
     def releaseDate(self):
@@ -677,7 +684,7 @@ class ReleaseListProxy(QSortFilterProxyModel):
 
     def filterAcceptsRow(self, sourceRow, sourceParent):
         row = self.sourceModel().index(sourceRow, 0, sourceParent).data()
-        if len(self._archFilter) == 0 or row.isLocal or set(row.arch) & set(self._archFilter):
+        if len(self._archFilter) == 0 or row.isLocal or self.archFilter in row.arch:
             if len(self._nameFilter) == 0 or self._nameFilter.lower() in row.name.lower() or self._nameFilter.lower() in row.summary.lower():
                 return True
         return False
@@ -702,7 +709,7 @@ class ReleaseListProxy(QSortFilterProxyModel):
         for name, abbrs in self._archMap.items():
             if abbrs == self._archFilter:
                 return name
-        self.archFilter = '64bit'
+        self._archFilter = self._archMap['64bit']
         return '64bit'
 
     @archFilter.setter

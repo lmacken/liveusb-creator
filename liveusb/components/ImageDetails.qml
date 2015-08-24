@@ -115,9 +115,26 @@ Item {
                                 color: "gray"
                             }
                         }
-                        Text {
-                            text: liveUSBData.releaseProxyModel.archFilter
-                            color: "gray"
+                        Item {
+                            height: childrenRect.height
+                            RowLayout {
+                                visible: liveUSBData.currentImage.arch.length
+                                ExclusiveGroup {
+                                    id: archEG
+                                }
+                                Repeater {
+                                    model: liveUSBData.currentImage.arch
+                                    AdwaitaRadioButton {
+                                        text: modelData
+                                        exclusiveGroup: archEG
+                                        checked: liveUSBData.releaseProxyModel.archFilter == modelData
+                                        onCheckedChanged: {
+                                            if (checked && liveUSBData.releaseProxyModel.archFilter != modelData)
+                                                liveUSBData.releaseProxyModel.archFilter = modelData
+                                        }
+                                    }
+                                }
+                            }
 
                             AdwaitaButton {
                                 text: qsTranslate("", "Select Live ISO")
