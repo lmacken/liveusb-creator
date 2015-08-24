@@ -3,3 +3,5 @@
 *kdev4*
 dist
 MANIFEST
+liveusb/qml_rc.py
+liveusb/resources_rc.py
