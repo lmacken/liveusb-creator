@@ -74,18 +74,17 @@ class ReleaseDownloadThread(QThread):
     downloadFinished = pyqtSignal(str)
     downloadError = pyqtSignal(str)
 
-    def __init__(self, url, progress, proxies):
+    def __init__(self, progress, proxies):
         QThread.__init__(self)
-        self.url = url
         self.progress = progress
         self.proxies = proxies
 
     def run(self):
         self.grabber = URLGrabber(progress_obj=self.progress, proxies=self.proxies)
         home = os.getenv('HOME', 'USERPROFILE')
-        filename = os.path.basename(urlparse.urlparse(self.url).path)
+        filename = os.path.basename(urlparse.urlparse(self.progress.release.url).path)
         try:
-            iso = self.grabber.urlgrab(self.url, reget='simple')
+            iso = self.grabber.urlgrab(self.progress.release.url, reget='simple')
         except URLGrabError, e:
             # TODO find out if this errno is _really_ benign
             if e.errno == 9: # Requested byte range not satisfiable.
@@ -111,7 +110,8 @@ class ReleaseDownload(QObject, BaseMeter):
 
     def __init__(self, parent):
         QObject.__init__(self, parent)
-        self._grabber = ReleaseDownloadThread(parent.url, self, parent.live.get_proxies())
+        self.release = parent
+        self._grabber = ReleaseDownloadThread(self, parent.live.get_proxies())
 
     def reset(self):
         self._running = False
@@ -566,9 +566,11 @@ class Release(QObject):
 
     @pyqtProperty(str, constant=True)
     def url(self):
-        if 'x86_64' in self._data['variants'].keys():
-            return self._data['variants']['x86_64']['url']
-        return self._data['variants']['']['url']
+        if not self.isLocal:
+            for arch in self._data['variants'].keys():
+                if arch in self._archMap[self.liveUSBData.releaseProxyModel.archFilter]:
+                    return self._data['variants'][arch]['url']
+        return ''
 
     @pyqtProperty(str, notify=pathChanged)
     def path(self):
@@ -580,7 +582,7 @@ class Release(QObject):
             value = value.replace('file://', '', 1)
         if self._path != value:
             self._download.path = value
-            self.pathChanged.emit();
+            self.pathChanged.emit()
             self.size = self.live.isosize
 
     @pyqtProperty(bool, notify=pathChanged)

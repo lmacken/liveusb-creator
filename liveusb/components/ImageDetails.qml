@@ -205,6 +205,10 @@ Item {
     }
     DownloadDialog {
         id: dlDialog
+        onVisibleChanged: {
+            //if (!visible)
+            //    liveUSBData.currentImage.
+        }
     }
     FileDialog {
         id: fileDialog

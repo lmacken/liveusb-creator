@@ -13,11 +13,15 @@ Dialog {
 
     width: 640
 
+    function reset() {
+        writeImmediately.confirmed = false
+        acceptButton.pressedOnce = false
+    }
+
     Connections {
         target: liveUSBData
         onCurrentImageChanged: {
-            writeImmediately.confirmed = false
-            acceptButton.pressedOnce = false
+            reset();
         }
     }
 
