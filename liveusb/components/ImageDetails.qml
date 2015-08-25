@@ -137,13 +137,17 @@ Item {
                                 }
                             }
 
-                            AdwaitaButton {
-                                text: qsTranslate("", "Select Live ISO")
-                                Layout.alignment: Qt.AlignHCenter
+                            RowLayout {
                                 visible: liveUSBData.currentImage.isLocal
-                                onClicked: {
-                                    fileDialog.visible = false // for some reason it got stuck in the closed state once in a while, so ensure it's actually closed
-                                    fileDialog.visible = true
+                                AdwaitaButton {
+                                    text: qsTranslate("", "Select Live ISO")
+                                    onClicked: {
+                                        fileDialog.visible = false // for some reason it got stuck in the closed state once in a while, so ensure it's actually closed
+                                        fileDialog.visible = true
+                                    }
+                                }
+                                Text {
+                                    text: qsTranslate("", "Selected file: %1").arg(liveUSBData.currentImage.path ? (((String)(liveUSBData.currentImage.path)).split("/").slice(-1)[0]) : qsTranslate("", "None"))
                                 }
                             }
                         }
@@ -159,9 +163,7 @@ Item {
                     Layout.fillWidth: true
                     width: Layout.width
                     wrapMode: Text.WordWrap
-                    text: liveUSBData.currentImage.isLocal ?
-                              (qsTranslate("", "Selected image: %1").arg(liveUSBData.currentImage.path ? (((String)(liveUSBData.currentImage.path)).split("/").slice(-1)[0]) : qsTranslate("", "None")))
-                              : liveUSBData.currentImage.description
+                    text: liveUSBData.currentImage.description
                     textFormat: Text.RichText
                     font.pointSize: 9
                 }

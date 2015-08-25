@@ -213,7 +213,7 @@ def getProducts(url='https://getfedora.org/'):
 
 def get_fedora_flavors():
     releases = [{'name': _('Custom OS...'),
-              'description': _('Here you can choose a OS image from your hard drive to be written to your flash disk'),
+              'description': _('<p>Here you can choose a OS image from your hard drive to be written to your flash disk</p><p>Currently it is only supported to write raw disk images (.iso or .bin)</p>'),
               'logo': 'qrc:/icon-folder.svg',
               'screenshots': [],
               'summary': _('Pick a file from your drive(s)'),
