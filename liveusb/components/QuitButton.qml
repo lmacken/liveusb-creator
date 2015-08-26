@@ -7,16 +7,16 @@ AdwaitaButton {
         rotation: 45
         transformOrigin: Item.Center
         Rectangle {
-            width: 2
-            height: 12
-            radius: 1
+            width: $(2)
+            height: $(12)
+            radius: $(1)
             anchors.centerIn: parent
             color: "#a1a1a1"
         }
         Rectangle {
-            width: 12
-            height: 2
-            radius: 1
+            width: $(12)
+            height: $(2)
+            radius: $(1)
             anchors.centerIn: parent
             color: "#a1a1a1"
         }

@@ -19,6 +19,8 @@ Image {
             top: parent.top
             horizontalCenter: parent.horizontalCenter
         }
+        width: $(implicitWidth)
+        height: $(implicitHeight)
         opacity: parent.status == Image.Ready ? 0 : 1
         Behavior on opacity {
             NumberAnimation {

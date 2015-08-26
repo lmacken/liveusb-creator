@@ -9,18 +9,23 @@ import "components"
 
 ApplicationWindow {
     id: mainWindow
-    minimumWidth: 800
-    minimumHeight: 480
-    width: 800
-    height: 480
+    minimumWidth: $(800)
+    minimumHeight: $(480)
+    width: $(800)
+    height: $(480)
     title: qsTranslate("", "Fedora LiveUSB Creator")
 
     SystemPalette {
         id: palette
     }
 
+    property real scalingFactor: Math.ceil(Screen.pixelDensity * 25.4) / 96
+    function $(x) {
+        return x * scalingFactor
+    }
+
     property bool canGoBack: false
-    property real margin: 64 + (width - 800) / 4
+    property real margin: $(64) + (width - $(800)) / 4
 
     Rectangle {
         anchors.fill: parent

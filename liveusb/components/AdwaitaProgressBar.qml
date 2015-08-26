@@ -4,18 +4,18 @@ import QtQuick.Controls.Styles 1.2
 
 ProgressBar {
     id: root
-    width: 100
-    height: 6
+    width: $(100)
+    height: $(6)
     property color progressColor: "#54aada"
     property color backgroundColor: "#c3c3c3"
     style: ProgressBarStyle {
         background: Rectangle {
-            height: 6
+            height: $(6)
             border {
                 color: "#777777"
-                width: 1
+                width: $(1)
             }
-            radius: 3
+            radius: $(3)
             clip: true
             gradient: Gradient {
                 GradientStop { position: 0.0; color: Qt.lighter(root.backgroundColor, 1.05) }
@@ -24,12 +24,12 @@ ProgressBar {
         }
         progress: Rectangle {
             clip: true
-            height: 4
+            height: $(4)
             border {
                 color: "#777777"
-                width: 1
+                width: $(1)
             }
-            radius: 3
+            radius: $(3)
             gradient: Gradient {
                 GradientStop { position: 0.0; color: Qt.lighter(root.progressColor, 1.05) }
                 GradientStop { position: 0.9; color: root.progressColor }

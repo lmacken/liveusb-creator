@@ -2,13 +2,13 @@ import QtQuick 2.0
 
 Rectangle {
     id: rect
-    implicitHeight: 36
-    implicitWidth: 36
-    radius: 3
+    implicitHeight: $(36)
+    implicitWidth: $(36)
+    radius: $(3)
 
     Rectangle {
-        radius: parent.radius - 1
-        anchors.margins: 0.5
+        radius: parent.radius - $(1)
+        anchors.margins: $(0.5)
         anchors.fill: parent
         gradient: control.enabled ? !(control.pressed || control.checked) ? !control.hovered ? regularGradient: hoveredGradient : downGradient : disabledGradient
         Gradient {

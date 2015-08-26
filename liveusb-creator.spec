@@ -10,14 +10,14 @@
 
 Name:           liveusb-creator
 Version:        3.15.0
-Release:        0.1.newui.afdc2a1c%{?dist}
+Release:        0.1.newui%{?dist}
 Summary:        A liveusb creator
 
 Group:          Applications/System
 License:        GPLv2
 URL:            https://fedorahosted.org/liveusb-creator
 #Source0:        https://github.com/lmacken/liveusb-creator/archive/#{commit}.tar.gz
-Source0:        liveusb-creator-bc1b3fda.tar
+Source0:        liveusb-creator-00e2ea65.tar
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
@@ -97,6 +97,12 @@ rm -rf %{buildroot}
 %{_datadir}/polkit-1/actions/org.fedoraproject.pkexec.run-liveusb-creator.policy
 
 %changelog
+* Tue Aug 25 2015 mbriza <mbriza@redhat.com> - 3.15.0-0.1.newui
+- Update to git: 00e2ea65
+
+* Thu Aug 20 2015 mbriza <mbriza@redhat.com> - 3.15.0-0.1.newui.afdc2a1c.20150820git63a2a068
+- Update to git: 63a2a068
+
 * Thu Aug 20 2015 mbriza <mbriza@redhat.com> - 3.15.0-0.1.newui.afdc2a1c.20150820gitbc1b3fda
 - Update to git: bc1b3fda
 

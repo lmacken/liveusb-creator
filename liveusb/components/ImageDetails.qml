@@ -25,15 +25,15 @@ Item {
             leftMargin: mainWindow.margin
             rightMargin: anchors.leftMargin
         }
-        height: 64
+        height: $(64)
         BackButton {
             id: backButton
             anchors {
                 left: parent.left
                 top: parent.top
                 bottom: parent.bottom
-                topMargin: 16
-                bottomMargin: 16
+                topMargin: $(16)
+                bottomMargin: $(16)
             }
             onClicked: {
                 canGoBack = false
@@ -53,8 +53,8 @@ Item {
                 right: parent.right
                 top: parent.top
                 bottom: parent.bottom
-                topMargin: 16
-                bottomMargin: 16
+                topMargin: $(16)
+                bottomMargin: $(16)
             }
         }
     }
@@ -66,45 +66,43 @@ Item {
         }
 
         contentItem: Item {
-            y: 72
+            y: $(72)
             x: mainWindow.margin
             width: root.width - 2 * mainWindow.margin
-            height: childrenRect.height + 64 + 32
+            height: childrenRect.height + $(64) + $(32)
 
             ColumnLayout {
                 width: parent.width
-                spacing: 32
+                spacing: $(32)
                 RowLayout {
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    spacing: 32
+                    spacing: $(32)
                     Layout.alignment: Qt.AlignLeft
                     Item {
-                        width: 64
-                        height: 64
+                        width: $(64)
+                        height: $(64)
                         IndicatedImage {
                             id: iconRect
-                            anchors.centerIn: parent
+                            anchors.fill: parent
                             source: liveUSBData.currentImage.logo
-                            sourceSize.width: parent.width
-                            sourceSize.height: parent.height
                             fillMode: Image.PreserveAspectFit
                         }
                     }
 
                     ColumnLayout {
                         Layout.alignment: Qt.AlignLeft
-                        spacing: 8
+                        spacing: $(8)
                         RowLayout {
                             Text {
                                 Layout.fillWidth: true
                                 anchors.left: parent.left
-                                font.pointSize: 13
+                                font.pointSize: $(13)
                                 text: liveUSBData.currentImage.name
                             }
                             Text {
                                 anchors.right: parent.right
-                                font.pointSize: 11
+                                font.pointSize: $(11)
                                 property double size: liveUSBData.currentImage.size
                                 text: size <= 0 ? "" :
                                       (size < 1024) ? (size + " B") :
@@ -120,6 +118,7 @@ Item {
                             RowLayout {
                                 anchors.verticalCenter: parent.verticalCenter
                                 visible: liveUSBData.currentImage.arch.length
+                                spacing: $(8)
                                 ExclusiveGroup {
                                     id: archEG
                                 }
@@ -139,6 +138,7 @@ Item {
 
                             RowLayout {
                                 visible: liveUSBData.currentImage.isLocal
+                                spacing: $(12)
                                 AdwaitaButton {
                                     text: qsTranslate("", "Select Live ISO")
                                     onClicked: {
@@ -147,6 +147,7 @@ Item {
                                     }
                                 }
                                 Text {
+                                    font.pointSize: $(9)
                                     text: qsTranslate("", "Selected file: %1").arg(liveUSBData.currentImage.path ? (((String)(liveUSBData.currentImage.path)).split("/").slice(-1)[0]) : qsTranslate("", "None"))
                                 }
                             }
@@ -154,7 +155,7 @@ Item {
                         Text {
                             // I'm sorry, everyone, I can't find a better way to determine if the date is valid
                             text: liveUSBData.currentImage.releaseDate.toLocaleDateString().length > 0 ? (qsTranslate("", "Released on %s").arg(liveUSBData.currentImage.releaseDate.toLocaleDateString())) : ""
-                            font.pointSize: 8
+                            font.pointSize: $(8)
                             color: "gray"
                         }
                     }
@@ -165,7 +166,7 @@ Item {
                     wrapMode: Text.WordWrap
                     text: liveUSBData.currentImage.description
                     textFormat: Text.RichText
-                    font.pointSize: 9
+                    font.pointSize: $(9)
                 }
                 Repeater {
                     id: screenshotRepeater
@@ -184,25 +185,25 @@ Item {
             incrementControl: Item {}
             decrementControl: Item {}
             corner: Item {
-                implicitWidth: 11
-                implicitHeight: 11
+                implicitWidth: $(11)
+                implicitHeight: $(11)
             }
             scrollBarBackground: Rectangle {
                 color: "#dddddd"
-                implicitWidth: 11
-                implicitHeight: 11
+                implicitWidth: $(11)
+                implicitHeight: $(11)
             }
             handle: Rectangle {
                 color: "#b3b5b6"
-                x: 2
-                y: 2
-                implicitWidth: 7
-                implicitHeight: 7
-                radius: 4
+                x: $(2)
+                y: $(2)
+                implicitWidth: $(7)
+                implicitHeight: $(7)
+                radius: $(4)
             }
             transientScrollBars: false
-            handleOverlap: 1
-            minimumHandleLength: 10
+            handleOverlap: $(1)
+            minimumHandleLength: $(10)
         }
     }
     DownloadDialog {

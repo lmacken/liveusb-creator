@@ -5,8 +5,8 @@ import QtQuick.Controls.Styles 1.0
 RadioButton {
     style: RadioButtonStyle {
         indicator: AdwaitaRectangle {
-            implicitWidth: 15
-            implicitHeight: 15
+            implicitWidth: $(15)
+            implicitHeight: $(15)
             radius: width / 2 + 1
             Rectangle {
                 anchors.centerIn: parent
@@ -17,6 +17,11 @@ RadioButton {
                 visible: control.checked
             }
         }
+        label: Text {
+            font.pointSize: $(9)
+            text: control.text
+        }
+        spacing: $(8)
     }
 }
 

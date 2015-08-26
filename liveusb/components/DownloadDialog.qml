@@ -8,10 +8,10 @@ Dialog {
     id: root
     title: qsTranslate("", "Write %1 to USB").arg(liveUSBData.currentImage.name)
 
-    height: layout.height + 56
+    height: layout.height + $(56)
     standardButtons: StandardButton.NoButton
 
-    width: 640
+    width: $(640)
 
     function reset() {
         writeImmediately.confirmed = false
@@ -34,28 +34,28 @@ Dialog {
             horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
             contentItem: Item {
                 width: contentWrapper.width
-                height: layout.height + 32
+                height: layout.height + $(32)
                 Column {
                     id: layout
-                    spacing: 24
+                    spacing: $(24)
                     anchors {
                         top: parent.top
                         left: parent.left
                         right: parent.right
-                        topMargin: 32
-                        leftMargin: 48
+                        topMargin: $(32)
+                        leftMargin: $(48)
                         rightMargin: anchors.leftMargin
                     }
                     Column {
                         id: infoColumn
-                        spacing: 4
+                        spacing: $(4)
                         width: parent.width
 
                         Repeater {
                             model: liveUSBData.currentImage.error
                             RowLayout {
                                 width: infoColumn.width
-                                spacing: 8
+                                spacing: $(8)
                                 Rectangle {
                                     anchors.centerIn: cross
                                     width: cross.height
@@ -73,13 +73,14 @@ Dialog {
                                     verticalAlignment: Text.AlignVCenter
                                     color: "red"
                                     text: "✕"
-                                    font.pointSize: 14
+                                    font.pointSize: $(14)
                                 }
                                 Text {
                                     Layout.fillHeight: true
                                     Layout.fillWidth: true
                                     verticalAlignment: Text.AlignVCenter
                                     wrapMode: Text.Wrap
+                                    font.pointSize: $(9)
                                     text: liveUSBData.currentImage.error[index]
                                 }
                             }
@@ -90,19 +91,20 @@ Dialog {
                             model: (liveUSBData.currentImage.writer.finished || liveUSBData.currentImage.error.length > 0) ? null : liveUSBData.currentImage.warning
                             RowLayout {
                                 width: infoColumn.width
-                                spacing: 8
+                                spacing: $(8)
                                 Text {
                                     Layout.fillHeight: true
                                     verticalAlignment: Text.AlignVCenter
                                     color: "red"
                                     text: "!"
-                                    font.pointSize: 14
+                                    font.pointSize: $(14)
                                 }
                                 Text {
                                     Layout.fillHeight: true
                                     Layout.fillWidth: true
                                     verticalAlignment: Text.AlignVCenter
                                     wrapMode: Text.Wrap
+                                    font.pointSize: $(9)
                                     text: liveUSBData.currentImage.warning[index]
                                 }
                             }
@@ -112,7 +114,7 @@ Dialog {
                             model: liveUSBData.currentImage.error.length > 0 ? null : liveUSBData.currentImage.info
                             RowLayout {
                                 width:  infoColumn.width
-                                spacing: 8
+                                spacing: $(8)
                                 // a rotated exclamation mark instead of an 'i' as for information - that's funny, right... right?!
                                 Text {
                                     Layout.fillHeight: true
@@ -120,7 +122,7 @@ Dialog {
                                     color: "blue"
                                     text: "!"
                                     rotation: 180
-                                    font.pointSize: 14
+                                    font.pointSize: $(14)
                                 }
                                 Text {
                                     Layout.fillHeight: true
@@ -145,6 +147,7 @@ Dialog {
                             Layout.fillWidth: true
                             Layout.fillHeight: true
                             horizontalAlignment: Text.AlignHCenter
+                            font.pointSize: $(9)
                             property double leftSize: liveUSBData.currentImage.download.maxProgress - liveUSBData.currentImage.download.progress
                             property string leftStr: leftSize <= 0 ? "" :
                                                      (leftSize < 1024) ? (leftSize + " B") :
@@ -172,17 +175,17 @@ Dialog {
 
                     RowLayout {
                         anchors.horizontalCenter: parent.horizontalCenter
-                        spacing: 32
+                        spacing: $(32)
                         IndicatedImage {
                             source: liveUSBData.currentImage.logo
-                            sourceSize.width: 64
-                            sourceSize.height: 64
+                            sourceSize.width: $(64)
+                            sourceSize.height: $(64)
                             fillMode: Image.PreserveAspectFit
                         }
                         Arrow {
                             id: writeArrow
                             anchors.verticalCenter: parent.verticalCenter
-                            height: 14
+                            height: $(14)
                             SequentialAnimation {
                                 running: liveUSBData.currentImage.writer.running
                                 loops: -1
@@ -227,9 +230,9 @@ Dialog {
 
                             enabled: !liveUSBData.currentImage.writer.running
                             Row {
-                                spacing: 8
+                                spacing: $(8)
                                 anchors.fill: parent
-                                anchors.leftMargin: 8
+                                anchors.leftMargin: $(8)
                                 visible: liveUSBData.usbDriveNames.length <= 0
                                 BusyIndicator {
                                     anchors.verticalCenter: parent.verticalCenter
@@ -241,6 +244,7 @@ Dialog {
                                     verticalAlignment: Text.AlignVCenter
                                     text: qsTranslate("", "There are no portable drives connected")
                                     color: "gray"
+                                    font.pointSize: $(9)
                                 }
                             }
                         }
@@ -248,10 +252,11 @@ Dialog {
 
                     ColumnLayout {
                         width: parent.width
-                        spacing: 12
+                        spacing: $(12)
                         RowLayout {
                             height: acceptButton.height
                             width: parent.width
+                            spacing: $(10)
                             AdwaitaButton  {
                                 id: optionGroup
                                 implicitHeight: parent.height / 8 * 5
@@ -270,7 +275,7 @@ Dialog {
                                     verticalAlignment: Text.AlignVCenter
                                     text: "+"
                                     font.bold: true
-                                    font.pointSize: 12
+                                    font.pointSize: $(12)
                                 }
                             }
 
@@ -279,6 +284,7 @@ Dialog {
                                 verticalAlignment: Text.AlignVCenter
                                 text: qsTranslate("", "Options")
                                 enabled: optionGroup.enabled
+                                font.pointSize: $(9)
                                 MouseArea {
                                     anchors.fill: parent
                                     onClicked: optionGroup.checked = !optionGroup.checked
@@ -287,7 +293,7 @@ Dialog {
 
                             Item {
                                 Layout.fillWidth: true
-                                height: 1
+                                height: $(1)
                             }
 
                             AdwaitaButton {
@@ -296,7 +302,7 @@ Dialog {
                                     right: acceptButton.left
                                     top: parent.top
                                     bottom: parent.bottom
-                                    rightMargin: 6
+                                    rightMargin: $(6)
                                 }
                                 text: qsTranslate("", "Cancel")
                                 enabled: !liveUSBData.currentImage.writer.running
@@ -371,11 +377,11 @@ Dialog {
                         }
                         Column {
                             id: advancedOptions
-                            spacing: 6
+                            spacing: $(6)
                             Repeater {
                                 id: groupLayoutRepeater
                                 model: optionGroup.checked ? liveUSBData.optionValues : null
-                                CheckBox {
+                                AdwaitaCheckBox {
                                     checked: liveUSBData.optionValues[index]
                                     enabled: !liveUSBData.currentImage.writer.running
                                     height: implicitHeight
@@ -389,7 +395,7 @@ Dialog {
                                 }
                             }
                             // It's better to have this one separately to have the confirmation clearer
-                            CheckBox {
+                            AdwaitaCheckBox {
                                 id: writeImmediately
                                 height: optionGroup.checked ? implicitHeight : 0
                                 visible: optionGroup.checked

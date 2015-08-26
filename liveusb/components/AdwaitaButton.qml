@@ -13,9 +13,10 @@ Button {
             border.color: control.enabled ? "#777777" : "#c2c2c2"
         }
         label: Item {
-            implicitWidth: labelText.width + 16
+            implicitWidth: labelText.width + $(16)
             Text {
-                x: 8
+                x: $(8)
+                font.pointSize: $(9)
                 id: labelText
                 color: control.enabled ? root.textColor : "gray"
                 text: control.text

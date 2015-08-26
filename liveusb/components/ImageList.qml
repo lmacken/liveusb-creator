@@ -22,17 +22,17 @@ Item {
             color: searchInput.activeFocus ? "#4a90d9" : "#c3c3c3"
             width: 1
         }
-        radius: 6
+        radius: $(6)
         color: "white"
         anchors {
             top: parent.top
             left: parent.left
             right: archSelect.left
-            topMargin: 12
+            topMargin: $(12)
             leftMargin: mainWindow.margin
-            rightMargin: 4
+            rightMargin: $(4)
         }
-        height: 36
+        height: $(36)
 
         Item {
             id: magnifyingGlass
@@ -41,17 +41,17 @@ Item {
                 leftMargin: (parent.height - height) / 2
                 verticalCenter: parent.verticalCenter
             }
-            height: childrenRect.height + 3
-            width: childrenRect.width + 2
+            height: childrenRect.height + $(3)
+            width: childrenRect.width + $(2)
 
             Rectangle {
-                height: 11
+                height: $(11)
                 antialiasing: true
                 width: height
                 radius: height / 2
                 color: "black"
                 Rectangle {
-                    height: 7
+                    height: $(7)
                     antialiasing: true
                     width: height
                     radius: height / 2
@@ -59,11 +59,11 @@ Item {
                     anchors.centerIn: parent
                 }
                 Rectangle {
-                    height: 2
-                    width: 6
-                    radius: 2
-                    x: 8
-                    y: 11
+                    height: $(2)
+                    width: $(6)
+                    radius: $(2)
+                    x: $(8)
+                    y: $(11)
                     rotation: 45
                     color: "black"
                 }
@@ -76,11 +76,12 @@ Item {
                 top: parent.top
                 bottom: parent.bottom
                 right: parent.right
-                margins: 8
+                margins: $(8)
             }
             Text {
                 anchors.fill: parent
                 color: "light gray"
+                font.pointSize: $(9)
                 text: qsTranslate("", "Find an operating system image")
                 visible: !parent.activeFocus && parent.text.length == 0
                 verticalAlignment: Text.AlignVCenter
@@ -106,10 +107,10 @@ Item {
             right: parent.right
             top: parent.top
             rightMargin: mainWindow.margin
-            topMargin: 12
+            topMargin: $(12)
         }
-        height: 36
-        width: 148
+        height: $(36)
+        width: $(148)
         model: liveUSBData.releaseProxyModel.possibleArchs
         onCurrentIndexChanged:  {
             liveUSBData.releaseProxyModel.archFilter = currentText
@@ -132,9 +133,9 @@ Item {
         id: whiteBackground
         z: -1
         clip: true
-        radius: 6
+        radius: $(6)
         color: "white"
-        y: liveUSBData.releaseProxyModel.isFront || moveUp.running ? parent.height / 2 - height / 2 : 54
+        y: liveUSBData.releaseProxyModel.isFront || moveUp.running ? parent.height / 2 - height / 2 : $(54)
         Behavior on y {
             id: moveUp
             enabled: false
@@ -145,7 +146,7 @@ Item {
         }
 
         //height: !liveUSBData.releaseProxyModel.isFront ? parent.height - 54 + 4 : parent.height - 108
-        height: liveUSBData.releaseProxyModel.isFront ? 84 * 3 + 36 : parent.height
+        height: liveUSBData.releaseProxyModel.isFront ? $(84) * 3 + $(36) : parent.height
 
         /*Behavior on height {
             NumberAnimation { duration: root.fadeDuration }
@@ -175,7 +176,7 @@ Item {
                 topMargin: whiteBackground.y
             }
             footer: Item {
-                height: !liveUSBData.releaseProxyModel.isFront ? 54 : 36
+                height: !liveUSBData.releaseProxyModel.isFront ? $(54) : $(36)
                 width: osListView.width
                 Rectangle {
                     clip: true
@@ -193,8 +194,8 @@ Item {
                         Repeater {
                             model: 3
                             Rectangle {
-                                height: 4
-                                width: 4
+                                height: $(4)
+                                width: $(4)
                                 color: "#bebebe"
                             }
                         }
@@ -202,6 +203,7 @@ Item {
                     Text {
                         id: threeDotText
                         y: threeDotDots.hidden ? parent.height / 2 - height / 2 : -height
+                        font.pointSize: $(9)
                         anchors.horizontalCenter: threeDotDots.horizontalCenter
                         Behavior on y { NumberAnimation { duration: 60 } }
                         clip: true
@@ -266,25 +268,25 @@ Item {
             incrementControl: Item {}
             decrementControl: Item {}
             corner: Item {
-                implicitWidth: 11
-                implicitHeight: 11
+                implicitWidth: $(11)
+                implicitHeight: $(11)
             }
             scrollBarBackground: Rectangle {
                 color: "#dddddd"
-                implicitWidth: 11
-                implicitHeight: 11
+                implicitWidth: $(11)
+                implicitHeight: $(11)
             }
             handle: Rectangle {
                 color: "#b3b5b6"
-                x: 2
-                y: 2
-                implicitWidth: 7
-                implicitHeight: 7
-                radius: 4
+                x: $(2)
+                y: $(2)
+                implicitWidth: $(7)
+                implicitHeight: $(7)
+                radius: $(4)
             }
             transientScrollBars: false
-            handleOverlap: 1
-            minimumHandleLength: 10
+            handleOverlap: $(1)
+            minimumHandleLength: $(10)
         }
     }
 
@@ -292,13 +294,13 @@ Item {
         id: imageDelegate
         Item {
             width: parent.width
-            height: 84
+            height: $(84)
             Rectangle {
                 width: parent.width - 2
                 height: index == 0 ? parent.height - 1 : parent.height
                 x: 1
                 y: index == 0 ? 1 : 0
-                radius: 4
+                radius: $(4)
                 color: "transparent"
                 IndicatedImage {
                     id: iconRect
@@ -306,8 +308,8 @@ Item {
                         top: parent.top
                         left: parent.left
                         bottom: parent.bottom
-                        leftMargin: 32
-                        topMargin: 16
+                        leftMargin: $(32)
+                        topMargin: $(16)
                         bottomMargin: anchors.topMargin
                     }
                     width: height
@@ -323,25 +325,27 @@ Item {
                         left: iconRect.right
                         right: arrow.left
                         bottom: parent.bottom
-                        leftMargin: 28
-                        rightMargin: 14
+                        leftMargin: $(28)
+                        rightMargin: $(14)
                     }
                     Text {
+                        font.pointSize: $(9)
                         text: release.name
                         anchors {
                             bottom: parent.verticalCenter
                             left: parent.left
-                            bottomMargin: 2
+                            bottomMargin: $(2)
                         }
                         // font.weight: Font.Bold
                     }
                     Text {
+                        font.pointSize: $(9)
                         text: release.summary
                         anchors {
                             top: parent.verticalCenter
                             left: parent.left
                             right: parent.right
-                            topMargin: 2
+                            topMargin: $(2)
                         }
                         wrapMode: Text.Wrap
                         color: "#a1a1a1"
@@ -351,10 +355,11 @@ Item {
                 Arrow {
                     id: arrow
                     visible: !release.isLocal
+                    scale: $(1)
                     anchors {
                         verticalCenter: parent.verticalCenter
                         right: parent.right
-                        rightMargin: 20
+                        rightMargin: $(20)
                     }
                 }
                 Rectangle {
