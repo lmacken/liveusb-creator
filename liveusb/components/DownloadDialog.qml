@@ -186,6 +186,7 @@ Dialog {
                             id: writeArrow
                             anchors.verticalCenter: parent.verticalCenter
                             height: $(14)
+                            scale: $(1)
                             SequentialAnimation {
                                 running: liveUSBData.currentImage.writer.running
                                 loops: -1

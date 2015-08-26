@@ -2,12 +2,14 @@ import QtQuick 2.0
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.2
 import QtQuick.Layouts 1.1
-import QtQuick.Dialogs 1.2
+import QtQuick.Dialogs 1.0
 
 Item {
     id: root
+    anchors.fill: parent
 
     signal stepForward
+
 
     Rectangle {
         z: 2
@@ -64,7 +66,6 @@ Item {
             fill: parent
             leftMargin: anchors.rightMargin
         }
-
         contentItem: Item {
             y: $(72)
             x: mainWindow.margin
@@ -89,7 +90,6 @@ Item {
                             fillMode: Image.PreserveAspectFit
                         }
                     }
-
                     ColumnLayout {
                         Layout.alignment: Qt.AlignLeft
                         spacing: $(8)
@@ -182,7 +182,6 @@ Item {
                 }
             }
         }
-
         style: ScrollViewStyle {
             incrementControl: Item {}
             decrementControl: Item {}
@@ -208,6 +207,7 @@ Item {
             minimumHandleLength: $(10)
         }
     }
+
     DownloadDialog {
         id: dlDialog
         onVisibleChanged: {
@@ -223,4 +223,3 @@ Item {
         }
     }
 }
-
