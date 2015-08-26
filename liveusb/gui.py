@@ -462,6 +462,9 @@ class Release(QObject):
         self._writer.runningChanged.connect(self.statusChanged)
         self._writer.statusChanged.connect(self.statusChanged)
 
+        parent.releaseProxyModel.archChanged.connect(self.sizeChanged)
+        parent.releaseProxyModel.archChanged.connect(self.pathChanged)
+
 
     @pyqtSlot()
     def get(self):
@@ -525,9 +528,11 @@ class Release(QObject):
 
     @pyqtProperty(float, notify=sizeChanged)
     def size(self):
-        if 'x86_64' in self._data['variants'].keys():
-            return self._data['variants']['x86_64']['size']
-        return self._data['variants']['']['size']
+        if not self.isLocal:
+            for arch in self._data['variants'].keys():
+                if arch in self._archMap[self.liveUSBData.releaseProxyModel.archFilter]:
+                    return self._data['variants'][arch]['size']
+        return 0
 
     @size.setter
     def size(self, value):
