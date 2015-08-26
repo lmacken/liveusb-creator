@@ -6,6 +6,7 @@
     <file>components/AdwaitaProgressBar.qml</file>
     <file>components/AdwaitaRectangle.qml</file>
     <file>components/AdwaitaRadioButton.qml</file>
+    <file>components/AdwaitaCheckBox.qml</file>
     <file>components/Arrow.qml</file>
     <file>components/BackButton.qml</file>
     <file>components/DownloadDialog.qml</file>
