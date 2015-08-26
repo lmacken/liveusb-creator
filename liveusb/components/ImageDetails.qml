@@ -114,7 +114,8 @@ Item {
                             }
                         }
                         Item {
-                            height: childrenRect.height
+                            height: localSelectionLayout.height
+
                             RowLayout {
                                 anchors.verticalCenter: parent.verticalCenter
                                 visible: liveUSBData.currentImage.arch.length
@@ -137,6 +138,7 @@ Item {
                             }
 
                             RowLayout {
+                                id: localSelectionLayout
                                 visible: liveUSBData.currentImage.isLocal
                                 spacing: $(12)
                                 AdwaitaButton {
