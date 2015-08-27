@@ -50,6 +50,7 @@ A liveusb creator from Live Fedora images
 %build
 %{__python} setup.py build
 make mo
+make gui
 
 %install
 rm -rf %{buildroot}
