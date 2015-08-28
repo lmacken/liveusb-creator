@@ -258,7 +258,7 @@ class LiveUSBCreator(object):
         self.log.debug('overlaysize = %d' % overlaysize)
         self.totalsize = overlaysize + self.isosize
         if self.totalsize > freebytes:
-            raise LiveUSBError(_("There is not enough free space on the selected device. Required: %s. Free: %s." %
+            raise LiveUSBError(_("There is not enough free space on the selected device.\nRequired: %s. Free: %s." %
                                  (str(self.isosize/1024**2 + self.overlay) + "MB",
                                   str(freebytes/1024**2) + "MB")))
 
@@ -390,8 +390,9 @@ class LiveUSBCreator(object):
         """ If the ISO is for a known release, return it. """
         isoname = os.path.basename(self.iso)
         for release in releases:
-            if os.path.basename(release['url']) == isoname:
-                return release
+            for arch in release['variants'].keys():
+                if os.path.basename(release['variants'][arch]['url']) == isoname:
+                    return release
 
     def _set_drive(self, drive):
         if drive == None:
