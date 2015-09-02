@@ -1,7 +1,7 @@
 import QtQuick 2.4
 
 Item {
-    height: 10
+    height: $(10)
     width: height / 2
     clip: true
     property color color: "black"

@@ -249,7 +249,10 @@ Item {
             }
 
             model: liveUSBData.releaseProxyModel
-            delegate: imageDelegate
+            delegate: Loader {
+                width: parent.width
+                source: release.isSeparator ? "DelegateImageSeparator.qml" : "DelegateImage.qml"
+            }
 
             remove: Transition {
                 NumberAnimation { properties: "x"; to: width; duration: 300 }
@@ -287,111 +290,6 @@ Item {
             transientScrollBars: false
             handleOverlap: $(1)
             minimumHandleLength: $(10)
-        }
-    }
-
-    Component {
-        id: imageDelegate
-        Item {
-            width: parent.width
-            height: $(84)
-            Rectangle {
-                width: parent.width - 2
-                height: index == 0 ? parent.height - 1 : parent.height
-                x: 1
-                y: index == 0 ? 1 : 0
-                radius: $(4)
-                color: "transparent"
-                IndicatedImage {
-                    id: iconRect
-                    anchors {
-                        top: parent.top
-                        left: parent.left
-                        bottom: parent.bottom
-                        leftMargin: $(32)
-                        topMargin: $(16)
-                        bottomMargin: anchors.topMargin
-                    }
-                    width: height
-                    smooth: true
-                    fillMode: Image.PreserveAspectFit
-
-                    source: release.logo
-                }
-                Item {
-                    id: textRect
-                    anchors {
-                        verticalCenter: parent.verticalCenter
-                        left: iconRect.right
-                        right: arrow.left
-                        bottom: parent.bottom
-                        leftMargin: $(28)
-                        rightMargin: $(14)
-                    }
-                    Text {
-                        font.pointSize: $(9)
-                        text: release.name
-                        anchors {
-                            bottom: parent.verticalCenter
-                            left: parent.left
-                            bottomMargin: $(2)
-                        }
-                        // font.weight: Font.Bold
-                    }
-                    Text {
-                        font.pointSize: $(9)
-                        text: release.summary
-                        anchors {
-                            top: parent.verticalCenter
-                            left: parent.left
-                            right: parent.right
-                            topMargin: $(2)
-                        }
-                        wrapMode: Text.Wrap
-                        color: "#a1a1a1"
-                        // font.weight: Font.Bold
-                    }
-                }
-                Arrow {
-                    id: arrow
-                    visible: !release.isLocal
-                    scale: $(1)
-                    anchors {
-                        verticalCenter: parent.verticalCenter
-                        right: parent.right
-                        rightMargin: $(20)
-                    }
-                }
-                Rectangle {
-                    height: 1
-                    color: "#c3c3c3"
-                    width: parent.width
-                    anchors.bottom: parent.bottom
-                }
-                MouseArea {
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    onHoveredChanged: {
-                        if (containsMouse && !pressed)
-                            parent.color = "#f8f8f8"
-                        if (!containsMouse)
-                            parent.color = "transparent"
-                    }
-                    onClicked: {
-                        root.currentIndex = index
-                        root.stepForward(release.index)
-                    }
-                    onPressed: {
-                        parent.color = "#ededed"
-                    }
-                    onReleased: {
-                        parent.color = "transparent"
-                    }
-                    onCanceled: {
-                        parent.color = "transparent"
-                    }
-                }
-            }
         }
     }
 }

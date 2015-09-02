@@ -518,6 +518,10 @@ class Release(QObject):
     def index(self):
         return self._index
 
+    @pyqtProperty(bool, constant=True)
+    def isSeparator(self):
+        return self._data['source'] == ''
+
     @pyqtProperty(str, constant=True)
     def name(self):
         return self._data['name']
