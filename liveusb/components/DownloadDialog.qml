@@ -73,14 +73,14 @@ Dialog {
                                     verticalAlignment: Text.AlignVCenter
                                     color: "red"
                                     text: "✕"
-                                    font.pointSize: $(14)
+                                    font.pixelSize: $(16)
                                 }
                                 Text {
                                     Layout.fillHeight: true
                                     Layout.fillWidth: true
                                     verticalAlignment: Text.AlignVCenter
                                     wrapMode: Text.Wrap
-                                    font.pointSize: $(9)
+                                    font.pixelSize: $(12)
                                     text: liveUSBData.currentImage.error[index]
                                 }
                             }
@@ -97,14 +97,14 @@ Dialog {
                                     verticalAlignment: Text.AlignVCenter
                                     color: "red"
                                     text: "!"
-                                    font.pointSize: $(14)
+                                    font.pixelSize: $(20)
                                 }
                                 Text {
                                     Layout.fillHeight: true
                                     Layout.fillWidth: true
                                     verticalAlignment: Text.AlignVCenter
                                     wrapMode: Text.Wrap
-                                    font.pointSize: $(9)
+                                    font.pixelSize: $(12)
                                     text: liveUSBData.currentImage.warning[index]
                                 }
                             }
@@ -122,7 +122,7 @@ Dialog {
                                     color: "blue"
                                     text: "!"
                                     rotation: 180
-                                    font.pointSize: $(14)
+                                    font.pixelSize: $(18)
                                 }
                                 Text {
                                     Layout.fillHeight: true
@@ -147,7 +147,7 @@ Dialog {
                             Layout.fillWidth: true
                             Layout.fillHeight: true
                             horizontalAlignment: Text.AlignHCenter
-                            font.pointSize: $(9)
+                            font.pixelSize: $(12)
                             property double leftSize: liveUSBData.currentImage.download.maxProgress - liveUSBData.currentImage.download.progress
                             property string leftStr: leftSize <= 0 ? "" :
                                                      (leftSize < 1024) ? (leftSize + " B") :
@@ -245,7 +245,7 @@ Dialog {
                                     verticalAlignment: Text.AlignVCenter
                                     text: qsTranslate("", "There are no portable drives connected")
                                     color: "gray"
-                                    font.pointSize: $(9)
+                                    font.pixelSize: $(12)
                                 }
                             }
                         }
@@ -276,7 +276,7 @@ Dialog {
                                     verticalAlignment: Text.AlignVCenter
                                     text: "+"
                                     font.bold: true
-                                    font.pointSize: $(12)
+                                    font.pixelSize: $(16)
                                 }
                             }
 
@@ -285,7 +285,7 @@ Dialog {
                                 verticalAlignment: Text.AlignVCenter
                                 text: qsTranslate("", "Options")
                                 enabled: optionGroup.enabled
-                                font.pointSize: $(9)
+                                font.pixelSize: $(12)
                                 MouseArea {
                                     anchors.fill: parent
                                     onClicked: optionGroup.checked = !optionGroup.checked

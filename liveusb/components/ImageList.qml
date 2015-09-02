@@ -81,7 +81,7 @@ Item {
             Text {
                 anchors.fill: parent
                 color: "light gray"
-                font.pointSize: $(9)
+                font.pixelSize: $(12)
                 text: qsTranslate("", "Find an operating system image")
                 visible: !parent.activeFocus && parent.text.length == 0
                 verticalAlignment: Text.AlignVCenter
@@ -203,7 +203,7 @@ Item {
                     Text {
                         id: threeDotText
                         y: threeDotDots.hidden ? parent.height / 2 - height / 2 : -height
-                        font.pointSize: $(9)
+                        font.pixelSize: $(12)
                         anchors.horizontalCenter: threeDotDots.horizontalCenter
                         Behavior on y { NumberAnimation { duration: 60 } }
                         clip: true

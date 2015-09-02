@@ -17,11 +17,11 @@ ComboBox {
                 rotation: 90
             }
         }
-        font.pointSize: $(9)
+        font.pixelSize: $(12)
         label: Text {
             width: control.width
             x: $(4)
-            font.pointSize: $(9)
+            font.pixelSize: $(12)
             verticalAlignment: Text.AlignVCenter
             horizontalAlignment: Text.AlignLeft
             text: control.currentText

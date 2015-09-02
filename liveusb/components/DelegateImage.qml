@@ -37,7 +37,7 @@ Item {
                 rightMargin: $(14)
             }
             Text {
-                font.pointSize: $(9)
+                font.pixelSize: $(12)
                 text: release.name
                 anchors {
                     bottom: parent.verticalCenter
@@ -47,7 +47,7 @@ Item {
                 // font.weight: Font.Bold
             }
             Text {
-                font.pointSize: $(9)
+                font.pixelSize: $(12)
                 text: release.summary
                 anchors {
                     top: parent.verticalCenter

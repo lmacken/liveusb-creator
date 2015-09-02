@@ -32,7 +32,7 @@ AdwaitaButton {
     Text {
         id: text
         text: "Back"
-        font.pointSize: $(9)
+        font.pixelSize: $(12)
         anchors {
             left: arrow.left
             leftMargin: $(16)

@@ -16,7 +16,7 @@ Button {
             implicitWidth: labelText.width + $(16)
             Text {
                 x: $(8)
-                font.pointSize: $(9)
+                font.pixelSize: $(12)
                 id: labelText
                 color: control.enabled ? root.textColor : "gray"
                 text: control.text

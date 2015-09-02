@@ -97,12 +97,12 @@ Item {
                             Text {
                                 Layout.fillWidth: true
                                 anchors.left: parent.left
-                                font.pointSize: $(13)
+                                font.pixelSize: $(17)
                                 text: liveUSBData.currentImage.name
                             }
                             Text {
                                 anchors.right: parent.right
-                                font.pointSize: $(11)
+                                font.pixelSize: $(15)
                                 property double size: liveUSBData.currentImage.size
                                 text: size <= 0 ? "" :
                                       (size < 1024) ? (size + " B") :
@@ -149,7 +149,7 @@ Item {
                                     }
                                 }
                                 Text {
-                                    font.pointSize: $(9)
+                                    font.pixelSize: $(12)
                                     text: qsTranslate("", "Selected file: %1").arg(liveUSBData.currentImage.path ? (((String)(liveUSBData.currentImage.path)).split("/").slice(-1)[0]) : qsTranslate("", "None"))
                                 }
                             }
@@ -157,7 +157,7 @@ Item {
                         Text {
                             // I'm sorry, everyone, I can't find a better way to determine if the date is valid
                             text: liveUSBData.currentImage.releaseDate.toLocaleDateString().length > 0 ? (qsTranslate("", "Released on %s").arg(liveUSBData.currentImage.releaseDate.toLocaleDateString())) : ""
-                            font.pointSize: $(8)
+                            font.pixelSize: $(11)
                             color: "gray"
                         }
                     }
@@ -168,7 +168,7 @@ Item {
                     wrapMode: Text.WordWrap
                     text: liveUSBData.currentImage.description
                     textFormat: Text.RichText
-                    font.pointSize: $(9)
+                    font.pixelSize: $(12)
                 }
                 Repeater {
                     id: screenshotRepeater

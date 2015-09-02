@@ -30,7 +30,7 @@ CheckBox {
             }
         }
         label: Text {
-            font.pointSize: $(9)
+            font.pixelSize: $(12)
             text: control.text
         }
         spacing: $(8)

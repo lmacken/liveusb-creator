@@ -19,14 +19,14 @@ Rectangle {
         spacing: 12
         Text {
             Layout.alignment: Qt.AlignVCenter
-            font.pointSize: $(9)
+            font.pixelSize: $(12)
             text: release.name
         }
         Text {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignVCenter
             text: release.summary
-            font.pointSize: $(9)
+            font.pixelSize: $(12)
             color: "#707070"
             Behavior on opacity {
                 NumberAnimation {
