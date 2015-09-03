@@ -9,6 +9,8 @@
     <file>components/AdwaitaCheckBox.qml</file>
     <file>components/Arrow.qml</file>
     <file>components/BackButton.qml</file>
+    <file>components/DelegateImage.qml</file>
+    <file>components/DelegateImageSeparator.qml</file>
     <file>components/DownloadDialog.qml</file>
     <file>components/ImageDetails.qml</file>
     <file>components/ImageList.qml</file>
