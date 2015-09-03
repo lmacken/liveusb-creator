@@ -33,6 +33,7 @@ newqml = []
 newqml += Tree("C:\\Qt\\5.5\\mingw492_32\\qml\\QtQuick", prefix = 'QtQuick')
 newqml += Tree("C:\\Qt\\5.5\\mingw492_32\\qml\\QtQuick.2", prefix = 'QtQuick.2')
 newqml += Tree("C:\\Qt\\5.5\\mingw492_32\\qml\\QtQml", prefix = 'QtQml')
+newqml += Tree("C:\\Qt\\5.5\\mingw492_32\\qml\\Qt", prefix = 'Qt')
 
 tools = []
 tools += Tree("tools")
