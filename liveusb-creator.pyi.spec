@@ -34,11 +34,12 @@ newqml += Tree("C:\\Qt\\5.5\\mingw492_32\\qml\\QtQuick", prefix = 'QtQuick')
 newqml += Tree("C:\\Qt\\5.5\\mingw492_32\\qml\\QtQuick.2", prefix = 'QtQuick.2')
 newqml += Tree("C:\\Qt\\5.5\\mingw492_32\\qml\\QtQml", prefix = 'QtQml')
 
+tools = []
+tools += Tree("tools")
 
 stripQml(a.binaries)
 stripDebug(a.binaries)
 stripDebug(newqml)
-print a.binaries
 
 exe = EXE(pyz,
           a.scripts,
@@ -51,6 +52,7 @@ exe = EXE(pyz,
 coll = COLLECT(exe,
                a.binaries,
                newqml,
+               tools,
                strip=False,
                upx=True,
                name='liveusb-creator')
