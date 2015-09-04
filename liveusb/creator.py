@@ -391,8 +391,9 @@ class LiveUSBCreator(object):
         isoname = os.path.basename(self.iso)
         for release in releases:
             for arch in release['variants'].keys():
-                if os.path.basename(release['variants'][arch]['url']) == isoname:
+                if arch in release['variants'].keys() and 'url' in release['variants'][arch] and os.path.basename(release['variants'][arch]['url']) == isoname:
                     return release
+        return None
 
     def _set_drive(self, drive):
         if drive == None:
@@ -849,6 +850,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             shutil.rmtree(syslinux_path)
         except OSError, e:
             pass
+        print (self.dest, syslinux_path)
         shutil.move(os.path.join(self.dest, "isolinux"), syslinux_path)
         try:
             os.unlink(os.path.join(syslinux_path, "isolinux.cfg"))
@@ -961,16 +963,16 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             return
         if partition.isFlagAvailable(parted.PARTITION_BOOT):
             if partition.getFlag(parted.PARTITION_BOOT):
-                self.log.debug(_('%s already bootable') % self._drive)
+                self.log.debug(_('%s already bootable') % self.drive['device'])
             else:
                 partition.setFlag(parted.PARTITION_BOOT)
                 try:
                     disk.commit()
-                    self.log.info('Marked %s as bootable' % self._drive)
+                    self.log.info('Marked %s as bootable' % self.drive['device'])
                 except Exception, e:
                     self.log.exception(e)
         else:
-            self.log.warning('%s does not have boot flag' % self._drive)
+            self.log.warning('%s does not have boot flag' % self.drive['device'])
 
     def get_disk_partition(self):
         """ Return the PedDisk and partition of the selected device """
@@ -979,7 +981,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         dev = parted.Device(path = parent)
         disk = parted.Disk(device = dev)
         for part in disk.partitions:
-            if self._drive == "/dev/%s" %(part.getDeviceNodeName(),):
+            if self.drive['device'] == "/dev/%s" %(part.getDeviceNodeName(),):
                 return disk, part
         raise LiveUSBError(_("Unable to find partition"))
 
@@ -993,27 +995,30 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             http://syslinux.zytor.com/doc/usbkey.txt
         """
         #from parted import PedDevice
-        self.log.info('Initializing %s in a zip-like fashon' % self._drive)
+        self.log.info('Initializing %s in a zip-like fashon' % self.drive['device'])
         heads = 64
         cylinders = 32
         # Is this part even necessary?
         #device = PedDevice.get(self._drive[:-1])
         #cylinders = int(device.cylinders / (64 * 32))
         self.popen('/usr/lib/syslinux/mkdiskimage -4 %s 0 %d %d' % (
-                   self._drive[:-1], heads, cylinders))
+                   self.drive['device'][:-1], heads, cylinders))
 
     def format_device(self):
         """ Format the selected partition as FAT32 """
-        self.log.info('Formatting %s as FAT32' % self._drive)
-        self.popen('mkfs.vfat -F 32 %s' % self._drive)
+        self.log.info('Formatting %s as FAT32' % self.drive['device'])
+        self.popen('mkfs.vfat -F 32 %s' % self.drive['device'])
 
     def get_mbr(self):
-        parent = self.drive.get('parent', self._drive)
+        parent = self.drive.get('parent', self.drive['device'])
         if parent is None:
-            parent = self._drive
+            parent = self.drive['device']
         parent = unicode(parent)
         self.log.debug('Checking the MBR of %s' % parent)
-        drive = open(parent, 'rb')
+        try:
+            drive = open(parent, 'rb')
+        except IOError:
+            return ''
         mbr = ''.join(['%02X' % ord(x) for x in drive.read(2)])
         drive.close()
         self.log.debug('mbr = %r' % mbr)
@@ -1043,7 +1048,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         return mbr == self.get_mbr()
 
     def reset_mbr(self):
-        parent = unicode(self.drive.get('parent', self._drive))
+        parent = unicode(self.drive.get('parent', self.drive['device']))
         if '/dev/loop' not in self.drive:
             mbr = self._get_mbr_bin()
             if mbr:
@@ -1057,7 +1062,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
     def calculate_device_checksum(self, progress=None):
         """ Calculate the SHA1 checksum of the device """
-        self.log.info(_("Calculating the SHA1 of %s" % self._drive))
+        self.log.info(_("Calculating the SHA1 of %s" % self.drive['device']))
         if not progress:
             class DummyProgress:
                 def set_max_progress(self, value): pass

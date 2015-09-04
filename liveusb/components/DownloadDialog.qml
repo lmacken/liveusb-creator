@@ -360,18 +360,36 @@ Dialog {
                                 }
                                 SequentialAnimation {
                                     id: acceptButtonBounce
-                                    NumberAnimation {
-                                        target: acceptButton
-                                        property: "scale"
-                                        duration: 80
-                                        from: 1
-                                        to: 1.2
+                                    ParallelAnimation {
+                                        ColorAnimation {
+                                            duration: 80
+                                            target: acceptButton
+                                            property: "color"
+                                            from: "red"
+                                            to: Qt.tint("white", "red")
+                                        }
+                                        NumberAnimation {
+                                            target: acceptButton
+                                            property: "scale"
+                                            duration: 80
+                                            from: 1
+                                            to: 1.2
+                                        }
                                     }
-                                    NumberAnimation {
-                                        target: acceptButton
-                                        property: "scale"
-                                        duration: 40
-                                        to: 1.0
+                                    ParallelAnimation {
+                                        ColorAnimation {
+                                            duration: 80
+                                            target: acceptButton
+                                            property: "color"
+                                            from: Qt.tint("white", "red")
+                                            to: "red"
+                                        }
+                                        NumberAnimation {
+                                            target: acceptButton
+                                            property: "scale"
+                                            duration: 40
+                                            to: 1.0
+                                        }
                                     }
                                 }
                             }
@@ -405,9 +423,9 @@ Dialog {
                                 text: qsTranslate("", "Write the image immediately when the download is finished")
                                 onCheckedChanged: {
                                     if (checked)
-                                        acceptButton.pressedOnce = false
-                                    else
                                         acceptButton.pressedOnce = true
+                                    else
+                                        acceptButton.pressedOnce = false
                                 }
                             }
                         }

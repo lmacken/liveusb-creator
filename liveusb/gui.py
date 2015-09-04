@@ -443,6 +443,8 @@ class Release(QObject):
         self.live = live
         self.liveUSBData = parent
 
+        self._size = 0
+
         self._data = data
         self._path = ''
 
@@ -481,6 +483,8 @@ class Release(QObject):
 
     @pyqtSlot()
     def inspectDestination(self):
+        if self._writer.running:
+            return
         self._warning = []
         self.warningChanged.emit()
         self._info = []
@@ -503,7 +507,7 @@ class Release(QObject):
         try:
             self.live.mount_device()
         except LiveUSBError, e:
-            self.info = e.args[0]
+            self.addInfo(e.args[0])
             self._running = False
             self.runningChanged.emit()
         except OSError, e:
@@ -536,12 +540,12 @@ class Release(QObject):
             for arch in self._data['variants'].keys():
                 if arch in self._archMap[self.liveUSBData.releaseProxyModel.archFilter]:
                     return self._data['variants'][arch]['size']
-        return 0
+        return self._size
 
     @size.setter
     def size(self, value):
-        if value != self._size:
-            self._data['x86_64']['size'] = value
+        if self.isLocal and self._size != value:
+            self._size = value
             self.sizeChanged.emit()
 
     @pyqtProperty('QStringList', constant=True)
@@ -624,12 +628,6 @@ class Release(QObject):
     @pyqtProperty('QStringList', notify=infoChanged)
     def info(self):
         return self._info
-
-    @info.setter
-    def info(self, value):
-        if self._info != value:
-            self._info = value
-            self.infoChanged.emit()
 
     def addInfo(self, value):
         if value not in self._info:
