@@ -518,6 +518,9 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                     'that does not support the ext4 filesystem'))
             self.valid_fstypes -= set(['ext4'])
 
+    def strify(self, s):
+        return bytearray(s).replace(b'\x00', b'').decode('utf-8')
+
     def detect_removable_drives(self, callback=None):
         """ Detect all removable USB storage devices using UDisks2 via D-Bus """
         import dbus
@@ -597,8 +600,6 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                                          "/org/freedesktop/UDisks2")
         self.udisks = dbus.Interface(udisks_obj, 'org.freedesktop.DBus.ObjectManager')
 
-        def strify(s):
-            return bytearray(s).replace(b'\x00', b'').decode('utf-8')
 
         def handleAdded(name, device):
             if ('org.freedesktop.UDisks2.Block' in device and
@@ -633,8 +634,8 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 'fstype': str(blk['IdType']),
                 'fsversion': str(blk['IdVersion']),
                 'uuid': str(blk['IdUUID']),
-                'device': strify(blk['Device']),
-                'mount': map(strify, fs['MountPoints']),
+                'device': self.strify(blk['Device']),
+                'mount': map(self.strify, fs['MountPoints']),
                 'size': int(blk['Size']),
             }
             self.log.debug('data = %r' % data)
@@ -670,7 +671,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
             parent_obj = self.bus.get_object("org.freedesktop.UDisks2", partition[u'Table'])
             parent = dbus.Interface(parent_obj, "org.freedesktop.DBus.Properties").Get("org.freedesktop.UDisks2.Block", "Device")
-            data['parent'] = strify(parent)
+            data['parent'] = self.strify(parent)
 
             self.log.debug(pformat(data))
 
@@ -737,20 +738,37 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         self.dest = self.drive['mount']
         mnt = None
         if not self.dest:
+            dev=None
+            bd=None
             try:
                 dev = self._get_device_fs(self.drive['udi'])
-                self.log.debug("Mounting %s" % self.drive['device'])
                 bd = self.bus.get_object('org.freedesktop.UDisks2',
                                    '/org/freedesktop/UDisks2/block_devices%s' %
                                    self.drive['device'][4:])
-                mnt = str(bd.Mount({}, dbus_interface='org.freedesktop.UDisks2.Filesystem'))
             except dbus.exceptions.DBusException, e:
                 self.log.error(_('Unknown dbus exception while trying to '
-                                 'mount device: %s') % str(e))
-            except Exception, e:
-                raise LiveUSBError(_("Unable to mount device: %r" % e))
+                                     'mount device: %s') % str(e))
 
-            if not os.path.exists(mnt):
+            if dev and bd:
+                try:
+                    mntpnts = dbus.Interface(bd, 'org.freedesktop.DBus.Properties').Get('org.freedesktop.UDisks2.Filesystem', 'MountPoints')
+                    if len(mntpnts) > 0:
+                        self.log.debug("%s is already mounted at %s" % (self.drive['device'], self.strify(mntpnts[0])))
+                        mnt = self.strify(mntpnts[0])
+                except dbus.exceptions.DBusException, e:
+                    pass
+
+            if dev and bd and not mnt:
+                try:
+                    self.log.debug("Mounting %s" % self.drive['device'])
+                    mnt = str(bd.Mount({}, dbus_interface='org.freedesktop.UDisks2.Filesystem'))
+                except dbus.exceptions.DBusException, e:
+                    self.log.error(_('Unknown dbus exception while trying to '
+                                     'mount device: %s') % str(e))
+                except Exception, e:
+                    raise LiveUSBError(_("Unable to mount device: %r" % e))
+
+            if mnt and not os.path.exists(mnt):
                 self.log.error(_('No mount points found after mounting attempt'))
                 self.log.error("%s doesn't exist" % mnt)
             else:
@@ -885,6 +903,8 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         """ Return the number of available bytes on our device """
         import statvfs
         device = device and device or self.dest
+        if not device:
+            return 0
         device = device.encode('utf-8')
         if not os.path.exists(device):
             raise LiveUSBError(_('Cannot find device: %s') % device)

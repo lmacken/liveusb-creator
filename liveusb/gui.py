@@ -508,12 +508,8 @@ class Release(QObject):
             self.live.mount_device()
         except LiveUSBError, e:
             self.addInfo(e.args[0])
-            self._running = False
-            self.runningChanged.emit()
         except OSError, e:
             self.addInfo(_('Unable to mount device'))
-            self._running = False
-            self.runningChanged.emit()
 
         if self.live.existing_liveos() and not self.parent().option('dd'):
             self.addWarning(_('Your device already contains a live OS. If you continue, it will be overwritten.'))
