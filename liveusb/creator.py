@@ -1130,7 +1130,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
 
 
-class MacOsLiveUSBCreator(object):
+class MacOsLiveUSBCreator(LiveUSBCreator):
 
     def detect_removable_drives(self, callback=None):
         """ This method should populate self.drives with removable devices """
