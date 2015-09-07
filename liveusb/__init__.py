@@ -44,7 +44,7 @@ if sys.platform == "win32":
 elif sys.platform.startswith("linux"):
     from liveusb.creator import LinuxLiveUSBCreator as LiveUSBCreator
 elif sys.platform == "darwin":
-    from liveusb.creator import MacOsUSBCreator as LiveUSBCreator
+    from liveusb.creator import MacOsLiveUSBCreator as LiveUSBCreator
 else:
     from liveusb.creator import LiveUSBCreator as LiveUSBCreator
 
