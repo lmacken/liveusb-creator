@@ -1129,6 +1129,73 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         return version
 
 
+
+class MacOsLiveUSBCreator(object):
+
+    def detect_removable_drives(self, callback=None):
+        """ This method should populate self.drives with removable devices """
+        pass
+
+    def verify_filesystem(self):
+        """
+        Verify the filesystem of our device, setting the volume label
+        if necessary.  If something is not right, this method throws a
+        LiveUSBError.
+        """
+        pass
+
+    def get_free_bytes(self, drive=None):
+        """ Return the number of free bytes on a given drive.
+
+        If drive is None, then use the currently selected device.
+        """
+        pass
+
+    def extract_iso(self):
+        """ Extract the LiveCD ISO to the USB drive """
+        pass
+
+    def verify_iso_md5(self):
+        """ Verify the MD5 checksum of the ISO """
+        pass
+
+    def terminate(self):
+        """ Terminate any subprocesses that we have spawned """
+        pass
+
+    def mount_device(self):
+        """ Mount self.drive, setting the mount point to self.mount """
+        pass
+
+    def unmount_device(self):
+        """ Unmount the device mounted at self.mount """
+        pass
+
+    def get_proxies(self):
+        """ Return a dictionary of proxy settings """
+        pass
+
+    def bootable_partition(self):
+        """ Ensure that the selected partition is flagged as bootable """
+        pass
+
+    def get_mbr(self):
+        pass
+
+    def blank_mbr(self):
+        pass
+
+    def reset_mbr(self):
+        pass
+
+    def flush_buffers(self):
+        """ Flush filesystem buffers """
+        pass
+
+    def is_admin(self):
+        return os.getuid() == 0
+
+
 class WindowsLiveUSBCreator(LiveUSBCreator):
 
     def detect_removable_drives(self, callback=None):
