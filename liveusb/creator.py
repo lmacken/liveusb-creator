@@ -637,6 +637,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 'device': self.strify(blk['Device']),
                 'mount': map(self.strify, fs['MountPoints']),
                 'size': int(blk['Size']),
+                'friendlyName': str(drive['Vendor']) + ' ' + str(drive['Model'])
             }
             self.log.debug('data = %r' % data)
 

@@ -809,8 +809,8 @@ class LiveUSBData(QObject):
             previouslySelected = self._usbDrives[self._currentDrive].drive['device']
         for drive, info in self.live.drives.items():
             name = ''
-            if 'vendor' in info and 'model' in info:
-                name = info['vendor'] + ' ' + info['model']
+            if 'friendlyName' in info:
+                name = info['friendlyName']
             elif 'label' in info:
                 name = info['device'] + ' - ' + info['label']
             else:
