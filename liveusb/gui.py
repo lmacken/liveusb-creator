@@ -112,6 +112,7 @@ class ReleaseDownload(QObject, BaseMeter):
         QObject.__init__(self, parent)
         self.release = parent
         self._grabber = ReleaseDownloadThread(self, parent.live.get_proxies())
+        self._live = parent.live
 
     def reset(self):
         self._running = False
@@ -184,7 +185,7 @@ class ReleaseDownload(QObject, BaseMeter):
     def path(self, value):
         if self._path != value:
             self._path = value
-            self.parent().live.set_iso(value)
+            self._live.set_iso(value)
             self.pathChanged.emit()
 
 class ReleaseWriterProgressThread(QThread):
@@ -434,6 +435,8 @@ class Release(QObject):
     pathChanged = pyqtSignal()
     sizeChanged = pyqtSignal()
 
+    _path = ''
+
     _archMap = {'64bit': ['x86_64'], '32bit': ['i686','i386'], 'ARM': ['armv7hl']}
 
     def __init__(self, parent, index, live, data):
@@ -446,7 +449,6 @@ class Release(QObject):
         self._size = 0
 
         self._data = data
-        self._path = ''
 
         self._info = []
         self._warning = []
@@ -587,7 +589,9 @@ class Release(QObject):
 
     @path.setter
     def path(self, value):
-        if value.startswith('file://'):
+        if sys.platform.startswith('win') and value.startswith('file:///'):
+            value = value.replace('file:///', '', 1)
+        elif not sys.platform.startswith('win') and value.startswith('file://'):
             value = value.replace('file://', '', 1)
         if self._path != value:
             self._download.path = value

@@ -869,7 +869,6 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             shutil.rmtree(syslinux_path)
         except OSError, e:
             pass
-        print (self.dest, syslinux_path)
         shutil.move(os.path.join(self.dest, "isolinux"), syslinux_path)
         try:
             os.unlink(os.path.join(syslinux_path, "isolinux.cfg"))
