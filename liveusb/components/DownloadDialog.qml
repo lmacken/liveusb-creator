@@ -57,7 +57,8 @@ Dialog {
                                 width: infoColumn.width
                                 spacing: $(8)
                                 Rectangle {
-                                    anchors.centerIn: cross
+                                    Layout.fillWidth: false
+                                    Layout.alignment: Qt.AlignVCenter
                                     width: cross.height
                                     height: cross.height
                                     radius: width / 2
@@ -66,14 +67,13 @@ Dialog {
                                         width: 1
                                         color: "#a1a1a1"
                                     }
-                                }
-                                Text {
-                                    id: cross
-                                    Layout.fillHeight: true
-                                    verticalAlignment: Text.AlignVCenter
-                                    color: "red"
-                                    text: "✕"
-                                    font.pixelSize: $(16)
+                                    Text {
+                                        id: cross
+                                        anchors.centerIn: parent
+                                        color: "red"
+                                        text: "✕"
+                                        font.pixelSize: $(16)
+                                    }
                                 }
                                 Text {
                                     Layout.fillHeight: true
@@ -137,6 +137,8 @@ Dialog {
 
                     ColumnLayout {
                         width: parent.width
+                        spacing: $(5)
+
                         Behavior on y {
                             NumberAnimation {
                                 duration: 1000
