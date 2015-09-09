@@ -166,6 +166,8 @@ Item {
     ScrollView {
         id: fullList
         anchors.fill: parent
+        horizontalScrollBarPolicy: liveUSBData.releaseProxyModel.isFront ? Qt.ScrollBarAlwaysOff : Qt.ScrollBarAsNeeded
+        verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
         ListView {
             id: osListView
             clip: true
