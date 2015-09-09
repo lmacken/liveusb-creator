@@ -150,7 +150,7 @@ Item {
                                 }
                                 Text {
                                     font.pixelSize: $(12)
-                                    text: qsTranslate("", "Selected file: %1").arg(liveUSBData.currentImage.path ? (((String)(liveUSBData.currentImage.path)).split("/").slice(-1)[0]) : qsTranslate("", "None"))
+                                    text: qsTranslate("", "<font color=\"gray\">Selected:</font> %1").arg(liveUSBData.currentImage.path ? (((String)(liveUSBData.currentImage.path)).split("/").slice(-1)[0]) : qsTranslate("", "<font color=\"gray\">None</font>"))
                                 }
                             }
                         }
