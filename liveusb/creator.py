@@ -1200,31 +1200,66 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
     def detect_removable_drives(self, callback=None):
         import win32file, win32api, pywintypes
         self.drives = {}
-        for drive in [l + ':' for l in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ']:
-            try:
-                if win32file.GetDriveType(drive) == win32file.DRIVE_REMOVABLE or \
-                   drive == self.opts.force:
-                    vol = [None]
-                    try:
-                        vol = win32api.GetVolumeInformation(drive)
-                    except pywintypes.error, e:
-                        self.log.error(_('Unable to get GetVolumeInformation(%r): %r') % (drive, e))
-                        continue
-                    self.drives[drive] = {
-                        'label': vol[0],
-                        'mount': drive,
-                        'uuid': self._get_device_uuid(drive),
-                        'free': self.get_free_bytes(drive) / 1024**2,
-                        'fstype': 'vfat',
-                        'device': drive,
-                        'fsversion': vol[-1],
-                        'size': self._get_device_size(drive)
-                    }
-            except Exception, e:
-                self.log.exception(e)
-                self.log.error(_("Error probing device"))
+        self.callback = callback
+
+        def detect():
+            d = {}
+            for drive in [l + ':' for l in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ']:
+                try:
+                    if win32file.GetDriveType(drive) == win32file.DRIVE_REMOVABLE or \
+                       drive == self.opts.force:
+                        vol = [None]
+                        try:
+                            vol = win32api.GetVolumeInformation(drive)
+                        except pywintypes.error, e:
+                            self.log.error(_('Unable to get GetVolumeInformation(%r): %r') % (drive, e))
+                            continue
+                        d[drive] = {
+                            'label': vol[0],
+                            'mount': drive,
+                            'uuid': self._get_device_uuid(drive),
+                            'free': self.get_free_bytes(drive) / 1024**2,
+                            'fstype': 'vfat',
+                            'device': drive,
+                            'fsversion': vol[-1],
+                            'size': self._get_device_size(drive)
+                        }
+                except Exception, e:
+                    self.log.exception(e)
+                    self.log.error(_("Error probing device"))
+            self.drives = d
+            #if callback:
+            #    callback()
+
+            self.drive_callback()
+
         if callback:
-            callback()
+            from PyQt5.QtCore import QObject, QTimer, pyqtSlot
+            """
+            A helper class for the UI to detect the drives periodically, not only when started.
+            In contrary to the rest of this code, it utilizes Qt - to be able to use the UI event loop
+            """
+            class DriveWatcher(QObject):
+                def __init__(self, callback, work):
+                    QObject.__init__(self)
+                    self.callback = callback
+                    self.work = work
+                    self.timer = QTimer(self)
+                    self.timer.timeout.connect(self.doWork)
+                    self.timer.start(2000)
+
+                @pyqtSlot()
+                def doWork(self):
+                    self.work()
+                    self.callback()
+
+            self.watcher = DriveWatcher(callback, detect)
+
+
+        detect()
+
+    def drive_callback(self):
+        self.callback()
 
     def verify_filesystem(self):
         import win32api, win32file, pywintypes
