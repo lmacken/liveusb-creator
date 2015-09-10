@@ -49,7 +49,8 @@ exe = EXE(pyz,
           debug=False,
           strip=False,
           upx=True,
-          console=True )
+          console=False,
+          manifest='liveusb-creator.exe.manifest')
 coll = COLLECT(exe,
                a.binaries,
                newqml,
