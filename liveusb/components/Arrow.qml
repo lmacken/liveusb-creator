@@ -1,16 +1,18 @@
 import QtQuick 2.4
 
 Item {
-    height: $(10)
+    implicitHeight: 10
     width: height / 2
     clip: true
-    property color color: "black"
+    scale: $(1)
+    property alias color: rect.color
     Rectangle {
+        id: rect
         x: -parent.height / 5 * 4
         y: -parent.height / 10
         rotation: 45
         width: parent.height
         height: parent.height
-        color: parent.color
+        color: "black"
     }
 }

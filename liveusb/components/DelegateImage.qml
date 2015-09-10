@@ -63,7 +63,6 @@ Item {
         Arrow {
             id: arrow
             visible: !release.isLocal
-            scale: $(1)
             anchors {
                 verticalCenter: parent.verticalCenter
                 right: parent.right

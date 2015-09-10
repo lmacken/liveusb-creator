@@ -13,7 +13,7 @@ ComboBox {
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.rightMargin: $(16)
-                scale: $(1.3)
+                scale: $(1.2)
                 rotation: 90
             }
         }
