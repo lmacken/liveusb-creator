@@ -778,7 +778,8 @@ class LiveUSBData(QObject):
     _currentDrive = 0
 
     # man, this is just awkward... but it seems like the only way to do it in a predictable manner without creating a new class
-    _optionKeys = ['dd', 'resetMBR']
+    _optionKeys = ['dd', 'resetMBR'] if not sys.platform.startswith("win") \
+              else ['resetMBR']
     _optionNames = {'dd': _('Use <b>dd</b> to write the image - this will erase everything on your portable drive'),
                     'resetMBR': _('Reset the MBR (Master Boot Record)'),
                    }
