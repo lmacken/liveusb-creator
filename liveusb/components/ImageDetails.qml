@@ -74,26 +74,25 @@ Item {
 
             ColumnLayout {
                 width: parent.width
-                spacing: $(32)
+                spacing: $(24)
                 RowLayout {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     spacing: $(32)
-                    Layout.alignment: Qt.AlignLeft
                     Item {
-                        width: $(64)
-                        height: $(64)
+                        Layout.preferredWidth: $(64)
+                        Layout.preferredHeight: $(64)
                         IndicatedImage {
-                            id: iconRect
                             anchors.fill: parent
                             source: liveUSBData.currentImage.logo
                             fillMode: Image.PreserveAspectFit
                         }
                     }
                     ColumnLayout {
-                        Layout.alignment: Qt.AlignLeft
+                        Layout.fillHeight: true
                         spacing: $(8)
                         RowLayout {
+                            Layout.fillWidth: true
                             Text {
                                 Layout.fillWidth: true
                                 anchors.left: parent.left
@@ -117,7 +116,7 @@ Item {
                             height: localSelectionLayout.height
 
                             RowLayout {
-                                anchors.verticalCenter: parent.verticalCenter
+                                height: parent.height
                                 visible: liveUSBData.currentImage.arch.length
                                 spacing: $(8)
                                 ExclusiveGroup {
@@ -127,6 +126,7 @@ Item {
                                     model: liveUSBData.currentImage.arch
                                     AdwaitaRadioButton {
                                         text: modelData
+                                        Layout.alignment: Qt.AlignVCenter
                                         exclusiveGroup: archEG
                                         checked: liveUSBData.releaseProxyModel.archFilter == modelData
                                         onCheckedChanged: {

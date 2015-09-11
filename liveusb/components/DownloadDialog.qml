@@ -180,8 +180,8 @@ Dialog {
                         spacing: $(32)
                         IndicatedImage {
                             source: liveUSBData.currentImage.logo
-                            sourceSize.width: $(64)
-                            sourceSize.height: $(64)
+                            width: $(64)
+                            height: $(64)
                             fillMode: Image.PreserveAspectFit
                         }
                         Arrow {
