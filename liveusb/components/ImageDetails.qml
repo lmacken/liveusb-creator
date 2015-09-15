@@ -113,12 +113,11 @@ Item {
                             }
                         }
                         Item {
-                            height: localSelectionLayout.height
+                            height: childrenRect.height
 
                             RowLayout {
-                                height: parent.height
                                 visible: liveUSBData.currentImage.arch.length
-                                spacing: $(8)
+                                spacing: $(12)
                                 ExclusiveGroup {
                                     id: archEG
                                 }
@@ -134,6 +133,12 @@ Item {
                                                 liveUSBData.releaseProxyModel.archFilter = modelData
                                         }
                                     }
+                                }
+                                Text {
+                                    // I'm sorry, everyone, I can't find a better way to determine if the date is valid
+                                    text: liveUSBData.currentImage.releaseDate.toLocaleDateString().length > 0 ? (qsTranslate("", "Released on %s").arg(liveUSBData.currentImage.releaseDate.toLocaleDateString())) : ""
+                                    font.pixelSize: $(11)
+                                    color: "gray"
                                 }
                             }
 
@@ -153,12 +158,6 @@ Item {
                                     text: qsTranslate("", "<font color=\"gray\">Selected:</font> %1").arg(liveUSBData.currentImage.path ? (((String)(liveUSBData.currentImage.path)).split("/").slice(-1)[0]) : qsTranslate("", "<font color=\"gray\">None</font>"))
                                 }
                             }
-                        }
-                        Text {
-                            // I'm sorry, everyone, I can't find a better way to determine if the date is valid
-                            text: liveUSBData.currentImage.releaseDate.toLocaleDateString().length > 0 ? (qsTranslate("", "Released on %s").arg(liveUSBData.currentImage.releaseDate.toLocaleDateString())) : ""
-                            font.pixelSize: $(11)
-                            color: "gray"
                         }
                     }
                 }

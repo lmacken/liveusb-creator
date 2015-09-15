@@ -21,7 +21,7 @@ RadioButton {
             font.pixelSize: $(12)
             text: control.text
         }
-        spacing: $(8)
+        spacing: $(6)
     }
 }
 
