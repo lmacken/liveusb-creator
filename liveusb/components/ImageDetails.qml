@@ -155,7 +155,7 @@ Item {
                                 }
                                 Text {
                                     font.pixelSize: $(12)
-                                    text: qsTranslate("", "<font color=\"gray\">Selected:</font> %1").arg(liveUSBData.currentImage.path ? (((String)(liveUSBData.currentImage.path)).split("/").slice(-1)[0]) : qsTranslate("", "<font color=\"gray\">None</font>"))
+                                    text: "<font color=\"gray\">" + qsTranslate("", "Selected:") + "</font> " + (liveUSBData.currentImage.path ? (((String)(liveUSBData.currentImage.path)).split("/").slice(-1)[0]) : ("<font color=\"gray\">" + qsTranslate("", "None") + "</font>"))
                                 }
                             }
                         }
@@ -173,10 +173,11 @@ Item {
                     id: screenshotRepeater
                     model: liveUSBData.currentImage.screenshots
                     IndicatedImage {
+                        cache: false
                         Layout.fillWidth: true
+                        Layout.preferredHeight: width / sourceSize.width * sourceSize.height
                         fillMode: Image.PreserveAspectFit
                         source: modelData
-                        sourceSize.width: width
                     }
                 }
             }

@@ -1,8 +1,9 @@
-import QtQuick 2.0
+import QtQuick 2.4
 import QtQuick.Controls 1.2
 
 Image {
     id: root
+    smooth: false
     Rectangle {
         anchors.fill: parent
         opacity: parent.status == Image.Ready ? 0 : 1
