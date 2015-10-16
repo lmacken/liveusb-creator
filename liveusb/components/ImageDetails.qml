@@ -78,11 +78,12 @@ Item {
                 RowLayout {
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    spacing: $(32)
+                    spacing: $(24)
                     Item {
-                        Layout.preferredWidth: $(64)
+                        Layout.preferredWidth: $(64) + $(16)
                         Layout.preferredHeight: $(64)
                         IndicatedImage {
+                            x: $(12)
                             source: liveUSBData.currentImage.logo
                             fillMode: Image.PreserveAspectFit
                             sourceSize.width: parent.width
