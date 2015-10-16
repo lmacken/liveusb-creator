@@ -1,44 +1,20 @@
 <RCC>
     <qresource>
-        <file>liveusb-header-left.png</file>
-        <file>liveusb-header-right.png</file>
-        <file>liveusb-header-bg.png</file>
-        <file>liveusb-header.png</file>
-        <file>refresh.png</file>
-        <file>logo-color-workstation.png</file>
-        <file>logo-color-server.png</file>
-        <file>logo-color-cloud.png</file>
-        <file>logo-lxde.png</file>
-        <file>logo-plasma5.png</file>
-        <file>logo-xfce.svg</file>
-        <file>logo-fedora.svg</file>
-        <file>icon-folder.svg</file>
-        <file>cinnamon_icon.png</file>
-        <file>astronomy_icon_black.png</file>
-        <file>astronomy_icon_grey.png</file>
-        <file>astronomy_icon_green.png</file>
-        <file>design-suite_icon_black.png</file>
-        <file>design-suite_icon_grey.png</file>
-        <file>design-suite_icon_green.png</file>
-        <file>games_icon_black.png</file>
-        <file>games_icon_grey.png</file>
-        <file>games_icon_green.png</file>
-        <file>jam_icon_black.png</file>
-        <file>jam_icon_grey.png</file>
-        <file>jam_icon_green.png</file>
-        <file>kde_icon.png</file>
-        <file>lxde_icon.png</file>
-        <file>mate_icon.png</file>
-        <file>robotics-suite_icon_black.png</file>
-        <file>robotics-suite_icon_grey.png</file>
-        <file>robotics-suite_icon_green.png</file>
-        <file>scientific_icon_black.png</file>
-        <file>scientific_icon_grey.png</file>
-        <file>scientific_icon_green.png</file>
-        <file>security-lab_icon_black.png</file>
-        <file>security-lab_icon_grey.png</file>
-        <file>security-lab_icon_green.png</file>
-        <file>soas_icon.png</file>
-        <file>xfce_icon.png</file>
+        <file alias="icon_folder">icons/svg/icon_folder.svg</file>
+        <file alias="logo_workstation">icons/png/logo-color-workstation.png</file>
+        <file alias="logo_server">icons/png/logo-color-server.png</file>
+        <file alias="logo_cinnamon">icons/png/cinnamon_icon_grey_pattern.png</file>
+        <file alias="logo_plasma">icons/png/kde_icon_grey_pattern.png</file>
+        <file alias="logo_lxde">icons/png/lxde_icon_grey_pattern.png</file>
+        <file alias="logo_mate">icons/png/mate-compiz_icon_grey_pattern.png</file>
+        <file alias="logo_soas">icons/png/soas_icon_grey_pattern.png</file>
+        <file alias="logo_xfce">icons/png/xfce_icon_grey_pattern.png</file>
+        <file alias="logo_astronomy">icons/png/astronomy_icon_grey_pattern.png</file>
+        <file alias="logo_design">icons/png/design-suite_icon_grey_pattern.png</file>
+        <file alias="logo_games">icons/png/games_icon_grey_pattern.png</file>
+        <file alias="logo_jam">icons/png/jam_icon_grey_pattern.png</file>
+        <file alias="logo_robotics">icons/png/robotics_icon_grey_pattern.png</file>
+        <file alias="logo_scientific">icons/png/scientific_icon_grey_pattern.png</file>
+        <file alias="logo_security">icons/png/security-lab_icon_grey_pattern.png</file>
     </qresource>
 </RCC>

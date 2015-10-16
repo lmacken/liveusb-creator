@@ -649,7 +649,7 @@ class Release(QObject):
 
     def addError(self, value):
         if value not in self._error:
-            self._error.append(value)
+            self._error.append(str(value))
             self.errorChanged.emit()
 
 class ReleaseListModel(QAbstractListModel):
