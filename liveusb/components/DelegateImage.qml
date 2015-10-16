@@ -10,7 +10,7 @@ Item {
         y: index == 0 ? $(1) : 0
         radius: $(4)
         color: "transparent"
-        IndicatedImage {
+        Item {
             id: iconRect
             anchors {
                 top: parent.top
@@ -21,10 +21,12 @@ Item {
                 bottomMargin: anchors.topMargin
             }
             width: height
-            smooth: true
-            fillMode: Image.PreserveAspectFit
-
-            source: release.logo
+            IndicatedImage {
+                fillMode: Image.PreserveAspectFit
+                source: release.logo
+                sourceSize.height: parent.height
+                sourceSize.width: parent.width
+            }
         }
         Item {
             id: textRect

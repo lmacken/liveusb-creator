@@ -178,10 +178,12 @@ Dialog {
                     RowLayout {
                         anchors.horizontalCenter: parent.horizontalCenter
                         spacing: $(32)
-                        IndicatedImage {
+                        Image {
                             source: liveUSBData.currentImage.logo
                             Layout.preferredWidth: $(64)
                             Layout.preferredHeight: $(64)
+                            sourceSize.width: $(64)
+                            sourceSize.height: $(64)
                             fillMode: Image.PreserveAspectFit
                         }
                         Arrow {

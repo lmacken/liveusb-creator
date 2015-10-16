@@ -83,9 +83,10 @@ Item {
                         Layout.preferredWidth: $(64)
                         Layout.preferredHeight: $(64)
                         IndicatedImage {
-                            anchors.fill: parent
                             source: liveUSBData.currentImage.logo
                             fillMode: Image.PreserveAspectFit
+                            sourceSize.width: parent.width
+                            sourceSize.height: parent.height
                         }
                     }
                     ColumnLayout {
