@@ -783,7 +783,7 @@ class LiveUSBData(QObject):
     _optionNames = {'dd': _('Use <b>dd</b> to write the image - this will erase everything on your portable drive'),
                     'resetMBR': _('Reset the MBR (Master Boot Record)'),
                    }
-    _optionValues = {'dd': False,
+    _optionValues = {'dd': True,
                      'resetMBR': True,
                     }
 
