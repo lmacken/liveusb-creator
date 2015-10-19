@@ -678,6 +678,12 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
             self.drives[name] = data
 
+            if not self.drive and self.opts.console and not self.opts.force:
+                self.drive = name
+
+            if self.opts.force == data['device']:
+                self.drive = name
+
             if self.callback:
                 self.callback()
 
@@ -688,8 +694,9 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             if self.callback:
                 self.callback()
 
-        self.bus.add_signal_receiver(handleAdded, "InterfacesAdded", "org.freedesktop.DBus.ObjectManager", "org.freedesktop.UDisks2", "/org/freedesktop/UDisks2")
-        self.bus.add_signal_receiver(handleRemoved, "InterfacesRemoved", "org.freedesktop.DBus.ObjectManager", "org.freedesktop.UDisks2", "/org/freedesktop/UDisks2")
+        if not self.opts.console:
+            self.bus.add_signal_receiver(handleAdded, "InterfacesAdded", "org.freedesktop.DBus.ObjectManager", "org.freedesktop.UDisks2", "/org/freedesktop/UDisks2")
+            self.bus.add_signal_receiver(handleRemoved, "InterfacesRemoved", "org.freedesktop.DBus.ObjectManager", "org.freedesktop.UDisks2", "/org/freedesktop/UDisks2")
 
         for name, device in self.udisks.GetManagedObjects().iteritems():
             handleAdded(name, device)
