@@ -19,9 +19,18 @@
 #
 # Author(s): Luke Macken <lmacken@redhat.com>
 #            Kushal Das <kushal@fedoraproject.org>
+#            Martin Bříza <mbriza@redhat.com>
 
 """
 A cross-platform graphical interface for the LiveUSBCreator
+
+There was a move from the procedural code that was directly changing the UI itself.
+Now, we expose a set of properties representing each object we're manipulating in the back-end.
+The exposed properties are then handled independently in the UI.
+
+For example, when the image is being written, we just change the "writing" property. The UI then locks itself up based
+on this property. Basically, this means every relevant "enabled" property of the UI elements is bound to the "writing"
+property of the backend.
 """
 
 import os
@@ -29,12 +38,20 @@ import sys
 import logging
 import urlparse
 
+
 from time import sleep
 from datetime import datetime
-from PyQt4 import QtCore, QtGui
+from PyQt5.QtCore import pyqtProperty, pyqtSlot, QObject, QUrl, QDateTime, pyqtSignal, QThread, QAbstractListModel, QSortFilterProxyModel, QModelIndex, Qt, QTranslator, QLocale, QTimer
+from PyQt5.QtGui import QGuiApplication
+from PyQt5.QtQml import qmlRegisterType, qmlRegisterUncreatableType, QQmlComponent, QQmlApplicationEngine, QQmlListProperty, QQmlEngine
+from PyQt5 import QtQuick
 
-from liveusb import LiveUSBCreator, LiveUSBError, LiveUSBInterface, _
+import resources_rc
+import qml_rc
+
+from liveusb import LiveUSBCreator, LiveUSBError, _
 from liveusb.releases import releases, get_fedora_releases
+
 if sys.platform == 'win32':
     from liveusb.urlgrabber.grabber import URLGrabber, URLGrabError
     from liveusb.urlgrabber.progress import BaseMeter
@@ -43,111 +60,155 @@ else:
     from urlgrabber.progress import BaseMeter
 
 try:
-    import dbus.mainloop.qt
-    dbus.mainloop.qt.DBusQtMainLoop(set_as_default=True)
-except:
+    import dbus.mainloop.pyqt5
+    dbus.mainloop.pyqt5.DBusQtMainLoop(set_as_default=True)
+except Exception, e:
     pass
 
 MAX_FAT16 = 2047
 MAX_FAT32 = 3999
 MAX_EXT = 2097152
 
+class ReleaseDownloadThread(QThread):
+    """ Heavy lifting in the process the iso file download """
+    downloadFinished = pyqtSignal(str)
+    downloadError = pyqtSignal(str)
 
-class LiveUSBApp(QtGui.QApplication):
-    """ Main application class """
-    def __init__(self, opts, args):
-        if sys.platform[:5] == 'linux':
-            QtGui.QApplication.setGraphicsSystem('native')
-
-        QtGui.QApplication.__init__(self, args)
-        self.mywindow = LiveUSBWindow(opts, args)
-        self.mywindow.show()
-        try:
-            self.exec_()
-        finally:
-            self.mywindow.terminate()
-
-
-class ReleaseDownloader(QtCore.QThread):
-
-    def __init__(self, release, progress, proxies):
-        QtCore.QThread.__init__(self)
-        self.release = release
+    def __init__(self, progress, proxies):
+        QThread.__init__(self)
         self.progress = progress
         self.proxies = proxies
-        for rel in releases:
-            if rel['name'] == str(release):
-                self.url = rel['url']
-                break
-        else:
-            raise LiveUSBError(_("Unknown release: %s" % release))
 
     def run(self):
-        self.emit(QtCore.SIGNAL("status(PyQt_PyObject)"),
-                  _("Downloading %s..." % os.path.basename(self.url)))
-        grabber = URLGrabber(progress_obj=self.progress, proxies=self.proxies)
+        self.grabber = URLGrabber(progress_obj=self.progress, proxies=self.proxies)
         home = os.getenv('HOME', 'USERPROFILE')
-        filename = os.path.basename(urlparse.urlparse(self.url).path)
-        for folder in ('Downloads', 'My Documents'):
-            if os.path.isdir(os.path.join(home, folder)):
-                filename = os.path.join(home, folder, filename)
-                break
+        filename = os.path.basename(urlparse.urlparse(self.progress.release.url).path)
         try:
-            iso = grabber.urlgrab(self.url, reget='simple')
+            iso = self.grabber.urlgrab(self.progress.release.url, reget='simple')
         except URLGrabError, e:
-            self.emit(QtCore.SIGNAL("dlcomplete(PyQt_PyObject)"), e.strerror)
+            # TODO find out if this errno is _really_ benign
+            if e.errno == 9: # Requested byte range not satisfiable.
+                self.downloadFinished.emit(filename)
+            else:
+                self.downloadError.emit(e.strerror)
         else:
-            self.emit(QtCore.SIGNAL("dlcomplete(PyQt_PyObject)"), iso)
+            self.downloadFinished.emit(iso)
 
-
-class DownloadProgress(QtCore.QObject, BaseMeter):
-    """ A QObject urlgrabber BaseMeter class.
-
-    This class is called automatically by urlgrabber with our download details.
-    This class then sends signals to our main dialog window to update the
-    progress bar.
+class ReleaseDownload(QObject, BaseMeter):
+    """ Wrapper for the iso download process.
+    It exports properties to track the percentage and the file with the result.
     """
-    def start(self, filename=None, url=None, basename=None, size=None,
-              now=None, text=None):
-        self.emit(QtCore.SIGNAL("maxprogress(int)"), size)
+    runningChanged = pyqtSignal()
+    currentChanged = pyqtSignal()
+    maximumChanged = pyqtSignal()
+    pathChanged = pyqtSignal()
+
+    _running = False
+    _current = -1.0
+    _maximum = -1.0
+    _path = ''
+
+    def __init__(self, parent):
+        QObject.__init__(self, parent)
+        self.release = parent
+        self._grabber = ReleaseDownloadThread(self, parent.live.get_proxies())
+        self._live = parent.live
+
+    def reset(self):
+        self._running = False
+        self._current = -1.0
+        self._maximum = -1.0
+        self.path = ''
+        self.runningChanged.emit()
+        self.currentChanged.emit()
+        self.maximumChanged.emit()
+
+    def start(self, filename=None, url=None, basename=None, size=None, now=None, text=None):
+        self._maximum = size
+        self._running = True
+        self.maximumChanged.emit()
+        self.runningChanged.emit()
 
     def update(self, amount_read, now=None):
         """ Update our download progressbar.
 
         :read: the number of bytes read so far
         """
-        self.emit(QtCore.SIGNAL("progress(int)"), amount_read)
+        if self._current < amount_read:
+            self._current = amount_read
+            self.currentChanged.emit()
 
     def end(self, amount_read):
-        self.update(amount_read)
+        self._current = amount_read
+        self.currentChanged.emit()
 
+    @pyqtSlot(str)
+    def childFinished(self, iso):
+        self.reset()
+        self.path = iso
+        self._running = False
+        self.runningChanged.emit()
 
-class ProgressThread(QtCore.QThread):
-    """ A thread that monitors the progress of Live USB creation.
+    @pyqtSlot(str)
+    def childError(self, err):
+        self.reset()
 
-    This thread periodically checks the amount of free space left on the
-    given drive and sends a signal to our main dialog window to update the
-    progress bar.
-    """
-    totalsize = 0
-    orig_free = 0
-    drive = None
-    get_free_bytes = None
+    @pyqtSlot(str)
+    def run(self):
+        if len(self.parent().path) <= 0:
+            self._grabber.start()
+            self._grabber.downloadFinished.connect(self.childFinished)
+            self._grabber.downloadError.connect(self.childError)
+
+    @pyqtSlot()
+    def cancel(self):
+        self._grabber.terminate()
+        self.reset()
+
+    @pyqtProperty(float, notify=maximumChanged)
+    def maxProgress(self):
+        return self._maximum
+
+    @pyqtProperty(float, notify=currentChanged)
+    def progress(self):
+        return self._current
+
+    @pyqtProperty(bool, notify=runningChanged)
+    def running(self):
+        return self._running
+
+    @pyqtProperty(str, notify=pathChanged)
+    def path(self):
+        return self._path
+
+    @path.setter
+    def path(self, value):
+        if self._path != value:
+            self._path = value
+            self._live.set_iso(value)
+            self.pathChanged.emit()
+
+class ReleaseWriterProgressThread(QThread):
+    """ Periodically checks how the write progresses """
     alive = True
+    get_free_bytes = None
+    drive = None
+    totalSize = 0
+    orig_free = 0
 
     def set_data(self, size, drive, freebytes):
-        self.totalsize = size / 1024
+        self.totalSize = size / 1024
         self.drive = drive
         self.get_free_bytes = freebytes
         self.orig_free = self.get_free_bytes()
-        self.emit(QtCore.SIGNAL("maxprogress(int)"), self.totalsize)
+        self.parent().maxProgress = self.totalSize
 
     def run(self):
         while self.alive:
             free = self.get_free_bytes()
             value = (self.orig_free - free) / 1024
-            self.emit(QtCore.SIGNAL("progress(int)"), value)
-            if value >= self.totalsize:
+            self.parent().progress = value
+            if (value >= self.totalSize):
                 break
             sleep(3)
 
@@ -155,117 +216,528 @@ class ProgressThread(QtCore.QThread):
         self.alive = False
 
     def terminate(self):
-        self.emit(QtCore.SIGNAL("progress(int)"), self.totalsize)
-        QtCore.QThread.terminate(self)
+        self.parent().progress = self.totalSize
+        self.terminate()
 
 
-class LiveUSBThread(QtCore.QThread):
+class ReleaseWriterThread(QThread):
+    """ The actual write to the portable drive """
 
-    def __init__(self, live, progress, parent=None):
-        QtCore.QThread.__init__(self, parent)
-        self.progress = progress
+    def __init__(self, parent, progressThread):
+        QThread.__init__(self, parent)
+
+        self.live = parent.live
         self.parent = parent
-        self.live = live
+        self.progressThread = progressThread
 
-    def status(self, text):
-        self.emit(QtCore.SIGNAL("status(PyQt_PyObject)"), text)
 
     def run(self):
-        handler = LiveUSBLogHandler(self.status)
-        self.live.log.addHandler(handler)
+        # TODO move this to the backend
+        #handler = LiveUSBLogHandler(self.parent.status)
+        #self.live.log.addHandler(handler)
         now = datetime.now()
         try:
-            #if self.parent.opts.format:
-            #    self.live.unmount_device()
-            #    self.live.format_device()
-
-            # Initialize zip-drive-compatible geometry
-            #if self.parent.opts.zip:
-            #    self.live.dest = self.live.drive['mount']
-            #    self.live.drive['unmount'] = True
-            #    self.live.unmount_device()
-            #    self.live.initialize_zip_geometry()
-            #    self.live.drive = self.parent.get_selected_drive()
-            #    self.live.dest = self.live.drive['mount']
-            #    self.live.drive['unmount'] = True
-            #    self.live.unmount_device()
-            #    self.live.format_device()
-
-            # If we're going to dd the image
-            if self.parent.destructiveButton.isChecked():
-                self.parent.progressBar.setRange(0, 0)
-                self.live.dd_image()
-                self.live.log.removeHandler(handler)
-                duration = str(datetime.now() - now).split('.')[0]
-                self.status(_("Complete! (%s)") % duration)
-                self.parent.progressBar.setRange(0, 1)
-                return
-
             self.live.verify_filesystem()
             if not self.live.drive['uuid'] and not self.live.label:
-                self.status(_("Error: Cannot set the label or obtain "
-                              "the UUID of your device.  Unable to continue."))
-                self.live.log.removeHandler(handler)
+                self.parent.parent.error = _('Error: Cannot set the label or obtain '
+                              'the UUID of your device.  Unable to continue.')
+                self.parent.running = False
                 return
-
-            self.live.check_free_space()
-
-            if not self.parent.opts.noverify:
-                # Verify the MD5 checksum inside of the ISO image
-                if not self.live.verify_iso_md5():
-                    self.live.log.removeHandler(handler)
-                    return
-
-                # If we know about this ISO, and it's SHA1 -- verify it
-                release = self.live.get_release_from_iso()
-                if release and ('sha1' in release or 'sha256' in release):
-                    if not self.live.verify_iso_sha1(progress=self):
-                        self.live.log.removeHandler(handler)
-                        return
-
-            # Setup the progress bar
-            self.progress.set_data(size=self.live.totalsize,
-                                   drive=self.live.drive['device'],
-                                   freebytes=self.live.get_free_bytes)
-            self.progress.start()
-
-            self.live.extract_iso()
-            self.live.create_persistent_overlay()
-            self.live.update_configs()
-            self.live.install_bootloader()
-            self.live.bootable_partition()
-
-            if self.parent.opts.device_checksum:
-                self.live.calculate_device_checksum(progress=self)
-            if self.parent.opts.liveos_checksum:
-                self.live.calculate_liveos_checksum()
-
-            self.progress.stop()
-
-            # Flush all filesystem buffers and unmount
-            self.live.flush_buffers()
-            self.live.unmount_device()
-
-            duration = str(datetime.now() - now).split('.')[0]
-            self.status(_("Complete! (%s)" % duration))
-
+            if self.parent.release.liveUSBData.option('dd'):
+                self.ddImage(now)
+            else:
+                self.copyImage(now)
         except Exception, e:
-            self.status(e.args[0])
-            self.status(_("LiveUSB creation failed!"))
+            self.parent.release.addError(e.args[0])
             self.live.log.exception(e)
 
-        self.live.log.removeHandler(handler)
-        self.progress.terminate()
+        self.parent.running = False
+        #self.live.log.removeHandler(handler)
+
+    def ddImage(self, now):
+        # TODO move this to the backend
+        self.live.dd_image()
+        #self.live.log.removeHandler(handler)
+        #duration = str(datetime.now() - now).split('.')[0]
+        self.parent.status = 'Finished!'
+        self.parent.finished = True
+        self.progressThread.stop()
+        return
+
+    def copyImage(self, now):
+        # TODO move this to the backend
+
+        self.parent.status = _('Checking the source image')
+        self.live.check_free_space()
+
+        if not self.live.opts.noverify:
+            # Verify the MD5 checksum inside of the ISO image
+            if not self.live.verify_iso_md5():
+                #self.live.log.removeHandler(handler)
+                return
+
+            # If we know about this ISO, and it's SHA1 -- verify it
+            release = self.live.get_release_from_iso()
+            if release and ('sha1' in release or 'sha256' in release):
+                if not self.live.verify_iso_sha1(self):
+                    #self.live.log.removeHandler(handler)
+                    return
+
+        self.parent.status = _('Unpacking the image')
+        # Setup the progress bar
+        self.progressThread.set_data(size=self.live.totalsize,
+                                     drive=self.live.drive['device'],
+                                     freebytes=self.live.get_free_bytes)
+        self.progressThread.start()
+
+        self.live.extract_iso()
+
+        if self.live.blank_mbr() or self.parent.release.liveUSBData.option('resetMBR'):
+            self.live.reset_mbr()
+
+        self.parent.status = _('Writing the data')
+        self.live.create_persistent_overlay()
+        self.live.update_configs()
+        self.live.install_bootloader()
+        self.live.bootable_partition()
+
+        self.parent.status = _('Checking the written data')
+        if self.live.opts.device_checksum:
+            self.live.calculate_device_checksum(progressThread=self)
+        if self.live.opts.liveos_checksum:
+            self.live.calculate_liveos_checksum()
+
+        self.progressThread.stop()
+
+        # Flush all filesystem buffers and unmount
+        self.live.flush_buffers()
+        self.live.unmount_device()
+        self.parent.status = _('Finished!')
+        self.parent.finished = True
+
+        duration = str(datetime.now() - now).split('.')[0]
+        #self.parent.status = 'Complete! (%s)' % duration
+
+        self.progressThread.stop()
 
     def set_max_progress(self, maximum):
-        self.emit(QtCore.SIGNAL("maxprogress(int)"), maximum)
+        self.parent.maxProgress = maximum
 
     def update_progress(self, value):
-        self.emit(QtCore.SIGNAL("progress(int)"), value)
+        self.parent.progress = value
 
-    def __del__(self):
-        self.wait()
+class ReleaseWriter(QObject):
+    """ Here we can track the progress of the writing and control it """
+    runningChanged = pyqtSignal()
+    currentChanged = pyqtSignal()
+    maximumChanged = pyqtSignal()
+    statusChanged = pyqtSignal()
+    finishedChanged = pyqtSignal()
 
+    _running = False
+    _current = -1.0
+    _maximum = -1.0
+    _status = ''
+    _finished = False
+
+    def __init__(self, parent):
+        QObject.__init__(self, parent)
+        self.live = parent.live
+        self.release = parent
+        self.progressWatcher = ReleaseWriterProgressThread(self)
+        self.worker = ReleaseWriterThread(self, self.progressWatcher)
+
+    def reset(self):
+        self._running = False
+        self._current = -1.0
+        self._maximum = -1.0
+        self.runningChanged.emit()
+        self.currentChanged.emit()
+        self.maximumChanged.emit()
+
+    @pyqtSlot()
+    def run(self):
+        self._running = True
+        self._current = 0.0
+        self._maximum = 100.0
+        self.runningChanged.emit()
+        self.currentChanged.emit()
+        self.maximumChanged.emit()
+        self.status = 'Writing'
+        self.worker.start()
+
+    @pyqtSlot()
+    def cancel(self):
+        self.progressWatcher.stop()
+        self.worker.terminate()
+        self.reset()
+
+    @pyqtProperty(bool, notify=runningChanged)
+    def running(self):
+        return self._running
+
+    @running.setter
+    def running(self, value):
+        if self._running != value:
+            self._running = value
+            self.runningChanged.emit()
+
+    @pyqtProperty(float, notify=maximumChanged)
+    def maxProgress(self):
+        return self._maximum
+
+    @maxProgress.setter
+    def maxProgress(self, value):
+        if (value != self._maximum):
+            self._maximum = value
+            self.maximumChanged.emit()
+
+    @pyqtProperty(float, notify=currentChanged)
+    def progress(self):
+        return self._current
+
+    @progress.setter
+    def progress(self, value):
+        if (value != self._current):
+            self._current = value
+            self.currentChanged.emit()
+
+    @pyqtProperty(str, notify=statusChanged)
+    def status(self):
+        return self._status
+
+    @status.setter
+    def status(self, s):
+        if self._status != s:
+            self._status = s
+            self.statusChanged.emit()
+
+    @pyqtProperty(bool, notify=finishedChanged)
+    def finished(self):
+        return self._finished
+
+    @finished.setter
+    def finished(self, value):
+        if self._finished != value:
+            self._finished = value
+            self.finishedChanged.emit()
+
+
+class Release(QObject):
+    ''' Contains the information about the particular release of Fedora
+        I think there should be a cleanup of all the properties - there seem to be more of them than needed
+    '''
+    screenshotsChanged = pyqtSignal()
+    errorChanged = pyqtSignal()
+    warningChanged = pyqtSignal()
+    infoChanged = pyqtSignal()
+    statusChanged = pyqtSignal()
+    pathChanged = pyqtSignal()
+    sizeChanged = pyqtSignal()
+
+    _path = ''
+
+    _archMap = {'64bit': ['x86_64'], '32bit': ['i686','i386'], 'ARM': ['armv7hl']}
+
+    def __init__(self, parent, index, live, data):
+        QObject.__init__(self, parent)
+
+        self._index = index
+        self.live = live
+        self.liveUSBData = parent
+
+        self._size = 0
+
+        self._data = data
+
+        self._info = []
+        self._warning = []
+        self._error = []
+
+        self._download = ReleaseDownload(self)
+        self._download.pathChanged.connect(self.pathChanged)
+
+        self._writer = ReleaseWriter(self)
+
+        self._download.runningChanged.connect(self.inspectDestination)
+
+        self.pathChanged.connect(self.statusChanged)
+        self._download.runningChanged.connect(self.statusChanged)
+        self._writer.runningChanged.connect(self.statusChanged)
+        self._writer.statusChanged.connect(self.statusChanged)
+
+        parent.releaseProxyModel.archChanged.connect(self.sizeChanged)
+        parent.releaseProxyModel.archChanged.connect(self.pathChanged)
+
+
+    @pyqtSlot()
+    def get(self):
+        if len(self._path) <= 0:
+            self._download.run()
+
+    @pyqtSlot()
+    def write(self):
+        self._warning = []
+        self._error = []
+        self.errorChanged.emit()
+        self.warningChanged.emit()
+        self._writer.run()
+
+    @pyqtSlot()
+    def inspectDestination(self):
+        if self._writer.running:
+            return
+        self._warning = []
+        self.warningChanged.emit()
+        self._info = []
+        self.infoChanged.emit()
+        self._error = []
+        self.errorChanged.emit()
+
+        if not self.live.drive:
+            return
+
+        if self.parent().option('dd'):
+            self.addWarning(_('You are about to perform a destructive install. This will erase all data and partitions on your USB drive'))
+        else:
+            if self.live.blank_mbr():
+                self.addInfo(_('The Master Boot Record on your device is blank. Writing the image will reset the MBR on this device'))
+            elif not self.live.mbr_matches_syslinux_bin() and not self.parent().option('resetMBR'):
+                self.addInfo(_('The Master Boot Record on your device does not match your system\'s syslinux MBR.\n'
+                              'If you have trouble booting it, try setting the \"Reset the MBR\" advanced option.'))
+
+        try:
+            self.live.mount_device()
+        except LiveUSBError, e:
+            self.addInfo(e.args[0])
+        except OSError, e:
+            self.addInfo(_('Unable to mount device'))
+
+        if self.live.existing_liveos() and not self.parent().option('dd'):
+            self.addWarning(_('Your device already contains a live OS. If you continue, it will be overwritten.'))
+
+    @pyqtProperty(int, constant=True)
+    def index(self):
+        return self._index
+
+    @pyqtProperty(bool, constant=True)
+    def isSeparator(self):
+        return self._data['source'] == ''
+
+    @pyqtProperty(str, constant=True)
+    def name(self):
+        return self._data['name']
+
+    @pyqtProperty(str, constant=True)
+    def logo(self):
+        return self._data['logo']
+
+    @pyqtProperty(float, notify=sizeChanged)
+    def size(self):
+        if not self.isLocal:
+            for arch in self._data['variants'].keys():
+                if arch in self._archMap[self.liveUSBData.releaseProxyModel.archFilter]:
+                    return self._data['variants'][arch]['size']
+        return self._size
+
+    @size.setter
+    def size(self, value):
+        if self.isLocal and self._size != value:
+            self._size = value
+            self.sizeChanged.emit()
+
+    @pyqtProperty('QStringList', constant=True)
+    def arch(self):
+        ret = list()
+        for key in self._archMap.keys():
+            for variant in self._archMap[key]:
+                if variant in self._data['variants'].keys():
+                    ret.append(str(key))
+        return ret
+
+    @pyqtProperty(QDateTime, constant=True)
+    def releaseDate(self):
+        return QDateTime.fromString(self._data['releaseDate'])
+
+    @pyqtProperty(str, constant=True)
+    def summary(self):
+        return self._data['summary']
+
+    @pyqtProperty(str, constant=True)
+    def description(self):
+        return self._data['description']
+
+    @pyqtProperty(bool, constant=True)
+    def isLocal(self):
+        return self._data['source'] == 'Local'
+
+    @pyqtProperty('QStringList', notify=screenshotsChanged)
+    def screenshots(self):
+        return self._data['screenshots']
+
+    @pyqtProperty(str, constant=True)
+    def url(self):
+        if not self.isLocal:
+            for arch in self._data['variants'].keys():
+                if arch in self._archMap[self.liveUSBData.releaseProxyModel.archFilter]:
+                    return self._data['variants'][arch]['url']
+        return ''
+
+    @pyqtProperty(str, notify=pathChanged)
+    def path(self):
+        return self._download.path
+
+    @path.setter
+    def path(self, value):
+        if sys.platform.startswith('win') and value.startswith('file:///'):
+            value = value.replace('file:///', '', 1)
+        elif not sys.platform.startswith('win') and value.startswith('file://'):
+            value = value.replace('file://', '', 1)
+        if self._path != value:
+            self._download.path = value
+            self.pathChanged.emit()
+            self.size = self.live.isosize
+
+    @pyqtProperty(bool, notify=pathChanged)
+    def readyToWrite(self):
+        return len(self.path) != 0
+
+    @pyqtProperty(ReleaseDownload, constant=True)
+    def download(self):
+        return self._download
+
+    @pyqtProperty(ReleaseWriter, constant=True)
+    def writer(self):
+        return self._writer
+
+    @pyqtProperty(str, notify=statusChanged)
+    def status(self):
+        if not self._download.running and not self.readyToWrite and not self._writer.running:
+            return _('Starting')
+        elif self._download.running:
+            return _('Downloading')
+        elif len(self._error) > 0:
+            return _('Error')
+        elif self.readyToWrite and not self._writer.running and not self._writer.finished:
+            return _('Ready to write')
+        elif self._writer.status:
+            return self._writer.status
+        else:
+            return _('Finished')
+
+    @pyqtProperty('QStringList', notify=infoChanged)
+    def info(self):
+        return self._info
+
+    def addInfo(self, value):
+        if value not in self._info:
+            self._info.append(value)
+            self.infoChanged.emit()
+
+    @pyqtProperty('QStringList', notify=warningChanged)
+    def warning(self):
+        return self._warning
+
+    def addWarning(self, value):
+        if value not in self._warning:
+            self._warning.append(value)
+            self.warningChanged.emit()
+
+    @pyqtProperty('QStringList', notify=errorChanged)
+    def error(self):
+        return self._error
+
+    def addError(self, value):
+        if value not in self._error:
+            self._error.append(str(value))
+            self.errorChanged.emit()
+
+class ReleaseListModel(QAbstractListModel):
+    """ An abstraction over the list of releases to have them nicely exposed to QML and ready to be filtered
+    """
+    def __init__(self, parent):
+        QAbstractListModel.__init__(self, parent)
+
+    def rowCount(self, parent=QModelIndex()):
+        return len(self.parent().releaseData)
+
+    def roleNames(self):
+        return {Qt.UserRole + 1 : 'release'}
+
+    def data(self, index, role=Qt.DisplayRole):
+        if index.isValid():
+            return self.parent().releaseData[index.row()]
+        return None
+
+class ReleaseListProxy(QSortFilterProxyModel):
+    """ Filtering proxy for the release list
+    """
+    archChanged = pyqtSignal()
+    nameFilterChanged = pyqtSignal()
+    isFrontChanged = pyqtSignal()
+
+    _archFilter = ['x86_64']
+    _nameFilter = ''
+    _frontPage = True
+
+    _archMap = {'64bit': ['x86_64'], '32bit': ['i686','i386'], 'ARM': ['armv7hl']}
+
+    def __init__(self, parent, sourceModel):
+        QSortFilterProxyModel.__init__(self, parent)
+        self.setSourceModel(sourceModel)
+
+    def rowCount(self, parent=QModelIndex()):
+        if self._frontPage and self.sourceModel().rowCount(parent) > 3:
+            return 3
+        return self.sourceModel().rowCount(parent)
+
+    def filterAcceptsRow(self, sourceRow, sourceParent):
+        row = self.sourceModel().index(sourceRow, 0, sourceParent).data()
+        if len(self._archFilter) == 0 or row.isLocal or self.archFilter in row.arch:
+            if len(self._nameFilter) == 0 or self._nameFilter.lower() in row.name.lower() or self._nameFilter.lower() in row.summary.lower():
+                return True
+        return False
+
+    @pyqtProperty(str, notify=nameFilterChanged)
+    def nameFilter(self):
+        return self._nameFilter
+
+    @nameFilter.setter
+    def nameFilter(self, value):
+        if value != self._nameFilter:
+            self._nameFilter = value
+            self.nameFilterChanged.emit()
+            self.invalidateFilter()
+
+    @pyqtProperty('QStringList', constant=True)
+    def possibleArchs(self):
+        return self._archMap.keys()
+
+    @pyqtProperty(str, notify=archChanged)
+    def archFilter(self):
+        for name, abbrs in self._archMap.items():
+            if abbrs == self._archFilter:
+                return name
+        self._archFilter = self._archMap['64bit']
+        return '64bit'
+
+    @archFilter.setter
+    def archFilter(self, value):
+        if self._archMap.has_key(value) and self.archFilter != self._archMap[value]:
+            self._archFilter = self._archMap[value]
+            self.archChanged.emit()
+            self.invalidateFilter()
+
+    @pyqtProperty(bool, notify=isFrontChanged)
+    def isFront(self):
+        return self._frontPage
+
+    @isFront.setter
+    def isFront(self, value):
+        if value != self._frontPage:
+            self._frontPage = value
+            self.isFrontChanged.emit()
+            self.invalidate()
 
 class LiveUSBLogHandler(logging.Handler):
 
@@ -277,380 +749,214 @@ class LiveUSBLogHandler(logging.Handler):
         if record.levelname in ('INFO', 'ERROR', 'WARN'):
             self.cb(record.msg)
 
+class USBDrive(QObject):
 
-class LiveUSBWindow(QtGui.QMainWindow, LiveUSBInterface):
-    """ Our main dialog class """
+    def __init__(self, parent, name, drive):
+        QObject.__init__(self, parent)
+        self._name = name
+        self._drive = drive
 
-    def __init__(self, opts, args):
-        self.in_process = False
-        QtGui.QMainWindow.__init__(self)
-        LiveUSBInterface.__init__(self)
-        self.setWindowFlags(QtCore.Qt.WindowCloseButtonHint)
-        self.opts = opts
-        self.args = args
-        self.setupUi(self)
+    @pyqtProperty(str, constant=True)
+    def text(self):
+        return self._name
+
+    @pyqtProperty(str, constant=True)
+    def drive(self):
+        return self._drive
+
+class LiveUSBData(QObject):
+    """ An entry point to all the exposed properties.
+        There is a list of images and USB drives
+    """
+    releasesChanged = pyqtSignal()
+    currentImageChanged = pyqtSignal()
+    usbDrivesChanged = pyqtSignal()
+    currentDriveChanged = pyqtSignal()
+    optionsChanged = pyqtSignal()
+
+    _currentIndex = 0
+    _currentDrive = 0
+
+    # man, this is just awkward... but it seems like the only way to do it in a predictable manner without creating a new class
+    _optionKeys = ['dd', 'resetMBR'] if not sys.platform.startswith("win") \
+              else ['resetMBR']
+    _optionNames = {'dd': _('Use <b>dd</b> to write the image - this will erase everything on your portable drive'),
+                    'resetMBR': _('Reset the MBR (Master Boot Record)'),
+                   }
+    _optionValues = {'dd': True,
+                     'resetMBR': True,
+                    }
+
+    def __init__(self, opts):
+        QObject.__init__(self)
         self.live = LiveUSBCreator(opts=opts)
-        self.populate_releases()
-        self.populate_devices()
-        self.downloader = None
-        self.progress_thread = ProgressThread()
-        self.download_progress = DownloadProgress()
-        self.live_thread = LiveUSBThread(live=self.live,
-                                         progress=self.progress_thread,
-                                         parent=self)
-        self.connect_slots()
-        self.confirmed = False
-        self.mbr_reset_confirmed = False
+        self._releaseModel = ReleaseListModel(self)
+        self._releaseProxy = ReleaseListProxy(self, self._releaseModel)
 
-        if self.opts.destructive:
-            self.destructiveButton.setChecked(True)
+        self.releaseData = []
 
-        # Intercept all liveusb INFO log messages, and display them in the gui
-        self.handler = LiveUSBLogHandler(lambda x: self.textEdit.append(x))
-        self.live.log.addHandler(self.handler)
-        if not self.opts.verbose:
-            self.live.log.removeHandler(self.live.handler)
+        for release in releases:
+            self.releaseData.append(Release(self,
+                                            len(self.releaseData),
+                                            self.live,
+                                            release
+                                    ))
+        self._usbDrives = []
+        self.currentDriveChanged.connect(self.currentImage.inspectDestination)
 
-        # If an ISO was specified on the command line, use it.
-        if args:
-            for arg in self.args:
-                if arg.lower().endswith('.iso') and os.path.exists(arg):
-                    self.selectfile(arg)
+        self.live.detect_removable_drives(callback=self.USBDeviceCallback)
 
-        # Determine if we have admin rights
-        if not self.live.is_admin():
-            self.live.log.error(_('Warning: This tool needs to be run as an '
-                'Administrator. To do this, right click on the icon and open '
-                'the Properties. Under the Compatibility tab, check the "Run '
-                'this program as an administrator" box.'))
 
-    def populate_devices(self, *args, **kw):
-        if self.in_process:
+    def USBDeviceCallback(self):
+        tmpDrives = []
+        previouslySelected = ''
+        if len(self._usbDrives) > 0:
+            previouslySelected = self._usbDrives[self._currentDrive].drive['device']
+        for drive, info in self.live.drives.items():
+            name = ''
+            if 'friendlyName' in info:
+                name = info['friendlyName']
+            elif 'label' in info:
+                name = info['device'] + ' - ' + info['label']
+            else:
+                name = info['device']
+
+            gb = 1000.0 # if it's decided to use base 2 values, change this
+
+            if 'fullSize' in info:
+                usedSize = info['fullSize']
+            else:
+                usedSize = info['size']
+
+            if usedSize < gb ** 1:
+                name += ' (%.1f B)'  % (usedSize / (gb ** 0))
+            elif usedSize < gb ** 2:
+                name += ' (%.1f KB)' % (usedSize / (gb ** 1))
+            elif usedSize < gb ** 3:
+                name += ' (%.1f MB)' % (usedSize / (gb ** 2))
+            elif usedSize < gb ** 4:
+                name += ' (%.1f GB)' % (usedSize / (gb ** 3))
+            else:
+                name += ' (%.1f TB)' % (usedSize / (gb ** 4))
+
+            tmpDrives.append(USBDrive(self, name, info))
+
+        if tmpDrives != self._usbDrives:
+            self._usbDrives = tmpDrives
+            self.usbDrivesChanged.emit()
+
+            self.currentDrive = -1
+            for i, drive in enumerate(self._usbDrives):
+                if drive.drive['device'] == previouslySelected:
+                    self.currentDrive = i
+            self.currentDriveChanged.emit()
+
+    @pyqtProperty(ReleaseListModel, notify=releasesChanged)
+    def releaseModel(self):
+        return self._releaseModel
+
+    @pyqtProperty(ReleaseListProxy, notify=releasesChanged)
+    def releaseProxyModel(self):
+        return self._releaseProxy
+
+    @pyqtProperty(int, notify=currentImageChanged)
+    def currentIndex(self):
+        return self._currentIndex
+
+    @currentIndex.setter
+    def currentIndex(self, value):
+        if value != self._currentIndex:
+            self.currentDriveChanged.disconnect(self.currentImage.inspectDestination)
+            self._currentIndex = value
+            self.currentImageChanged.emit()
+            self.currentDriveChanged.connect(self.currentImage.inspectDestination)
+
+    @pyqtProperty(Release, notify=currentImageChanged)
+    def currentImage(self):
+        return self.releaseData[self._currentIndex]
+
+    @pyqtProperty(QQmlListProperty, notify=usbDrivesChanged)
+    def usbDrives(self):
+        return QQmlListProperty(USBDrive, self, self._usbDrives)
+
+    @pyqtProperty('QStringList', notify=usbDrivesChanged)
+    def usbDriveNames(self):
+        return list(i.text for i in self._usbDrives)
+
+    @pyqtProperty(int, notify=currentDriveChanged)
+    def currentDrive(self):
+        return self._currentDrive
+
+    @currentDrive.setter
+    def currentDrive(self, value):
+        if len(self._usbDrives) == 0:
+            self.live.drive = None
+            self._currentDrive = -1
+            self.currentDriveChanged.emit()
             return
-        self.driveBox.clear()
-        #self.textEdit.clear()
+        elif value > len(self._usbDrives):
+            value = 0
+        if self._currentDrive != value:# or not self.live.drive or self.live.drives[self.live.drive]['device'] != self._usbDrives[value].drive['device']:
+            self._currentDrive = value
+            if len(self._usbDrives) > 0:
+                self.live.drive = self._usbDrives[self._currentDrive].drive['device']
+            self.currentDriveChanged.emit()
+            for r in self.releaseData:
+                r.download.finished = False
 
-        def add_devices():
-            if not len(self.live.drives):
-                self.textEdit.setPlainText(_("Unable to find any USB drives"))
-                self.startButton.setEnabled(False)
-                return
-            for device, info in self.live.drives.items():
-                if info['label']:
-                    self.driveBox.addItem("%s (%s)" % (device, info['label']))
-                else:
-                    self.driveBox.addItem(device)
-            self.startButton.setEnabled(True)
+    @pyqtProperty('QStringList', constant=True)
+    def optionNames(self):
+        ret = []
+        for i in self._optionKeys:
+            ret.append(self._optionNames[i])
+        return ret
 
-        try:
-            self.live.detect_removable_drives(callback=add_devices)
-        except LiveUSBError, e:
-            self.textEdit.setPlainText(e.args[0])
-            self.startButton.setEnabled(False)
+    @pyqtProperty('QVariant', notify=optionsChanged)
+    def optionValues(self):
+        ret = []
+        for i in self._optionKeys:
+            ret.append(self._optionValues[i])
+        return ret
 
-    def populate_releases(self):
-        for release in [release['name'] for release in releases]:
-            self.downloadCombo.addItem(release)
+    @pyqtSlot(int, bool)
+    def setOption(self, index, value):
+        key = self._optionKeys[index]
+        if self._optionValues[key] != value:
+            # dd and resetMBR options are mutually exclusive
+            if key == 'dd' and value:
+                self._optionValues['resetMBR'] = False
+            if key == 'resetMBR' and value:
+                self._optionValues['dd'] = False
+            self._optionValues[key] = value
+            self.optionsChanged.emit()
+            self.currentImage.inspectDestination()
 
-    def refresh_releases(self):
-        self.live.log.info(_('Refreshing releases...'))
-        global releases
-        try:
-            releases = get_fedora_releases()
-            self.downloadCombo.clear()
-            for release in [release['name'] for release in releases]:
-                self.downloadCombo.addItem(release)
-            self.live.log.info(_('Releases updated!'))
-        except Exception, e:
-            self.live.log.error(_('Unable to fetch releases: %r') % e)
+    @pyqtSlot()
+    def option(self, index):
+        return self._optionValues[index]
 
-    def connect_slots(self):
-        self.connect(self, QtCore.SIGNAL('triggered()'), self.terminate)
-        self.connect(self.isoBttn, QtCore.SIGNAL("clicked()"), self.selectfile)
-        self.connect(self.startButton, QtCore.SIGNAL("clicked()"), self.begin)
-        self.connect(self.overlaySlider, QtCore.SIGNAL("valueChanged(int)"),
-                     self.overlay_value)
-        self.connect(self.live_thread, QtCore.SIGNAL("status(PyQt_PyObject)"),
-                     self.status)
-        self.connect(self.live_thread, QtCore.SIGNAL("finished()"),
-                     lambda: self.enable_widgets(True))
-        self.connect(self.live_thread, QtCore.SIGNAL("terminated()"),
-                     lambda: self.enable_widgets(True))
-        self.connect(self.live_thread, QtCore.SIGNAL("progress(int)"),
-                     self.progress)
-        self.connect(self.live_thread, QtCore.SIGNAL("maxprogress(int)"),
-                     self.maxprogress)
-        self.connect(self.progress_thread, QtCore.SIGNAL("progress(int)"),
-                     self.progress)
-        self.connect(self.progress_thread, QtCore.SIGNAL("maxprogress(int)"),
-                     self.maxprogress)
-        self.connect(self.download_progress, QtCore.SIGNAL("maxprogress(int)"),
-                     self.maxprogress)
-        self.connect(self.download_progress, QtCore.SIGNAL("progress(int)"),
-                     self.progress)
-        self.connect(self.destructiveButton, QtCore.SIGNAL("toggled(bool)"),
-                     self.method_destructive_toggled)
-        self.connect(self.nonDestructiveButton, QtCore.SIGNAL("toggled(bool)"),
-                     self.method_nondestructive_toggled)
-        if hasattr(self, 'refreshDevicesButton'):
-            self.connect(self.refreshDevicesButton, QtCore.SIGNAL("clicked()"),
-                         self.populate_devices)
-        if hasattr(self, 'refreshReleasesButton'):
-            self.connect(self.refreshReleasesButton, QtCore.SIGNAL("clicked()"),
-                         self.refresh_releases)
 
-        # If we have access to HAL & DBus, intercept some useful signals
-        if hasattr(self.live, 'udisks'):
-            self.live.udisks.connect_to_signal('DeviceAdded',
-                                            self.populate_devices)
-            self.live.udisks.connect_to_signal('DeviceRemoved',
-                                            self.populate_devices)
+class LiveUSBApp(QGuiApplication):
+    """ Main application class """
+    def __init__(self, opts, args):
+        QGuiApplication.__init__(self, args)
+        translator = QTranslator()
+        translator.load(QLocale.system().name(), "po")
+        self.installTranslator(translator)
+        qmlRegisterUncreatableType(ReleaseDownload, 'LiveUSB', 1, 0, 'Download', 'Not creatable directly, use the liveUSBData instance instead')
+        qmlRegisterUncreatableType(ReleaseWriter, 'LiveUSB', 1, 0, 'Writer', 'Not creatable directly, use the liveUSBData instance instead')
+        qmlRegisterUncreatableType(ReleaseListModel, 'LiveUSB', 1, 0, 'ReleaseModel', 'Not creatable directly, use the liveUSBData instance instead')
+        qmlRegisterUncreatableType(Release, 'LiveUSB', 1, 0, 'Release', 'Not creatable directly, use the liveUSBData instance instead')
+        qmlRegisterUncreatableType(USBDrive, 'LiveUSB', 1, 0, 'Drive', 'Not creatable directly, use the liveUSBData instance instead')
+        qmlRegisterUncreatableType(LiveUSBData, 'LiveUSB', 1, 0, 'Data', 'Use the liveUSBData root instance')
 
-    @QtCore.pyqtSignature("QString")
-    def on_driveBox_currentIndexChanged(self, drive):
-        """ Change the maximum overlay size when each drive is selected.
-
-        This sets the maximum megabyte size of the persistent storage slider
-        to the number of free megabytes on the currently selected
-        "Target Device".  If the device is not mounted, or if it has more than
-        2gigs of free space, set the maximum to 2047mb, which is apparently
-        the largest file we can/should store on a vfat partition.
-        """
-        drive = unicode(drive)
-        if not drive:
-            return
-        self._refresh_overlay_slider(drive.split()[0])
-
-    def _refresh_overlay_slider(self, drive=None):
-        """
-        Reset the persistent storage slider based on the amount of free space
-        on the device and the ISO size.
-        """
-        if not drive:
-            drive = self.get_selected_drive()
-            if not drive:
-                return
-
-        device = self.live.drives[drive]
-        freespace = device['free']
-        device_size = device['size'] / 1024**2
-        current_overlay = self.overlaySlider.value()
-
-        if device['fsversion'] == 'FAT32':
-            self.live.log.debug(_('Partition is FAT32; Restricting overlay '
-                                  'size to 4G'))
-            max_space = MAX_FAT32
-        elif device['fsversion'] == 'FAT16':
-            self.live.log.debug(_('Partition is FAT16; Restricting overlay '
-                                  'size to 2G'))
-            max_space = MAX_FAT16
+        engine = QQmlApplicationEngine()
+        self.data = LiveUSBData(opts)
+        engine.rootContext().setContextProperty('liveUSBData', self.data)
+        if (opts.directqml):
+            engine.load(QUrl('liveusb/liveusb.qml'))
         else:
-            max_space = MAX_EXT
+            engine.load(QUrl('qrc:/liveusb.qml'))
+        engine.rootObjects()[0].show()
 
-        if freespace:
-            if freespace > device_size:
-                freespace = device_size
-            if freespace > max_space:
-                freespace = max_space
-
-        if not device['mount']:
-            self.live.log.warning(_('Device is not yet mounted, so we cannot '
-                                    'determine the amount of free space.'))
-            if not freespace:
-                freespace = device_size
-        else:
-            if not freespace:
-                self.live.log.warning(_('No free space on %s') % drive)
-                freespace = 0
-
-        # Subtract the size of the ISO from our maximum overlay size
-        if self.live.isosize:
-            iso_size = self.live.isosize / 1024**2
-            if freespace + iso_size > device['free']:
-                freespace -= iso_size
-
-        freespace -= 1 # Don't fill the device 100%
-
-        if freespace < 0:
-            freespace = 0
-        if freespace < current_overlay:
-            self.overlaySlider.setValue(freespace)
-            self.live.overlay = self.overlaySlider.value()
-
-        self.overlaySlider.setMaximum(freespace)
-
-    def progress(self, value):
-        self.progressBar.setValue(value)
-
-    def maxprogress(self, value):
-        self.progressBar.setMaximum(value)
-
-    def status(self, text):
-        if not isinstance(text, basestring):
-            text = str(text)
-        self.textEdit.append(text)
-
-    def enable_widgets(self, enabled=True):
-        self.startButton.setEnabled(enabled)
-        self.driveBox.setEnabled(enabled)
-        self.overlaySlider.setEnabled(enabled)
-        self.isoBttn.setEnabled(enabled)
-        self.downloadCombo.setEnabled(enabled)
-        self.destructiveButton.setEnabled(enabled)
-        self.nonDestructiveButton.setEnabled(enabled)
-        if hasattr(self, 'refreshDevicesButton'):
-            self.refreshDevicesButton.setEnabled(enabled)
-        if hasattr(self, 'refreshReleasesButton'):
-            self.refreshReleasesButton.setEnabled(enabled)
-        self.in_process = not enabled
-
-    def overlay_value(self, value):
-        self.overlayTitle.setTitle(_("Persistent Storage") + " (%d MB)" % value)
-
-    def get_selected_drive(self):
-        text = self.live._to_unicode(self.driveBox.currentText()).split()
-        if text:
-            return text[0]
-
-    def begin(self):
-        """ Begin the liveusb creation process.
-
-        This method is called when the "Create LiveUSB" button is clicked.
-        """
-        self.enable_widgets(False)
-        self.live.overlay = self.overlaySlider.value()
-        self.live.drive = self.get_selected_drive()
-
-        # Unmount the device and check the MBR
-        if self.nonDestructiveButton.isChecked():
-            if self.live.blank_mbr():
-                if not self.mbr_reset_confirmed:
-                    self.status(_("The Master Boot Record on your device is blank. "
-                                  "Pressing 'Create LiveUSB' again will reset the "
-                                  "MBR on this device."))
-                    self.mbr_reset_confirmed = True
-                    self.enable_widgets(True)
-                    return
-                if self.live.drive['mount']:
-                    self.live.dest = self.live.drive['mount']
-                    self.live.unmount_device()
-                self.live.reset_mbr()
-            elif not self.live.mbr_matches_syslinux_bin():
-                if self.opts.reset_mbr:
-                    self.live.reset_mbr()
-                else:
-                    self.live.log.warn(_("Warning: The Master Boot Record on your device "
-                                  "does not match your system's syslinux MBR.  If you "
-                                  "have trouble booting this stick, try running the "
-                                  "liveusb-creator with the --reset-mbr option."))
-
-            try:
-                self.live.mount_device()
-                self._refresh_overlay_slider() # To reflect the drives free space
-            except LiveUSBError, e:
-                self.status(e.args[0])
-                self.enable_widgets(True)
-                return
-            except OSError, e:
-                self.status(_('Unable to mount device'))
-                self.enable_widgets(True)
-                return
-
-            if self.live.existing_liveos():
-                if not self.confirmed:
-                    self.status(_("Your device already contains a LiveOS.\nIf you "
-                                  "continue, this will be overwritten."))
-                    if self.live.existing_overlay() and self.overlaySlider.value():
-                        self.status(_("Warning: Creating a new persistent overlay "
-                                      "will delete your existing one."))
-                    self.status(_("Press 'Create Live USB' again if you wish to "
-                                  "continue."))
-                    self.confirmed = True
-                    #self.live.unmount_device()
-                    self.enable_widgets(True)
-                    return
-                else:
-                    # The user has confirmed that they wish to overwrite their
-                    # existing Live OS.  Here we delete it first, in order to
-                    # accurately calculate progress.
-                    self.confirmed = False
-                    try:
-                        self.live.delete_liveos()
-                    except LiveUSBError, e:
-                        self.status(e.args[0])
-                        #self.live.unmount_device()
-                        self.enable_widgets(True)
-                        return
-        else:
-            # Require confirmation for destructive installs
-            if not self.confirmed:
-                self.status(_("WARNING: You are about to perform a destructive install. This will destroy all data and partitions on your USB drive. Press 'Create Live USB' again to continue."))
-                self.confirmed = True
-                self.enable_widgets(True)
-                return
-
-        # Remove the log handler, because our live thread will register its own
-        self.live.log.removeHandler(self.handler)
-
-        # If the user has selected an ISO, use it.  If not, download one.
-        if self.live.iso:
-            self.live_thread.start()
-        else:
-            self.downloader = ReleaseDownloader(
-                    self.downloadCombo.currentText(),
-                    progress=self.download_progress,
-                    proxies=self.live.get_proxies())
-            self.connect(self.downloader,
-                         QtCore.SIGNAL("dlcomplete(PyQt_PyObject)"),
-                         self.download_complete)
-            self.connect(self.downloader,
-                         QtCore.SIGNAL("status(PyQt_PyObject)"),
-                         self.status)
-            self.downloader.start()
-
-    def download_complete(self, iso):
-        """ Called by our ReleaseDownloader thread upon completion.
-
-        Upon success, the thread passes in the filename of the downloaded
-        release.  If the 'iso' argument is not an existing file, then
-        it is assumed that the download failed and 'iso' should contain
-        the error message.
-        """
-        if os.path.exists(iso):
-            self.status(_("Download complete!"))
-            self.live.iso = iso
-            self.live_thread.start()
-        else:
-            self.status(_("Download failed: " + iso))
-            self.status(_("You can try again to resume your download"))
-            self.enable_widgets(True)
-
-    def selectfile(self, isofile=None):
-        if not isofile:
-            isofile = QtGui.QFileDialog.getOpenFileName(self,
-                         _("Select Live ISO"), ".", "ISO (*.iso)" )
-        if isofile:
-            try:
-                self.live.set_iso(isofile)
-            except Exception, e:
-                self.live.log.error(e.args[0])
-                self.status(_("Unable to encode the filename of your livecd.  "
-                              "You may have better luck if you move your ISO "
-                              "to the root of your drive (ie: C:\)"))
-
-            self.live.log.info('%s ' % os.path.basename(self.live.iso) +
-                               _("selected"))
-            self._refresh_overlay_slider()
-            self.downloadGroup.setEnabled(False)
-
-    def terminate(self):
-        """ Terminate any processes that we have spawned """
-        self.live.terminate()
-
-    def method_destructive_toggled(self, enabled):
-        if enabled:
-            self.overlayTitle.setEnabled(False)
-
-    def method_nondestructive_toggled(self, enabled):
-        if enabled:
-            self.overlayTitle.setEnabled(True)
+        self.exec_()

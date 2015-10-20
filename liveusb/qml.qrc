@@ -1,0 +1,21 @@
+<RCC>
+  <qresource>
+    <file>liveusb.qml</file>
+    <file>components/AdwaitaButton.qml</file>
+    <file>components/AdwaitaComboBox.qml</file>
+    <file>components/AdwaitaProgressBar.qml</file>
+    <file>components/AdwaitaRectangle.qml</file>
+    <file>components/AdwaitaRadioButton.qml</file>
+    <file>components/AdwaitaCheckBox.qml</file>
+    <file>components/Arrow.qml</file>
+    <file>components/BackButton.qml</file>
+    <file>components/DelegateImage.qml</file>
+    <file>components/DelegateImageSeparator.qml</file>
+    <file>components/DownloadDialog.qml</file>
+    <file>components/ImageDetails.qml</file>
+    <file>components/ImageList.qml</file>
+    <file>components/IndicatedImage.qml</file>
+    <file>components/MenuButton.qml</file>
+    <file>components/QuitButton.qml</file>
+  </qresource>
+</RCC>

@@ -41,9 +41,11 @@ from liveusb.creator import LiveUSBError
 
 if sys.platform == "win32":
     from liveusb.creator import WindowsLiveUSBCreator as LiveUSBCreator
-    from liveusb.windows_dialog import Ui_MainWindow as LiveUSBInterface
-else:
+elif sys.platform.startswith("linux"):
     from liveusb.creator import LinuxLiveUSBCreator as LiveUSBCreator
-    from liveusb.linux_dialog import Ui_MainWindow as LiveUSBInterface
+elif sys.platform == "darwin":
+    from liveusb.creator import MacOsLiveUSBCreator as LiveUSBCreator
+else:
+    from liveusb.creator import LiveUSBCreator as LiveUSBCreator
 
 __all__ = ("LiveUSBCreator", "LiveUSBError", "LiveUSBWindow", "_", "utf8_gettext")

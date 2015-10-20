@@ -6,15 +6,18 @@
 %global with_desktop_vendor_tag 0
 %endif
 
+%global commit afdc2a1c9777c6a04179750d0032ea66e9de03b2
+
 Name:           liveusb-creator
-Version:        3.14.2
-Release:        1%{?dist}
+Version:        3.15.0
+Release:        0.1.newui%{?dist}
 Summary:        A liveusb creator
 
 Group:          Applications/System
 License:        GPLv2
 URL:            https://fedorahosted.org/liveusb-creator
-Source0:        https://fedorahosted.org/releases/l/i/liveusb-creator/%{name}-%{version}.tar.bz2
+#Source0:        https://github.com/lmacken/liveusb-creator/archive/#{commit}.tar.gz
+Source0:        liveusb-creator-00e2ea65.tar
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
@@ -22,27 +25,32 @@ ExcludeArch:    ppc
 ExcludeArch:    ppc64
 ExcludeArch:    %{arm}
 
-BuildRequires:  python-devel, python-setuptools, PyQt4-devel, desktop-file-utils gettext
+BuildRequires:  python-devel, python-setuptools, PyQt5-devel, desktop-file-utils gettext
 
 Requires:       syslinux
-Requires:       PyQt4
+Requires:       PyQt5
+Requires:       qt5-qtquickcontrols
 Requires:       isomd5sum
 Requires:       python-urlgrabber
 Requires:       pyparted >= 2.0
 Requires:       syslinux-extlinux
 Requires:       udisks2
 Requires:       polkit
-Requires:       polkit-gnome
+# DE's are expected to provide a polkit agent these days, so could consider
+# removing this too, see https://bugzilla.redhat.com/1171583
+Requires:       PolicyKit-authentication-agent
+Requires:       python-pyquery
 
 %description
 A liveusb creator from Live Fedora images
 
 %prep
-%setup -q
+%setup -q -n %{name}
 
 %build
 %{__python} setup.py build
 make mo
+make gui
 
 %install
 rm -rf %{buildroot}
@@ -90,11 +98,41 @@ rm -rf %{buildroot}
 %{_datadir}/polkit-1/actions/org.fedoraproject.pkexec.run-liveusb-creator.policy
 
 %changelog
-* Mon May 25 2015 Luke Macken <lmacken@redhat.com> - 3.14.0-1
-- Patched to fix black window issue on F22 (#1212180)
+* Tue Aug 25 2015 mbriza <mbriza@redhat.com> - 3.15.0-0.1.newui
+- Update to git: 00e2ea65
+
+* Thu Aug 20 2015 mbriza <mbriza@redhat.com> - 3.15.0-0.1.newui.afdc2a1c.20150820git63a2a068
+- Update to git: 63a2a068
+
+* Thu Aug 20 2015 mbriza <mbriza@redhat.com> - 3.15.0-0.1.newui.afdc2a1c.20150820gitbc1b3fda
+- Update to git: bc1b3fda
+
+* Thu Aug 20 2015 mbriza <mbriza@redhat.com> - 3.15.0-0.1.newui.afdc2a1c.20150820git992323ba
+- Update to git: 992323ba
+
+* Tue Aug 18 2015 mbriza <mbriza@redhat.com> - 3.15.0-0.1.newui.afdc2a1c.20150818git3dbca8fd
+- Update to git: 3dbca8fd
+
+* Tue Aug 18 2015 mbriza <mbriza@redhat.com> - 3.15.0-0.1.newui.afdc2a1c.20150818git3dbca8fd
+- Update to git: 3dbca8fd
+
+* Tue May 26 2015 Luke Macken <lmacken@redhat.com> - 3.14.2-1
+- Updated the release list and parser for F22
+
+* Mon May 25 2015 Luke Macken <lmacken@redhat.com> - 3.14.1-1
+- Patched to fix the blank window issue on F22+ (#1212180)
 
 * Fri May 22 2015 Luke Macken <lmacken@redhat.com> - 3.14.0-1
-- Require udisks2
+- Latest upstream release ported from udisks to udisks2 (#1166650)
+
+* Fri Mar 06 2015 Luke Macken <lmacken@redhat.com> - 3.13.3-1
+- Latest upstream release
+
+* Fri Dec 12 2014 Luke Macken <lmacken@redhat.com> - 3.13.2-1
+- Added all products and spins to the release list
+
+* Mon Dec 08 2014 Rex Dieter <rdieter@fedoraproject.org> 3.13.1-2
+- Requires: PolicyKit-authentication-agent (#1171583)
 
 * Thu Nov 27 2014 Luke Macken <lmacken@redhat.com> - 3.13.1-1
 - Latest upstream release
