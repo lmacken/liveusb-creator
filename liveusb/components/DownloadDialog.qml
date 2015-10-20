@@ -225,6 +225,7 @@ Dialog {
                             currentIndex: liveUSBData.currentDrive
                             onCurrentIndexChanged: {
                                 acceptButton.pressedOnce = false
+                                liveUSBData.currentImage.writer.finished = false
                                 liveUSBData.currentDrive = currentIndex
                             }
                             onModelChanged: {
@@ -309,10 +310,11 @@ Dialog {
                                     rightMargin: $(6)
                                 }
                                 text: qsTranslate("", "Cancel")
-                                enabled: !liveUSBData.currentImage.writer.running
+                                enabled: !liveUSBData.currentImage.writer.running && !liveUSBData.currentImage.writer.finished
                                 onClicked: {
                                     liveUSBData.currentImage.download.cancel()
                                     liveUSBData.currentImage.writer.cancel()
+                                    liveUSBData.currentImage.writer.finished = false
                                     writeImmediately.checked = false
                                     acceptButton.pressedOnce = false
                                     root.close()
@@ -326,13 +328,21 @@ Dialog {
                                     bottom: parent.bottom
                                 }
                                 property bool pressedOnce: false
-                                color: "red"
+                                color: liveUSBData.currentImage.writer.finished ? "#628fcf" : "red"
                                 textColor: enabled ? "white" : palette.text
                                 transformOrigin: Item.Center
                                 enabled: pressedOnce || (liveUSBData.currentImage.readyToWrite && !liveUSBData.currentImage.writer.running && liveUSBData.usbDrives.length > 0)
-                                text: pressedOnce ? qsTranslate("", "Are you sure?") : qsTranslate("", "Write to disk")
+                                text: liveUSBData.currentImage.writer.finished ? qsTranslate("", "Close") : pressedOnce ? qsTranslate("", "Are you sure?") : qsTranslate("", "Write to disk")
                                 onClicked: {
-                                    if(pressedOnce || !liveUSBData.currentImage.warning || liveUSBData.currentImage.warning.length == 0) {
+                                    if (liveUSBData.currentImage.writer.finished) {
+                                        liveUSBData.currentImage.download.cancel()
+                                        liveUSBData.currentImage.writer.cancel()
+                                        liveUSBData.currentImage.writer.finished = false
+                                        writeImmediately.checked = false
+                                        acceptButton.pressedOnce = false
+                                        root.close()
+                                    }
+                                    else if(pressedOnce || !liveUSBData.currentImage.warning || liveUSBData.currentImage.warning.length == 0) {
                                         if (!liveUSBData.currentImage.readyToWrite) {
                                             writeImmediately.confirmed = true
                                         }
@@ -410,6 +420,7 @@ Dialog {
                                     width: implicitWidth
                                     text: liveUSBData.optionNames[index]
                                     onClicked: {
+                                        liveUSBData.currentImage.writer.finished = false
                                         if (!writeImmediately.checked)
                                             acceptButton.pressedOnce = false
                                         liveUSBData.setOption(index, checked)
@@ -425,6 +436,7 @@ Dialog {
                                 property bool confirmed: false
                                 text: qsTranslate("", "Write the image immediately when the download is finished")
                                 onCheckedChanged: {
+                                    liveUSBData.currentImage.writer.finished = true
                                     if (checked)
                                         acceptButton.pressedOnce = true
                                     else
