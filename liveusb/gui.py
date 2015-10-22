@@ -437,7 +437,7 @@ class Release(QObject):
 
     _path = ''
 
-    _archMap = {'64bit': ['x86_64'], '32bit': ['i686','i386'], 'ARM': ['armv7hl']}
+    _archMap = {'64bit': ['x86_64'], '32bit': ['i686','i386']} #, 'ARM': ['armv7hl']}
 
     def __init__(self, parent, index, live, data):
         QObject.__init__(self, parent)
@@ -680,7 +680,7 @@ class ReleaseListProxy(QSortFilterProxyModel):
     _nameFilter = ''
     _frontPage = True
 
-    _archMap = {'64bit': ['x86_64'], '32bit': ['i686','i386'], 'ARM': ['armv7hl']}
+    _archMap = {'64bit': ['x86_64'], '32bit': ['i686','i386']} #, 'ARM': ['armv7hl']}
 
     def __init__(self, parent, sourceModel):
         QSortFilterProxyModel.__init__(self, parent)
