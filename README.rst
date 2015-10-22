@@ -29,8 +29,8 @@ This tool is distributed with the following open source software::
    Python
    http://python.org
 
-   PyQt4
-   http://wiki.python.org/moin/PyQt4
+   PyQt5
+   http://wiki.python.org/moin/PyQt
 
    7-Zip
    http://www.7-zip.org
