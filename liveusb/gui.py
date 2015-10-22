@@ -695,7 +695,8 @@ class ReleaseListProxy(QSortFilterProxyModel):
         row = self.sourceModel().index(sourceRow, 0, sourceParent).data()
         if len(self._archFilter) == 0 or row.isLocal or self.archFilter in row.arch:
             if len(self._nameFilter) == 0 or self._nameFilter.lower() in row.name.lower() or self._nameFilter.lower() in row.summary.lower():
-                return True
+                if not len(self._nameFilter) or not row.isSeparator:
+                    return True
         return False
 
     @pyqtProperty(str, notify=nameFilterChanged)
