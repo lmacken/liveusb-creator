@@ -175,7 +175,7 @@ def getProductDetails(url, name):
             i = i.parent().parent()('blockquote')
             product['description'] += '<blockquote>'
             product['description'] += str(i('p'))
-            product['description'] += '<p align=right> ― <em>' + i('cite').html() + '</em></p>'
+            product['description'] += u'<p align=right> ― <em>' + i('cite').html() + '</em></p>'
             product['description'] += '</blockquote>'
         elif i.html() and len(i.html()) > 0: # can't remove empty tags with :empty for some reason
             product['description'] += str(i)
@@ -212,7 +212,7 @@ def getProducts(url='https://getfedora.org/'):
         productName = i('h4').html()
 
         if productName != "Cloud":
-            products.append(getProductDetails(productUrl, prductName))
+            products.append(getProductDetails(productUrl, productName))
 
     return products
 
