@@ -117,28 +117,31 @@ Item {
                         Item {
                             height: childrenRect.height
 
-                            RowLayout {
-                                visible: liveUSBData.currentImage.arch.length
+                            ColumnLayout {
                                 spacing: $(12)
-                                ExclusiveGroup {
-                                    id: archEG
-                                }
-                                Repeater {
-                                    model: liveUSBData.currentImage.arch
-                                    AdwaitaRadioButton {
-                                        text: modelData
-                                        Layout.alignment: Qt.AlignVCenter
-                                        exclusiveGroup: archEG
-                                        checked: liveUSBData.releaseProxyModel.archFilter == modelData
-                                        onCheckedChanged: {
-                                            if (checked && liveUSBData.releaseProxyModel.archFilter != modelData)
-                                                liveUSBData.releaseProxyModel.archFilter = modelData
+                                RowLayout {
+                                    visible: liveUSBData.currentImage.arch.length
+                                    spacing: $(12)
+                                    ExclusiveGroup {
+                                        id: archEG
+                                    }
+                                    Repeater {
+                                        model: liveUSBData.currentImage.arch
+                                        AdwaitaRadioButton {
+                                            text: modelData
+                                            Layout.alignment: Qt.AlignVCenter
+                                            exclusiveGroup: archEG
+                                            checked: liveUSBData.releaseProxyModel.archFilter == modelData
+                                            onCheckedChanged: {
+                                                if (checked && liveUSBData.releaseProxyModel.archFilter != modelData)
+                                                    liveUSBData.releaseProxyModel.archFilter = modelData
+                                            }
                                         }
                                     }
                                 }
                                 Text {
                                     // I'm sorry, everyone, I can't find a better way to determine if the date is valid
-                                    text: liveUSBData.currentImage.releaseDate.toLocaleDateString().length > 0 ? (qsTranslate("", "Released on %s").arg(liveUSBData.currentImage.releaseDate.toLocaleDateString())) : ""
+                                    text: liveUSBData.currentImage.releaseDate.toLocaleDateString().length > 0 ? (qsTranslate("", "Released on %1").arg(liveUSBData.currentImage.releaseDate.toLocaleDateString())) : ""
                                     font.pixelSize: $(11)
                                     color: "gray"
                                 }

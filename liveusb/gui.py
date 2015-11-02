@@ -50,7 +50,7 @@ import resources_rc
 import qml_rc
 
 from liveusb import LiveUSBCreator, LiveUSBError, _
-from liveusb.releases import releases, get_fedora_releases
+from liveusb.releases import releases
 
 if sys.platform == 'win32':
     from liveusb.urlgrabber.grabber import URLGrabber, URLGrabError
@@ -557,7 +557,7 @@ class Release(QObject):
 
     @pyqtProperty(QDateTime, constant=True)
     def releaseDate(self):
-        return QDateTime.fromString(self._data['releaseDate'])
+        return QDateTime.fromString(self._data['releaseDate'], Qt.ISODate)
 
     @pyqtProperty(str, constant=True)
     def summary(self):
@@ -693,9 +693,9 @@ class ReleaseListProxy(QSortFilterProxyModel):
 
     def filterAcceptsRow(self, sourceRow, sourceParent):
         row = self.sourceModel().index(sourceRow, 0, sourceParent).data()
-        if len(self._archFilter) == 0 or row.isLocal or self.archFilter in row.arch:
-            if len(self._nameFilter) == 0 or self._nameFilter.lower() in row.name.lower() or self._nameFilter.lower() in row.summary.lower():
-                if not len(self._nameFilter) or not row.isSeparator:
+        if len(self._archFilter) == 0 or row.isLocal or self.archFilter in row.arch or row.isSeparator:
+            if not len(self._nameFilter) or not row.isSeparator:
+                if len(self._nameFilter) == 0 or self._nameFilter.lower() in row.name.lower() or self._nameFilter.lower() in row.summary.lower():
                     return True
         return False
 
