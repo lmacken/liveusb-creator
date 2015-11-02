@@ -8,257 +8,714 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liveusb-creator\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-03 02:54-0400\n"
+"POT-Creation-Date: 2015-11-02 19:40+0100\n"
 "PO-Revision-Date: 2010-06-07 00:12+0200\n"
 "Last-Translator: NikosCharonitakis <nikosx@gmail.com>\n"
 "Language-Team: Greek <team@gnome.gr>\n"
+"Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Greek\n"
 
-#: ../liveusb/gui.py:69
-#, python-format
-msgid "Unknown release: %s"
-msgstr "Άγνωστη έκδοση: %s"
-
-#: ../liveusb/gui.py:73
-#, python-format
-msgid "Downloading %s..."
-msgstr "Γίνεται λήψη %s..."
-
-#: ../liveusb/gui.py:152
-msgid "Verifying filesystem..."
-msgstr "Επιβεβαίωση συστήματος αρχείων..."
-
-#: ../liveusb/gui.py:155
-msgid "Error: Cannot set the label or obtain the UUID of your device.  Unable to continue."
-msgstr "Σφάλμα: Αδυναμία ορισμού της ετικέτας ή λήψης του UUID της συσκευής σας. Αδυναμλια συνέχειας."
-
-#: ../liveusb/gui.py:164
-msgid "Verifying SHA1 of LiveCD image..."
-msgstr "Επιβεβαίωση SHA1 της εικόνας LiveCD..."
-
-#: ../liveusb/gui.py:166
-msgid "Error: The SHA1 of your Live CD is invalid.  You can run this program with the --noverify argument to bypass this verification check."
-msgstr "Σφάλμα: Το SHA1 του Live CD σας δεν είναι έγκυρο.  Μπορείτε να εκτελέσετε το πρόγραμμα με την παράμετρο --noverify για να παρακάμψετε τον έλεγχο επιβεβαίωσης."
-
-#: ../liveusb/gui.py:177
-msgid "Extracting live image to USB device..."
-msgstr "Εξαγωγή εικόνας live στην συσκευή USB..."
-
-#: ../liveusb/gui.py:180
-#, python-format
-msgid "Creating %d Mb persistent overlay..."
-msgstr "Δημιουργία %d Mb μόνιμου χώρου..."
-
-#: ../liveusb/gui.py:183
-msgid "Configuring and installing bootloader..."
-msgstr "Ρύθμιση και εγκατάσταση bootloader..."
-
-#: ../liveusb/gui.py:187
-#, python-format
-msgid "Complete! (%s)"
-msgstr "Ολοκληρώθηκε! (%s)"
-
-#: ../liveusb/gui.py:190
-#: ../liveusb/gui.py:193
-msgid "LiveUSB creation failed!"
-msgstr "Η δημιουργία LiveUSB απέτυχε!"
-
-#: ../liveusb/gui.py:316
-#, python-format
-msgid "Persistent Storage (%d Mb)"
-msgstr "Μόνιμος αποθηκευτικός χώρος (%d Mb)"
-
-#: ../liveusb/gui.py:334
-msgid ""
-"Your device already contains a LiveOS.\n"
-"If you continue, this will be overwritten."
+#: liveusb/components/DownloadDialog.qml:9
+msgctxt ""
+msgid "Write %1 to USB"
 msgstr ""
-"Η συσκευή σας περιέχει ήδη ένα LiveOS.\n"
-"Αν συνεχίσετε αυτό θα αντικατασταθεί."
 
-#: ../liveusb/gui.py:337
-msgid "Warning: Creating a new persistent overlay will delete your existing one."
-msgstr "Προσοχή: Η δημιουργία μόνιμου χώρου θα διαγράψει τον ήδη υπάρχοντα."
+#: liveusb/components/DownloadDialog.qml:250
+msgctxt ""
+msgid "There are no portable drives connected"
+msgstr ""
 
-#: ../liveusb/gui.py:339
-msgid "Press 'Create Live USB' again if you wish to continue."
-msgstr "Πατήστε 'Δημιουργία Live USB' ξανά αν επιθυμείτε να συνεχίσετε."
+#: liveusb/components/DownloadDialog.qml:290
+msgctxt ""
+msgid "Options"
+msgstr ""
 
-#. The user has confirmed that they wish to overwrite their
-#. existing Live OS.  Here we delete it first, in order to
-#. accurately calculate progress.
-#: ../liveusb/gui.py:349
-msgid "Removing existing Live OS..."
-msgstr "Αφαίρεση υπάρχοντος Live OS..."
+#: liveusb/components/DownloadDialog.qml:312
+msgctxt ""
+msgid "Cancel"
+msgstr ""
 
-#: ../liveusb/gui.py:383
-msgid "Download complete!"
-msgstr "Η λήψη ολοκληρώθηκε!"
+#: liveusb/components/DownloadDialog.qml:335
+msgctxt ""
+msgid "Close"
+msgstr ""
 
-#: ../liveusb/gui.py:387
-msgid "Download failed: "
-msgstr "Η λήψη απέτυχε:"
+#: liveusb/components/DownloadDialog.qml:335
+msgctxt ""
+msgid "Are you sure?"
+msgstr ""
 
-#: ../liveusb/gui.py:388
-msgid "You can try again to resume your download"
-msgstr "Μπορείτε να δοκιμάσετε να συνεχίσετε την λήψη σας"
+#: liveusb/components/DownloadDialog.qml:335
+msgctxt ""
+msgid "Write to disk"
+msgstr ""
 
-#: ../liveusb/gui.py:392
+#: liveusb/components/DownloadDialog.qml:437
+msgctxt ""
+msgid "Write the image immediately when the download is finished"
+msgstr ""
+
+#: liveusb/components/ImageDetails.qml:46
+#, fuzzy
+msgctxt ""
+msgid "Create Live USB"
+msgstr "Δημιουργία LiveUSB"
+
+#: liveusb/components/ImageDetails.qml:144
+msgctxt ""
+msgid "Version %1"
+msgstr ""
+
+#: liveusb/components/ImageDetails.qml:145
+msgctxt ""
+msgid ", released on %1"
+msgstr ""
+
+#: liveusb/components/ImageDetails.qml:156
+#, fuzzy
+msgctxt ""
 msgid "Select Live ISO"
 msgstr "Επιλέξτε Live ISO"
 
-#: ../liveusb/gui.py:399
-msgid "Sorry, I'm having trouble encoding the filename of your livecd.  You may have better luck if you move your ISO to the root of your drive (ie: C:\\)"
-msgstr "Συγγνώμη, αλλά υπάρχει πρόβλημα κωδικοποίησης του ονόματος αρχείου του livecd σας. Ίσως να λυθεί το πρόβλημα αν μετακινήσετε το ISO στο ριζικό σας κατάλογο (π.χ: C:\\)"
-
-#: ../liveusb/gui.py:404
-#, python-format
-msgid "ISO selected: %s"
+#: liveusb/components/ImageDetails.qml:164
+#, fuzzy
+msgctxt ""
+msgid "Selected:"
 msgstr "Επιλεγμένο ISO: %s"
 
-#: ../liveusb/creator.py:146
-#, python-format
+#: liveusb/components/ImageDetails.qml:164
+msgctxt ""
+msgid "None"
+msgstr ""
+
+#: liveusb/components/ImageDetails.qml:226
+msgctxt ""
+msgid "Image files (*.iso)"
+msgstr ""
+
+#: liveusb/components/ImageDetails.qml:226
+msgctxt ""
+msgid "All files (*)"
+msgstr ""
+
+#: liveusb/components/ImageList.qml:85
+msgctxt ""
+msgid "Find an operating system image"
+msgstr ""
+
+#: liveusb/components/ImageList.qml:212
+msgctxt ""
+msgid "Display additional Fedora flavors"
+msgstr ""
+
+#: liveusb/creator.py:146
+msgid "Setting up OLPC boot file..."
+msgstr ""
+
+#: liveusb/creator.py:207
+#, fuzzy, python-format
 msgid ""
-"There was a problem executing the following command: `%s`\n"
-"A more detailed error log has been written to 'liveusb-creator.log'"
+"There was a problem executing the following command: %r\n"
+"%r\n"
+"A more detailed error log has been written to '%r'"
 msgstr ""
 "Υπήρξε ένα πρόβλημα κατά την εκτέλεση της ακόλουθης εντολής: `%s`\n"
-"Μια πιο λεπτομερής καταγραφή του σφάλματος είναι διαθέσιμη στο 'liveusb-creator.log'"
+"Μια πιο λεπτομερής καταγραφή του σφάλματος είναι διαθέσιμη στο 'liveusb-"
+"creator.log'"
 
-#: ../liveusb/creator.py:183
-msgid "Not enough free space on device."
-msgstr "Δεν υπάρχει αρκετός διαθέσιμος χώρος στη συσκευή."
+#: liveusb/creator.py:224
+#, fuzzy
+msgid "Verifying SHA1 checksum of LiveCD image..."
+msgstr "Επιβεβαίωση SHA1 της εικόνας LiveCD..."
 
-#: ../liveusb/creator.py:190
+#: liveusb/creator.py:228
+#, fuzzy
+msgid "Verifying SHA256 checksum of LiveCD image..."
+msgstr "Επιβεβαίωση SHA1 της εικόνας LiveCD..."
+
+#: liveusb/creator.py:244
+msgid ""
+"Error: The SHA1 of your Live CD is invalid.  You can run this program with "
+"the --noverify argument to bypass this verification check."
+msgstr ""
+"Σφάλμα: Το SHA1 του Live CD σας δεν είναι έγκυρο.  Μπορείτε να εκτελέσετε το "
+"πρόγραμμα με την παράμετρο --noverify για να παρακάμψετε τον έλεγχο "
+"επιβεβαίωσης."
+
+#: liveusb/creator.py:250
+msgid "Unknown ISO, skipping checksum verification"
+msgstr ""
+
+#: liveusb/creator.py:261
 #, python-format
-msgid "Creating %sMB persistent overlay"
+msgid ""
+"There is not enough free space on the selected device.\n"
+"Required: %s. Free: %s."
+msgstr ""
+
+#: liveusb/creator.py:267
+msgid "Creating"
+msgstr ""
+
+#: liveusb/creator.py:268
+#, fuzzy
+msgid "persistent overlay"
 msgstr "Δημιουργία %sΜΒ μόνιμου χώρου"
 
-#: ../liveusb/creator.py:226
-#, python-format
-msgid "Unable to remove previous LiveOS: %s"
+#: liveusb/creator.py:330
+#, fuzzy, python-format
+msgid "Unable to copy %r to %r: %r"
+msgstr "Αδυναμία προσάρτησης συσκευής: %s"
+
+#: liveusb/creator.py:338 liveusb/creator.py:1336
+msgid "Removing"
+msgstr ""
+
+#: liveusb/creator.py:344
+#, fuzzy
+msgid "Removing existing Live OS"
+msgstr "Αφαίρεση υπάρχοντος Live OS..."
+
+#: liveusb/creator.py:350
+msgid "Deleting "
+msgstr ""
+
+#: liveusb/creator.py:357
+#, fuzzy, python-format
+msgid "Unable to delete %r: %r"
+msgstr "Αδυναμία προσάρτησης συσκευής: %s"
+
+#: liveusb/creator.py:361
+#, fuzzy, python-format
+msgid "Unable to remove previous LiveOS: %r"
 msgstr "Αδυναμία αφαίρεσης προηγούμενου LiveOS: %s"
 
-#: ../liveusb/creator.py:257
+#: liveusb/creator.py:379
+#, fuzzy, python-format
+msgid "Cannot find path %r"
+msgstr "Αδυναμία εύρεσης"
+
+#: liveusb/creator.py:410
 #, python-format
 msgid "Cannot find device %s"
 msgstr "Αδυναμία εύρεσης συσκευής %s"
 
-#: ../liveusb/creator.py:306
-msgid "Unable to find any USB drives"
-msgstr "Αδυναμία εύρεσης κάποιου USB δίσκου"
+#: liveusb/creator.py:461
+msgid "Overwriting device with live image"
+msgstr ""
 
-#: ../liveusb/creator.py:327
-#, python-format
-msgid "Filesystem for %s unknown!"
-msgstr "Το σύστημα αρχείων του %s είναι άγνωστο!"
+#: liveusb/creator.py:468
+msgid "Running"
+msgstr ""
 
-#: ../liveusb/creator.py:335
-#, python-format
-msgid "Unable to mount device: %s"
-msgstr "Αδυναμία προσάρτησης συσκευής: %s"
+#: liveusb/creator.py:517
+msgid ""
+"You are using an old version of syslinux-extlinux that does not support the "
+"ext4 filesystem"
+msgstr ""
 
-#: ../liveusb/creator.py:370
-#, python-format
-msgid "Unknown filesystem for %s.  Your device may need to be reformatted."
-msgstr "Άγνωστο σύστημα αρχείων στο %s. Ίσως να πρέπει να μορφοποιήσετε την συσκευή σας."
+#: liveusb/creator.py:741 liveusb/creator.py:803
+#, fuzzy
+msgid "Unknown filesystem.  Your device may need to be reformatted."
+msgstr ""
+"Άγνωστο σύστημα αρχείων στο %s. Ίσως να πρέπει να μορφοποιήσετε την συσκευή "
+"σας."
 
-#: ../liveusb/creator.py:373
+#: liveusb/creator.py:744 liveusb/creator.py:806
 #, python-format
 msgid "Unsupported filesystem: %s"
 msgstr "Μη υποστηριζόμενο σύστημα αρχείων: %s"
 
-#: ../liveusb/creator.py:400
+#: liveusb/creator.py:757 liveusb/creator.py:774
+#, fuzzy, python-format
+msgid "Unknown dbus exception while trying to mount device: %s"
+msgstr "Αδυναμία προσάρτησης συσκευής: %s"
+
+#: liveusb/creator.py:777
+#, fuzzy, python-format
+msgid "Unable to mount device: %r"
+msgstr "Αδυναμία προσάρτησης συσκευής: %s"
+
+#: liveusb/creator.py:780
+msgid "No mount points found after mounting attempt"
+msgstr ""
+
+#: liveusb/creator.py:788
+#, python-format
+msgid "Using existing mount: %s"
+msgstr ""
+
+#: liveusb/creator.py:800 liveusb/creator.py:1273
+msgid "Verifying filesystem..."
+msgstr "Επιβεβαίωση συστήματος αρχείων..."
+
+#: liveusb/creator.py:809
+#, python-format
+msgid "Setting %s label to %s"
+msgstr ""
+
+#: liveusb/creator.py:823
+#, python-format
+msgid "Unable to change volume label: %r"
+msgstr ""
+
+#: liveusb/creator.py:827 liveusb/creator.py:1305
+msgid "Extracting live image to USB device..."
+msgstr "Εξαγωγή εικόνας live στην συσκευή USB..."
+
+#: liveusb/creator.py:833
 msgid "Unable to find LiveOS on ISO"
 msgstr "Αδυναμία εύρεσης LiveOS στο ISO"
 
-#: ../liveusb/creator.py:472
-msgid "Unable to find any removable devices"
-msgstr "Αδυναμία εύρεσης αφαιρούμενων συσκευών"
+#: liveusb/creator.py:845 liveusb/creator.py:1313
+msgid "Wrote to device at"
+msgstr ""
 
-#: ../liveusb/creator.py:479
-msgid "Make sure your USB key is plugged in and formatted with the FAT filesystem"
-msgstr "Σιγουρευτείτε ότι το USB stick σας είναι συνδεδεμένο και διαμορφωμένο σε σύστημα αρχείων FAT"
+#: liveusb/creator.py:873
+#, fuzzy
+msgid "Installing bootloader..."
+msgstr "Ρύθμιση και εγκατάσταση bootloader..."
 
-#: ../liveusb/creator.py:482
+#: liveusb/creator.py:917
+#, fuzzy, python-format
+msgid "Cannot find device: %s"
+msgstr "Αδυναμία εύρεσης συσκευής %s"
+
+#: liveusb/creator.py:941
+msgid "Verifying ISO MD5 checksum"
+msgstr ""
+
+#: liveusb/creator.py:946
+msgid "ISO MD5 checksum verification failed"
+msgstr ""
+
+#: liveusb/creator.py:948
+msgid "ISO MD5 checksum passed"
+msgstr ""
+
+#: liveusb/creator.py:989
+msgid "Unable to get disk partitions"
+msgstr ""
+
+#: liveusb/creator.py:993
+#, python-format
+msgid "%s already bootable"
+msgstr ""
+
+#: liveusb/creator.py:1013
+#, fuzzy
+msgid "Unable to find partition"
+msgstr "Αδυναμία εύρεσης LiveOS στο ISO"
+
+#: liveusb/creator.py:1082
+msgid "Resetting Master Boot Record"
+msgstr ""
+
+#: liveusb/creator.py:1085
+msgid "Unable to reset MBR.  You may not have the `syslinux` package installed"
+msgstr ""
+
+#: liveusb/creator.py:1088
+msgid "Drive is a loopback, skipping MBR reset"
+msgstr ""
+
+#: liveusb/creator.py:1092 liveusb/creator.py:1471
+#, python-format
+msgid "Calculating the SHA1 of %s"
+msgstr ""
+
+#: liveusb/creator.py:1222
+#, python-format
+msgid "Unable to get GetVolumeInformation(%r): %r"
+msgstr ""
+
+#: liveusb/creator.py:1236
+msgid "Error probing device"
+msgstr ""
+
+#: liveusb/creator.py:1277
+msgid ""
+"Make sure your USB key is plugged in and formatted with the FAT filesystem"
+msgstr ""
+"Σιγουρευτείτε ότι το USB stick σας είναι συνδεδεμένο και διαμορφωμένο σε "
+"σύστημα αρχείων FAT"
+
+#: liveusb/creator.py:1280
 #, python-format
 msgid ""
 "Unsupported filesystem: %s\n"
 "Please backup and format your USB key with the FAT filesystem."
 msgstr ""
 "Μη υποστηριζόμενο σύστημα αρχείων: %s\n"
-"Παρακαλώ πάρτε ένα αντίγραφο ασφαλείας και μορφοποιήστε τη συσκευή USB σε σύστημα αρχείων FAT."
+"Παρακαλώ πάρτε ένα αντίγραφο ασφαλείας και μορφοποιήστε τη συσκευή USB σε "
+"σύστημα αρχείων FAT."
 
-#: ../liveusb/creator.py:558
+#: liveusb/creator.py:1290
+#, fuzzy, python-format
+msgid "Unable to SetVolumeLabel: %r"
+msgstr "Αδυναμία προσάρτησης συσκευής: %s"
+
+#: liveusb/creator.py:1299
 #, python-format
-msgid "Cannot find '%s'.  Make sure to extract the entire liveusb-creator zip file before running this program."
-msgstr "Αδυναμία εύρεσης '%s'.  Βεβαιωθείτε ότι έχετε αποσυμπιέσει όλο το αρχείο zip liveusb-creator πριν να εκτελέσετε αυτό το πρόγραμμα."
+msgid "Problem determining free space: %r"
+msgstr ""
 
-#: ../liveusb/dialog.py:123
+#: liveusb/creator.py:1319
+#, fuzzy
+msgid "Installing bootloader"
+msgstr "Ρύθμιση και εγκατάσταση bootloader..."
+
+#: liveusb/creator.py:1359
+msgid ""
+"Unable to get Win32_LogicalDisk; win32com query did not return any results"
+msgstr ""
+
+#: liveusb/creator.py:1380
+#, python-format
+msgid "Found UUID %s for %s"
+msgstr ""
+
+#: liveusb/creator.py:1383
+#, python-format
+msgid "Exception while fetching UUID: %r"
+msgstr ""
+
+#: liveusb/creator.py:1391
+#, python-format
+msgid "Max size of %s: %d"
+msgstr ""
+
+#: liveusb/creator.py:1394
+#, python-format
+msgid "Error getting drive size: %r"
+msgstr ""
+
+#: liveusb/creator.py:1412
+msgid "Cannot find"
+msgstr "Αδυναμία εύρεσης"
+
+#: liveusb/creator.py:1413
+#, fuzzy
+msgid ""
+"Make sure to extract the entire liveusb-creator zip file before running this "
+"program."
+msgstr ""
+"Αδυναμία εύρεσης '%s'.  Βεβαιωθείτε ότι έχετε αποσυμπιέσει όλο το αρχείο zip "
+"liveusb-creator πριν να εκτελέσετε αυτό το πρόγραμμα."
+
+#: liveusb/creator.py:1458
+#, python-format
+msgid "Unable to detect proxy settings: %r"
+msgstr ""
+
+#: liveusb/creator.py:1459
+#, python-format
+msgid "Using proxies: %r"
+msgstr ""
+
+#: liveusb/gui.py:243
+msgid ""
+"Error: Cannot set the label or obtain the UUID of your device.  Unable to "
+"continue."
+msgstr ""
+"Σφάλμα: Αδυναμία ορισμού της ετικέτας ή λήψης του UUID της συσκευής σας. "
+"Αδυναμλια συνέχειας."
+
+#: liveusb/gui.py:271
+msgid "Checking the source image"
+msgstr ""
+
+#: liveusb/gui.py:287
+msgid "Unpacking the image"
+msgstr ""
+
+#: liveusb/gui.py:299
+msgid "Writing the data"
+msgstr ""
+
+#: liveusb/gui.py:305
+msgid "Checking the written data"
+msgstr ""
+
+#: liveusb/gui.py:316
+msgid "Finished!"
+msgstr ""
+
+#: liveusb/gui.py:502
+msgid ""
+"You are about to perform a destructive install. This will erase all data and "
+"partitions on your USB drive"
+msgstr ""
+
+#: liveusb/gui.py:505
+msgid ""
+"The Master Boot Record on your device is blank. Writing the image will reset "
+"the MBR on this device"
+msgstr ""
+
+#: liveusb/gui.py:507
+msgid ""
+"The Master Boot Record on your device does not match your system's syslinux "
+"MBR.\n"
+"If you have trouble booting it, try setting the \"Reset the MBR\" advanced "
+"option."
+msgstr ""
+
+#: liveusb/gui.py:515
+#, fuzzy
+msgid "Unable to mount device"
+msgstr "Αδυναμία προσάρτησης συσκευής: %s"
+
+#: liveusb/gui.py:518
+#, fuzzy
+msgid ""
+"Your device already contains a live OS. If you continue, it will be "
+"overwritten."
+msgstr ""
+"Η συσκευή σας περιέχει ήδη ένα LiveOS.\n"
+"Αν συνεχίσετε αυτό θα αντικατασταθεί."
+
+#: liveusb/gui.py:621
+msgid "Starting"
+msgstr ""
+
+#: liveusb/gui.py:623
+#, fuzzy
+msgid "Downloading"
+msgstr "Γίνεται λήψη %s..."
+
+#: liveusb/gui.py:625
+msgid "Error"
+msgstr ""
+
+#: liveusb/gui.py:627
+msgid "Ready to write"
+msgstr ""
+
+#: liveusb/gui.py:631
+msgid "Finished"
+msgstr ""
+
+#: liveusb/gui.py:789
+msgid ""
+"Use <b>dd</b> to write the image - this will erase everything on your "
+"portable drive"
+msgstr ""
+
+#: liveusb/gui.py:790
+msgid "Reset the MBR (Master Boot Record)"
+msgstr ""
+
+#: liveusb/liveusb.qml:16
+#, fuzzy
+msgctxt ""
 msgid "Fedora LiveUSB Creator"
 msgstr "Εφαρμογή δημιουργίας LiveUSB"
 
-#: ../liveusb/dialog.py:124
-msgid "This button will begin the LiveUSB creation process.  This entails optionally downloading a release (if an existing one wasn't selected),  extracting the ISO to the USB device, creating the persistent overlay, and installing the bootloader."
-msgstr "Αυτό το κουμπί ξεκινάει την διαδικασία δημιουργίας LiveUSB. Αυτό περιλαμβάνει την προαιρετική λήψη μιας έκδοσης (αν δεν έχει επιλεχθεί μια υπάρχουσα), την εξαγωγή του ISO στην συσκευή USB, την δημιουργία του μόνιμου χώρου, και την εγκατάσταση του bootloader."
+#: liveusb/releases.py:239
+msgid "Custom OS..."
+msgstr ""
 
-#: ../liveusb/dialog.py:125
-msgid "Create Live USB"
-msgstr "Δημιουργία LiveUSB"
+#: liveusb/releases.py:240
+msgid ""
+"<p>Here you can choose a OS image from your hard drive to be written to your "
+"flash disk</p><p>Currently it is only supported to write raw disk images (."
+"iso or .bin)</p>"
+msgstr ""
 
-#: ../liveusb/dialog.py:126
-msgid "This is the status console, where all messages get written to."
-msgstr "Αυτή είναι η κονσόλα κατάστασης, όπου γράφονται όλα τα μηνύματα."
+#: liveusb/releases.py:243
+msgid "Pick a file from your drive(s)"
+msgstr ""
 
-#: ../liveusb/dialog.py:127
-msgid "This is the progress bar that will indicate how far along in the LiveUSB creation process you are"
-msgstr "Αυτή είναι η μπάρα προόδου που θα σας δείχνει την πρόοδο της δημιουργίας του LiveUSB"
+#: liveusb/urlgrabber/grabber.py:693 liveusb/urlgrabber/grabber.py:1172
+#, python-format
+msgid "Bad URL: %s"
+msgstr ""
 
-#: ../liveusb/dialog.py:128
-msgid "If you do not select an existing Live CD, the selected release will be downloaded for you."
-msgstr "Αν δεν επιλέξετε ένα υπάρχον Live CD, θα γίνει λήψη από το διαδίκτυο της επιλεγμένης έκδοσης."
+#: liveusb/urlgrabber/grabber.py:781
+#, python-format
+msgid "Illegal reget mode: %s"
+msgstr ""
 
-#: ../liveusb/dialog.py:129
-msgid "Download Fedora"
-msgstr "Λήψη Fedora"
+#: liveusb/urlgrabber/grabber.py:906
+#, python-format
+msgid "Local file does not exist: %s"
+msgstr ""
 
-#: ../liveusb/dialog.py:130
-msgid "or"
-msgstr "ή"
+#: liveusb/urlgrabber/grabber.py:909
+#, python-format
+msgid "Not a normal file: %s"
+msgstr ""
 
-#: ../liveusb/dialog.py:131
-msgid "This button allows you to browse for an existing Live CD ISO that you have previously downloaded.  If you do not select one, a release will be downloaded for you automatically."
-msgstr "Με αυτό το κουμπί μπορείτε να επιλέξετε ένα υπάρχον Live CD ISO που έχετε ήδη στον υπολογιστή σας. Αν δεν επιλέξετε κάποιο, θα γίνει αυτόματη λήψη μιας έκδοσης."
+#: liveusb/urlgrabber/grabber.py:967
+#, python-format
+msgid "Exceeded limit (%i): %s"
+msgstr ""
 
-#: ../liveusb/dialog.py:132
-msgid "Use existing Live CD"
-msgstr "Χρήση υπάρχοντος Live CD"
+#: liveusb/urlgrabber/grabber.py:1150
+msgid "Byte range requested but range support unavailable"
+msgstr ""
 
-#: ../liveusb/dialog.py:133
-msgid "Browse"
-msgstr "Περιήγηση"
+#: liveusb/urlgrabber/grabber.py:1183 liveusb/urlgrabber/grabber.py:1262
+#, python-format
+msgid "Timeout: %s"
+msgstr ""
 
-#: ../liveusb/dialog.py:135
-msgid "This is the USB stick that you want to install your Live CD on.  This device must be formatted with the FAT filesystem."
-msgstr "Αυτό είναι το USB stick στο οποίο θέλετε να εγκαταστήσετε το Live CD. Αυτή η συσκευή πρέπει να διαμορφωθεί σε σύστημα αρχείων FAT."
+#: liveusb/urlgrabber/grabber.py:1185 liveusb/urlgrabber/grabber.py:1264
+#, python-format
+msgid "IOError: %s"
+msgstr ""
 
-#: ../liveusb/dialog.py:136
-msgid "Target Device"
-msgstr "Συσκευή προορισμού"
+#: liveusb/urlgrabber/grabber.py:1187
+#, python-format
+msgid "OSError: %s"
+msgstr ""
 
-#: ../liveusb/dialog.py:137
-msgid "By allocating extra space on your USB stick for a persistent overlay, you will be able to store data and make permanent modifications to your live operating system.  Without it, you will not be able to save data that will persist after a reboot."
-msgstr "Με την ανάθεση επιπρόσθετου χώρου στη συσκευή USB για μόνιμο χώρου, θα έχετε την δυνατότητα μόνιμης αποθήκευσης δεδομένων και τροποποιήσεων στο live λειτουργικό σύστημα. Χωρίς αυτό δεν θα μπορείτε να αποθηκεύεται δεδομένα που θα διατηρούνται μετά από επανεκκίνηση."
+#: liveusb/urlgrabber/grabber.py:1189
+#, python-format
+msgid "HTTP Exception (%s): %s"
+msgstr ""
 
-#: ../liveusb/dialog.py:138
-msgid "Persistent Storage (0 Mb)"
-msgstr "Μόνιμος χώρος (0 Mb)"
+#: liveusb/urlgrabber/grabber.py:1260
+#, python-format
+msgid "Socket Error: %s"
+msgstr ""
+
+#: liveusb/urlgrabber/grabber.py:1332
+#, python-format
+msgid "Bad proxy URL: %s"
+msgstr ""
+
+#: liveusb/urlgrabber/mirror.py:287
+msgid "No more mirrors to try."
+msgstr ""
+
+#~ msgid "Unknown release: %s"
+#~ msgstr "Άγνωστη έκδοση: %s"
+
+#~ msgid "Creating %d Mb persistent overlay..."
+#~ msgstr "Δημιουργία %d Mb μόνιμου χώρου..."
+
+#~ msgid "Complete! (%s)"
+#~ msgstr "Ολοκληρώθηκε! (%s)"
+
+#~ msgid "LiveUSB creation failed!"
+#~ msgstr "Η δημιουργία LiveUSB απέτυχε!"
+
+#~ msgid "Persistent Storage (%d Mb)"
+#~ msgstr "Μόνιμος αποθηκευτικός χώρος (%d Mb)"
+
+#~ msgid ""
+#~ "Warning: Creating a new persistent overlay will delete your existing one."
+#~ msgstr "Προσοχή: Η δημιουργία μόνιμου χώρου θα διαγράψει τον ήδη υπάρχοντα."
+
+#~ msgid "Press 'Create Live USB' again if you wish to continue."
+#~ msgstr "Πατήστε 'Δημιουργία Live USB' ξανά αν επιθυμείτε να συνεχίσετε."
+
+#~ msgid "Download complete!"
+#~ msgstr "Η λήψη ολοκληρώθηκε!"
+
+#~ msgid "Download failed: "
+#~ msgstr "Η λήψη απέτυχε:"
+
+#~ msgid "You can try again to resume your download"
+#~ msgstr "Μπορείτε να δοκιμάσετε να συνεχίσετε την λήψη σας"
+
+#~ msgid ""
+#~ "Sorry, I'm having trouble encoding the filename of your livecd.  You may "
+#~ "have better luck if you move your ISO to the root of your drive (ie: C:\\)"
+#~ msgstr ""
+#~ "Συγγνώμη, αλλά υπάρχει πρόβλημα κωδικοποίησης του ονόματος αρχείου του "
+#~ "livecd σας. Ίσως να λυθεί το πρόβλημα αν μετακινήσετε το ISO στο ριζικό "
+#~ "σας κατάλογο (π.χ: C:\\)"
+
+#~ msgid "Not enough free space on device."
+#~ msgstr "Δεν υπάρχει αρκετός διαθέσιμος χώρος στη συσκευή."
+
+#~ msgid "Unable to find any USB drives"
+#~ msgstr "Αδυναμία εύρεσης κάποιου USB δίσκου"
+
+#~ msgid "Filesystem for %s unknown!"
+#~ msgstr "Το σύστημα αρχείων του %s είναι άγνωστο!"
+
+#~ msgid "Unable to find any removable devices"
+#~ msgstr "Αδυναμία εύρεσης αφαιρούμενων συσκευών"
+
+#~ msgid ""
+#~ "This button will begin the LiveUSB creation process.  This entails "
+#~ "optionally downloading a release (if an existing one wasn't selected),  "
+#~ "extracting the ISO to the USB device, creating the persistent overlay, "
+#~ "and installing the bootloader."
+#~ msgstr ""
+#~ "Αυτό το κουμπί ξεκινάει την διαδικασία δημιουργίας LiveUSB. Αυτό "
+#~ "περιλαμβάνει την προαιρετική λήψη μιας έκδοσης (αν δεν έχει επιλεχθεί μια "
+#~ "υπάρχουσα), την εξαγωγή του ISO στην συσκευή USB, την δημιουργία του "
+#~ "μόνιμου χώρου, και την εγκατάσταση του bootloader."
+
+#~ msgid "This is the status console, where all messages get written to."
+#~ msgstr "Αυτή είναι η κονσόλα κατάστασης, όπου γράφονται όλα τα μηνύματα."
+
+#~ msgid ""
+#~ "This is the progress bar that will indicate how far along in the LiveUSB "
+#~ "creation process you are"
+#~ msgstr ""
+#~ "Αυτή είναι η μπάρα προόδου που θα σας δείχνει την πρόοδο της δημιουργίας "
+#~ "του LiveUSB"
+
+#~ msgid ""
+#~ "If you do not select an existing Live CD, the selected release will be "
+#~ "downloaded for you."
+#~ msgstr ""
+#~ "Αν δεν επιλέξετε ένα υπάρχον Live CD, θα γίνει λήψη από το διαδίκτυο της "
+#~ "επιλεγμένης έκδοσης."
+
+#~ msgid "Download Fedora"
+#~ msgstr "Λήψη Fedora"
+
+#~ msgid "or"
+#~ msgstr "ή"
+
+#~ msgid ""
+#~ "This button allows you to browse for an existing Live CD ISO that you "
+#~ "have previously downloaded.  If you do not select one, a release will be "
+#~ "downloaded for you automatically."
+#~ msgstr ""
+#~ "Με αυτό το κουμπί μπορείτε να επιλέξετε ένα υπάρχον Live CD ISO που έχετε "
+#~ "ήδη στον υπολογιστή σας. Αν δεν επιλέξετε κάποιο, θα γίνει αυτόματη λήψη "
+#~ "μιας έκδοσης."
+
+#~ msgid "Use existing Live CD"
+#~ msgstr "Χρήση υπάρχοντος Live CD"
+
+#~ msgid "Browse"
+#~ msgstr "Περιήγηση"
+
+#~ msgid ""
+#~ "This is the USB stick that you want to install your Live CD on.  This "
+#~ "device must be formatted with the FAT filesystem."
+#~ msgstr ""
+#~ "Αυτό είναι το USB stick στο οποίο θέλετε να εγκαταστήσετε το Live CD. "
+#~ "Αυτή η συσκευή πρέπει να διαμορφωθεί σε σύστημα αρχείων FAT."
+
+#~ msgid "Target Device"
+#~ msgstr "Συσκευή προορισμού"
+
+#~ msgid ""
+#~ "By allocating extra space on your USB stick for a persistent overlay, you "
+#~ "will be able to store data and make permanent modifications to your live "
+#~ "operating system.  Without it, you will not be able to save data that "
+#~ "will persist after a reboot."
+#~ msgstr ""
+#~ "Με την ανάθεση επιπρόσθετου χώρου στη συσκευή USB για μόνιμο χώρου, θα "
+#~ "έχετε την δυνατότητα μόνιμης αποθήκευσης δεδομένων και τροποποιήσεων στο "
+#~ "live λειτουργικό σύστημα. Χωρίς αυτό δεν θα μπορείτε να αποθηκεύεται "
+#~ "δεδομένα που θα διατηρούνται μετά από επανεκκίνηση."
+
+#~ msgid "Persistent Storage (0 Mb)"
+#~ msgstr "Μόνιμος χώρος (0 Mb)"
 
 #~ msgid "device"
 #~ msgstr "συσκευή"
-
-#~ msgid "Cannot find"
-#~ msgstr "Αδυναμία εύρεσης"

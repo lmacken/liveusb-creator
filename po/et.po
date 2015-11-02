@@ -1,278 +1,712 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 msgid ""
 msgstr ""
 "Project-Id-Version: liveusb-creator\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-03 02:54-0400\n"
+"POT-Creation-Date: 2015-11-02 19:40+0100\n"
 "PO-Revision-Date: 2013-11-20 10:34+0000\n"
 "Last-Translator: mihkel <turakas@gmail.com>\n"
-"Language-Team: Estonian (http://www.transifex.com/projects/p/fedora/language/et/)\n"
+"Language-Team: Estonian (http://www.transifex.com/projects/p/fedora/language/"
+"et/)\n"
+"Language: et\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: et\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../liveusb/gui.py:69
-#, python-format
-msgid "Unknown release: %s"
-msgstr "Tundmatu väljalase: %s"
+#: liveusb/components/DownloadDialog.qml:9
+msgctxt ""
+msgid "Write %1 to USB"
+msgstr ""
 
-#: ../liveusb/gui.py:73
-#, python-format
-msgid "Downloading %s..."
-msgstr "Laadin alla %s..."
+#: liveusb/components/DownloadDialog.qml:250
+msgctxt ""
+msgid "There are no portable drives connected"
+msgstr ""
 
-#: ../liveusb/gui.py:152
-msgid "Verifying filesystem..."
-msgstr "Kontrollin failisüsteemi..."
+#: liveusb/components/DownloadDialog.qml:290
+msgctxt ""
+msgid "Options"
+msgstr ""
 
-#: ../liveusb/gui.py:155
-msgid ""
-"Error: Cannot set the label or obtain the UUID of your device.  Unable to "
-"continue."
-msgstr "Viga: Sinu seadme sildi määramine või UUID hankimine nurjus. Jätkamine võimatu."
+#: liveusb/components/DownloadDialog.qml:312
+msgctxt ""
+msgid "Cancel"
+msgstr ""
 
-#: ../liveusb/gui.py:164
-msgid "Verifying SHA1 of LiveCD image..."
-msgstr "Kontrollin LaivCD tõmmise SHA1-te..."
+#: liveusb/components/DownloadDialog.qml:335
+msgctxt ""
+msgid "Close"
+msgstr ""
 
-#: ../liveusb/gui.py:166
-msgid ""
-"Error: The SHA1 of your Live CD is invalid.  You can run this program with "
-"the --noverify argument to bypass this verification check."
-msgstr "Viga: Sinu Laiv CD SHA1 on vigane. Sa võid käivitada seda programmi --noverify argumendiga, et kontrollist pääseda."
+#: liveusb/components/DownloadDialog.qml:335
+msgctxt ""
+msgid "Are you sure?"
+msgstr ""
 
-#: ../liveusb/gui.py:177
-msgid "Extracting live image to USB device..."
-msgstr "Pakin lahti laiv tõmmise USB seadmele..."
+#: liveusb/components/DownloadDialog.qml:335
+msgctxt ""
+msgid "Write to disk"
+msgstr ""
 
-#: ../liveusb/gui.py:180
-#, python-format
-msgid "Creating %d Mb persistent overlay..."
-msgstr "Loon %d Mb püsivat ülekatet..."
+#: liveusb/components/DownloadDialog.qml:437
+msgctxt ""
+msgid "Write the image immediately when the download is finished"
+msgstr ""
 
-#: ../liveusb/gui.py:183
-msgid "Configuring and installing bootloader..."
-msgstr "Seadistan ja paigaldan alglaaduri..."
+#: liveusb/components/ImageDetails.qml:46
+#, fuzzy
+msgctxt ""
+msgid "Create Live USB"
+msgstr "Loo laiv USB"
 
-#: ../liveusb/gui.py:187
-#, python-format
-msgid "Complete! (%s)"
-msgstr "Valmis! (%s)"
+#: liveusb/components/ImageDetails.qml:144
+msgctxt ""
+msgid "Version %1"
+msgstr ""
 
-#: ../liveusb/gui.py:190 ../liveusb/gui.py:193
-msgid "LiveUSB creation failed!"
-msgstr "LaivUSB loomine nurjus!"
+#: liveusb/components/ImageDetails.qml:145
+msgctxt ""
+msgid ", released on %1"
+msgstr ""
 
-#: ../liveusb/gui.py:316
-#, python-format
-msgid "Persistent Storage (%d Mb)"
-msgstr "Püsiv resurss (%d Mb)"
-
-#: ../liveusb/gui.py:334
-msgid ""
-"Your device already contains a LiveOS.\n"
-"If you continue, this will be overwritten."
-msgstr "Sinu sedmel juba on LaivOS.\nSee kirjutatakse üle, kui jätkad."
-
-#: ../liveusb/gui.py:337
-msgid ""
-"Warning: Creating a new persistent overlay will delete your existing one."
-msgstr "Hoiatus: Luues uue püsiva ülekatte, kustutad sa senise."
-
-#: ../liveusb/gui.py:339
-msgid "Press 'Create Live USB' again if you wish to continue."
-msgstr "Vajuta 'Loo laiv USB' uuesti, kui soovi jätkata."
-
-#. The user has confirmed that they wish to overwrite their
-#. existing Live OS.  Here we delete it first, in order to
-#. accurately calculate progress.
-#: ../liveusb/gui.py:349
-msgid "Removing existing Live OS..."
-msgstr "Eemaldan olemasoleva laiv Os-i..."
-
-#: ../liveusb/gui.py:383
-msgid "Download complete!"
-msgstr "Allalaadmine valmis!"
-
-#: ../liveusb/gui.py:387
-msgid "Download failed: "
-msgstr "Allalaadimine nurjus: "
-
-#: ../liveusb/gui.py:388
-msgid "You can try again to resume your download"
-msgstr "Sa võid uuesti proovida jätkamaks allalaadimist"
-
-#: ../liveusb/gui.py:392
+#: liveusb/components/ImageDetails.qml:156
+#, fuzzy
+msgctxt ""
 msgid "Select Live ISO"
 msgstr "Vali laiv ISO"
 
-#: ../liveusb/gui.py:399
-msgid ""
-"Sorry, I'm having trouble encoding the filename of your livecd.  You may "
-"have better luck if you move your ISO to the root of your drive (ie: C:\\)"
-msgstr "Vabandused, aga mul on probleeme sinud laivcd failinime enkoodimisel. Sul võib olla rohkem õnne, kui liigutad ISO oma ketta juurkataloogi (nt: C:\\\\)"
-
-#: ../liveusb/gui.py:404
-#, python-format
-msgid "ISO selected: %s"
+#: liveusb/components/ImageDetails.qml:164
+#, fuzzy
+msgctxt ""
+msgid "Selected:"
 msgstr "Valitud ISO: %s"
 
-#: ../liveusb/creator.py:146
+#: liveusb/components/ImageDetails.qml:164
+msgctxt ""
+msgid "None"
+msgstr ""
+
+#: liveusb/components/ImageDetails.qml:226
+msgctxt ""
+msgid "Image files (*.iso)"
+msgstr ""
+
+#: liveusb/components/ImageDetails.qml:226
+msgctxt ""
+msgid "All files (*)"
+msgstr ""
+
+#: liveusb/components/ImageList.qml:85
+msgctxt ""
+msgid "Find an operating system image"
+msgstr ""
+
+#: liveusb/components/ImageList.qml:212
+msgctxt ""
+msgid "Display additional Fedora flavors"
+msgstr ""
+
+#: liveusb/creator.py:146
+msgid "Setting up OLPC boot file..."
+msgstr ""
+
+#: liveusb/creator.py:207
+#, fuzzy, python-format
+msgid ""
+"There was a problem executing the following command: %r\n"
+"%r\n"
+"A more detailed error log has been written to '%r'"
+msgstr ""
+"Tekkis tõrge järgmise käsu käivitamisel: `%s`\n"
+"Detalisem veateade kirjutati 'liveusb-creator.log' faili."
+
+#: liveusb/creator.py:224
+#, fuzzy
+msgid "Verifying SHA1 checksum of LiveCD image..."
+msgstr "Kontrollin LaivCD tõmmise SHA1-te..."
+
+#: liveusb/creator.py:228
+#, fuzzy
+msgid "Verifying SHA256 checksum of LiveCD image..."
+msgstr "Kontrollin LaivCD tõmmise SHA1-te..."
+
+#: liveusb/creator.py:244
+msgid ""
+"Error: The SHA1 of your Live CD is invalid.  You can run this program with "
+"the --noverify argument to bypass this verification check."
+msgstr ""
+"Viga: Sinu Laiv CD SHA1 on vigane. Sa võid käivitada seda programmi --"
+"noverify argumendiga, et kontrollist pääseda."
+
+#: liveusb/creator.py:250
+msgid "Unknown ISO, skipping checksum verification"
+msgstr ""
+
+#: liveusb/creator.py:261
 #, python-format
 msgid ""
-"There was a problem executing the following command: `%s`\n"
-"A more detailed error log has been written to 'liveusb-creator.log'"
-msgstr "Tekkis tõrge järgmise käsu käivitamisel: `%s`\nDetalisem veateade kirjutati 'liveusb-creator.log' faili."
+"There is not enough free space on the selected device.\n"
+"Required: %s. Free: %s."
+msgstr ""
 
-#: ../liveusb/creator.py:183
-msgid "Not enough free space on device."
-msgstr "Seadmel pole piisavalt vaba ruumi"
+#: liveusb/creator.py:267
+msgid "Creating"
+msgstr ""
 
-#: ../liveusb/creator.py:190
-#, python-format
-msgid "Creating %sMB persistent overlay"
+#: liveusb/creator.py:268
+#, fuzzy
+msgid "persistent overlay"
 msgstr "Loon %s MB püsivat ülekatet"
 
-#: ../liveusb/creator.py:226
-#, python-format
-msgid "Unable to remove previous LiveOS: %s"
+#: liveusb/creator.py:330
+#, fuzzy, python-format
+msgid "Unable to copy %r to %r: %r"
+msgstr "Seadme haakimine nurjus: %s"
+
+#: liveusb/creator.py:338 liveusb/creator.py:1336
+msgid "Removing"
+msgstr ""
+
+#: liveusb/creator.py:344
+#, fuzzy
+msgid "Removing existing Live OS"
+msgstr "Eemaldan olemasoleva laiv Os-i..."
+
+#: liveusb/creator.py:350
+msgid "Deleting "
+msgstr ""
+
+#: liveusb/creator.py:357
+#, fuzzy, python-format
+msgid "Unable to delete %r: %r"
+msgstr "Seadme haakimine nurjus: %s"
+
+#: liveusb/creator.py:361
+#, fuzzy, python-format
+msgid "Unable to remove previous LiveOS: %r"
 msgstr "Eelmise LaivOS-i eemaldamine nurjus: %s"
 
-#: ../liveusb/creator.py:257
+#: liveusb/creator.py:379
+#, fuzzy, python-format
+msgid "Cannot find path %r"
+msgstr "Seadme %s ledmine nurjus"
+
+#: liveusb/creator.py:410
 #, python-format
 msgid "Cannot find device %s"
 msgstr "Seadme %s ledmine nurjus"
 
-#: ../liveusb/creator.py:306
-msgid "Unable to find any USB drives"
-msgstr "Ei suuda leida ühtegi USB seadet"
+#: liveusb/creator.py:461
+msgid "Overwriting device with live image"
+msgstr ""
 
-#: ../liveusb/creator.py:327
-#, python-format
-msgid "Filesystem for %s unknown!"
-msgstr "%s-i failisüsteem tundmatu!"
+#: liveusb/creator.py:468
+msgid "Running"
+msgstr ""
 
-#: ../liveusb/creator.py:335
-#, python-format
-msgid "Unable to mount device: %s"
-msgstr "Seadme haakimine nurjus: %s"
+#: liveusb/creator.py:517
+msgid ""
+"You are using an old version of syslinux-extlinux that does not support the "
+"ext4 filesystem"
+msgstr ""
 
-#: ../liveusb/creator.py:370
-#, python-format
-msgid "Unknown filesystem for %s.  Your device may need to be reformatted."
+#: liveusb/creator.py:741 liveusb/creator.py:803
+#, fuzzy
+msgid "Unknown filesystem.  Your device may need to be reformatted."
 msgstr "%s-il on tundmatu failisüsteem. Ta võib vajada uuesti vormindamist."
 
-#: ../liveusb/creator.py:373
+#: liveusb/creator.py:744 liveusb/creator.py:806
 #, python-format
 msgid "Unsupported filesystem: %s"
 msgstr "Mittetoetatud failisüsteem: %s"
 
-#: ../liveusb/creator.py:400
+#: liveusb/creator.py:757 liveusb/creator.py:774
+#, fuzzy, python-format
+msgid "Unknown dbus exception while trying to mount device: %s"
+msgstr "Seadme haakimine nurjus: %s"
+
+#: liveusb/creator.py:777
+#, fuzzy, python-format
+msgid "Unable to mount device: %r"
+msgstr "Seadme haakimine nurjus: %s"
+
+#: liveusb/creator.py:780
+msgid "No mount points found after mounting attempt"
+msgstr ""
+
+#: liveusb/creator.py:788
+#, python-format
+msgid "Using existing mount: %s"
+msgstr ""
+
+#: liveusb/creator.py:800 liveusb/creator.py:1273
+msgid "Verifying filesystem..."
+msgstr "Kontrollin failisüsteemi..."
+
+#: liveusb/creator.py:809
+#, python-format
+msgid "Setting %s label to %s"
+msgstr ""
+
+#: liveusb/creator.py:823
+#, python-format
+msgid "Unable to change volume label: %r"
+msgstr ""
+
+#: liveusb/creator.py:827 liveusb/creator.py:1305
+msgid "Extracting live image to USB device..."
+msgstr "Pakin lahti laiv tõmmise USB seadmele..."
+
+#: liveusb/creator.py:833
 msgid "Unable to find LiveOS on ISO"
 msgstr "ISO-lt ei suudetud leida LaivOS-i"
 
-#: ../liveusb/creator.py:472
-msgid "Unable to find any removable devices"
-msgstr "Ei suudetud leida ühtegi eemaldatavat seadet"
+#: liveusb/creator.py:845 liveusb/creator.py:1313
+msgid "Wrote to device at"
+msgstr ""
 
-#: ../liveusb/creator.py:479
+#: liveusb/creator.py:873
+#, fuzzy
+msgid "Installing bootloader..."
+msgstr "Seadistan ja paigaldan alglaaduri..."
+
+#: liveusb/creator.py:917
+#, fuzzy, python-format
+msgid "Cannot find device: %s"
+msgstr "Seadme %s ledmine nurjus"
+
+#: liveusb/creator.py:941
+msgid "Verifying ISO MD5 checksum"
+msgstr ""
+
+#: liveusb/creator.py:946
+msgid "ISO MD5 checksum verification failed"
+msgstr ""
+
+#: liveusb/creator.py:948
+msgid "ISO MD5 checksum passed"
+msgstr ""
+
+#: liveusb/creator.py:989
+msgid "Unable to get disk partitions"
+msgstr ""
+
+#: liveusb/creator.py:993
+#, python-format
+msgid "%s already bootable"
+msgstr ""
+
+#: liveusb/creator.py:1013
+#, fuzzy
+msgid "Unable to find partition"
+msgstr "ISO-lt ei suudetud leida LaivOS-i"
+
+#: liveusb/creator.py:1082
+msgid "Resetting Master Boot Record"
+msgstr ""
+
+#: liveusb/creator.py:1085
+msgid "Unable to reset MBR.  You may not have the `syslinux` package installed"
+msgstr ""
+
+#: liveusb/creator.py:1088
+msgid "Drive is a loopback, skipping MBR reset"
+msgstr ""
+
+#: liveusb/creator.py:1092 liveusb/creator.py:1471
+#, python-format
+msgid "Calculating the SHA1 of %s"
+msgstr ""
+
+#: liveusb/creator.py:1222
+#, python-format
+msgid "Unable to get GetVolumeInformation(%r): %r"
+msgstr ""
+
+#: liveusb/creator.py:1236
+msgid "Error probing device"
+msgstr ""
+
+#: liveusb/creator.py:1277
 msgid ""
 "Make sure your USB key is plugged in and formatted with the FAT filesystem"
-msgstr "Veendu, et su USB pulk oleks ühendatud ja vormindatud FAT failisüsteemiks"
+msgstr ""
+"Veendu, et su USB pulk oleks ühendatud ja vormindatud FAT failisüsteemiks"
 
-#: ../liveusb/creator.py:482
+#: liveusb/creator.py:1280
 #, python-format
 msgid ""
 "Unsupported filesystem: %s\n"
 "Please backup and format your USB key with the FAT filesystem."
-msgstr "Mitte toetatud failisüsteem: %s\nPalun varunda ja vorminda oma USB pulk FAT failisüsteemiks."
+msgstr ""
+"Mitte toetatud failisüsteem: %s\n"
+"Palun varunda ja vorminda oma USB pulk FAT failisüsteemiks."
 
-#: ../liveusb/creator.py:558
+#: liveusb/creator.py:1290
+#, fuzzy, python-format
+msgid "Unable to SetVolumeLabel: %r"
+msgstr "Seadme haakimine nurjus: %s"
+
+#: liveusb/creator.py:1299
 #, python-format
-msgid ""
-"Cannot find '%s'.  Make sure to extract the entire liveusb-creator zip file "
-"before running this program."
-msgstr "'%s' leidmine nurjus. Veendu, et pakkisid lahti kogu liveusb-creator zip faili, enne selle programmi käivitamist."
+msgid "Problem determining free space: %r"
+msgstr ""
 
-#: ../liveusb/dialog.py:123
+#: liveusb/creator.py:1319
+#, fuzzy
+msgid "Installing bootloader"
+msgstr "Seadistan ja paigaldan alglaaduri..."
+
+#: liveusb/creator.py:1359
+msgid ""
+"Unable to get Win32_LogicalDisk; win32com query did not return any results"
+msgstr ""
+
+#: liveusb/creator.py:1380
+#, python-format
+msgid "Found UUID %s for %s"
+msgstr ""
+
+#: liveusb/creator.py:1383
+#, python-format
+msgid "Exception while fetching UUID: %r"
+msgstr ""
+
+#: liveusb/creator.py:1391
+#, python-format
+msgid "Max size of %s: %d"
+msgstr ""
+
+#: liveusb/creator.py:1394
+#, python-format
+msgid "Error getting drive size: %r"
+msgstr ""
+
+#: liveusb/creator.py:1412
+#, fuzzy
+msgid "Cannot find"
+msgstr "Seadme %s ledmine nurjus"
+
+#: liveusb/creator.py:1413
+#, fuzzy
+msgid ""
+"Make sure to extract the entire liveusb-creator zip file before running this "
+"program."
+msgstr ""
+"'%s' leidmine nurjus. Veendu, et pakkisid lahti kogu liveusb-creator zip "
+"faili, enne selle programmi käivitamist."
+
+#: liveusb/creator.py:1458
+#, python-format
+msgid "Unable to detect proxy settings: %r"
+msgstr ""
+
+#: liveusb/creator.py:1459
+#, python-format
+msgid "Using proxies: %r"
+msgstr ""
+
+#: liveusb/gui.py:243
+msgid ""
+"Error: Cannot set the label or obtain the UUID of your device.  Unable to "
+"continue."
+msgstr ""
+"Viga: Sinu seadme sildi määramine või UUID hankimine nurjus. Jätkamine "
+"võimatu."
+
+#: liveusb/gui.py:271
+msgid "Checking the source image"
+msgstr ""
+
+#: liveusb/gui.py:287
+msgid "Unpacking the image"
+msgstr ""
+
+#: liveusb/gui.py:299
+msgid "Writing the data"
+msgstr ""
+
+#: liveusb/gui.py:305
+msgid "Checking the written data"
+msgstr ""
+
+#: liveusb/gui.py:316
+msgid "Finished!"
+msgstr ""
+
+#: liveusb/gui.py:502
+msgid ""
+"You are about to perform a destructive install. This will erase all data and "
+"partitions on your USB drive"
+msgstr ""
+
+#: liveusb/gui.py:505
+msgid ""
+"The Master Boot Record on your device is blank. Writing the image will reset "
+"the MBR on this device"
+msgstr ""
+
+#: liveusb/gui.py:507
+msgid ""
+"The Master Boot Record on your device does not match your system's syslinux "
+"MBR.\n"
+"If you have trouble booting it, try setting the \"Reset the MBR\" advanced "
+"option."
+msgstr ""
+
+#: liveusb/gui.py:515
+#, fuzzy
+msgid "Unable to mount device"
+msgstr "Seadme haakimine nurjus: %s"
+
+#: liveusb/gui.py:518
+#, fuzzy
+msgid ""
+"Your device already contains a live OS. If you continue, it will be "
+"overwritten."
+msgstr ""
+"Sinu sedmel juba on LaivOS.\n"
+"See kirjutatakse üle, kui jätkad."
+
+#: liveusb/gui.py:621
+msgid "Starting"
+msgstr ""
+
+#: liveusb/gui.py:623
+#, fuzzy
+msgid "Downloading"
+msgstr "Laadin alla %s..."
+
+#: liveusb/gui.py:625
+msgid "Error"
+msgstr ""
+
+#: liveusb/gui.py:627
+msgid "Ready to write"
+msgstr ""
+
+#: liveusb/gui.py:631
+msgid "Finished"
+msgstr ""
+
+#: liveusb/gui.py:789
+msgid ""
+"Use <b>dd</b> to write the image - this will erase everything on your "
+"portable drive"
+msgstr ""
+
+#: liveusb/gui.py:790
+msgid "Reset the MBR (Master Boot Record)"
+msgstr ""
+
+#: liveusb/liveusb.qml:16
+#, fuzzy
+msgctxt ""
 msgid "Fedora LiveUSB Creator"
 msgstr "Fedora LaivUSB looja"
 
-#: ../liveusb/dialog.py:124
+#: liveusb/releases.py:239
+msgid "Custom OS..."
+msgstr ""
+
+#: liveusb/releases.py:240
 msgid ""
-"This button will begin the LiveUSB creation process.  This entails "
-"optionally downloading a release (if an existing one wasn't selected),  "
-"extracting the ISO to the USB device, creating the persistent overlay, and "
-"installing the bootloader."
-msgstr "Selle nupu vajutusega hakkab pihta LaivUSB loomise protsess. See sisaldab vajadusel väljalaske allalaadimist (kui olemasolevat ei valitud), ISO lahtipakkimist USB seadmele, püsiva ülekatte loomist ja alglaaduri paigaldamist."
+"<p>Here you can choose a OS image from your hard drive to be written to your "
+"flash disk</p><p>Currently it is only supported to write raw disk images (."
+"iso or .bin)</p>"
+msgstr ""
 
-#: ../liveusb/dialog.py:125
-msgid "Create Live USB"
-msgstr "Loo laiv USB"
+#: liveusb/releases.py:243
+msgid "Pick a file from your drive(s)"
+msgstr ""
 
-#: ../liveusb/dialog.py:126
-msgid "This is the status console, where all messages get written to."
-msgstr "See on olekukonsool, kuhu kõik teated kirjutatakse."
+#: liveusb/urlgrabber/grabber.py:693 liveusb/urlgrabber/grabber.py:1172
+#, python-format
+msgid "Bad URL: %s"
+msgstr ""
 
-#: ../liveusb/dialog.py:127
-msgid ""
-"This is the progress bar that will indicate how far along in the LiveUSB "
-"creation process you are"
-msgstr "See on edenemisriba, mis indikeerib, kui kaugel sa LaivUSB loomisega oled."
+#: liveusb/urlgrabber/grabber.py:781
+#, python-format
+msgid "Illegal reget mode: %s"
+msgstr ""
 
-#: ../liveusb/dialog.py:128
-msgid ""
-"If you do not select an existing Live CD, the selected release will be "
-"downloaded for you."
-msgstr "Kui sa ei vali olemasolevat Laiv Cd-d, siis laaditakse valitud väljalase sinu eest alla."
+#: liveusb/urlgrabber/grabber.py:906
+#, python-format
+msgid "Local file does not exist: %s"
+msgstr ""
 
-#: ../liveusb/dialog.py:129
-msgid "Download Fedora"
-msgstr "Laadi Fedora alla"
+#: liveusb/urlgrabber/grabber.py:909
+#, python-format
+msgid "Not a normal file: %s"
+msgstr ""
 
-#: ../liveusb/dialog.py:130
-msgid "or"
-msgstr "või"
+#: liveusb/urlgrabber/grabber.py:967
+#, python-format
+msgid "Exceeded limit (%i): %s"
+msgstr ""
 
-#: ../liveusb/dialog.py:131
-msgid ""
-"This button allows you to browse for an existing Live CD ISO that you have "
-"previously downloaded.  If you do not select one, a release will be "
-"downloaded for you automatically."
-msgstr "See nupp lubab sul valida varasemalt alla laaditudt laiv CD IOS-t. Kui sa ei vali ühtegi, siis laaditakse vastav väljalase sinu eest automaatselt alla."
+#: liveusb/urlgrabber/grabber.py:1150
+msgid "Byte range requested but range support unavailable"
+msgstr ""
 
-#: ../liveusb/dialog.py:132
-msgid "Use existing Live CD"
-msgstr "Kasuta olemasolevat laiv CD-d"
+#: liveusb/urlgrabber/grabber.py:1183 liveusb/urlgrabber/grabber.py:1262
+#, python-format
+msgid "Timeout: %s"
+msgstr ""
 
-#: ../liveusb/dialog.py:133
-msgid "Browse"
-msgstr "Vali"
+#: liveusb/urlgrabber/grabber.py:1185 liveusb/urlgrabber/grabber.py:1264
+#, python-format
+msgid "IOError: %s"
+msgstr ""
 
-#: ../liveusb/dialog.py:135
-msgid ""
-"This is the USB stick that you want to install your Live CD on.  This device"
-" must be formatted with the FAT filesystem."
-msgstr "See on USB pulk, kuhu soovid laiv CD-d paigaldada. See seade peab olema vormindatud FAT failisüsteemiks."
+#: liveusb/urlgrabber/grabber.py:1187
+#, python-format
+msgid "OSError: %s"
+msgstr ""
 
-#: ../liveusb/dialog.py:136
-msgid "Target Device"
-msgstr "Sihtseade"
+#: liveusb/urlgrabber/grabber.py:1189
+#, python-format
+msgid "HTTP Exception (%s): %s"
+msgstr ""
 
-#: ../liveusb/dialog.py:137
-msgid ""
-"By allocating extra space on your USB stick for a persistent overlay, you "
-"will be able to store data and make permanent modifications to your live "
-"operating system.  Without it, you will not be able to save data that will "
-"persist after a reboot."
-msgstr "Eraldades lisa ruumi oma USB pulgal püsiva ülekatte jaoks, saad sa talletada oma laiv operatsioonisüsteemi andmeid ja teha jäädavaid muudatusi.Ilma selleta ei saa sa salvestada andmeid, mis elaksid taaskäivituse üle."
+#: liveusb/urlgrabber/grabber.py:1260
+#, python-format
+msgid "Socket Error: %s"
+msgstr ""
 
-#: ../liveusb/dialog.py:138
-msgid "Persistent Storage (0 Mb)"
-msgstr "Püsiv resurss (0 Mb)"
+#: liveusb/urlgrabber/grabber.py:1332
+#, python-format
+msgid "Bad proxy URL: %s"
+msgstr ""
+
+#: liveusb/urlgrabber/mirror.py:287
+msgid "No more mirrors to try."
+msgstr ""
+
+#~ msgid "Unknown release: %s"
+#~ msgstr "Tundmatu väljalase: %s"
+
+#~ msgid "Creating %d Mb persistent overlay..."
+#~ msgstr "Loon %d Mb püsivat ülekatet..."
+
+#~ msgid "Complete! (%s)"
+#~ msgstr "Valmis! (%s)"
+
+#~ msgid "LiveUSB creation failed!"
+#~ msgstr "LaivUSB loomine nurjus!"
+
+#~ msgid "Persistent Storage (%d Mb)"
+#~ msgstr "Püsiv resurss (%d Mb)"
+
+#~ msgid ""
+#~ "Warning: Creating a new persistent overlay will delete your existing one."
+#~ msgstr "Hoiatus: Luues uue püsiva ülekatte, kustutad sa senise."
+
+#~ msgid "Press 'Create Live USB' again if you wish to continue."
+#~ msgstr "Vajuta 'Loo laiv USB' uuesti, kui soovi jätkata."
+
+#~ msgid "Download complete!"
+#~ msgstr "Allalaadmine valmis!"
+
+#~ msgid "Download failed: "
+#~ msgstr "Allalaadimine nurjus: "
+
+#~ msgid "You can try again to resume your download"
+#~ msgstr "Sa võid uuesti proovida jätkamaks allalaadimist"
+
+#~ msgid ""
+#~ "Sorry, I'm having trouble encoding the filename of your livecd.  You may "
+#~ "have better luck if you move your ISO to the root of your drive (ie: C:\\)"
+#~ msgstr ""
+#~ "Vabandused, aga mul on probleeme sinud laivcd failinime enkoodimisel. Sul "
+#~ "võib olla rohkem õnne, kui liigutad ISO oma ketta juurkataloogi (nt: C:\\"
+#~ "\\)"
+
+#~ msgid "Not enough free space on device."
+#~ msgstr "Seadmel pole piisavalt vaba ruumi"
+
+#~ msgid "Unable to find any USB drives"
+#~ msgstr "Ei suuda leida ühtegi USB seadet"
+
+#~ msgid "Filesystem for %s unknown!"
+#~ msgstr "%s-i failisüsteem tundmatu!"
+
+#~ msgid "Unable to find any removable devices"
+#~ msgstr "Ei suudetud leida ühtegi eemaldatavat seadet"
+
+#~ msgid ""
+#~ "This button will begin the LiveUSB creation process.  This entails "
+#~ "optionally downloading a release (if an existing one wasn't selected),  "
+#~ "extracting the ISO to the USB device, creating the persistent overlay, "
+#~ "and installing the bootloader."
+#~ msgstr ""
+#~ "Selle nupu vajutusega hakkab pihta LaivUSB loomise protsess. See sisaldab "
+#~ "vajadusel väljalaske allalaadimist (kui olemasolevat ei valitud), ISO "
+#~ "lahtipakkimist USB seadmele, püsiva ülekatte loomist ja alglaaduri "
+#~ "paigaldamist."
+
+#~ msgid "This is the status console, where all messages get written to."
+#~ msgstr "See on olekukonsool, kuhu kõik teated kirjutatakse."
+
+#~ msgid ""
+#~ "This is the progress bar that will indicate how far along in the LiveUSB "
+#~ "creation process you are"
+#~ msgstr ""
+#~ "See on edenemisriba, mis indikeerib, kui kaugel sa LaivUSB loomisega oled."
+
+#~ msgid ""
+#~ "If you do not select an existing Live CD, the selected release will be "
+#~ "downloaded for you."
+#~ msgstr ""
+#~ "Kui sa ei vali olemasolevat Laiv Cd-d, siis laaditakse valitud väljalase "
+#~ "sinu eest alla."
+
+#~ msgid "Download Fedora"
+#~ msgstr "Laadi Fedora alla"
+
+#~ msgid "or"
+#~ msgstr "või"
+
+#~ msgid ""
+#~ "This button allows you to browse for an existing Live CD ISO that you "
+#~ "have previously downloaded.  If you do not select one, a release will be "
+#~ "downloaded for you automatically."
+#~ msgstr ""
+#~ "See nupp lubab sul valida varasemalt alla laaditudt laiv CD IOS-t. Kui sa "
+#~ "ei vali ühtegi, siis laaditakse vastav väljalase sinu eest automaatselt "
+#~ "alla."
+
+#~ msgid "Use existing Live CD"
+#~ msgstr "Kasuta olemasolevat laiv CD-d"
+
+#~ msgid "Browse"
+#~ msgstr "Vali"
+
+#~ msgid ""
+#~ "This is the USB stick that you want to install your Live CD on.  This "
+#~ "device must be formatted with the FAT filesystem."
+#~ msgstr ""
+#~ "See on USB pulk, kuhu soovid laiv CD-d paigaldada. See seade peab olema "
+#~ "vormindatud FAT failisüsteemiks."
+
+#~ msgid "Target Device"
+#~ msgstr "Sihtseade"
+
+#~ msgid ""
+#~ "By allocating extra space on your USB stick for a persistent overlay, you "
+#~ "will be able to store data and make permanent modifications to your live "
+#~ "operating system.  Without it, you will not be able to save data that "
+#~ "will persist after a reboot."
+#~ msgstr ""
+#~ "Eraldades lisa ruumi oma USB pulgal püsiva ülekatte jaoks, saad sa "
+#~ "talletada oma laiv operatsioonisüsteemi andmeid ja teha jäädavaid "
+#~ "muudatusi.Ilma selleta ei saa sa salvestada andmeid, mis elaksid "
+#~ "taaskäivituse üle."
+
+#~ msgid "Persistent Storage (0 Mb)"
+#~ msgstr "Püsiv resurss (0 Mb)"

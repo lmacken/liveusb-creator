@@ -7,43 +7,136 @@ msgid ""
 msgstr ""
 "Project-Id-Version: liveusb-creator\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-03 02:54-0400\n"
+"POT-Creation-Date: 2015-11-02 19:40+0100\n"
 "PO-Revision-Date: 2009-03-20 21:34+0100\n"
 "Last-Translator: Miloš Komarčević <kmilos@gmail.com>\n"
 "Language-Team: Serbian (sr) <fedora-trans-sr@redhat.com>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: ../liveusb/gui.py:69
-#, python-format
-msgid "Unknown release: %s"
-msgstr "Непознато издање %s"
-
-#: ../liveusb/gui.py:73
-#, python-format
-msgid "Downloading %s..."
-msgstr "Преузимам %s..."
-
-#: ../liveusb/gui.py:152
-msgid "Verifying filesystem..."
-msgstr "Проверавам систем датотека..."
-
-#: ../liveusb/gui.py:155
-msgid ""
-"Error: Cannot set the label or obtain the UUID of your device.  Unable to "
-"continue."
+#: liveusb/components/DownloadDialog.qml:9
+msgctxt ""
+msgid "Write %1 to USB"
 msgstr ""
-"Грешка: не могу да поставим ознаку или добавим UUID уређаја.  У немогућности "
-"да наставим даље."
 
-#: ../liveusb/gui.py:164
-msgid "Verifying SHA1 of LiveCD image..."
+#: liveusb/components/DownloadDialog.qml:250
+msgctxt ""
+msgid "There are no portable drives connected"
+msgstr ""
+
+#: liveusb/components/DownloadDialog.qml:290
+msgctxt ""
+msgid "Options"
+msgstr ""
+
+#: liveusb/components/DownloadDialog.qml:312
+msgctxt ""
+msgid "Cancel"
+msgstr ""
+
+#: liveusb/components/DownloadDialog.qml:335
+msgctxt ""
+msgid "Close"
+msgstr ""
+
+#: liveusb/components/DownloadDialog.qml:335
+msgctxt ""
+msgid "Are you sure?"
+msgstr ""
+
+#: liveusb/components/DownloadDialog.qml:335
+#, fuzzy
+msgctxt ""
+msgid "Write to disk"
+msgstr "Писао уређају на"
+
+#: liveusb/components/DownloadDialog.qml:437
+msgctxt ""
+msgid "Write the image immediately when the download is finished"
+msgstr ""
+
+#: liveusb/components/ImageDetails.qml:46
+#, fuzzy
+msgctxt ""
+msgid "Create Live USB"
+msgstr "Направи живи УСБ"
+
+#: liveusb/components/ImageDetails.qml:144
+msgctxt ""
+msgid "Version %1"
+msgstr ""
+
+#: liveusb/components/ImageDetails.qml:145
+msgctxt ""
+msgid ", released on %1"
+msgstr ""
+
+#: liveusb/components/ImageDetails.qml:156
+#, fuzzy
+msgctxt ""
+msgid "Select Live ISO"
+msgstr "Изаберите живи ISO"
+
+#: liveusb/components/ImageDetails.qml:164
+#, fuzzy
+msgctxt ""
+msgid "Selected:"
+msgstr "ISO је изабран: %s"
+
+#: liveusb/components/ImageDetails.qml:164
+msgctxt ""
+msgid "None"
+msgstr ""
+
+#: liveusb/components/ImageDetails.qml:226
+msgctxt ""
+msgid "Image files (*.iso)"
+msgstr ""
+
+#: liveusb/components/ImageDetails.qml:226
+msgctxt ""
+msgid "All files (*)"
+msgstr ""
+
+#: liveusb/components/ImageList.qml:85
+msgctxt ""
+msgid "Find an operating system image"
+msgstr ""
+
+#: liveusb/components/ImageList.qml:212
+msgctxt ""
+msgid "Display additional Fedora flavors"
+msgstr ""
+
+#: liveusb/creator.py:146
+msgid "Setting up OLPC boot file..."
+msgstr "Постављам OLPC покретачку датотеку..."
+
+#: liveusb/creator.py:207
+#, fuzzy, python-format
+msgid ""
+"There was a problem executing the following command: %r\n"
+"%r\n"
+"A more detailed error log has been written to '%r'"
+msgstr ""
+"Дошло је до проблема приликом извршавања следеће наредбе: „%s“\n"
+"Дневник са више детаља је записан у „liveusb-creator.log“"
+
+#: liveusb/creator.py:224
+#, fuzzy
+msgid "Verifying SHA1 checksum of LiveCD image..."
 msgstr "Проверавам SHA1 суму отиска живог ЦД диска..."
 
-#: ../liveusb/gui.py:166
+#: liveusb/creator.py:228
+#, fuzzy
+msgid "Verifying SHA256 checksum of LiveCD image..."
+msgstr "Проверавам SHA1 суму отиска живог ЦД диска..."
+
+#: liveusb/creator.py:244
 msgid ""
 "Error: The SHA1 of your Live CD is invalid.  You can run this program with "
 "the --noverify argument to bypass this verification check."
@@ -51,153 +144,202 @@ msgstr ""
 "Грешка: SHA1 сума живог ЦД диска је неисправна. Можете покренути овај "
 "програм са --noverify аргументом како бисте заобишли проверу."
 
-#: ../liveusb/gui.py:177
-msgid "Extracting live image to USB device..."
-msgstr "Издвајам живи на УСБ уређај..."
+#: liveusb/creator.py:250
+msgid "Unknown ISO, skipping checksum verification"
+msgstr "Непознати ISO, прескачем проверу контролне суме"
 
-#: ../liveusb/gui.py:180
+#: liveusb/creator.py:261
 #, python-format
-msgid "Creating %d Mb persistent overlay..."
-msgstr "Правим %d МБ трајни слој..."
-
-#: ../liveusb/gui.py:183
-msgid "Configuring and installing bootloader..."
-msgstr "Подешавам и инсталирам покретачки програм..."
-
-#: ../liveusb/gui.py:187
-#, python-format
-msgid "Complete! (%s)"
-msgstr "Готово! (%s)"
-
-#: ../liveusb/gui.py:190 ../liveusb/gui.py:193
-msgid "LiveUSB creation failed!"
-msgstr "Прављење живог УСБ система није успело!"
-
-#: ../liveusb/gui.py:316
-#, python-format
-msgid "Persistent Storage (%d Mb)"
-msgstr "Трајно складиште (%d Мб)"
-
-#: ../liveusb/gui.py:334
 msgid ""
-"Your device already contains a LiveOS.\n"
-"If you continue, this will be overwritten."
+"There is not enough free space on the selected device.\n"
+"Required: %s. Free: %s."
 msgstr ""
-"Ваш уређај већ садржи живи ОС.\n"
-"Уколико наставите, биће пребрисан."
 
-#: ../liveusb/gui.py:337
-msgid ""
-"Warning: Creating a new persistent overlay will delete your existing one."
-msgstr "Упозорење: прављењем новог трајног слоја ћете обрисати постојеће."
+#: liveusb/creator.py:267
+msgid "Creating"
+msgstr "Правим"
 
-#: ../liveusb/gui.py:339
-msgid "Press 'Create Live USB' again if you wish to continue."
-msgstr "Притисните „Направи живи УСБ“ поново уколико желите наставити."
+#: liveusb/creator.py:268
+msgid "persistent overlay"
+msgstr "трајни слој"
 
-#. The user has confirmed that they wish to overwrite their
-#. existing Live OS.  Here we delete it first, in order to
-#. accurately calculate progress.
-#: ../liveusb/gui.py:349
-msgid "Removing existing Live OS..."
+#: liveusb/creator.py:330
+#, fuzzy, python-format
+msgid "Unable to copy %r to %r: %r"
+msgstr "У немогућности да монтирам уређај: %s"
+
+#: liveusb/creator.py:338 liveusb/creator.py:1336
+msgid "Removing"
+msgstr ""
+
+#: liveusb/creator.py:344
+#, fuzzy
+msgid "Removing existing Live OS"
 msgstr "Уклањам постојећи живи ОС..."
 
-#: ../liveusb/gui.py:383
-msgid "Download complete!"
-msgstr "Преузимање завршено!"
-
-#: ../liveusb/gui.py:387
-msgid "Download failed: "
-msgstr "Преузимање је неуспешно:"
-
-#: ../liveusb/gui.py:388
-msgid "You can try again to resume your download"
-msgstr "Можете покушати опет да наставите ваше преузимање"
-
-#: ../liveusb/gui.py:392
-msgid "Select Live ISO"
-msgstr "Изаберите живи ISO"
-
-#: ../liveusb/gui.py:399
-msgid ""
-"Sorry, I'm having trouble encoding the filename of your livecd.  You may "
-"have better luck if you move your ISO to the root of your drive (ie: C:\\)"
+#: liveusb/creator.py:350
+msgid "Deleting "
 msgstr ""
-"Жао ми је, али постоје проблеми при кодирању назива датотека датотека живог "
-"ЦД-а. Можда ћете имати више среће уколико преместите ваш ISO у корени "
-"директоријум вашег уређаја (нпр. C:\\)"
 
-#: ../liveusb/gui.py:404
-#, python-format
-msgid "ISO selected: %s"
-msgstr "ISO је изабран: %s"
+#: liveusb/creator.py:357
+#, fuzzy, python-format
+msgid "Unable to delete %r: %r"
+msgstr "У немогућности да монтирам уређај: %s"
 
-#: ../liveusb/creator.py:146
-#, python-format
-msgid ""
-"There was a problem executing the following command: `%s`\n"
-"A more detailed error log has been written to 'liveusb-creator.log'"
-msgstr ""
-"Дошло је до проблема приликом извршавања следеће наредбе: „%s“\n"
-"Дневник са више детаља је записан у „liveusb-creator.log“"
-
-#: ../liveusb/creator.py:183
-msgid "Not enough free space on device."
-msgstr "Недовољно слободног простора на уређају."
-
-#: ../liveusb/creator.py:190
-#, python-format
-msgid "Creating %sMB persistent overlay"
-msgstr "Правим %sМБ трајни слој"
-
-#: ../liveusb/creator.py:226
-#, python-format
-msgid "Unable to remove previous LiveOS: %s"
+#: liveusb/creator.py:361
+#, fuzzy, python-format
+msgid "Unable to remove previous LiveOS: %r"
 msgstr "Не могу да уклоним претходни живи ОС: %s"
 
-#: ../liveusb/creator.py:257
+#: liveusb/creator.py:379
+#, fuzzy, python-format
+msgid "Cannot find path %r"
+msgstr "Не могу да нађем"
+
+#: liveusb/creator.py:410
 #, python-format
 msgid "Cannot find device %s"
 msgstr "Не могу да пронађем уређај %s"
 
-#: ../liveusb/creator.py:306
-msgid "Unable to find any USB drives"
-msgstr "Не могу да пронађем ниједан УСБ уређај"
+#: liveusb/creator.py:461
+msgid "Overwriting device with live image"
+msgstr ""
 
-#: ../liveusb/creator.py:327
-#, python-format
-msgid "Filesystem for %s unknown!"
-msgstr "Систем датотека за %s непознат!"
+#: liveusb/creator.py:468
+msgid "Running"
+msgstr ""
 
-#: ../liveusb/creator.py:335
-#, python-format
-msgid "Unable to mount device: %s"
-msgstr "У немогућности да монтирам уређај: %s"
+#: liveusb/creator.py:517
+msgid ""
+"You are using an old version of syslinux-extlinux that does not support the "
+"ext4 filesystem"
+msgstr ""
 
-#: ../liveusb/creator.py:370
-#, python-format
-msgid "Unknown filesystem for %s.  Your device may need to be reformatted."
+#: liveusb/creator.py:741 liveusb/creator.py:803
+#, fuzzy
+msgid "Unknown filesystem.  Your device may need to be reformatted."
 msgstr "Непознат систем датотека за %s. Можда је уређају потребно форматирање."
 
-#: ../liveusb/creator.py:373
+#: liveusb/creator.py:744 liveusb/creator.py:806
 #, python-format
 msgid "Unsupported filesystem: %s"
 msgstr "Неподржан систем датотека: %s"
 
-#: ../liveusb/creator.py:400
+#: liveusb/creator.py:757 liveusb/creator.py:774
+#, fuzzy, python-format
+msgid "Unknown dbus exception while trying to mount device: %s"
+msgstr "У немогућности да монтирам уређај: %s"
+
+#: liveusb/creator.py:777
+#, fuzzy, python-format
+msgid "Unable to mount device: %r"
+msgstr "У немогућности да монтирам уређај: %s"
+
+#: liveusb/creator.py:780
+msgid "No mount points found after mounting attempt"
+msgstr ""
+
+#: liveusb/creator.py:788
+#, python-format
+msgid "Using existing mount: %s"
+msgstr ""
+
+#: liveusb/creator.py:800 liveusb/creator.py:1273
+msgid "Verifying filesystem..."
+msgstr "Проверавам систем датотека..."
+
+#: liveusb/creator.py:809
+#, python-format
+msgid "Setting %s label to %s"
+msgstr ""
+
+#: liveusb/creator.py:823
+#, python-format
+msgid "Unable to change volume label: %r"
+msgstr ""
+
+#: liveusb/creator.py:827 liveusb/creator.py:1305
+msgid "Extracting live image to USB device..."
+msgstr "Издвајам живи на УСБ уређај..."
+
+#: liveusb/creator.py:833
 msgid "Unable to find LiveOS on ISO"
 msgstr "Не могу да пронађем живи ОС на ISO отиску"
 
-#: ../liveusb/creator.py:472
-msgid "Unable to find any removable devices"
-msgstr "Не могу да пронађем ниједан преносиви уређај"
+#: liveusb/creator.py:845 liveusb/creator.py:1313
+msgid "Wrote to device at"
+msgstr "Писао уређају на"
 
-#: ../liveusb/creator.py:479
+#: liveusb/creator.py:873
+#, fuzzy
+msgid "Installing bootloader..."
+msgstr "Инсталирам покретачки програм"
+
+#: liveusb/creator.py:917
+#, fuzzy, python-format
+msgid "Cannot find device: %s"
+msgstr "Не могу да пронађем уређај %s"
+
+#: liveusb/creator.py:941
+msgid "Verifying ISO MD5 checksum"
+msgstr "Проверавам ISO MD5 контролну суму"
+
+#: liveusb/creator.py:946
+#, fuzzy
+msgid "ISO MD5 checksum verification failed"
+msgstr "Непознати ISO, прескачем проверу контролне суме"
+
+#: liveusb/creator.py:948
+#, fuzzy
+msgid "ISO MD5 checksum passed"
+msgstr "Проверавам ISO MD5 контролну суму"
+
+#: liveusb/creator.py:989
+msgid "Unable to get disk partitions"
+msgstr ""
+
+#: liveusb/creator.py:993
+#, python-format
+msgid "%s already bootable"
+msgstr ""
+
+#: liveusb/creator.py:1013
+#, fuzzy
+msgid "Unable to find partition"
+msgstr "Не могу да пронађем живи ОС на ISO отиску"
+
+#: liveusb/creator.py:1082
+msgid "Resetting Master Boot Record"
+msgstr ""
+
+#: liveusb/creator.py:1085
+msgid "Unable to reset MBR.  You may not have the `syslinux` package installed"
+msgstr ""
+
+#: liveusb/creator.py:1088
+msgid "Drive is a loopback, skipping MBR reset"
+msgstr ""
+
+#: liveusb/creator.py:1092 liveusb/creator.py:1471
+#, python-format
+msgid "Calculating the SHA1 of %s"
+msgstr ""
+
+#: liveusb/creator.py:1222
+#, python-format
+msgid "Unable to get GetVolumeInformation(%r): %r"
+msgstr ""
+
+#: liveusb/creator.py:1236
+msgid "Error probing device"
+msgstr ""
+
+#: liveusb/creator.py:1277
 msgid ""
 "Make sure your USB key is plugged in and formatted with the FAT filesystem"
 msgstr "Побрините се да је УСБ убачен и форматиран са FAT системом датотека"
 
-#: ../liveusb/creator.py:482
+#: liveusb/creator.py:1280
 #, python-format
 msgid ""
 "Unsupported filesystem: %s\n"
@@ -207,120 +349,381 @@ msgstr ""
 "Направите резервну копију и потом форматирајте УСБ уређај са FAT системом "
 "датотека."
 
-#: ../liveusb/creator.py:558
+#: liveusb/creator.py:1290
+#, fuzzy, python-format
+msgid "Unable to SetVolumeLabel: %r"
+msgstr "У немогућности да монтирам уређај: %s"
+
+#: liveusb/creator.py:1299
 #, python-format
+msgid "Problem determining free space: %r"
+msgstr ""
+
+#: liveusb/creator.py:1319
+msgid "Installing bootloader"
+msgstr "Инсталирам покретачки програм"
+
+#: liveusb/creator.py:1359
 msgid ""
-"Cannot find '%s'.  Make sure to extract the entire liveusb-creator zip file "
-"before running this program."
+"Unable to get Win32_LogicalDisk; win32com query did not return any results"
+msgstr ""
+
+#: liveusb/creator.py:1380
+#, python-format
+msgid "Found UUID %s for %s"
+msgstr ""
+
+#: liveusb/creator.py:1383
+#, python-format
+msgid "Exception while fetching UUID: %r"
+msgstr ""
+
+#: liveusb/creator.py:1391
+#, python-format
+msgid "Max size of %s: %d"
+msgstr ""
+
+#: liveusb/creator.py:1394
+#, python-format
+msgid "Error getting drive size: %r"
+msgstr ""
+
+#: liveusb/creator.py:1412
+msgid "Cannot find"
+msgstr "Не могу да нађем"
+
+#: liveusb/creator.py:1413
+#, fuzzy
+msgid ""
+"Make sure to extract the entire liveusb-creator zip file before running this "
+"program."
 msgstr ""
 "Не могу да нађем „%s“. Побрините се да отпакујете liveusb-creator zip "
 "датотеку у целости пре покретања овог програма."
 
-#: ../liveusb/dialog.py:123
+#: liveusb/creator.py:1458
+#, python-format
+msgid "Unable to detect proxy settings: %r"
+msgstr ""
+
+#: liveusb/creator.py:1459
+#, python-format
+msgid "Using proxies: %r"
+msgstr ""
+
+#: liveusb/gui.py:243
+msgid ""
+"Error: Cannot set the label or obtain the UUID of your device.  Unable to "
+"continue."
+msgstr ""
+"Грешка: не могу да поставим ознаку или добавим UUID уређаја.  У немогућности "
+"да наставим даље."
+
+#: liveusb/gui.py:271
+msgid "Checking the source image"
+msgstr ""
+
+#: liveusb/gui.py:287
+msgid "Unpacking the image"
+msgstr ""
+
+#: liveusb/gui.py:299
+msgid "Writing the data"
+msgstr ""
+
+#: liveusb/gui.py:305
+msgid "Checking the written data"
+msgstr ""
+
+#: liveusb/gui.py:316
+msgid "Finished!"
+msgstr ""
+
+#: liveusb/gui.py:502
+msgid ""
+"You are about to perform a destructive install. This will erase all data and "
+"partitions on your USB drive"
+msgstr ""
+
+#: liveusb/gui.py:505
+msgid ""
+"The Master Boot Record on your device is blank. Writing the image will reset "
+"the MBR on this device"
+msgstr ""
+
+#: liveusb/gui.py:507
+msgid ""
+"The Master Boot Record on your device does not match your system's syslinux "
+"MBR.\n"
+"If you have trouble booting it, try setting the \"Reset the MBR\" advanced "
+"option."
+msgstr ""
+
+#: liveusb/gui.py:515
+#, fuzzy
+msgid "Unable to mount device"
+msgstr "У немогућности да монтирам уређај: %s"
+
+#: liveusb/gui.py:518
+#, fuzzy
+msgid ""
+"Your device already contains a live OS. If you continue, it will be "
+"overwritten."
+msgstr ""
+"Ваш уређај већ садржи живи ОС.\n"
+"Уколико наставите, биће пребрисан."
+
+#: liveusb/gui.py:621
+#, fuzzy
+msgid "Starting"
+msgstr "Правим"
+
+#: liveusb/gui.py:623
+#, fuzzy
+msgid "Downloading"
+msgstr "Преузимам %s..."
+
+#: liveusb/gui.py:625
+msgid "Error"
+msgstr ""
+
+#: liveusb/gui.py:627
+msgid "Ready to write"
+msgstr ""
+
+#: liveusb/gui.py:631
+msgid "Finished"
+msgstr ""
+
+#: liveusb/gui.py:789
+msgid ""
+"Use <b>dd</b> to write the image - this will erase everything on your "
+"portable drive"
+msgstr ""
+
+#: liveusb/gui.py:790
+msgid "Reset the MBR (Master Boot Record)"
+msgstr ""
+
+#: liveusb/liveusb.qml:16
+#, fuzzy
+msgctxt ""
 msgid "Fedora LiveUSB Creator"
 msgstr "Програм за прављење живих Fedora УСБ дискова"
 
-#: ../liveusb/dialog.py:124
-msgid ""
-"This button will begin the LiveUSB creation process.  This entails "
-"optionally downloading a release (if an existing one wasn't selected),  "
-"extracting the ISO to the USB device, creating the persistent overlay, and "
-"installing the bootloader."
+#: liveusb/releases.py:239
+msgid "Custom OS..."
 msgstr ""
-"Ово дугме покреће поступак прављења живих УСБ система. То укључује и изборно "
-"преузимање издања (уколико постојећи није био изабран), распакивање ISO "
-"отиска на УСБ уређај, правећи трајни слој, и инсталирање покретачког "
-"програма."
 
-#: ../liveusb/dialog.py:125
-msgid "Create Live USB"
-msgstr "Направи живи УСБ"
-
-#: ../liveusb/dialog.py:126
-msgid "This is the status console, where all messages get written to."
-msgstr "Ово је статусна конзола где се све поруке записују."
-
-#: ../liveusb/dialog.py:127
+#: liveusb/releases.py:240
 msgid ""
-"This is the progress bar that will indicate how far along in the LiveUSB "
-"creation process you are"
+"<p>Here you can choose a OS image from your hard drive to be written to your "
+"flash disk</p><p>Currently it is only supported to write raw disk images (."
+"iso or .bin)</p>"
 msgstr ""
-"Ово је линија прогреса која показује докле сте стигли у поступку прављења "
-"живог УСБ система"
 
-#: ../liveusb/dialog.py:128
-msgid ""
-"If you do not select an existing Live CD, the selected release will be "
-"downloaded for you."
+#: liveusb/releases.py:243
+msgid "Pick a file from your drive(s)"
 msgstr ""
-"Уколико не одаберете постојећи живи ЦД, изабрано издање ће бити преузето за "
-"вас."
 
-#: ../liveusb/dialog.py:129
-msgid "Download Fedora"
-msgstr "Преузмите Fedora систем"
-
-#: ../liveusb/dialog.py:130
-msgid "or"
-msgstr "или"
-
-#: ../liveusb/dialog.py:131
-msgid ""
-"This button allows you to browse for an existing Live CD ISO that you have "
-"previously downloaded.  If you do not select one, a release will be "
-"downloaded for you automatically."
+#: liveusb/urlgrabber/grabber.py:693 liveusb/urlgrabber/grabber.py:1172
+#, python-format
+msgid "Bad URL: %s"
 msgstr ""
-"Ово дугме вам дозвољава да претражујете постојећи живи ЦД ISO отисак који "
-"сте претходно преузели. Уколико не одаберете један, одређено издање ће бити "
-"преузето самостално."
 
-#: ../liveusb/dialog.py:132
-msgid "Use existing Live CD"
-msgstr "Користи постојећи живи ЦД"
-
-#: ../liveusb/dialog.py:133
-msgid "Browse"
-msgstr "Прегледај"
-
-#: ../liveusb/dialog.py:135
-msgid ""
-"This is the USB stick that you want to install your Live CD on.  This device "
-"must be formatted with the FAT filesystem."
+#: liveusb/urlgrabber/grabber.py:781
+#, python-format
+msgid "Illegal reget mode: %s"
 msgstr ""
-"Ово је УСБ уређај на који желите да инсталирате живи ЦД. Овај уређај мора "
-"бити форматиран са FAT системом датотека."
 
-#: ../liveusb/dialog.py:136
-msgid "Target Device"
-msgstr "Одредишни уређај"
-
-#: ../liveusb/dialog.py:137
-msgid ""
-"By allocating extra space on your USB stick for a persistent overlay, you "
-"will be able to store data and make permanent modifications to your live "
-"operating system.  Without it, you will not be able to save data that will "
-"persist after a reboot."
+#: liveusb/urlgrabber/grabber.py:906
+#, python-format
+msgid "Local file does not exist: %s"
 msgstr ""
-"Доделом додатног простора на УСБ уређају за трајни слој, бићете у могућности "
-"да складиштите податке и вршите трајне измене у живом оперативном систему. "
-"Без тога, нећете бити у могућности да снимите податке који ће остати и након "
-"поновног дизања система."
 
-#: ../liveusb/dialog.py:138
-msgid "Persistent Storage (0 Mb)"
-msgstr "Трајно складиште (0 Мб)"
+#: liveusb/urlgrabber/grabber.py:909
+#, python-format
+msgid "Not a normal file: %s"
+msgstr ""
+
+#: liveusb/urlgrabber/grabber.py:967
+#, python-format
+msgid "Exceeded limit (%i): %s"
+msgstr ""
+
+#: liveusb/urlgrabber/grabber.py:1150
+msgid "Byte range requested but range support unavailable"
+msgstr ""
+
+#: liveusb/urlgrabber/grabber.py:1183 liveusb/urlgrabber/grabber.py:1262
+#, python-format
+msgid "Timeout: %s"
+msgstr ""
+
+#: liveusb/urlgrabber/grabber.py:1185 liveusb/urlgrabber/grabber.py:1264
+#, python-format
+msgid "IOError: %s"
+msgstr ""
+
+#: liveusb/urlgrabber/grabber.py:1187
+#, python-format
+msgid "OSError: %s"
+msgstr ""
+
+#: liveusb/urlgrabber/grabber.py:1189
+#, python-format
+msgid "HTTP Exception (%s): %s"
+msgstr ""
+
+#: liveusb/urlgrabber/grabber.py:1260
+#, python-format
+msgid "Socket Error: %s"
+msgstr ""
+
+#: liveusb/urlgrabber/grabber.py:1332
+#, python-format
+msgid "Bad proxy URL: %s"
+msgstr ""
+
+#: liveusb/urlgrabber/mirror.py:287
+msgid "No more mirrors to try."
+msgstr ""
+
+#~ msgid "Unknown release: %s"
+#~ msgstr "Непознато издање %s"
+
+#~ msgid "Creating %d Mb persistent overlay..."
+#~ msgstr "Правим %d МБ трајни слој..."
+
+#~ msgid "Configuring and installing bootloader..."
+#~ msgstr "Подешавам и инсталирам покретачки програм..."
+
+#~ msgid "Complete! (%s)"
+#~ msgstr "Готово! (%s)"
+
+#~ msgid "LiveUSB creation failed!"
+#~ msgstr "Прављење живог УСБ система није успело!"
+
+#~ msgid "Persistent Storage (%d Mb)"
+#~ msgstr "Трајно складиште (%d Мб)"
+
+#~ msgid ""
+#~ "Warning: Creating a new persistent overlay will delete your existing one."
+#~ msgstr "Упозорење: прављењем новог трајног слоја ћете обрисати постојеће."
+
+#~ msgid "Press 'Create Live USB' again if you wish to continue."
+#~ msgstr "Притисните „Направи живи УСБ“ поново уколико желите наставити."
+
+#~ msgid "Download complete!"
+#~ msgstr "Преузимање завршено!"
+
+#~ msgid "Download failed: "
+#~ msgstr "Преузимање је неуспешно:"
+
+#~ msgid "You can try again to resume your download"
+#~ msgstr "Можете покушати опет да наставите ваше преузимање"
+
+#~ msgid ""
+#~ "Sorry, I'm having trouble encoding the filename of your livecd.  You may "
+#~ "have better luck if you move your ISO to the root of your drive (ie: C:\\)"
+#~ msgstr ""
+#~ "Жао ми је, али постоје проблеми при кодирању назива датотека датотека "
+#~ "живог ЦД-а. Можда ћете имати више среће уколико преместите ваш ISO у "
+#~ "корени директоријум вашег уређаја (нпр. C:\\)"
+
+#~ msgid "Not enough free space on device."
+#~ msgstr "Недовољно слободног простора на уређају."
+
+#~ msgid "Creating %sMB persistent overlay"
+#~ msgstr "Правим %sМБ трајни слој"
+
+#~ msgid "Unable to find any USB drives"
+#~ msgstr "Не могу да пронађем ниједан УСБ уређај"
+
+#~ msgid "Filesystem for %s unknown!"
+#~ msgstr "Систем датотека за %s непознат!"
+
+#~ msgid "Unable to find any removable devices"
+#~ msgstr "Не могу да пронађем ниједан преносиви уређај"
+
+#~ msgid ""
+#~ "This button will begin the LiveUSB creation process.  This entails "
+#~ "optionally downloading a release (if an existing one wasn't selected),  "
+#~ "extracting the ISO to the USB device, creating the persistent overlay, "
+#~ "and installing the bootloader."
+#~ msgstr ""
+#~ "Ово дугме покреће поступак прављења живих УСБ система. То укључује и "
+#~ "изборно преузимање издања (уколико постојећи није био изабран), "
+#~ "распакивање ISO отиска на УСБ уређај, правећи трајни слој, и инсталирање "
+#~ "покретачког програма."
+
+#~ msgid "This is the status console, where all messages get written to."
+#~ msgstr "Ово је статусна конзола где се све поруке записују."
+
+#~ msgid ""
+#~ "This is the progress bar that will indicate how far along in the LiveUSB "
+#~ "creation process you are"
+#~ msgstr ""
+#~ "Ово је линија прогреса која показује докле сте стигли у поступку прављења "
+#~ "живог УСБ система"
+
+#~ msgid ""
+#~ "If you do not select an existing Live CD, the selected release will be "
+#~ "downloaded for you."
+#~ msgstr ""
+#~ "Уколико не одаберете постојећи живи ЦД, изабрано издање ће бити преузето "
+#~ "за вас."
+
+#~ msgid "Download Fedora"
+#~ msgstr "Преузмите Fedora систем"
+
+#~ msgid "or"
+#~ msgstr "или"
+
+#~ msgid ""
+#~ "This button allows you to browse for an existing Live CD ISO that you "
+#~ "have previously downloaded.  If you do not select one, a release will be "
+#~ "downloaded for you automatically."
+#~ msgstr ""
+#~ "Ово дугме вам дозвољава да претражујете постојећи живи ЦД ISO отисак који "
+#~ "сте претходно преузели. Уколико не одаберете један, одређено издање ће "
+#~ "бити преузето самостално."
+
+#~ msgid "Use existing Live CD"
+#~ msgstr "Користи постојећи живи ЦД"
+
+#~ msgid "Browse"
+#~ msgstr "Прегледај"
+
+#~ msgid ""
+#~ "This is the USB stick that you want to install your Live CD on.  This "
+#~ "device must be formatted with the FAT filesystem."
+#~ msgstr ""
+#~ "Ово је УСБ уређај на који желите да инсталирате живи ЦД. Овај уређај мора "
+#~ "бити форматиран са FAT системом датотека."
+
+#~ msgid "Target Device"
+#~ msgstr "Одредишни уређај"
+
+#~ msgid ""
+#~ "By allocating extra space on your USB stick for a persistent overlay, you "
+#~ "will be able to store data and make permanent modifications to your live "
+#~ "operating system.  Without it, you will not be able to save data that "
+#~ "will persist after a reboot."
+#~ msgstr ""
+#~ "Доделом додатног простора на УСБ уређају за трајни слој, бићете у "
+#~ "могућности да складиштите податке и вршите трајне измене у живом "
+#~ "оперативном систему. Без тога, нећете бити у могућности да снимите "
+#~ "податке који ће остати и након поновног дизања система."
+
+#~ msgid "Persistent Storage (0 Mb)"
+#~ msgstr "Трајно складиште (0 Мб)"
 
 #~ msgid "You must run this application as root"
 #~ msgstr "Морате покренути овај програм кроз „root“ налог"
 
 #~ msgid "Persistent Storage"
 #~ msgstr "Трајно складиште"
-
-#~ msgid "Setting up OLPC boot file..."
-#~ msgstr "Постављам OLPC покретачку датотеку..."
-
-#~ msgid "Unknown ISO, skipping checksum verification"
-#~ msgstr "Непознати ISO, прескачем проверу контролне суме"
 
 #~ msgid ""
 #~ "\n"
@@ -329,23 +732,5 @@ msgstr "Трајно складиште (0 Мб)"
 #~ "\n"
 #~ "%dМБ ISO + %dМБ слој > %dМБ слободног простора"
 
-#~ msgid "Creating"
-#~ msgstr "Правим"
-
-#~ msgid "persistent overlay"
-#~ msgstr "трајни слој"
-
 #~ msgid "device"
 #~ msgstr "уређај"
-
-#~ msgid "Wrote to device at"
-#~ msgstr "Писао уређају на"
-
-#~ msgid "Verifying ISO MD5 checksum"
-#~ msgstr "Проверавам ISO MD5 контролну суму"
-
-#~ msgid "Installing bootloader"
-#~ msgstr "Инсталирам покретачки програм"
-
-#~ msgid "Cannot find"
-#~ msgstr "Не могу да нађем"
