@@ -1304,8 +1304,8 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         """ Extract our ISO with 7-zip directly to the USB key """
         self.log.info(_("Extracting live image to USB device..."))
         start = datetime.now()
-        self.popen('7z x "%s" -x![BOOT] -y -o%s' % (
-                   self.iso, self.drive['device']))
+        self.popen('"%s/7z.exe" x "%s" -x![BOOT] -y -o%s' % (
+                   os.path.dirname(sys.argv[0]), self.iso, self.drive['device']))
         delta = datetime.now() - start
         if delta.seconds:
             self.mb_per_sec = (self.isosize / delta.seconds) / 1024**2
