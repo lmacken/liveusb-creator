@@ -81,6 +81,7 @@ class ReleaseDownloadThread(QThread):
 
     def run(self):
         self.grabber = URLGrabber(progress_obj=self.progress, proxies=self.proxies)
+        print(self.progress.release.url)
         home = os.getenv('HOME', 'USERPROFILE')
         filename = os.path.basename(urlparse.urlparse(self.progress.release.url).path)
         try:
@@ -156,9 +157,9 @@ class ReleaseDownload(QObject, BaseMeter):
     @pyqtSlot(str)
     def run(self):
         if len(self.parent().path) <= 0:
-            self._grabber.start()
             self._grabber.downloadFinished.connect(self.childFinished)
             self._grabber.downloadError.connect(self.childError)
+            self._grabber.start()
 
     @pyqtSlot()
     def cancel(self):
