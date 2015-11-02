@@ -92,7 +92,7 @@ Item {
                     }
                     ColumnLayout {
                         Layout.fillHeight: true
-                        spacing: $(8)
+                        spacing: $(12)
                         RowLayout {
                             Layout.fillWidth: true
                             Text {
@@ -141,7 +141,8 @@ Item {
                                 }
                                 Text {
                                     // I'm sorry, everyone, I can't find a better way to determine if the date is valid
-                                    text: liveUSBData.currentImage.releaseDate.toLocaleDateString().length > 0 ? (qsTranslate("", "Released on %1").arg(liveUSBData.currentImage.releaseDate.toLocaleDateString())) : ""
+                                    text: liveUSBData.currentImage.version ? (qsTranslate("", "Version %1").arg(liveUSBData.currentImage.version) +
+                                        (liveUSBData.currentImage.releaseDate.toLocaleDateString().length > 0 ? (qsTranslate("", ", released on %1").arg(liveUSBData.currentImage.releaseDate.toLocaleDateString())) : "")) : ""
                                     font.pixelSize: $(11)
                                     color: "gray"
                                 }

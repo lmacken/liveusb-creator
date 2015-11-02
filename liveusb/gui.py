@@ -555,6 +555,10 @@ class Release(QObject):
                     ret.append(str(key))
         return ret
 
+    @pyqtProperty(str, constant=True)
+    def version(self):
+        return self._data['version']
+
     @pyqtProperty(QDateTime, constant=True)
     def releaseDate(self):
         return QDateTime.fromString(self._data['releaseDate'], Qt.ISODate)
