@@ -239,8 +239,8 @@ class ReleaseWriterThread(QThread):
         try:
             self.live.verify_filesystem()
             if not self.live.drive['uuid'] and not self.live.label:
-                self.parent.parent.error = _('Error: Cannot set the label or obtain '
-                              'the UUID of your device.  Unable to continue.')
+                self.parent.release.addError(_('Error: Cannot set the label or obtain '
+                              'the UUID of your device.  Unable to continue.'))
                 self.parent.running = False
                 return
             if self.parent.release.liveUSBData.option('dd'):
