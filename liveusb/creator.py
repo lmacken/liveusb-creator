@@ -1304,7 +1304,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         """ Extract our ISO with 7-zip directly to the USB key """
         self.log.info(_("Extracting live image to USB device..."))
         start = datetime.now()
-        self.popen('"%s/7z.exe" x "%s" -x![BOOT] -y -o%s' % (
+        self.popen('7z x "%s" -x![BOOT] -y -o%s' % (
                    os.path.dirname(sys.argv[0]), self.iso, self.drive['device']))
         delta = datetime.now() - start
         if delta.seconds:
@@ -1401,7 +1401,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         prgmfiles = os.getenv('PROGRAMFILES')
         folder = 'LiveUSB Creator'
         paths = [os.path.join(x, folder) for x in (prgmfiles, prgmfiles + ' (x86)')]
-        paths += [os.path.join(os.path.dirname(__file__), '..', '..'), '.']
+        paths += [os.path.join(os.path.dirname(__file__), '..', '..'), '.', os.path.dirname(sys.argv[0])]
         tool = None
         for path in paths:
             exe = os.path.join(path, 'tools', '%s.exe' % cmd[0])

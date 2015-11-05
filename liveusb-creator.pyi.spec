@@ -36,7 +36,7 @@ newqml += Tree("C:\\Qt\\5.5\\mingw492_32\\qml\\QtQml", prefix = 'QtQml')
 newqml += Tree("C:\\Qt\\5.5\\mingw492_32\\qml\\Qt", prefix = 'Qt')
 
 tools = []
-tools += Tree("tools")
+tools += Tree("tools", prefix = 'tools')
 
 stripQml(a.binaries)
 stripDebug(a.binaries)

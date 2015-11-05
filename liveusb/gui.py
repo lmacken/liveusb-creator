@@ -81,7 +81,6 @@ class ReleaseDownloadThread(QThread):
 
     def run(self):
         self.grabber = URLGrabber(progress_obj=self.progress, proxies=self.proxies)
-        print(self.progress.release.url)
         home = os.getenv('HOME', 'USERPROFILE')
         filename = os.path.basename(urlparse.urlparse(self.progress.release.url).path)
         try:
