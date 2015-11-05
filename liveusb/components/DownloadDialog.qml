@@ -64,15 +64,25 @@ Dialog {
                                     radius: width / 2
                                     color: "#88ffffff"
                                     border {
-                                        width: 1
+                                        width: $(1)
                                         color: "#a1a1a1"
                                     }
-                                    Text {
-                                        id: cross
-                                        anchors.centerIn: parent
-                                        color: "red"
-                                        text: "✕"
-                                        font.pixelSize: $(16)
+                                    Item {
+                                        anchors.fill: parent
+                                        transformOrigin: Item.Center
+                                        rotation: 45
+                                        Rectangle {
+                                            anchors.centerIn: parent
+                                            width: parent.width * 0.8
+                                            height: parent.width * 0.05
+                                            color: "red"
+                                        }
+                                        Rectangle {
+                                            anchors.centerIn: parent
+                                            height: parent.width * 0.8
+                                            width: parent.width * 0.05
+                                            color: "red"
+                                        }
                                     }
                                 }
                                 Text {
