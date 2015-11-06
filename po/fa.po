@@ -7,253 +7,706 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-03 02:54-0400\n"
+"POT-Creation-Date: 2015-11-02 19:40+0100\n"
 "PO-Revision-Date: 2010-08-21 00:24+0330\n"
 "Last-Translator: Mostafa <info@mostafadaneshvar.com>\n"
 "Language-Team: Persian <trans-fa@lists.fedoraproject.org>\n"
+"Language: fa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Persian\n"
 "X-Poedit-Country: Iran\n"
 
-#: ../liveusb/gui.py:69
-#, python-format
-msgid "Unknown release: %s"
-msgstr "انتشار ناشناس: %s"
-
-#: ../liveusb/gui.py:73
-#, python-format
-msgid "Downloading %s..."
-msgstr "در حال بارگیری %s..."
-
-#: ../liveusb/gui.py:152
-msgid "Verifying filesystem..."
-msgstr "تایید فایل سیستم..."
-
-#: ../liveusb/gui.py:155
-msgid "Error: Cannot set the label or obtain the UUID of your device.  Unable to continue."
-msgstr "خطا: نمی تواند برچسب را تنظیم کند و یا UUID وسیله را پیدا کند. قادر به ادامه دادن نیست."
-
-#: ../liveusb/gui.py:164
-msgid "Verifying SHA1 of LiveCD image..."
-msgstr "درحال تایید SHA1 تصویر سی‌دی لایو..."
-
-#: ../liveusb/gui.py:166
-msgid "Error: The SHA1 of your Live CD is invalid.  You can run this program with the --noverify argument to bypass this verification check."
-msgstr "خطا: مقداری SHA1 سی‌دی لایو نامعتبر است. شما می توانید این برنامه را با آرگومان --noverify اجرا کنید تا از این کنترل کردن عبور کند."
-
-#: ../liveusb/gui.py:177
-msgid "Extracting live image to USB device..."
-msgstr "استخراج تصویر لایو بر روی وسیله ی یو‌اس‌بی..."
-
-#: ../liveusb/gui.py:180
-#, python-format
-msgid "Creating %d Mb persistent overlay..."
-msgstr "ایجاد پوشش %d Mb مداوم..."
-
-#: ../liveusb/gui.py:183
-msgid "Configuring and installing bootloader..."
-msgstr "پیکره بندی و نصوب بارکننده راه انداز..."
-
-#: ../liveusb/gui.py:187
-#, python-format
-msgid "Complete! (%s)"
-msgstr "تمام شد! (%s)"
-
-#: ../liveusb/gui.py:190
-#: ../liveusb/gui.py:193
-msgid "LiveUSB creation failed!"
-msgstr "خطا در ساخت لایو یو‌اس بی!"
-
-#: ../liveusb/gui.py:316
-#, python-format
-msgid "Persistent Storage (%d Mb)"
-msgstr "Persistent Storage (%d Mb)"
-
-#: ../liveusb/gui.py:334
-msgid ""
-"Your device already contains a LiveOS.\n"
-"If you continue, this will be overwritten."
+#: liveusb/components/DownloadDialog.qml:9
+msgctxt ""
+msgid "Write %1 to USB"
 msgstr ""
-"وسیله ی شما از قبل شامل یک سیستم عامل لایو است.\n"
-"اگر می خواهید ادامه دهید بر روی آن نوشته خواهد شد."
 
-#: ../liveusb/gui.py:337
-msgid "Warning: Creating a new persistent overlay will delete your existing one."
-msgstr "اخطار: ساخت پوشش مداوم آنچه را که از قبل وجود داشته است را از حذف می کند."
+#: liveusb/components/DownloadDialog.qml:250
+msgctxt ""
+msgid "There are no portable drives connected"
+msgstr ""
 
-#: ../liveusb/gui.py:339
-msgid "Press 'Create Live USB' again if you wish to continue."
-msgstr "بار دیگر بر روی 'ساخت یو‌اس‌بی لایو' کلیک کنید اگر می خواهید ادامه دهید."
+#: liveusb/components/DownloadDialog.qml:290
+msgctxt ""
+msgid "Options"
+msgstr ""
 
-#. The user has confirmed that they wish to overwrite their
-#. existing Live OS.  Here we delete it first, in order to
-#. accurately calculate progress.
-#: ../liveusb/gui.py:349
-msgid "Removing existing Live OS..."
-msgstr "حذف سیستم عامل لایو کنونی..."
+#: liveusb/components/DownloadDialog.qml:312
+msgctxt ""
+msgid "Cancel"
+msgstr ""
 
-#: ../liveusb/gui.py:383
-msgid "Download complete!"
-msgstr "دانلود کامل شد!"
+#: liveusb/components/DownloadDialog.qml:335
+msgctxt ""
+msgid "Close"
+msgstr ""
 
-#: ../liveusb/gui.py:387
-msgid "Download failed: "
-msgstr "دانلود نا موفق:"
+#: liveusb/components/DownloadDialog.qml:335
+msgctxt ""
+msgid "Are you sure?"
+msgstr ""
 
-#: ../liveusb/gui.py:388
-msgid "You can try again to resume your download"
-msgstr "بار دیگر می توانید برای ادامه دانلود سعی کنید"
+#: liveusb/components/DownloadDialog.qml:335
+msgctxt ""
+msgid "Write to disk"
+msgstr ""
 
-#: ../liveusb/gui.py:392
+#: liveusb/components/DownloadDialog.qml:437
+msgctxt ""
+msgid "Write the image immediately when the download is finished"
+msgstr ""
+
+#: liveusb/components/ImageDetails.qml:46
+#, fuzzy
+msgctxt ""
+msgid "Create Live USB"
+msgstr "ساخت یو‌اس‌بی لایو"
+
+#: liveusb/components/ImageDetails.qml:144
+msgctxt ""
+msgid "Version %1"
+msgstr ""
+
+#: liveusb/components/ImageDetails.qml:145
+msgctxt ""
+msgid ", released on %1"
+msgstr ""
+
+#: liveusb/components/ImageDetails.qml:156
+#, fuzzy
+msgctxt ""
 msgid "Select Live ISO"
 msgstr "انتخاب ایزوی لایو"
 
-#: ../liveusb/gui.py:399
-msgid "Sorry, I'm having trouble encoding the filename of your livecd.  You may have better luck if you move your ISO to the root of your drive (ie: C:\\)"
-msgstr "متاسفیم! من مشکلی با کدگذاری فایل سیستم سی دی لایو شما دارم. شما شاید بهتر باشد ایزوی خود را به ریشه ی درایو خود منتقل کنید (مثل:C:\\ )"
-
-#: ../liveusb/gui.py:404
-#, python-format
-msgid "ISO selected: %s"
+#: liveusb/components/ImageDetails.qml:164
+#, fuzzy
+msgctxt ""
+msgid "Selected:"
 msgstr "ایزو انتخاب شده:: %s"
 
-#: ../liveusb/creator.py:146
-#, python-format
+#: liveusb/components/ImageDetails.qml:164
+msgctxt ""
+msgid "None"
+msgstr ""
+
+#: liveusb/components/ImageDetails.qml:226
+msgctxt ""
+msgid "Image files (*.iso)"
+msgstr ""
+
+#: liveusb/components/ImageDetails.qml:226
+msgctxt ""
+msgid "All files (*)"
+msgstr ""
+
+#: liveusb/components/ImageList.qml:85
+msgctxt ""
+msgid "Find an operating system image"
+msgstr ""
+
+#: liveusb/components/ImageList.qml:212
+msgctxt ""
+msgid "Display additional Fedora flavors"
+msgstr ""
+
+#: liveusb/creator.py:146
+msgid "Setting up OLPC boot file..."
+msgstr ""
+
+#: liveusb/creator.py:207
+#, fuzzy, python-format
 msgid ""
-"There was a problem executing the following command: `%s`\n"
-"A more detailed error log has been written to 'liveusb-creator.log'"
+"There was a problem executing the following command: %r\n"
+"%r\n"
+"A more detailed error log has been written to '%r'"
 msgstr ""
 "مشکلی در اجرای دستور ذیل وجود دارد:`%s`\n"
 "جزییات بیشتر در 'liveusb-creator.log' موجود است"
 
-#: ../liveusb/creator.py:183
-msgid "Not enough free space on device."
-msgstr "فضای خالی کافی در وسیله موجود نیست."
+#: liveusb/creator.py:224
+#, fuzzy
+msgid "Verifying SHA1 checksum of LiveCD image..."
+msgstr "درحال تایید SHA1 تصویر سی‌دی لایو..."
 
-#: ../liveusb/creator.py:190
+#: liveusb/creator.py:228
+#, fuzzy
+msgid "Verifying SHA256 checksum of LiveCD image..."
+msgstr "درحال تایید SHA1 تصویر سی‌دی لایو..."
+
+#: liveusb/creator.py:244
+msgid ""
+"Error: The SHA1 of your Live CD is invalid.  You can run this program with "
+"the --noverify argument to bypass this verification check."
+msgstr ""
+"خطا: مقداری SHA1 سی‌دی لایو نامعتبر است. شما می توانید این برنامه را با "
+"آرگومان --noverify اجرا کنید تا از این کنترل کردن عبور کند."
+
+#: liveusb/creator.py:250
+msgid "Unknown ISO, skipping checksum verification"
+msgstr ""
+
+#: liveusb/creator.py:261
 #, python-format
-msgid "Creating %sMB persistent overlay"
+msgid ""
+"There is not enough free space on the selected device.\n"
+"Required: %s. Free: %s."
+msgstr ""
+
+#: liveusb/creator.py:267
+msgid "Creating"
+msgstr ""
+
+#: liveusb/creator.py:268
+#, fuzzy
+msgid "persistent overlay"
 msgstr "ایجاد پوشش %sMB مداوم"
 
-#: ../liveusb/creator.py:226
-#, python-format
-msgid "Unable to remove previous LiveOS: %s"
+#: liveusb/creator.py:330
+#, fuzzy, python-format
+msgid "Unable to copy %r to %r: %r"
+msgstr "قادر به سوارکردن وسیله نیست: %s"
+
+#: liveusb/creator.py:338 liveusb/creator.py:1336
+msgid "Removing"
+msgstr ""
+
+#: liveusb/creator.py:344
+#, fuzzy
+msgid "Removing existing Live OS"
+msgstr "حذف سیستم عامل لایو کنونی..."
+
+#: liveusb/creator.py:350
+msgid "Deleting "
+msgstr ""
+
+#: liveusb/creator.py:357
+#, fuzzy, python-format
+msgid "Unable to delete %r: %r"
+msgstr "قادر به سوارکردن وسیله نیست: %s"
+
+#: liveusb/creator.py:361
+#, fuzzy, python-format
+msgid "Unable to remove previous LiveOS: %r"
 msgstr "نمی تواند لایو های قبلی را بردارد: %s"
 
-#: ../liveusb/creator.py:257
+#: liveusb/creator.py:379
+#, fuzzy, python-format
+msgid "Cannot find path %r"
+msgstr "وسیله ی %s یافت نشد"
+
+#: liveusb/creator.py:410
 #, python-format
 msgid "Cannot find device %s"
 msgstr "وسیله ی %s یافت نشد"
 
-#: ../liveusb/creator.py:306
-msgid "Unable to find any USB drives"
-msgstr "قادر به یافتن هیچ درایو یو اس بی نیست"
+#: liveusb/creator.py:461
+msgid "Overwriting device with live image"
+msgstr ""
 
-#: ../liveusb/creator.py:327
-#, python-format
-msgid "Filesystem for %s unknown!"
-msgstr "فایل سیستم برای %s ناشناس است!"
+#: liveusb/creator.py:468
+msgid "Running"
+msgstr ""
 
-#: ../liveusb/creator.py:335
-#, python-format
-msgid "Unable to mount device: %s"
-msgstr "قادر به سوارکردن وسیله نیست: %s"
+#: liveusb/creator.py:517
+msgid ""
+"You are using an old version of syslinux-extlinux that does not support the "
+"ext4 filesystem"
+msgstr ""
 
-#: ../liveusb/creator.py:370
-#, python-format
-msgid "Unknown filesystem for %s.  Your device may need to be reformatted."
-msgstr "فایل سیستم ناشناس برای  %s. وسیله شما شاید نیاز به قالب بندی دوباره دارد."
+#: liveusb/creator.py:741 liveusb/creator.py:803
+#, fuzzy
+msgid "Unknown filesystem.  Your device may need to be reformatted."
+msgstr ""
+"فایل سیستم ناشناس برای  %s. وسیله شما شاید نیاز به قالب بندی دوباره دارد."
 
-#: ../liveusb/creator.py:373
+#: liveusb/creator.py:744 liveusb/creator.py:806
 #, python-format
 msgid "Unsupported filesystem: %s"
 msgstr "فایل سیستم های غیرقابل پشتیبانی: %s"
 
-#: ../liveusb/creator.py:400
+#: liveusb/creator.py:757 liveusb/creator.py:774
+#, fuzzy, python-format
+msgid "Unknown dbus exception while trying to mount device: %s"
+msgstr "قادر به سوارکردن وسیله نیست: %s"
+
+#: liveusb/creator.py:777
+#, fuzzy, python-format
+msgid "Unable to mount device: %r"
+msgstr "قادر به سوارکردن وسیله نیست: %s"
+
+#: liveusb/creator.py:780
+msgid "No mount points found after mounting attempt"
+msgstr ""
+
+#: liveusb/creator.py:788
+#, python-format
+msgid "Using existing mount: %s"
+msgstr ""
+
+#: liveusb/creator.py:800 liveusb/creator.py:1273
+msgid "Verifying filesystem..."
+msgstr "تایید فایل سیستم..."
+
+#: liveusb/creator.py:809
+#, python-format
+msgid "Setting %s label to %s"
+msgstr ""
+
+#: liveusb/creator.py:823
+#, python-format
+msgid "Unable to change volume label: %r"
+msgstr ""
+
+#: liveusb/creator.py:827 liveusb/creator.py:1305
+msgid "Extracting live image to USB device..."
+msgstr "استخراج تصویر لایو بر روی وسیله ی یو‌اس‌بی..."
+
+#: liveusb/creator.py:833
 msgid "Unable to find LiveOS on ISO"
 msgstr "قادر به یافتن سیستم عامل لایو بر روی ایزو نیست"
 
-#: ../liveusb/creator.py:472
-msgid "Unable to find any removable devices"
-msgstr "قادر به یافتن هیچ وسیله قابل برداشتنی نیست"
+#: liveusb/creator.py:845 liveusb/creator.py:1313
+msgid "Wrote to device at"
+msgstr ""
 
-#: ../liveusb/creator.py:479
-msgid "Make sure your USB key is plugged in and formatted with the FAT filesystem"
-msgstr "مطمئن شوید یو اس بی شما متصل شده و با فایل سیستم FAT قالب بندی شده است."
+#: liveusb/creator.py:873
+#, fuzzy
+msgid "Installing bootloader..."
+msgstr "پیکره بندی و نصوب بارکننده راه انداز..."
 
-#: ../liveusb/creator.py:482
+#: liveusb/creator.py:917
+#, fuzzy, python-format
+msgid "Cannot find device: %s"
+msgstr "وسیله ی %s یافت نشد"
+
+#: liveusb/creator.py:941
+msgid "Verifying ISO MD5 checksum"
+msgstr ""
+
+#: liveusb/creator.py:946
+msgid "ISO MD5 checksum verification failed"
+msgstr ""
+
+#: liveusb/creator.py:948
+msgid "ISO MD5 checksum passed"
+msgstr ""
+
+#: liveusb/creator.py:989
+msgid "Unable to get disk partitions"
+msgstr ""
+
+#: liveusb/creator.py:993
+#, python-format
+msgid "%s already bootable"
+msgstr ""
+
+#: liveusb/creator.py:1013
+#, fuzzy
+msgid "Unable to find partition"
+msgstr "قادر به یافتن سیستم عامل لایو بر روی ایزو نیست"
+
+#: liveusb/creator.py:1082
+msgid "Resetting Master Boot Record"
+msgstr ""
+
+#: liveusb/creator.py:1085
+msgid "Unable to reset MBR.  You may not have the `syslinux` package installed"
+msgstr ""
+
+#: liveusb/creator.py:1088
+msgid "Drive is a loopback, skipping MBR reset"
+msgstr ""
+
+#: liveusb/creator.py:1092 liveusb/creator.py:1471
+#, python-format
+msgid "Calculating the SHA1 of %s"
+msgstr ""
+
+#: liveusb/creator.py:1222
+#, python-format
+msgid "Unable to get GetVolumeInformation(%r): %r"
+msgstr ""
+
+#: liveusb/creator.py:1236
+msgid "Error probing device"
+msgstr ""
+
+#: liveusb/creator.py:1277
+msgid ""
+"Make sure your USB key is plugged in and formatted with the FAT filesystem"
+msgstr ""
+"مطمئن شوید یو اس بی شما متصل شده و با فایل سیستم FAT قالب بندی شده است."
+
+#: liveusb/creator.py:1280
 #, python-format
 msgid ""
 "Unsupported filesystem: %s\n"
 "Please backup and format your USB key with the FAT filesystem."
 msgstr ""
 "فایل سیستم پشتیبانی نشده: %s\n"
-"لطفا از وسیله یو‌اس‌بی خود پشتیبانی گرفته و آن را با فایل سیستم FAT قالب بندی کنید."
+"لطفا از وسیله یو‌اس‌بی خود پشتیبانی گرفته و آن را با فایل سیستم FAT قالب بندی "
+"کنید."
 
-#: ../liveusb/creator.py:558
+#: liveusb/creator.py:1290
+#, fuzzy, python-format
+msgid "Unable to SetVolumeLabel: %r"
+msgstr "قادر به سوارکردن وسیله نیست: %s"
+
+#: liveusb/creator.py:1299
 #, python-format
-msgid "Cannot find '%s'.  Make sure to extract the entire liveusb-creator zip file before running this program."
-msgstr "نمی تواند  '%s' را پیدا کند. مطمئن شوید همه محتوای فایل زیپ  liveusb-creator را قبل ار اجرای این برنامه استخراج کرده اید."
+msgid "Problem determining free space: %r"
+msgstr ""
 
-#: ../liveusb/dialog.py:123
+#: liveusb/creator.py:1319
+#, fuzzy
+msgid "Installing bootloader"
+msgstr "پیکره بندی و نصوب بارکننده راه انداز..."
+
+#: liveusb/creator.py:1359
+msgid ""
+"Unable to get Win32_LogicalDisk; win32com query did not return any results"
+msgstr ""
+
+#: liveusb/creator.py:1380
+#, python-format
+msgid "Found UUID %s for %s"
+msgstr ""
+
+#: liveusb/creator.py:1383
+#, python-format
+msgid "Exception while fetching UUID: %r"
+msgstr ""
+
+#: liveusb/creator.py:1391
+#, python-format
+msgid "Max size of %s: %d"
+msgstr ""
+
+#: liveusb/creator.py:1394
+#, python-format
+msgid "Error getting drive size: %r"
+msgstr ""
+
+#: liveusb/creator.py:1412
+#, fuzzy
+msgid "Cannot find"
+msgstr "وسیله ی %s یافت نشد"
+
+#: liveusb/creator.py:1413
+#, fuzzy
+msgid ""
+"Make sure to extract the entire liveusb-creator zip file before running this "
+"program."
+msgstr ""
+"نمی تواند  '%s' را پیدا کند. مطمئن شوید همه محتوای فایل زیپ  liveusb-creator "
+"را قبل ار اجرای این برنامه استخراج کرده اید."
+
+#: liveusb/creator.py:1458
+#, python-format
+msgid "Unable to detect proxy settings: %r"
+msgstr ""
+
+#: liveusb/creator.py:1459
+#, python-format
+msgid "Using proxies: %r"
+msgstr ""
+
+#: liveusb/gui.py:243
+msgid ""
+"Error: Cannot set the label or obtain the UUID of your device.  Unable to "
+"continue."
+msgstr ""
+"خطا: نمی تواند برچسب را تنظیم کند و یا UUID وسیله را پیدا کند. قادر به ادامه "
+"دادن نیست."
+
+#: liveusb/gui.py:271
+msgid "Checking the source image"
+msgstr ""
+
+#: liveusb/gui.py:287
+msgid "Unpacking the image"
+msgstr ""
+
+#: liveusb/gui.py:299
+msgid "Writing the data"
+msgstr ""
+
+#: liveusb/gui.py:305
+msgid "Checking the written data"
+msgstr ""
+
+#: liveusb/gui.py:316
+msgid "Finished!"
+msgstr ""
+
+#: liveusb/gui.py:502
+msgid ""
+"You are about to perform a destructive install. This will erase all data and "
+"partitions on your USB drive"
+msgstr ""
+
+#: liveusb/gui.py:505
+msgid ""
+"The Master Boot Record on your device is blank. Writing the image will reset "
+"the MBR on this device"
+msgstr ""
+
+#: liveusb/gui.py:507
+msgid ""
+"The Master Boot Record on your device does not match your system's syslinux "
+"MBR.\n"
+"If you have trouble booting it, try setting the \"Reset the MBR\" advanced "
+"option."
+msgstr ""
+
+#: liveusb/gui.py:515
+#, fuzzy
+msgid "Unable to mount device"
+msgstr "قادر به سوارکردن وسیله نیست: %s"
+
+#: liveusb/gui.py:518
+#, fuzzy
+msgid ""
+"Your device already contains a live OS. If you continue, it will be "
+"overwritten."
+msgstr ""
+"وسیله ی شما از قبل شامل یک سیستم عامل لایو است.\n"
+"اگر می خواهید ادامه دهید بر روی آن نوشته خواهد شد."
+
+#: liveusb/gui.py:621
+msgid "Starting"
+msgstr ""
+
+#: liveusb/gui.py:623
+#, fuzzy
+msgid "Downloading"
+msgstr "در حال بارگیری %s..."
+
+#: liveusb/gui.py:625
+msgid "Error"
+msgstr ""
+
+#: liveusb/gui.py:627
+msgid "Ready to write"
+msgstr ""
+
+#: liveusb/gui.py:631
+msgid "Finished"
+msgstr ""
+
+#: liveusb/gui.py:789
+msgid ""
+"Use <b>dd</b> to write the image - this will erase everything on your "
+"portable drive"
+msgstr ""
+
+#: liveusb/gui.py:790
+msgid "Reset the MBR (Master Boot Record)"
+msgstr ""
+
+#: liveusb/liveusb.qml:16
+#, fuzzy
+msgctxt ""
 msgid "Fedora LiveUSB Creator"
 msgstr "سازنده لایو‌ یو‌اس‌بی فدورا"
 
-#: ../liveusb/dialog.py:124
-msgid "This button will begin the LiveUSB creation process.  This entails optionally downloading a release (if an existing one wasn't selected),  extracting the ISO to the USB device, creating the persistent overlay, and installing the bootloader."
-msgstr "این دکمه روند ساخت لایو یو‌اس‌بی را آغاز می کند. این مستلزم دانلود یک انتشار (اگر چیزی یافت نشد)، استخراج ایزو به دستگاه یو‌اس‌بی، ساخت مقدار دایمو نصب راه انداز بارکننده است."
+#: liveusb/releases.py:239
+msgid "Custom OS..."
+msgstr ""
 
-#: ../liveusb/dialog.py:125
-msgid "Create Live USB"
-msgstr "ساخت یو‌اس‌بی لایو"
+#: liveusb/releases.py:240
+msgid ""
+"<p>Here you can choose a OS image from your hard drive to be written to your "
+"flash disk</p><p>Currently it is only supported to write raw disk images (."
+"iso or .bin)</p>"
+msgstr ""
 
-#: ../liveusb/dialog.py:126
-msgid "This is the status console, where all messages get written to."
-msgstr "این وضعیت کنسول است که همه پیام ها باید نوشته شوند"
+#: liveusb/releases.py:243
+msgid "Pick a file from your drive(s)"
+msgstr ""
 
-#: ../liveusb/dialog.py:127
-msgid "This is the progress bar that will indicate how far along in the LiveUSB creation process you are"
-msgstr "این نوار پیشرفت به شما نشان می دهد روند ساخت لایو‌ یو‌اس بی چقدر طول می کشد"
+#: liveusb/urlgrabber/grabber.py:693 liveusb/urlgrabber/grabber.py:1172
+#, python-format
+msgid "Bad URL: %s"
+msgstr ""
 
-#: ../liveusb/dialog.py:128
-msgid "If you do not select an existing Live CD, the selected release will be downloaded for you."
-msgstr "اگر سی دی لایو موجود انتخاب نشود، انتشار انتخاب شده برای شما دانلود می شود."
+#: liveusb/urlgrabber/grabber.py:781
+#, python-format
+msgid "Illegal reget mode: %s"
+msgstr ""
 
-#: ../liveusb/dialog.py:129
-msgid "Download Fedora"
-msgstr "دانلود فدورا"
+#: liveusb/urlgrabber/grabber.py:906
+#, python-format
+msgid "Local file does not exist: %s"
+msgstr ""
 
-#: ../liveusb/dialog.py:130
-msgid "or"
-msgstr "یا"
+#: liveusb/urlgrabber/grabber.py:909
+#, python-format
+msgid "Not a normal file: %s"
+msgstr ""
 
-#: ../liveusb/dialog.py:131
-msgid "This button allows you to browse for an existing Live CD ISO that you have previously downloaded.  If you do not select one, a release will be downloaded for you automatically."
-msgstr "این دکمه به شما اجازه می دهد تا ایزو سی‌دی لایوی که قبلا دانلود کرده اید مرور کنید. اگر چیزی را انتخاب نکنید، انتشاری به صورت خودکار دانلود می شود."
+#: liveusb/urlgrabber/grabber.py:967
+#, python-format
+msgid "Exceeded limit (%i): %s"
+msgstr ""
 
-#: ../liveusb/dialog.py:132
-msgid "Use existing Live CD"
-msgstr "استفاده از سی‌دی لایو موجود"
+#: liveusb/urlgrabber/grabber.py:1150
+msgid "Byte range requested but range support unavailable"
+msgstr ""
 
-#: ../liveusb/dialog.py:133
-msgid "Browse"
-msgstr "مرور"
+#: liveusb/urlgrabber/grabber.py:1183 liveusb/urlgrabber/grabber.py:1262
+#, python-format
+msgid "Timeout: %s"
+msgstr ""
 
-#: ../liveusb/dialog.py:135
-msgid "This is the USB stick that you want to install your Live CD on.  This device must be formatted with the FAT filesystem."
-msgstr "این دستگاه یو‌اس بی است که شما می خواهید بر روی آن سی‌دی لایو را نصب کنید. این وسیله باید با فایل سیستم FAT قالب بندی شود."
+#: liveusb/urlgrabber/grabber.py:1185 liveusb/urlgrabber/grabber.py:1264
+#, python-format
+msgid "IOError: %s"
+msgstr ""
 
-#: ../liveusb/dialog.py:136
-msgid "Target Device"
-msgstr "دستگاه مبدا"
+#: liveusb/urlgrabber/grabber.py:1187
+#, python-format
+msgid "OSError: %s"
+msgstr ""
 
-#: ../liveusb/dialog.py:137
-msgid "By allocating extra space on your USB stick for a persistent overlay, you will be able to store data and make permanent modifications to your live operating system.  Without it, you will not be able to save data that will persist after a reboot."
-msgstr "با اختصاص دادن فضا بیشتر به وسیله یو‌اس بی خود، قادر خواهید بود داده ها را ذخیره کرده و تغییرات دایم را بر روی سیستم عامل لایو خود ایجاد کنید. بدون آن شما قادر نخواهید داده های که بعدا از راه اندازی مجددا حفظ شوند بود."
+#: liveusb/urlgrabber/grabber.py:1189
+#, python-format
+msgid "HTTP Exception (%s): %s"
+msgstr ""
 
-#: ../liveusb/dialog.py:138
-msgid "Persistent Storage (0 Mb)"
-msgstr "ذخیره سازی پایدار (0 مگابایت)"
+#: liveusb/urlgrabber/grabber.py:1260
+#, python-format
+msgid "Socket Error: %s"
+msgstr ""
 
+#: liveusb/urlgrabber/grabber.py:1332
+#, python-format
+msgid "Bad proxy URL: %s"
+msgstr ""
+
+#: liveusb/urlgrabber/mirror.py:287
+msgid "No more mirrors to try."
+msgstr ""
+
+#~ msgid "Unknown release: %s"
+#~ msgstr "انتشار ناشناس: %s"
+
+#~ msgid "Creating %d Mb persistent overlay..."
+#~ msgstr "ایجاد پوشش %d Mb مداوم..."
+
+#~ msgid "Complete! (%s)"
+#~ msgstr "تمام شد! (%s)"
+
+#~ msgid "LiveUSB creation failed!"
+#~ msgstr "خطا در ساخت لایو یو‌اس بی!"
+
+#~ msgid "Persistent Storage (%d Mb)"
+#~ msgstr "Persistent Storage (%d Mb)"
+
+#~ msgid ""
+#~ "Warning: Creating a new persistent overlay will delete your existing one."
+#~ msgstr ""
+#~ "اخطار: ساخت پوشش مداوم آنچه را که از قبل وجود داشته است را از حذف می کند."
+
+#~ msgid "Press 'Create Live USB' again if you wish to continue."
+#~ msgstr ""
+#~ "بار دیگر بر روی 'ساخت یو‌اس‌بی لایو' کلیک کنید اگر می خواهید ادامه دهید."
+
+#~ msgid "Download complete!"
+#~ msgstr "دانلود کامل شد!"
+
+#~ msgid "Download failed: "
+#~ msgstr "دانلود نا موفق:"
+
+#~ msgid "You can try again to resume your download"
+#~ msgstr "بار دیگر می توانید برای ادامه دانلود سعی کنید"
+
+#~ msgid ""
+#~ "Sorry, I'm having trouble encoding the filename of your livecd.  You may "
+#~ "have better luck if you move your ISO to the root of your drive (ie: C:\\)"
+#~ msgstr ""
+#~ "متاسفیم! من مشکلی با کدگذاری فایل سیستم سی دی لایو شما دارم. شما شاید "
+#~ "بهتر باشد ایزوی خود را به ریشه ی درایو خود منتقل کنید (مثل:C:\\ )"
+
+#~ msgid "Not enough free space on device."
+#~ msgstr "فضای خالی کافی در وسیله موجود نیست."
+
+#~ msgid "Unable to find any USB drives"
+#~ msgstr "قادر به یافتن هیچ درایو یو اس بی نیست"
+
+#~ msgid "Filesystem for %s unknown!"
+#~ msgstr "فایل سیستم برای %s ناشناس است!"
+
+#~ msgid "Unable to find any removable devices"
+#~ msgstr "قادر به یافتن هیچ وسیله قابل برداشتنی نیست"
+
+#~ msgid ""
+#~ "This button will begin the LiveUSB creation process.  This entails "
+#~ "optionally downloading a release (if an existing one wasn't selected),  "
+#~ "extracting the ISO to the USB device, creating the persistent overlay, "
+#~ "and installing the bootloader."
+#~ msgstr ""
+#~ "این دکمه روند ساخت لایو یو‌اس‌بی را آغاز می کند. این مستلزم دانلود یک "
+#~ "انتشار (اگر چیزی یافت نشد)، استخراج ایزو به دستگاه یو‌اس‌بی، ساخت مقدار "
+#~ "دایمو نصب راه انداز بارکننده است."
+
+#~ msgid "This is the status console, where all messages get written to."
+#~ msgstr "این وضعیت کنسول است که همه پیام ها باید نوشته شوند"
+
+#~ msgid ""
+#~ "This is the progress bar that will indicate how far along in the LiveUSB "
+#~ "creation process you are"
+#~ msgstr ""
+#~ "این نوار پیشرفت به شما نشان می دهد روند ساخت لایو‌ یو‌اس بی چقدر طول می کشد"
+
+#~ msgid ""
+#~ "If you do not select an existing Live CD, the selected release will be "
+#~ "downloaded for you."
+#~ msgstr ""
+#~ "اگر سی دی لایو موجود انتخاب نشود، انتشار انتخاب شده برای شما دانلود می "
+#~ "شود."
+
+#~ msgid "Download Fedora"
+#~ msgstr "دانلود فدورا"
+
+#~ msgid "or"
+#~ msgstr "یا"
+
+#~ msgid ""
+#~ "This button allows you to browse for an existing Live CD ISO that you "
+#~ "have previously downloaded.  If you do not select one, a release will be "
+#~ "downloaded for you automatically."
+#~ msgstr ""
+#~ "این دکمه به شما اجازه می دهد تا ایزو سی‌دی لایوی که قبلا دانلود کرده اید "
+#~ "مرور کنید. اگر چیزی را انتخاب نکنید، انتشاری به صورت خودکار دانلود می شود."
+
+#~ msgid "Use existing Live CD"
+#~ msgstr "استفاده از سی‌دی لایو موجود"
+
+#~ msgid "Browse"
+#~ msgstr "مرور"
+
+#~ msgid ""
+#~ "This is the USB stick that you want to install your Live CD on.  This "
+#~ "device must be formatted with the FAT filesystem."
+#~ msgstr ""
+#~ "این دستگاه یو‌اس بی است که شما می خواهید بر روی آن سی‌دی لایو را نصب کنید. "
+#~ "این وسیله باید با فایل سیستم FAT قالب بندی شود."
+
+#~ msgid "Target Device"
+#~ msgstr "دستگاه مبدا"
+
+#~ msgid ""
+#~ "By allocating extra space on your USB stick for a persistent overlay, you "
+#~ "will be able to store data and make permanent modifications to your live "
+#~ "operating system.  Without it, you will not be able to save data that "
+#~ "will persist after a reboot."
+#~ msgstr ""
+#~ "با اختصاص دادن فضا بیشتر به وسیله یو‌اس بی خود، قادر خواهید بود داده ها را "
+#~ "ذخیره کرده و تغییرات دایم را بر روی سیستم عامل لایو خود ایجاد کنید. بدون "
+#~ "آن شما قادر نخواهید داده های که بعدا از راه اندازی مجددا حفظ شوند بود."
+
+#~ msgid "Persistent Storage (0 Mb)"
+#~ msgstr "ذخیره سازی پایدار (0 مگابایت)"
