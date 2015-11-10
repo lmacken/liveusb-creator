@@ -5,6 +5,13 @@ liveusb-creator
 A cross-platform tool for easily installing live operating systems on to USB
 flash drives.
 
+Test packages
+-------------
+
+You can get Fedora development builds on https://copr.fedoraproject.org/coprs/mbriza/liveusb-creator/ .
+
+Windows packages are hosted on https://mbriza.fedorapeople.org/liveusb-creator.zip
+
 Using
 -----
 See the wiki for instructions on how to use the liveusb-creator:
