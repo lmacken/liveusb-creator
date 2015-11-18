@@ -1334,7 +1334,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                 self.log.debug(_("Removing") + " %s" % ldlinux)
                 os.unlink(ldlinux)
 
-        self.popen('syslinux%s -m -a -d %s %s' %  (self.opts.safe and ' -s' or '', 'syslinux', device))
+        self.popen('syslinux%s -f -m -a -d %s %s' %  (self.opts.safe and ' -s' or '', 'syslinux', device))
 
     # Cache these, because they are fairly expensive
     _win32_logicaldisk = {}
