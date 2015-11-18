@@ -902,8 +902,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                         os.path.join(syslinux_path, "extlinux.conf"))
             self.popen("extlinux -i '%s'" % syslinux_path)
         else: # FAT
-            self.popen('syslinux%s%s -d %s %s' %  (self.opts.force and
-                       ' -f' or '', self.opts.safe and ' -s' or '',
+            self.popen('syslinux%s -f -d %s %s' %  (self.opts.safe and ' -s' or '',
                        'syslinux', self.drive['device']))
 
     def get_free_bytes(self, device=None):
@@ -1335,8 +1334,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                 self.log.debug(_("Removing") + " %s" % ldlinux)
                 os.unlink(ldlinux)
 
-        self.popen('syslinux%s%s -m -a -d %s %s' %  (self.opts.force and ' -f'
-                   or '', self.opts.safe and ' -s' or '', 'syslinux', device))
+        self.popen('syslinux%s -m -a -d %s %s' %  (self.opts.safe and ' -s' or '', 'syslinux', device))
 
     # Cache these, because they are fairly expensive
     _win32_logicaldisk = {}
