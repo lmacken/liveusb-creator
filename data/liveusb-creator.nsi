@@ -1,5 +1,5 @@
-Name "LiveUSB Creator 3.11.8"
-OutFile "liveusb-creator-3.11.8-setup.exe"
+Name "LiveUSB Creator 3.99.0"
+OutFile "liveusb-creator-3.99.0-setup.exe"
 
 !include "MUI2.nsh"
 XPStyle on
@@ -99,19 +99,8 @@ Section ""
 	vcredist_install_finished:
 	Delete "$INSTDIR\vcredist_x86.exe"
 
-	File liveusb-creator.exe
-	File LICENSE.txt
-	File README.txt
-	File w9xpopen.exe
-	File /r locale
-	
-	SetOutPath $INSTDIR\tools
-	File tools\7z.dll
-	File tools\7z.exe
-	File tools\7-Zip-License.txt
-	File tools\dd.exe
-	File tools\syslinux.exe
-	
+	File /r ..\dist\liveusb-creator\*
+
 	; Create shortcut.
 	SetOutPath -
 	CreateDirectory "$SMPROGRAMS\LiveUSB Creator"
@@ -141,24 +130,8 @@ Section Uninstall
 	DeleteRegKey HKEY_LOCAL_MACHINE "SOFTWARE\LiveUSB Creator"
 	DeleteRegKey HKEY_LOCAL_MACHINE "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\LiveUSB Creator"
 
-	; Delete files.
-	Delete "$INSTDIR\liveusb-creator.exe"
-	Delete "$INSTDIR\LICENSE.txt"
-	Delete "$INSTDIR\README.txt"
-	Delete "$INSTDIR\w9xpopen.exe"
-	
-	Delete "$INSTDIR\tools\7z.dll"
-	Delete "$INSTDIR\tools\7z.exe"
-	Delete "$INSTDIR\tools\7-Zip-License.txt"
-	Delete "$INSTDIR\tools\dd.exe"
-	Delete "$INSTDIR\tools\syslinux.exe"
-
-	Delete "$INSTDIR\liveusb-creator.exe.log"
-
-	; Remove the installation directories.
-	RMDir /R "$INSTDIR\locale"
-	RMDir "$INSTDIR\tools"
-	RMDir "$INSTDIR"
+	; Delete everything in the installation directory.
+	RMDir /R "$INSTDIR"
 
 SectionEnd
 
