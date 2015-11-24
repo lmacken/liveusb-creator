@@ -83,8 +83,13 @@ class ReleaseDownloadThread(QThread):
         self.grabber = URLGrabber(progress_obj=self.progress, proxies=self.proxies)
         home = os.getenv('HOME', 'USERPROFILE')
         filename = os.path.basename(urlparse.urlparse(self.progress.release.url).path)
+        for folder in ('Downloads', 'My Documents'):
+            if os.path.isdir(os.path.join(home, folder)):
+                filename = os.path.join(home, folder, filename)
+                break
         try:
-            iso = self.grabber.urlgrab(self.progress.release.url, reget='simple')
+            iso = self.grabber.urlgrab(self.progress.release.url, filename=filename, reget='simple')
+            print iso
         except URLGrabError, e:
             # TODO find out if this errno is _really_ benign
             if e.errno == 9: # Requested byte range not satisfiable.
