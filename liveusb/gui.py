@@ -248,7 +248,7 @@ class ReleaseWriterThread(QThread):
         #self.live.log.addHandler(handler)
         now = datetime.now()
         try:
-            if not self.live.drive['uuid'] and not self.live.label:
+            if not self.live.drive.uuid and not self.live.label:
                 self.parent.release.addError(_('Error: Cannot set the label or obtain '
                               'the UUID of your device.  Unable to continue.'))
                 self.parent.running = False
@@ -749,22 +749,13 @@ class LiveUSBData(QObject):
         tmpDrives = []
         previouslySelected = ''
         if len(self._usbDrives) > 0:
-            previouslySelected = self._usbDrives[self._currentDrive].drive['device']
+            previouslySelected = self._usbDrives[self._currentDrive].drive.device
         for drive, info in self.live.drives.items():
-            name = ''
-            if 'friendlyName' in info:
-                name = info['friendlyName']
-            elif 'label' in info:
-                name = info['device'] + ' - ' + info['label']
-            else:
-                name = info['device']
+            name = info.friendlyName
 
             gb = 1000.0 # if it's decided to use base 2 values, change this
 
-            if 'fullSize' in info:
-                usedSize = info['fullSize']
-            else:
-                usedSize = info['size']
+            usedSize = info.size
 
             if usedSize < gb ** 1:
                 name += ' (%.1f B)'  % (usedSize / (gb ** 0))
@@ -785,7 +776,7 @@ class LiveUSBData(QObject):
 
             self.currentDrive = -1
             for i, drive in enumerate(self._usbDrives):
-                if drive.drive['device'] == previouslySelected:
+                if drive.drive.device == previouslySelected:
                     self.currentDrive = i
             self.currentDriveChanged.emit()
 
@@ -837,7 +828,7 @@ class LiveUSBData(QObject):
         if self._currentDrive != value:# or not self.live.drive or self.live.drives[self.live.drive]['device'] != self._usbDrives[value].drive['device']:
             self._currentDrive = value
             if len(self._usbDrives) > 0:
-                self.live.drive = self._usbDrives[self._currentDrive].drive['device']
+                self.live.drive = self._usbDrives[self._currentDrive].drive.device
             self.currentDriveChanged.emit()
             for r in self.releaseData:
                 r.download.finished = False
