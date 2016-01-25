@@ -275,7 +275,7 @@ class ReleaseWriterThread(QThread):
         self.parent.status = _('Checking the source image')
         self.live.check_free_space()
 
-        if not self.live.opts.noverify:
+        if False and not self.live.opts.noverify:
             # Verify the MD5 checksum inside of the ISO image
             if not self.live.verify_iso_md5():
                 #self.live.log.removeHandler(handler)
@@ -499,7 +499,7 @@ class Release(QObject):
         self._error = []
         self.errorChanged.emit()
 
-        if not self.live.drive:
+        if not self.live.drive or (sys.platform == "darwin" and (not self.live.dest or not os.path.exists(self.live.dest))):
             return
 
         if self.parent().option('dd'):

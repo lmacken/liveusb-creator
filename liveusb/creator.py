@@ -53,6 +53,20 @@ class LiveUSBError(Exception):
         else:
             self.short = fullMessage
 
+class Drive(object):
+    friendlyName = ''
+    device = ''
+    size = 0
+    _types = ['usb', 'sd']
+    type = 'usb'
+
+    def __str__(self):
+        return str({'friendlyName': self.friendlyName,
+                'device': self.device,
+                'size': self.size,
+                'type': self.type
+                })
+
 
 class LiveUSBCreator(object):
     """ An OS-independent parent class for Live USB Creators """
@@ -464,6 +478,8 @@ class LiveUSBCreator(object):
             drive = parent
         else:
             drive = self.drive['device']
+        print(self.drive['device'])
+        self.popen('diskutil umount %s' % self.drive['device'])
         cmd = 'dd if="%s" of="%s" bs=1M iflag=direct oflag=direct conv=fdatasync' % (self.iso, drive)
         self.log.debug(_('Running') + ' %s' % cmd)
         self.popen(cmd)
@@ -1139,7 +1155,149 @@ class MacOsLiveUSBCreator(LiveUSBCreator):
 
     def detect_removable_drives(self, callback=None):
         """ This method should populate self.drives with removable devices """
-        pass
+        self.callback = callback
+        self.drives = {}
+
+        def detect():
+            import plistlib
+            import subprocess
+            deviceData = subprocess.check_output(['diskutil', 'list', '-plist'])
+            d = {}
+
+            disks = plistlib.readPlistFromString(deviceData)
+            print disks['AllDisks']
+
+            for diskName in disks['AllDisks']:
+                currentDrive = Drive()
+                diskData = subprocess.check_output(['diskutil', 'info', '-plist', diskName])
+                disk = plistlib.readPlistFromString(diskData)
+
+                if not disk['Removable'] or disk['Internal'] or not disk['WholeDisk']:
+                    continue
+
+                currentDrive.device = disk['DeviceNode'].replace('/dev/disk', "/dev/rdisk")
+                currentDrive.size = int(disk['TotalSize'])
+                currentDrive.friendlyName = disk['MediaName']
+
+                d[currentDrive.device] = currentDrive
+
+            self.drives = d
+
+            if self.callback:
+                self.callback()
+
+        """
+            for line in p.stdout:
+                r = re.search('^\b*(/\S+)\s+\(([^)]+)\)', line)
+                if r:
+                    currentDisk['path'] = r.group(1)
+                    if 'internal' in r.group(2):
+                        currentDisk['internal'] = True
+                    else:
+                        currentDisk['internal'] = False
+                    if 'physical' in r.group(2):
+                        currentDisk['physical'] = True
+                    else:
+                        currentDisk['physical'] = False
+                    currentDisk['partitions'] = list()
+
+                if (currentDisk['internal'] or not currentDisk['physical']):
+                    continue
+
+                r = re.search('^\s+([0-9]+):\s+(\S+) (.+?)\s+([+*])?([0-9.]+) (\S+)\s+(\S+)', line)
+                if r:
+                    name = r.group(7)
+                    data = {
+                        'label': r.group(3).strip() if len(r.group(3).strip()) else None,
+                        'fstype': 'msdos' if 'FAT' in r.group(2) else r.group(2),
+                        'fsversion': '',
+                        'uuid': '',
+                        'device': '',
+                        'mount': '',
+                        'size': 0,
+                        'friendlyName': ''
+                    }
+
+                    p2 = subprocess.Popen('diskutil info ' + name, shell=True, stdout=subprocess.PIPE)
+                    for line in p2.stdout:
+                        r = re.search('Device / Media Name:\s+(.+)', line)
+                        if r:
+                            data['friendlyName'] = r.group(1)
+                            '''
+                            if not self.drives[data['parent']]['friendlyName']:
+                                data['friendlyName'] = r.group(1)
+                            else:
+                                data['friendlyName'] = self.drives[data['parent']]['friendlyName']
+                            '''
+
+                        r = re.search('Total Size:\s+[0-9.]+\s+\S+\s\(([0-9]+) Bytes\)', line)
+                        if r:
+                            data['size'] = int(r.group(1))
+
+                        r = re.search('Volume Free Space:\s+[0-9.]+\s+\S+\s\(([0-9]+) Bytes\)', line)
+                        if r:
+                            data['free'] = int(r.group(1))
+
+                        r = re.search('Protocol:\s+(.*)', line)
+                        if r:
+                            data['protocol'] = r.group(1)
+
+                        r = re.search('Volume UUID:\s+(.*)', line)
+                        if r:
+                            data['uuid'] = r.group(1)
+
+                        r = re.search('Device Identifier:\s+(.*)', line)
+                        if r:
+                            data['device'] = r.group(1)
+
+                        r = re.search('Part of Whole:\s+(.*)', line)
+                        if r:
+                            data['parent'] = r.group(1)
+
+                        r = re.search('Mount Point:\s+(.*)', line)
+                        if r:
+                            data['mount'] = r.group(1)
+                            if not self.dest:
+                                self.dest = data['mount']
+
+                    if data['fstype'] not in self.valid_fstypes:
+                        continue
+                    if data['size'] <= 0:
+                        continue
+
+                    d[name] = data
+                    currentDisk['partitions'].append(data)
+
+            self.drives = d
+
+            if self.callback:
+                self.callback()
+        """
+
+        if callback:
+            from PyQt5.QtCore import QObject, QTimer, pyqtSlot
+            """
+            A helper class for the UI to detect the drives periodically, not only when started.
+            In contrary to the rest of this code, it utilizes Qt - to be able to use the UI event loop
+            """
+            class DriveWatcher(QObject):
+                def __init__(self, callback, work):
+                    QObject.__init__(self)
+                    self.callback = callback
+                    self.work = work
+                    self.timer = QTimer(self)
+                    self.timer.timeout.connect(self.doWork)
+                    self.timer.start(2000)
+
+                @pyqtSlot()
+                def doWork(self):
+                    self.work()
+                    self.callback()
+
+            self.watcher = DriveWatcher(callback, detect)
+
+        detect()
+
 
     def verify_filesystem(self):
         """
@@ -1149,16 +1307,65 @@ class MacOsLiveUSBCreator(LiveUSBCreator):
         """
         pass
 
-    def get_free_bytes(self, drive=None):
+    def get_free_bytes(self, device=None):
         """ Return the number of free bytes on a given drive.
 
         If drive is None, then use the currently selected device.
         """
-        pass
+        import statvfs
+        device = device and device or self.dest
+        if not device:
+            return 0
+        device = device.encode('utf-8')
+        if not os.path.exists(device):
+            raise LiveUSBError(_('Cannot find device: %s') % device)
+        stat = os.statvfs(device)
+        return stat[statvfs.F_BSIZE] * stat[statvfs.F_BAVAIL]
 
     def extract_iso(self):
         """ Extract the LiveCD ISO to the USB drive """
-        pass
+        self.log.info(_("Extracting live image to USB device..."))
+        tmpdir = tempfile.mkdtemp()
+        self.popen('hdiutil mount -readonly "%s" -mountpoint %s' % (self.iso, tmpdir))
+        tmpliveos = os.path.join(tmpdir, 'LiveOS')
+        try:
+            if not os.path.isdir(tmpliveos):
+                raise LiveUSBError(_("Unable to find LiveOS on ISO"))
+            liveos = os.path.join(self.dest, 'LiveOS')
+            if not os.path.exists(liveos):
+                os.mkdir(liveos)
+
+            start = datetime.now()
+            self.popen("cp %s '%s'" % (os.path.join(tmpliveos, 'squashfs.img'),
+                                       os.path.join(liveos, 'squashfs.img')))
+            delta = datetime.now() - start
+            if delta.seconds:
+                self.mb_per_sec = (self.isosize / delta.seconds) / 1024**2
+                if self.mb_per_sec:
+                    self.log.info(_("Wrote to device at") + " %d MB/sec" %
+                                  self.mb_per_sec)
+
+            osmin = os.path.join(tmpliveos, 'osmin.img')
+            if os.path.exists(osmin):
+                self.popen("cp %s '%s'" % (osmin,
+                    os.path.join(liveos, 'osmin.img')))
+            else:
+                self.log.debug('No osmin.img found')
+
+            isolinux = os.path.join(self.dest, 'isolinux')
+            if not os.path.exists(isolinux):
+                os.mkdir(isolinux)
+            self.popen("cp %s/* '%s'" % (
+                os.path.join(tmpdir, 'isolinux'), isolinux))
+
+            if os.path.exists(os.path.join(tmpdir, 'EFI')):
+                efi = os.path.join(self.dest, 'EFI')
+                if not os.path.exists(efi):
+                    os.mkdir(efi)
+                    self.popen("cp -r %s/* '%s'" % (os.path.join(tmpdir, 'EFI'),
+                                                    efi))
+        finally:
+            self.popen('hdiutil umount %s' % tmpdir)
 
     def verify_iso_md5(self):
         """ Verify the MD5 checksum of the ISO """
@@ -1170,11 +1377,41 @@ class MacOsLiveUSBCreator(LiveUSBCreator):
 
     def mount_device(self):
         """ Mount self.drive, setting the mount point to self.mount """
-        pass
+        self.dest = self.drive['mount']
+        if not self.dest:
+            p = subprocess.Popen(('hdiutil mount %s' % self.drive['device']), shell=True,
+                    stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            out, err = p.communicate()
+            if p.returncode != 0:
+                self.log.error('mount_device failed! %s', err)
+            self.dest = out.split()[-1]
+            self.drive['mount'] = self.dest
 
     def unmount_device(self):
         """ Unmount the device mounted at self.mount """
         pass
+
+    def dd_image(self):
+        self.log.info(_('Overwriting device with live image'))
+        parent = self.drive['parent']
+        if parent:
+            drive = parent
+        else:
+            drive = self.drive['device']
+        cmd = 'dd if="%s" of="/dev/r%s" bs=1048576' % (self.iso, drive)
+        self.log.debug(_('Running') + ' %s' % cmd)
+        self.popen(cmd)
+
+    def extract_iso(self):
+        self.log.info(_("Extracting live image to USB device..."))
+        start = datetime.now()
+        self.popen('tools/7z x "%s" -x![BOOT] -y -o%s' % (self.iso, self.drive['device']))
+        delta = datetime.now() - start
+        if delta.seconds:
+            self.mb_per_sec = (self.isosize / delta.seconds) / 1024**2
+            if self.mb_per_sec:
+                self.log.info(_("Wrote to device at") + " %d MB/sec" %
+                              self.mb_per_sec)
 
     def get_proxies(self):
         """ Return a dictionary of proxy settings """
