@@ -205,12 +205,18 @@ class ReleaseWriterProgressThread(QThread):
         self.totalSize = size / 1024
         self.drive = drive
         self.get_free_bytes = freebytes
-        self.orig_free = self.get_free_bytes()
+        if self.get_free_bytes:
+            self.orig_free = self.get_free_bytes()
+        else:
+            self.orig_free = 0
         self.parent().maxProgress = self.totalSize
 
     def run(self):
         while self.alive:
-            free = self.get_free_bytes()
+            if self.get_free_bytes:
+                free = self.get_free_bytes()
+            else:
+                free = 0
             value = (self.orig_free - free) / 1024
             self.parent().progress = value
             if (value >= self.totalSize):
@@ -242,16 +248,14 @@ class ReleaseWriterThread(QThread):
         #self.live.log.addHandler(handler)
         now = datetime.now()
         try:
-            self.live.verify_filesystem()
             if not self.live.drive['uuid'] and not self.live.label:
                 self.parent.release.addError(_('Error: Cannot set the label or obtain '
                               'the UUID of your device.  Unable to continue.'))
                 self.parent.running = False
                 return
-            if self.parent.release.liveUSBData.option('dd'):
-                self.ddImage(now)
-            else:
-                self.copyImage(now)
+
+            self.ddImage(now)
+
         except Exception, e:
             self.parent.release.addError(e.args[0])
             self.live.log.exception(e)
@@ -268,62 +272,6 @@ class ReleaseWriterThread(QThread):
         self.parent.finished = True
         self.progressThread.stop()
         return
-
-    def copyImage(self, now):
-        # TODO move this to the backend
-
-        self.parent.status = _('Checking the source image')
-        self.live.check_free_space()
-
-        if not self.live.opts.noverify:
-            # Verify the MD5 checksum inside of the ISO image
-            if not self.live.verify_iso_md5():
-                #self.live.log.removeHandler(handler)
-                return
-
-            # If we know about this ISO, and it's SHA1 -- verify it
-            release = self.live.get_release_from_iso()
-            if release and ('sha1' in release or 'sha256' in release):
-                if not self.live.verify_iso_sha1(self):
-                    #self.live.log.removeHandler(handler)
-                    return
-
-        self.parent.status = _('Unpacking the image')
-        # Setup the progress bar
-        self.progressThread.set_data(size=self.live.totalsize,
-                                     drive=self.live.drive['device'],
-                                     freebytes=self.live.get_free_bytes)
-        self.progressThread.start()
-
-        self.live.extract_iso()
-
-        if self.live.blank_mbr() or self.parent.release.liveUSBData.option('resetMBR'):
-            self.live.reset_mbr()
-
-        self.parent.status = _('Writing the data')
-        self.live.create_persistent_overlay()
-        self.live.update_configs()
-        self.live.install_bootloader()
-        self.live.bootable_partition()
-
-        self.parent.status = _('Checking the written data')
-        if self.live.opts.device_checksum:
-            self.live.calculate_device_checksum(progressThread=self)
-        if self.live.opts.liveos_checksum:
-            self.live.calculate_liveos_checksum()
-
-        self.progressThread.stop()
-
-        # Flush all filesystem buffers and unmount
-        self.live.flush_buffers()
-        self.live.unmount_device()
-        self.parent.status = _('Finished!')
-        self.parent.finished = True
-
-        duration = str(datetime.now() - now).split('.')[0]
-        #self.parent.status = 'Complete! (%s)' % duration
-
-        self.progressThread.stop()
 
     def set_max_progress(self, maximum):
         self.parent.maxProgress = maximum
@@ -502,24 +450,7 @@ class Release(QObject):
         if not self.live.drive:
             return
 
-        if self.parent().option('dd'):
-            self.addWarning(_('You are about to perform a destructive install. This will erase all data and partitions on your USB drive'))
-        else:
-            if self.live.blank_mbr():
-                self.addInfo(_('The Master Boot Record on your device is blank. Writing the image will reset the MBR on this device'))
-            elif not self.live.mbr_matches_syslinux_bin() and not self.parent().option('resetMBR'):
-                self.addInfo(_('The Master Boot Record on your device does not match your system\'s syslinux MBR.\n'
-                              'If you have trouble booting it, try setting the \"Reset the MBR\" advanced option.'))
-
-        try:
-            self.live.mount_device()
-        except LiveUSBError, e:
-            self.addInfo(e.args[0])
-        except OSError, e:
-            self.addInfo(_('Unable to mount device'))
-
-        if self.live.existing_liveos() and not self.parent().option('dd'):
-            self.addWarning(_('Your device already contains a live OS. If you continue, it will be overwritten.'))
+        self.addWarning(_('You are about to perform a destructive install. This will erase all data and partitions on your USB drive'))
 
     @pyqtProperty(int, constant=True)
     def index(self):
@@ -788,13 +719,10 @@ class LiveUSBData(QObject):
     _currentDrive = 0
 
     # man, this is just awkward... but it seems like the only way to do it in a predictable manner without creating a new class
-    _optionKeys = ['dd', 'resetMBR'] if not sys.platform.startswith("win") \
-              else ['resetMBR']
-    _optionNames = {'dd': _('Use <b>dd</b> to write the image - this will erase everything on your portable drive'),
-                    'resetMBR': _('Reset the MBR (Master Boot Record)'),
+    _optionKeys = []
+    _optionNames = {
                    }
-    _optionValues = {'dd': False,
-                     'resetMBR': True,
+    _optionValues = {
                     }
 
     def __init__(self, opts):
@@ -932,11 +860,6 @@ class LiveUSBData(QObject):
     def setOption(self, index, value):
         key = self._optionKeys[index]
         if self._optionValues[key] != value:
-            # dd and resetMBR options are mutually exclusive
-            if key == 'dd' and value:
-                self._optionValues['resetMBR'] = False
-            if key == 'resetMBR' and value:
-                self._optionValues['dd'] = False
             self._optionValues[key] = value
             self.optionsChanged.emit()
             self.currentImage.inspectDestination()
