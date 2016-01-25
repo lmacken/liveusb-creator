@@ -57,28 +57,21 @@ class Drive(object):
     friendlyName = ''
     device = ''
     uuid = ''
-    size = ''
+    size = 0
     type = 'usb' # so far only this, mmc/sd in the future
 
 class LiveUSBCreator(object):
     """ An OS-independent parent class for Live USB Creators """
 
     iso = None          # the path to our live image
-    label = "LIVE"      # if one doesn't already exist
-    fstype = None       # the format of our usb stick
     drives = {}         # {device: {'label': label, 'mount': mountpoint}}
-    overlay = 0         # size in mb of our persisten overlay
     dest = None         # the mount point of of our selected drive
     uuid = None         # the uuid of our selected drive
     pids = []           # a list of pids of all of our subprocesses
     output = StringIO() # log subprocess output in case of errors
-    totalsize = 0       # the total size of our overlay + iso
     isosize = 0         # the size of the selected iso
     _drive = None       # mountpoint of the currently selected drive
-    mb_per_sec = 0      # how many megabytes per second we can write
     log = None
-    ext_fstypes = set(['ext2', 'ext3', 'ext4'])
-    valid_fstypes = set(['vfat', 'msdos']) | ext_fstypes
 
     drive = property(fget=lambda self: self.drives[self._drive] if self._drive and len(self.drives) else None,
                      fset=lambda self, d: self._set_drive(d))
@@ -109,14 +102,6 @@ class LiveUSBCreator(object):
 
     def terminate(self):
         """ Terminate any subprocesses that we have spawned """
-        raise NotImplementedError
-
-    def mount_device(self):
-        """ Mount self.drive, setting the mount point to self.mount """
-        raise NotImplementedError
-
-    def unmount_device(self):
-        """ Unmount the device mounted at self.mount """
         raise NotImplementedError
 
     def popen(self, cmd, passive=False, **kwargs):
@@ -200,22 +185,6 @@ class LiveUSBCreator(object):
         out.write(self.output.getvalue())
         out.close()
         return filename
-
-
-    def existing_liveos(self):
-        return os.path.exists(self.get_liveos())
-
-    def get_liveos(self):
-        if not os.path.exists(self.dest):
-            raise LiveUSBError(_('Cannot find path %r') % self.dest)
-        return os.path.join(self.dest + os.path.sep, "LiveOS")
-
-    def existing_overlay(self):
-        return os.path.exists(self.get_overlay())
-
-    def get_overlay(self):
-        return os.path.join(self.get_liveos(),
-                            'overlay-%s-%s' % (self.label, self.uuid or ''))
 
     def get_release_from_iso(self):
         """ If the ISO is for a known release, return it. """
