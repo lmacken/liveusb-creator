@@ -53,12 +53,14 @@ class LiveUSBError(Exception):
         else:
             self.short = fullMessage
 
+
 class Drive(object):
     friendlyName = ''
     device = ''
-    uuid = ''
+    uuid = '' # TODO handle UUID detection in Windows, seems not important in Linux
     size = 0
     type = 'usb' # so far only this, mmc/sd in the future
+    isIso9660 = False
 
 class LiveUSBCreator(object):
     """ An OS-independent parent class for Live USB Creators """
@@ -270,7 +272,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             if ('org.freedesktop.UDisks2.Block' in device and
                 'org.freedesktop.UDisks2.Filesystem' not in device and
                 'org.freedesktop.UDisks2.Partition' not in device):
-                self.log.debug('Found a block device without a filesystem on %s' % name)
+                self.log.debug('Found a block device that is not a partition on %s' % name)
             else:
                 return
 
@@ -295,7 +297,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             data.device = blk['Device']
             data.size = int(blk['Size'])
             data.friendlyName = str(drive['Vendor']) + ' ' + str(drive['Model'])
-            data.uuid = str(blk['IdUUID'])
+            data.isIso9660 = blk['IdType'] == 'iso9660'
             if drive['ConnectionBus'] == 'usb':
                 data.type = 'usb'
             else:
@@ -455,6 +457,7 @@ class MacOsLiveUSBCreator(LiveUSBCreator):
 
 
 class WindowsLiveUSBCreator(LiveUSBCreator):
+    # TODO handle UUID detection in Windows
 
     def detect_removable_drives(self, callback=None):
         import win32file, win32api, pywintypes

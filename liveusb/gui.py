@@ -248,12 +248,6 @@ class ReleaseWriterThread(QThread):
         #self.live.log.addHandler(handler)
         now = datetime.now()
         try:
-            if not self.live.drive.uuid and not self.live.label:
-                self.parent.release.addError(_('Error: Cannot set the label or obtain '
-                              'the UUID of your device.  Unable to continue.'))
-                self.parent.running = False
-                return
-
             self.ddImage(now)
 
         except Exception, e:
