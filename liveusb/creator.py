@@ -294,7 +294,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 return
 
             data = Drive()
-            data.device = blk['Device']
+            data.device = self.strify(blk['Device'])
             data.size = int(blk['Size'])
             data.friendlyName = str(drive['Vendor']) + ' ' + str(drive['Model'])
             data.isIso9660 = blk['IdType'] == 'iso9660'
