@@ -4,6 +4,9 @@
 <application>
   <id type="desktop">liveusb-creator.desktop</id>
   <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-2.0</project_license>
+  <name>LiveUSB Creator</name>
+  <summary>Write operating system images to a USB device</summary>
   <description>
     <p>
       The LiveUSB Creator is a tool for easily installing live operating systems
