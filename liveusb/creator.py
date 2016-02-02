@@ -24,28 +24,23 @@ that provides platform-independent methods.  Platform specific implementations
 include the LinuxLiveUSBCreator and the WindowsLiveUSBCreator.
 """
 
-import subprocess
-import tempfile
-import logging
 import hashlib
-import shutil
-import signal
-import time
+import logging
 import os
-import re
+import signal
+import subprocess
 import sys
-
+import time
 from StringIO import StringIO
-from datetime import datetime
-from pprint import pformat
 from stat import ST_SIZE
 
-from liveusb.releases import releases
 from liveusb import _
+from liveusb.releases import releases
 
 
 class LiveUSBError(Exception):
     """ A generic error message that is thrown by the LiveUSBCreator """
+
     def __init__(self, fullMessage, shortMessage=""):
         self.args = [fullMessage]
         if shortMessage != "":
@@ -57,23 +52,25 @@ class LiveUSBError(Exception):
 class Drive(object):
     friendlyName = ''
     device = ''
-    uuid = '' # TODO handle UUID detection in Windows, seems not important in Linux
+    uuid = ''  # TODO handle UUID detection in Windows, seems not important in Linux
     size = 0
-    type = 'usb' # so far only this, mmc/sd in the future
+    type = 'usb'  # so far only this, mmc/sd in the future
     isIso9660 = False
+
 
 class LiveUSBCreator(object):
     """ An OS-independent parent class for Live USB Creators """
 
-    iso = None          # the path to our live image
-    drives = {}         # {device: {'label': label, 'mount': mountpoint}}
-    dest = None         # the mount point of of our selected drive
-    uuid = None         # the uuid of our selected drive
-    pids = []           # a list of pids of all of our subprocesses
-    output = StringIO() # log subprocess output in case of errors
-    isosize = 0         # the size of the selected iso
-    _drive = None       # mountpoint of the currently selected drive
+    iso = None  # the path to our live image
+    drives = {}  # {device: {'label': label, 'mount': mountpoint}}
+    dest = None  # the mount point of of our selected drive
+    uuid = None  # the uuid of our selected drive
+    pids = []  # a list of pids of all of our subprocesses
+    output = StringIO()  # log subprocess output in case of errors
+    isosize = 0  # the size of the selected iso
+    _drive = None  # mountpoint of the currently selected drive
     log = None
+    callback = None  # Callback for drive changes
 
     drive = property(fget=lambda self: self.drives[self._drive] if self._drive and len(self.drives) else None,
                      fset=lambda self, d: self._set_drive(d))
@@ -145,30 +142,34 @@ class LiveUSBCreator(object):
         if not progress:
             class DummyProgress:
                 def set_max_progress(self, value): pass
+
                 def update_progress(self, value): pass
+
             progress = DummyProgress()
         release = self.get_release_from_iso()
         if release:
             progress.set_max_progress(self.isosize / 1024)
             if 'sha1' in release:
                 self.log.info(_("Verifying SHA1 checksum of LiveCD image..."))
-                hash = 'sha1'
+                algorithm = 'sha1'
                 checksum = hashlib.sha1()
             elif 'sha256' in release:
                 self.log.info(_("Verifying SHA256 checksum of LiveCD image..."))
-                hash = 'sha256'
+                algorithm = 'sha256'
                 checksum = hashlib.sha256()
+            else:
+                return True
             isofile = file(self.iso, 'rb')
-            bytes = 1024**2
+            bytesize = 1024 ** 2
             total = 0
-            while bytes:
-                data = isofile.read(bytes)
+            while bytesize:
+                data = isofile.read(bytesize)
                 checksum.update(data)
-                bytes = len(data)
-                total += bytes
+                bytesize = len(data)
+                total += bytesize
                 progress.update_progress(total / 1024)
             isofile.close()
-            if checksum.hexdigest() == release[hash]:
+            if checksum.hexdigest() == release[algorithm]:
                 return True
             else:
                 self.log.info(_("Error: The SHA1 of your Live CD is "
@@ -193,12 +194,13 @@ class LiveUSBCreator(object):
         isoname = os.path.basename(self.iso)
         for release in releases:
             for arch in release['variants'].keys():
-                if arch in release['variants'].keys() and 'url' in release['variants'][arch] and os.path.basename(release['variants'][arch]['url']) == isoname:
+                if arch in release['variants'].keys() and 'url' in release['variants'][arch] and os.path.basename(
+                        release['variants'][arch]['url']) == isoname:
                     return release
         return None
 
     def _set_drive(self, drive):
-        if drive == None:
+        if not drive:
             self._drive = None
             return
         if not self.drives.has_key(str(drive)):
@@ -223,8 +225,9 @@ class LiveUSBCreator(object):
         self.iso = os.path.abspath(self._to_unicode(iso))
         self.isosize = os.stat(self.iso)[ST_SIZE]
 
-    def _to_unicode(self, obj, encoding='utf-8'):
-        if hasattr(obj, 'toUtf8'): # PyQt5.QtCore.QString
+    @staticmethod
+    def _to_unicode(obj, encoding='utf-8'):
+        if hasattr(obj, 'toUtf8'):  # PyQt5.QtCore.QString
             obj = str(obj.toUtf8())
         if isinstance(obj, basestring):
             if not isinstance(obj, unicode):
@@ -247,14 +250,14 @@ class LiveUSBCreator(object):
 
 
 class LinuxLiveUSBCreator(LiveUSBCreator):
-
-    bus = None # the dbus.SystemBus
-    udisks = None # the org.freedesktop.UDisks2 dbus.Interface
+    bus = None  # the dbus.SystemBus
+    udisks = None  # the org.freedesktop.UDisks2 dbus.Interface
 
     def __init__(self, *args, **kw):
         super(LinuxLiveUSBCreator, self).__init__(*args, **kw)
 
-    def strify(self, s):
+    @staticmethod
+    def strify(s):
         return bytearray(s).replace(b'\x00', b'').decode('utf-8')
 
     def detect_removable_drives(self, callback=None):
@@ -267,11 +270,10 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                                          "/org/freedesktop/UDisks2")
         self.udisks = dbus.Interface(udisks_obj, 'org.freedesktop.DBus.ObjectManager')
 
-
         def handleAdded(name, device):
             if ('org.freedesktop.UDisks2.Block' in device and
-                'org.freedesktop.UDisks2.Filesystem' not in device and
-                'org.freedesktop.UDisks2.Partition' not in device):
+                        'org.freedesktop.UDisks2.Filesystem' not in device and
+                        'org.freedesktop.UDisks2.Partition' not in device):
                 self.log.debug('Found a block device that is not a partition on %s' % name)
             else:
                 return
@@ -287,10 +289,11 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
             # this is probably the only check we need, including Drive != "/"
             if (not drive[u'Removable'] or
-                drive[u'Optical'] or
+                    drive[u'Optical'] or
                     (drive[u'ConnectionBus'] != 'usb' and
-                     drive[u'ConnectionBus'] != 'sdio')):
-                self.log.debug('Skipping a device that is not removable or connected via USB/SD or is optical: %s' % name)
+                             drive[u'ConnectionBus'] != 'sdio')):
+                self.log.debug(
+                        'Skipping a device that is not removable or connected via USB/SD or is optical: %s' % name)
                 return
 
             data = Drive()
@@ -327,8 +330,10 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 self.callback()
 
         if not self.opts.console:
-            self.bus.add_signal_receiver(handleAdded, "InterfacesAdded", "org.freedesktop.DBus.ObjectManager", "org.freedesktop.UDisks2", "/org/freedesktop/UDisks2")
-            self.bus.add_signal_receiver(handleRemoved, "InterfacesRemoved", "org.freedesktop.DBus.ObjectManager", "org.freedesktop.UDisks2", "/org/freedesktop/UDisks2")
+            self.bus.add_signal_receiver(handleAdded, "InterfacesAdded", "org.freedesktop.DBus.ObjectManager",
+                                         "org.freedesktop.UDisks2", "/org/freedesktop/UDisks2")
+            self.bus.add_signal_receiver(handleRemoved, "InterfacesRemoved", "org.freedesktop.DBus.ObjectManager",
+                                         "org.freedesktop.UDisks2", "/org/freedesktop/UDisks2")
 
         for name, device in self.udisks.GetManagedObjects().iteritems():
             handleAdded(name, device)
@@ -396,14 +401,16 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         if not progress:
             class DummyProgress:
                 def set_max_progress(self, value): pass
+
                 def update_progress(self, value): pass
+
             progress = DummyProgress()
         # Get size of drive
-        #progress.set_max_progress(self.isosize / 1024)
+        # progress.set_max_progress(self.isosize / 1024)
         checksum = hashlib.sha1()
         device_name = unicode(self.drive.device)
         device = file(device_name, 'rb')
-        bytes = 1024**2
+        bytes = 1024 ** 2
         total = 0
         while bytes:
             data = device.read(bytes)
@@ -423,7 +430,6 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
 
 class MacOsLiveUSBCreator(LiveUSBCreator):
-
     def detect_removable_drives(self, callback=None):
         """ This method should populate self.drives with removable devices """
         pass
@@ -469,7 +475,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
             for drive in [l + ':' for l in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ']:
                 try:
                     if win32file.GetDriveType(drive) == win32file.DRIVE_REMOVABLE or \
-                       drive == self.opts.force:
+                                    drive == self.opts.force:
                         vol = [None]
                         try:
                             vol = win32api.GetVolumeInformation(drive)
@@ -480,7 +486,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                             'label': vol[0],
                             'mount': drive,
                             'uuid': self._get_device_uuid(drive),
-                            'free': self.get_free_bytes(drive) / 1024**2,
+                            'free': self.get_free_bytes(drive) / 1024 ** 2,
                             'fstype': 'vfat',
                             'device': drive,
                             'fsversion': vol[-1],
@@ -490,7 +496,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                     self.log.exception(e)
                     self.log.error(_("Error probing device"))
             self.drives = d
-            #if callback:
+            # if callback:
             #    callback()
 
             self.drive_callback()
@@ -501,6 +507,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
             A helper class for the UI to detect the drives periodically, not only when started.
             In contrary to the rest of this code, it utilizes Qt - to be able to use the UI event loop
             """
+
             class DriveWatcher(QObject):
                 def __init__(self, callback, work):
                     QObject.__init__(self)
@@ -517,7 +524,6 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
 
             self.watcher = DriveWatcher(callback, detect)
 
-
         detect()
 
     def drive_callback(self):
@@ -532,10 +538,10 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         obj = None
         try:
             obj = win32com.client.Dispatch("WbemScripting.SWbemLocator") \
-                         .ConnectServer(".", "root\cimv2") \
-                         .ExecQuery("Select * from "
-                                    "Win32_LogicalDisk where Name = '%s'" %
-                                    drive)
+                .ConnectServer(".", "root\cimv2") \
+                .ExecQuery("Select * from "
+                           "Win32_LogicalDisk where Name = '%s'" %
+                           drive)
             if not obj:
                 self.log.error(_("Unable to get Win32_LogicalDisk; win32com "
                                  "query did not return any results"))
@@ -648,7 +654,9 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         if not progress:
             class DummyProgress:
                 def set_max_progress(self, value): pass
+
                 def update_progress(self, value): pass
+
             progress = DummyProgress()
         progress.set_max_progress(self.drive['size'])
         checksum = hashlib.sha1()
@@ -657,7 +665,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         bytes = 1
         total = 0
         while bytes:
-            data = device.read(1024**2)
+            data = device.read(1024 ** 2)
             checksum.update(data)
             bytes = len(data)
             total += bytes
