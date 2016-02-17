@@ -428,11 +428,11 @@ msgstr "Desempaquetando la imagen"
 
 #: liveusb/gui.py:299
 msgid "Writing the data"
-msgstr "Escribiendo la informacion"
+msgstr "Escribiendo la información"
 
 #: liveusb/gui.py:305
 msgid "Checking the written data"
-msgstr "Comprobando la informacion escrita"
+msgstr "Comprobando la información escrita"
 
 #: liveusb/gui.py:316
 msgid "Finished!"
@@ -585,7 +585,7 @@ msgstr ""
 
 #: liveusb/urlgrabber/mirror.py:287
 msgid "No more mirrors to try."
-msgstr "No hay mas espejos para tratar."
+msgstr "No hay mas espejos para intentar."
 
 #~ msgid "Unknown release: %s"
 #~ msgstr "Versión desconocida: %s"
