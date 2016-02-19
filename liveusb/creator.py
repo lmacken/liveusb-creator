@@ -52,7 +52,6 @@ class LiveUSBError(Exception):
 class Drive(object):
     friendlyName = ''
     device = ''
-    uuid = ''  # TODO handle UUID detection in Windows, seems not important in Linux
     size = 0
     type = 'usb'  # so far only this, mmc/sd in the future
     isIso9660 = False
@@ -242,11 +241,7 @@ class LiveUSBCreator(object):
         raise NotImplementedError
 
     def dd_image(self):
-        self.log.info(_('Overwriting device with live image'))
-        drive = self.drive.device
-        cmd = 'dd if="%s" of="%s" bs=1M iflag=direct oflag=direct conv=fdatasync' % (self.iso, drive)
-        self.log.debug(_('Running') + ' %s' % cmd)
-        self.popen(cmd)
+        raise NotImplementedError
 
 
 class LinuxLiveUSBCreator(LiveUSBCreator):
@@ -337,6 +332,13 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
         for name, device in self.udisks.GetManagedObjects().iteritems():
             handleAdded(name, device)
+
+    def dd_image(self):
+        self.log.info(_('Overwriting device with live image'))
+        drive = self.drive.device
+        cmd = 'dd if="%s" of="%s" bs=1M iflag=direct oflag=direct conv=fdatasync' % (self.iso, drive)
+        self.log.debug(_('Running') + ' %s' % cmd)
+        self.popen(cmd)
 
     def terminate(self):
         for pid in self.pids:
@@ -463,7 +465,6 @@ class MacOsLiveUSBCreator(LiveUSBCreator):
 
 
 class WindowsLiveUSBCreator(LiveUSBCreator):
-    # TODO handle UUID detection in Windows
 
     def detect_removable_drives(self, callback=None):
         import win32file, win32api, pywintypes
@@ -525,6 +526,52 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
             self.watcher = DriveWatcher(callback, detect)
 
         detect()
+
+    def dd_image(self, update_function=None):
+        import re
+        if self.drive['mount']:
+            mountvol = subprocess.Popen(['mountvol', self.drive['mount'], '/d'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            mountvol.wait()
+
+        diskpart = subprocess.Popen(['diskpart'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        diskpart.communicate('select disk '+self.drive['index']+'\r\nclean\r\nexit')
+        diskpart.wait()
+        if diskpart.returncode != 0:
+            self.log("Diskpart exited with a nonzero status")
+            return
+
+        dd = subprocess.Popen(['dd', 'bs=1M', 'if='+self.iso, 'of=\\\\.\\PHYSICALDRIVE'+self.drive['index']], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        if update_function:
+            while dd.poll() is None:
+                buf = dd.stdout.read(256)
+                r = re.match('^[^ ]+ ([0-9]+)\%')
+                if r:
+                    update_function(int(r.group(1)))
+
+
+
+        """
+        To write the image:
+
+        mountvol d: /d
+
+        diskpart <<< "select disk 1
+            clean
+            exit"
+
+        dd if=image of=\\\\.\\PHYSICALDRIVE1 bs=1M
+
+        To clean the drive:
+
+        diskpart <<< "select disk 1
+            clean
+            create part pri
+            select part 1
+            format fs=fat32 quick
+            assign
+            exit
+        """
+        pass
 
     def drive_callback(self):
         self.callback()
