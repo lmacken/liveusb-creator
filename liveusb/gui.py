@@ -624,6 +624,8 @@ class ReleaseListProxy(QSortFilterProxyModel):
     def get(self, i):
         if i < 0 or i >= len(self.parent().releaseData):
             return None
+        if not self.parent().releaseData[i].category:
+            return None
         return self.parent().releaseData[i]
 
     def rowCount(self, parent=QModelIndex()):

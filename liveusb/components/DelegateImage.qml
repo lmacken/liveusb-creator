@@ -6,7 +6,7 @@ Item {
     height: $(84)
 
     readonly property bool isTop: !liveUSBData.releaseProxyModel.get(index-1) || release.category != liveUSBData.releaseProxyModel.get(index-1).category
-    readonly property bool isBottom: !liveUSBData.releaseProxyModel.get(index+1) || (release.category != liveUSBData.releaseProxyModel.get(index+1).category &&  !liveUSBData.releaseProxyModel.isFront)
+    readonly property bool isBottom: !liveUSBData.releaseProxyModel.get(index+1) || (!liveUSBData.releaseProxyModel.isFront && release.category != liveUSBData.releaseProxyModel.get(index+1).category)
 
     readonly property color color: mouse.containsPress ? "#ededed" : mouse.containsMouse ? "#f8f8f8" : "white"
 
