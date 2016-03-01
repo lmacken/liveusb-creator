@@ -493,11 +493,11 @@ class Release(QObject):
     @pyqtProperty(str, constant=True)
     def category(self):
         if self._data['source'] in ['Local', 'Fedora Workstation', 'Fedora Server']:
-            return ''
+            return 'main'
         elif self._data['source'] == 'Spins':
-            return '<b>Fedora Spins </b> &nbsp; Alternative desktops for Fedora'
+            return _('<b>Fedora Spins </b> &nbsp; Alternative desktops for Fedora')
         elif self._data['source'] == 'Labs':
-            return '<b>Fedora Labs </b> &nbsp; Functional bundles for Fedora'
+            return _('<b>Fedora Labs </b> &nbsp; Functional bundles for Fedora')
         else:
             return '<b>Other</b>'
 

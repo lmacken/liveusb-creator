@@ -185,7 +185,7 @@ Item {
                 criteria: ViewSection.FullString
                 labelPositioning: ViewSection.InlineLabels
                 delegate: Item {
-                    height: section.length > 0 ? $(64) : 0
+                    height: section == "main" ? 0 : $(64)
                     width: parent.width
                     Text {
                         text: section
