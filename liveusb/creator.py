@@ -1186,94 +1186,6 @@ class MacOsLiveUSBCreator(LiveUSBCreator):
             if self.callback:
                 self.callback()
 
-        """
-            for line in p.stdout:
-                r = re.search('^\b*(/\S+)\s+\(([^)]+)\)', line)
-                if r:
-                    currentDisk['path'] = r.group(1)
-                    if 'internal' in r.group(2):
-                        currentDisk['internal'] = True
-                    else:
-                        currentDisk['internal'] = False
-                    if 'physical' in r.group(2):
-                        currentDisk['physical'] = True
-                    else:
-                        currentDisk['physical'] = False
-                    currentDisk['partitions'] = list()
-
-                if (currentDisk['internal'] or not currentDisk['physical']):
-                    continue
-
-                r = re.search('^\s+([0-9]+):\s+(\S+) (.+?)\s+([+*])?([0-9.]+) (\S+)\s+(\S+)', line)
-                if r:
-                    name = r.group(7)
-                    data = {
-                        'label': r.group(3).strip() if len(r.group(3).strip()) else None,
-                        'fstype': 'msdos' if 'FAT' in r.group(2) else r.group(2),
-                        'fsversion': '',
-                        'uuid': '',
-                        'device': '',
-                        'mount': '',
-                        'size': 0,
-                        'friendlyName': ''
-                    }
-
-                    p2 = subprocess.Popen('diskutil info ' + name, shell=True, stdout=subprocess.PIPE)
-                    for line in p2.stdout:
-                        r = re.search('Device / Media Name:\s+(.+)', line)
-                        if r:
-                            data['friendlyName'] = r.group(1)
-                            '''
-                            if not self.drives[data['parent']]['friendlyName']:
-                                data['friendlyName'] = r.group(1)
-                            else:
-                                data['friendlyName'] = self.drives[data['parent']]['friendlyName']
-                            '''
-
-                        r = re.search('Total Size:\s+[0-9.]+\s+\S+\s\(([0-9]+) Bytes\)', line)
-                        if r:
-                            data['size'] = int(r.group(1))
-
-                        r = re.search('Volume Free Space:\s+[0-9.]+\s+\S+\s\(([0-9]+) Bytes\)', line)
-                        if r:
-                            data['free'] = int(r.group(1))
-
-                        r = re.search('Protocol:\s+(.*)', line)
-                        if r:
-                            data['protocol'] = r.group(1)
-
-                        r = re.search('Volume UUID:\s+(.*)', line)
-                        if r:
-                            data['uuid'] = r.group(1)
-
-                        r = re.search('Device Identifier:\s+(.*)', line)
-                        if r:
-                            data['device'] = r.group(1)
-
-                        r = re.search('Part of Whole:\s+(.*)', line)
-                        if r:
-                            data['parent'] = r.group(1)
-
-                        r = re.search('Mount Point:\s+(.*)', line)
-                        if r:
-                            data['mount'] = r.group(1)
-                            if not self.dest:
-                                self.dest = data['mount']
-
-                    if data['fstype'] not in self.valid_fstypes:
-                        continue
-                    if data['size'] <= 0:
-                        continue
-
-                    d[name] = data
-                    currentDisk['partitions'].append(data)
-
-            self.drives = d
-
-            if self.callback:
-                self.callback()
-        """
-
         if callback:
             from PyQt5.QtCore import QObject, QTimer, pyqtSlot
             """
@@ -1312,60 +1224,10 @@ class MacOsLiveUSBCreator(LiveUSBCreator):
 
         If drive is None, then use the currently selected device.
         """
-        import statvfs
-        device = device and device or self.dest
-        if not device:
-            return 0
-        device = device.encode('utf-8')
-        if not os.path.exists(device):
-            raise LiveUSBError(_('Cannot find device: %s') % device)
-        stat = os.statvfs(device)
-        return stat[statvfs.F_BSIZE] * stat[statvfs.F_BAVAIL]
+        pass
 
     def extract_iso(self):
-        """ Extract the LiveCD ISO to the USB drive """
-        self.log.info(_("Extracting live image to USB device..."))
-        tmpdir = tempfile.mkdtemp()
-        self.popen('hdiutil mount -readonly "%s" -mountpoint %s' % (self.iso, tmpdir))
-        tmpliveos = os.path.join(tmpdir, 'LiveOS')
-        try:
-            if not os.path.isdir(tmpliveos):
-                raise LiveUSBError(_("Unable to find LiveOS on ISO"))
-            liveos = os.path.join(self.dest, 'LiveOS')
-            if not os.path.exists(liveos):
-                os.mkdir(liveos)
-
-            start = datetime.now()
-            self.popen("cp %s '%s'" % (os.path.join(tmpliveos, 'squashfs.img'),
-                                       os.path.join(liveos, 'squashfs.img')))
-            delta = datetime.now() - start
-            if delta.seconds:
-                self.mb_per_sec = (self.isosize / delta.seconds) / 1024**2
-                if self.mb_per_sec:
-                    self.log.info(_("Wrote to device at") + " %d MB/sec" %
-                                  self.mb_per_sec)
-
-            osmin = os.path.join(tmpliveos, 'osmin.img')
-            if os.path.exists(osmin):
-                self.popen("cp %s '%s'" % (osmin,
-                    os.path.join(liveos, 'osmin.img')))
-            else:
-                self.log.debug('No osmin.img found')
-
-            isolinux = os.path.join(self.dest, 'isolinux')
-            if not os.path.exists(isolinux):
-                os.mkdir(isolinux)
-            self.popen("cp %s/* '%s'" % (
-                os.path.join(tmpdir, 'isolinux'), isolinux))
-
-            if os.path.exists(os.path.join(tmpdir, 'EFI')):
-                efi = os.path.join(self.dest, 'EFI')
-                if not os.path.exists(efi):
-                    os.mkdir(efi)
-                    self.popen("cp -r %s/* '%s'" % (os.path.join(tmpdir, 'EFI'),
-                                                    efi))
-        finally:
-            self.popen('hdiutil umount %s' % tmpdir)
+        pass
 
     def verify_iso_md5(self):
         """ Verify the MD5 checksum of the ISO """
