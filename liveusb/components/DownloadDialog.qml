@@ -340,7 +340,6 @@ Dialog {
                                         }
                                         else {
                                             liveUSBData.currentImage.write()
-                                            optionGroup.checked = false
                                         }
                                         pressedOnce = false
                                     }
@@ -354,7 +353,6 @@ Dialog {
                                     onReadyToWriteChanged: {
                                         if (liveUSBData.currentImage.readyToWrite && writeImmediately.confirmed) {
                                             liveUSBData.currentImage.write()
-                                            optionGroup.checked = false
                                         }
                                     }
                                 }
