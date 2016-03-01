@@ -6,7 +6,7 @@ import QtQuick.Window 2.0
 
 Dialog {
     id: root
-    title: qsTranslate("", "Write %1 to USB").arg(liveUSBData.currentImage.name)
+    title: qsTranslate("", "Write %1").arg(liveUSBData.currentImage.name)
 
     height: layout.height + $(56)
     standardButtons: StandardButton.NoButton
@@ -183,6 +183,20 @@ Dialog {
                                 progressColor: liveUSBData.currentImage.writer.checking ? Qt.lighter("green") : "red"
                             }
                         }
+                        AdwaitaCheckBox {
+                            id: writeImmediately
+                            enabled: driveCombo.count
+                            opacity: liveUSBData.currentImage.download.running && liveUSBData.currentImage.download.progress / liveUSBData.currentImage.download.maxProgress < 0.95 ? 1.0 : 0.0
+                            property bool confirmed: false
+                            text: qsTranslate("", "Write the image immediately when the download is finished")
+                            onCheckedChanged: {
+                                liveUSBData.currentImage.writer.finished = true
+                                if (checked)
+                                    acceptButton.pressedOnce = true
+                                else
+                                    acceptButton.pressedOnce = false
+                            }
+                        }
                     }
 
                     RowLayout {
@@ -230,6 +244,7 @@ Dialog {
                             }
                         }
                         AdwaitaComboBox {
+                            id: driveCombo
                             Layout.preferredWidth: implicitWidth * 2.5
                             model: liveUSBData.usbDriveNames
                             currentIndex: liveUSBData.currentDrive
@@ -272,39 +287,6 @@ Dialog {
                             height: acceptButton.height
                             width: parent.width
                             spacing: $(10)
-                            AdwaitaButton  {
-                                id: optionGroup
-                                implicitHeight: parent.height / 8 * 5
-                                implicitWidth: parent.height / 8 * 5
-                                Layout.alignment: Qt.AlignVCenter
-                                checkable: true
-                                checked: false
-                                enabled: liveUSBData.optionNames && liveUSBData.optionNames[0] && !liveUSBData.currentImage.writer.running
-                                onEnabledChanged: {
-                                    if (!liveUSBData.currentImage.writer.running)
-                                        checked = false
-                                }
-                                Text {
-                                    anchors.fill: parent
-                                    horizontalAlignment: Text.AlignHCenter
-                                    verticalAlignment: Text.AlignVCenter
-                                    text: "+"
-                                    font.bold: true
-                                    font.pixelSize: $(16)
-                                }
-                            }
-
-                            Text {
-                                Layout.fillHeight: true
-                                verticalAlignment: Text.AlignVCenter
-                                text: qsTranslate("", "Options")
-                                enabled: optionGroup.enabled
-                                font.pixelSize: $(12)
-                                MouseArea {
-                                    anchors.fill: parent
-                                    onClicked: optionGroup.checked = !optionGroup.checked
-                                }
-                            }
 
                             Item {
                                 Layout.fillWidth: true
@@ -414,43 +396,6 @@ Dialog {
                                             to: 1.0
                                         }
                                     }
-                                }
-                            }
-                        }
-                        Column {
-                            id: advancedOptions
-                            spacing: $(6)
-                            Repeater {
-                                id: groupLayoutRepeater
-                                model: optionGroup.checked ? liveUSBData.optionValues : null
-                                AdwaitaCheckBox {
-                                    checked: liveUSBData.optionValues[index]
-                                    enabled: !liveUSBData.currentImage.writer.running
-                                    height: implicitHeight
-                                    width: implicitWidth
-                                    text: liveUSBData.optionNames[index]
-                                    onClicked: {
-                                        liveUSBData.currentImage.writer.finished = false
-                                        if (!writeImmediately.checked)
-                                            acceptButton.pressedOnce = false
-                                        liveUSBData.setOption(index, checked)
-                                    }
-                                }
-                            }
-                            // It's better to have this one separately to have the confirmation clearer
-                            AdwaitaCheckBox {
-                                id: writeImmediately
-                                height: optionGroup.checked ? implicitHeight : 0
-                                visible: optionGroup.checked
-                                width: implicitWidth
-                                property bool confirmed: false
-                                text: qsTranslate("", "Write the image immediately when the download is finished")
-                                onCheckedChanged: {
-                                    liveUSBData.currentImage.writer.finished = true
-                                    if (checked)
-                                        acceptButton.pressedOnce = true
-                                    else
-                                        acceptButton.pressedOnce = false
                                 }
                             }
                         }

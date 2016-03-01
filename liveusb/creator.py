@@ -54,6 +54,7 @@ class Drive(object):
     device = ''
     size = 0
     type = 'usb'  # so far only this, mmc/sd in the future
+    mount = []
     isIso9660 = False
 
 
@@ -63,7 +64,6 @@ class LiveUSBCreator(object):
     iso = None  # the path to our live image
     drives = {}  # {device: {'label': label, 'mount': mountpoint}}
     dest = None  # the mount point of of our selected drive
-    uuid = None  # the uuid of our selected drive
     pids = []  # a list of pids of all of our subprocesses
     output = StringIO()  # log subprocess output in case of errors
     isosize = 0  # the size of the selected iso
@@ -213,7 +213,6 @@ class LiveUSBCreator(object):
                 raise LiveUSBError(_("Cannot find device %s" % drive))
         self.log.debug("%s selected: %s" % (drive, self.drives[drive]))
         self._drive = drive
-        self.uuid = self.drives[drive].uuid
 
     def get_proxies(self):
         """ Return a dictionary of proxy settings """
@@ -467,46 +466,45 @@ class MacOsLiveUSBCreator(LiveUSBCreator):
 class WindowsLiveUSBCreator(LiveUSBCreator):
 
     def detect_removable_drives(self, callback=None):
-        import win32file, win32api, pywintypes
         self.drives = {}
         self.callback = callback
 
         def detect():
-            d = {}
-            for drive in [l + ':' for l in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ']:
-                try:
-                    if win32file.GetDriveType(drive) == win32file.DRIVE_REMOVABLE or \
-                                    drive == self.opts.force:
-                        vol = [None]
-                        try:
-                            vol = win32api.GetVolumeInformation(drive)
-                        except pywintypes.error, e:
-                            self.log.error(_('Unable to get GetVolumeInformation(%r): %r') % (drive, e))
-                            continue
-                        d[drive] = {
-                            'label': vol[0],
-                            'mount': drive,
-                            'uuid': self._get_device_uuid(drive),
-                            'free': self.get_free_bytes(drive) / 1024 ** 2,
-                            'fstype': 'vfat',
-                            'device': drive,
-                            'fsversion': vol[-1],
-                            'size': self._get_device_size(drive)
-                        }
-                except Exception, e:
-                    self.log.exception(e)
-                    self.log.error(_("Error probing device"))
-            self.drives = d
-            # if callback:
-            #    callback()
+            import wmi
+            c = wmi.WMI()
+            drives = {}
+            for d in c.Win32_DiskDrive():
+                if 7 not in d.Capabilities or 'USB' != d.InterfaceType: # does not support removable media
+                    continue
 
-            self.drive_callback()
+                data = Drive()
+                data.device = str(d.Index)
+                data.friendlyName = unicode(d.Caption).encode('utf-8').replace(' USB Device', '')
+                data.size = float(d.Size)
+
+                for p in d.associators('Win32_DiskDriveToDiskPartition'):
+                    for l in p.associators('Win32_LogicalDiskToPartition'):
+                        data.mount.append(unicode(l.DeviceID).encode('utf-8'))
+
+                data.isIso9660 = not data.mount
+
+                drives[unicode(d.Name).encode('utf-8')] = data
+
+            changed = False
+            if self.drives != drives:
+                changed = True
+            self.drives = drives
+            if changed and self.callback:
+                self.callback()
 
         if callback:
             from PyQt5.QtCore import QObject, QTimer, pyqtSlot
             """
             A helper class for the UI to detect the drives periodically, not only when started.
             In contrary to the rest of this code, it utilizes Qt - to be able to use the UI event loop
+
+            TODO: I found no other _clean_ and reliable way to do this. WMI provides some kind of drive and device
+            watchers. Those however seem to break the Python interpreter, at least on the Windows machine I use.
             """
 
             class DriveWatcher(QObject):
@@ -521,7 +519,6 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                 @pyqtSlot()
                 def doWork(self):
                     self.work()
-                    self.callback()
 
             self.watcher = DriveWatcher(callback, detect)
 
@@ -529,28 +526,37 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
 
     def dd_image(self, update_function=None):
         import re
-        if self.drive['mount']:
-            mountvol = subprocess.Popen(['mountvol', self.drive['mount'], '/d'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+
+        if update_function:
+            update_function(-1.0)
+
+        for i in self.drive.mount:
+            mountvol = subprocess.Popen(['mountvol', i, '/d'], shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             mountvol.wait()
 
-        diskpart = subprocess.Popen(['diskpart'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        diskpart.communicate('select disk '+self.drive['index']+'\r\nclean\r\nexit')
+        diskpart = subprocess.Popen(['diskpart'], shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        diskpart.communicate('select disk '+self.drive.device+'\r\nclean\r\nexit')
         diskpart.wait()
         if diskpart.returncode != 0:
-            self.log("Diskpart exited with a nonzero status")
+            self.log('Diskpart exited with a nonzero status')
             return
 
-        dd = subprocess.Popen(['dd', 'bs=1M', 'if='+self.iso, 'of=\\\\.\\PHYSICALDRIVE'+self.drive['index']], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        if update_function:
+            update_function(0.0)
+        dd = subprocess.Popen([os.path.dirname(sys.argv[0])+'/tools/dd.exe', 'bs=1M', 'if='+self.iso, 'of=\\\\.\\PHYSICALDRIVE'+self.drive.device], shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         if update_function:
             while dd.poll() is None:
                 buf = dd.stdout.read(256)
-                r = re.match('^[^ ]+ ([0-9]+)\%')
+                r = re.match(buf, '^[^ ]+ ([0-9]+)%')
                 if r:
-                    update_function(int(r.group(1)))
+                    update_function(float(r.group(1)/100.0))
+        else:
+            dd.wait()
 
 
 
         """
+        Notes to self:
         To write the image:
 
         mountvol d: /d
@@ -599,23 +605,6 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
             self.log.exception(e)
             self.log.error("Unable to get Win32_LogicalDisk")
         return obj
-
-    def _get_device_uuid(self, drive):
-        """ Return the UUID of our selected drive """
-        if self.uuid:
-            return self.uuid
-        uuid = None
-        try:
-            uuid = self._get_win32_logicaldisk(drive).VolumeSerialNumber
-            if uuid in (None, 'None', ''):
-                uuid = None
-            else:
-                uuid = uuid[:4] + '-' + uuid[4:]
-            self.log.debug(_("Found UUID %s for %s") % (uuid, drive))
-        except Exception, e:
-            self.log.exception(e)
-            self.log.warning(_("Exception while fetching UUID: %r") % e)
-        return uuid
 
     def _get_device_size(self, drive):
         """ Return the size of the given drive """

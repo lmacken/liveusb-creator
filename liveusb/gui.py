@@ -401,12 +401,12 @@ class Release(QObject):
         self._warning = []
         self._error = []
 
+        self.addWarning(_('You are about to perform a destructive install. This will erase all data and partitions on your USB drive'))
+
         self._download = ReleaseDownload(self)
         self._download.pathChanged.connect(self.pathChanged)
 
         self._writer = ReleaseWriter(self)
-
-        self._download.runningChanged.connect(self.inspectDestination)
 
         self.pathChanged.connect(self.statusChanged)
         self._download.runningChanged.connect(self.statusChanged)
@@ -424,27 +424,16 @@ class Release(QObject):
 
     @pyqtSlot()
     def write(self):
-        self._warning = []
-        self._error = []
-        self.errorChanged.emit()
-        self.warningChanged.emit()
-        self._writer.run()
-
-    @pyqtSlot()
-    def inspectDestination(self):
-        if self._writer.running:
-            return
-        self._warning = []
-        self.warningChanged.emit()
         self._info = []
-        self.infoChanged.emit()
+        self._warning = []
         self._error = []
+        self.infoChanged.emit()
         self.errorChanged.emit()
+        self.warningChanged.emit()
 
-        if not self.live.drive:
-            return
+        self.addInfo(_('You can use Fedora Media Writer to restore the original size of your flash drive after you will have tried or installed Fedora.'))
 
-        self.addWarning(_('You are about to perform a destructive install. This will erase all data and partitions on your USB drive'))
+        self._writer.run()
 
     @pyqtProperty(int, constant=True)
     def index(self):
@@ -500,6 +489,17 @@ class Release(QObject):
     @pyqtProperty(str, constant=True)
     def description(self):
         return self._data['description']
+
+    @pyqtProperty(str, constant=True)
+    def category(self):
+        if self._data['source'] in ['Local', 'Fedora Workstation', 'Fedora Server']:
+            return ''
+        elif self._data['source'] == 'Spins':
+            return '<b>Fedora Spins </b> &nbsp; Alternative desktops for Fedora'
+        elif self._data['source'] == 'Labs':
+            return '<b>Fedora Labs </b> &nbsp; Functional bundles for Fedora'
+        else:
+            return '<b>Other</b>'
 
     @pyqtProperty(bool, constant=True)
     def isLocal(self):
@@ -620,6 +620,12 @@ class ReleaseListProxy(QSortFilterProxyModel):
         QSortFilterProxyModel.__init__(self, parent)
         self.setSourceModel(sourceModel)
 
+    @pyqtSlot(int, result=Release)
+    def get(self, i):
+        if i < 0 or i >= len(self.parent().releaseData):
+            return None
+        return self.parent().releaseData[i]
+
     def rowCount(self, parent=QModelIndex()):
         if self._frontPage and self.sourceModel().rowCount(parent) > 3:
             return 3
@@ -734,7 +740,6 @@ class LiveUSBData(QObject):
                                             release
                                     ))
         self._usbDrives = []
-        self.currentDriveChanged.connect(self.currentImage.inspectDestination)
 
         self.live.detect_removable_drives(callback=self.USBDeviceCallback)
 
@@ -789,10 +794,8 @@ class LiveUSBData(QObject):
     @currentIndex.setter
     def currentIndex(self, value):
         if value != self._currentIndex:
-            self.currentDriveChanged.disconnect(self.currentImage.inspectDestination)
             self._currentIndex = value
             self.currentImageChanged.emit()
-            self.currentDriveChanged.connect(self.currentImage.inspectDestination)
 
     @pyqtProperty(Release, notify=currentImageChanged)
     def currentImage(self):
@@ -847,7 +850,6 @@ class LiveUSBData(QObject):
         if self._optionValues[key] != value:
             self._optionValues[key] = value
             self.optionsChanged.emit()
-            self.currentImage.inspectDestination()
 
     @pyqtSlot()
     def option(self, index):

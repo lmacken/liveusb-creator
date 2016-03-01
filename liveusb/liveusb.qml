@@ -13,7 +13,7 @@ ApplicationWindow {
     minimumHeight: $(480)
     width: $(800)
     height: $(480)
-    title: qsTranslate("", "Fedora LiveUSB Creator")
+    title: qsTranslate("", "Fedora Media Writer")
 
     SystemPalette {
         id: palette

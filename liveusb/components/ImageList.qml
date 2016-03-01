@@ -4,7 +4,7 @@ import QtQuick.Controls.Styles 1.3
 import QtQuick.Layouts 1.1
 
 Item {
-    id: root
+    id: imageList
 
     property alias currentIndex: osListView.currentIndex
     property real fadeDuration: 200
@@ -98,7 +98,7 @@ Item {
         opacity: !liveUSBData.releaseProxyModel.isFront ? 1.0 : 0.0
         Behavior on opacity {
             NumberAnimation {
-                duration: root.fadeDuration
+                duration: imageList.fadeDuration
             }
         }
 
@@ -134,7 +134,7 @@ Item {
         z: -1
         clip: true
         radius: $(6)
-        color: "white"
+        color: "transparent"
         y: liveUSBData.releaseProxyModel.isFront || moveUp.running ? parent.height / 2 - height / 2 : $(54)
         Behavior on y {
             id: moveUp
@@ -149,7 +149,7 @@ Item {
         height: liveUSBData.releaseProxyModel.isFront ? $(84) * 3 + $(36) : parent.height
 
         /*Behavior on height {
-            NumberAnimation { duration: root.fadeDuration }
+            NumberAnimation { duration: imageList.fadeDuration }
         }*/
         anchors {
             left: parent.left
@@ -157,10 +157,12 @@ Item {
             rightMargin: mainWindow.margin
             leftMargin: anchors.rightMargin
         }
+        /*
         border {
             color: "#c3c3c3"
             width: 1
         }
+        */
     }
 
     ScrollView {
@@ -177,6 +179,28 @@ Item {
                 rightMargin: anchors.leftMargin - (fullList.width - fullList.viewport.width)
                 topMargin: whiteBackground.y
             }
+
+            section {
+                property: "release.category"
+                criteria: ViewSection.FullString
+                labelPositioning: ViewSection.InlineLabels
+                delegate: Item {
+                    height: section.length > 0 ? $(64) : 0
+                    width: parent.width
+                    Text {
+                        text: section
+                        textFormat: Text.RichText
+                        font.pixelSize: $(12)
+                        anchors {
+                            left: parent.left
+                            bottom: parent.bottom
+                            leftMargin: $(18)
+                            bottomMargin: $(12)
+                        }
+                    }
+                }
+            }
+
             footer: Item {
                 height: !liveUSBData.releaseProxyModel.isFront ? $(54) : $(36)
                 width: osListView.width
@@ -186,6 +210,18 @@ Item {
                     anchors.fill: parent
                     anchors.margins: 1
                     radius: 3
+                    color: palette.window
+                    Rectangle {
+                        anchors.fill: parent
+                        anchors.topMargin: $(-10)
+                        color: mouse.containsPress ? "#ededed" : mouse.containsMouse ? "#f8f8f8" : "white"
+                        radius: $(5)
+                        border {
+                            color: "#c3c3c3"
+                            width: $(1)
+                        }
+                    }
+
                     Column {
                         id: threeDotDots
                         property bool hidden: false
@@ -220,15 +256,14 @@ Item {
                         }
                     }
                     MouseArea {
+                        id: mouse
                         anchors.fill: parent
                         hoverEnabled: true
                         onHoveredChanged: {
                             if (containsMouse && !pressed) {
-                                parent.color = "#f8f8f8"
                                 threeDotTimer.start()
                             }
                             if (!containsMouse) {
-                                parent.color = "transparent"
                                 threeDotTimer.stop()
                                 threeDotDots.hidden = false
                             }
@@ -237,23 +272,14 @@ Item {
                             moveUp.enabled = true
                             liveUSBData.releaseProxyModel.isFront = false
                         }
-                        onPressed: {
-                            parent.color = "#ededed"
-                        }
-                        onReleased: {
-                            parent.color = "transparent"
-                        }
-                        onCanceled: {
-                            parent.color = "transparent"
-                        }
                     }
                 }
             }
 
             model: liveUSBData.releaseProxyModel
-            delegate: Loader {
+
+            delegate: DelegateImage {
                 width: parent.width
-                source: release.isSeparator ? "DelegateImageSeparator.qml" : "DelegateImage.qml"
             }
 
             remove: Transition {

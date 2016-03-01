@@ -1,15 +1,27 @@
 import QtQuick 2.0
 
 Item {
+    id: root
     width: parent.width
     height: $(84)
+
+    readonly property bool isTop: !liveUSBData.releaseProxyModel.get(index-1) || release.category != liveUSBData.releaseProxyModel.get(index-1).category
+    readonly property bool isBottom: !liveUSBData.releaseProxyModel.get(index+1) || (release.category != liveUSBData.releaseProxyModel.get(index+1).category &&  !liveUSBData.releaseProxyModel.isFront)
+
+    readonly property color color: mouse.containsPress ? "#ededed" : mouse.containsMouse ? "#f8f8f8" : "white"
+
     Rectangle {
         width: parent.width - $(2)
-        height: index == 0 ? parent.height - $(1) : parent.height
+        //height: index == 0 ? parent.height - $(1) : parent.height
+        height: parent.height + 1
         x: $(1)
-        y: index == 0 ? $(1) : 0
-        radius: $(4)
-        color: "transparent"
+        //y: index == 0 ? $(1) : 0
+        //radius: $(4)
+        color: root.color
+        border {
+            color: "#c3c3c3"
+            width: 1
+        }
         Item {
             id: iconRect
             anchors {
@@ -72,33 +84,66 @@ Item {
             }
         }
         Rectangle {
-            height: 1
-            color: "#c3c3c3"
-            width: parent.width
-            anchors.bottom: parent.bottom
+            id: topRounding
+            visible: root.isTop
+            height: $(5)
+            color: palette.window
+            clip: true
+            anchors {
+                left: parent.left
+                right: parent.right
+                top: parent.top
+            }
+            Rectangle {
+                height: $(10)
+                radius: $(5)
+                color: root.color
+                border {
+                    color: "#c3c3c3"
+                    width: $(1)
+                }
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    top: parent.top
+                }
+            }
         }
-        MouseArea {
-            anchors.fill: parent
-            hoverEnabled: true
-            onHoveredChanged: {
-                if (containsMouse && !pressed)
-                    parent.color = "#f8f8f8"
-                if (!containsMouse)
-                    parent.color = "transparent"
+        Rectangle {
+            id: bottomRounding
+            visible: root.isBottom
+            height: $(5)
+            color: palette.window
+            clip: true
+            anchors {
+                left: parent.left
+                right: parent.right
+                bottom: parent.bottom
             }
-            onClicked: {
-                root.currentIndex = index
-                root.stepForward(release.index)
+            Rectangle {
+                height: $(10)
+                radius: $(5)
+                color: root.color
+                border {
+                    color: "#c3c3c3"
+                    width: $(1)
+                }
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    bottom: parent.bottom
+                }
             }
-            onPressed: {
-                parent.color = "#ededed"
-            }
-            onReleased: {
-                parent.color = "transparent"
-            }
-            onCanceled: {
-                parent.color = "transparent"
-            }
+        }
+    }
+
+    MouseArea {
+        id: mouse
+        anchors.fill: parent
+        hoverEnabled: true
+        onClicked: {
+            imageList.currentIndex = index
+            imageList.stepForward(release.index)
         }
     }
 }
