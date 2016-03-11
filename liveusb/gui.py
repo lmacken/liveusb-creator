@@ -430,7 +430,7 @@ class Release(QObject):
         self.infoChanged.emit()
         self.errorChanged.emit()
         self.warningChanged.emit()
-        
+
         self.addInfo(_('After you have tried or installed Fedora, you can use Fedora Media Writer to restore your flash drive to its factory settings.'))
 
         self._writer.run()
@@ -724,13 +724,6 @@ class LiveUSBData(QObject):
     _currentIndex = 0
     _currentDrive = 0
 
-    # man, this is just awkward... but it seems like the only way to do it in a predictable manner without creating a new class
-    _optionKeys = []
-    _optionNames = {
-                   }
-    _optionValues = {
-                    }
-
     def __init__(self, opts):
         QObject.__init__(self)
         self.live = LiveUSBCreator(opts=opts)
@@ -844,32 +837,6 @@ class LiveUSBData(QObject):
             self.currentDriveChanged.emit()
             for r in self.releaseData:
                 r.download.finished = False
-
-    @pyqtProperty('QStringList', constant=True)
-    def optionNames(self):
-        ret = []
-        for i in self._optionKeys:
-            ret.append(self._optionNames[i])
-        return ret
-
-    @pyqtProperty('QVariant', notify=optionsChanged)
-    def optionValues(self):
-        ret = []
-        for i in self._optionKeys:
-            ret.append(self._optionValues[i])
-        return ret
-
-    @pyqtSlot(int, bool)
-    def setOption(self, index, value):
-        key = self._optionKeys[index]
-        if self._optionValues[key] != value:
-            self._optionValues[key] = value
-            self.optionsChanged.emit()
-
-    @pyqtSlot()
-    def option(self, index):
-        return self._optionValues[index]
-
 
 class LiveUSBApp(QGuiApplication):
     """ Main application class """
