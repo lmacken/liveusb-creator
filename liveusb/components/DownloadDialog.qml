@@ -16,7 +16,10 @@ Dialog {
     function reset() {
         writeImmediately.confirmed = false
         acceptButton.pressedOnce = false
+        writeArrow.color = "black"
     }
+
+    onVisibleChanged: reset()
 
     Connections {
         target: liveUSBData
