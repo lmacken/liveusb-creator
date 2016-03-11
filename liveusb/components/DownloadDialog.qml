@@ -185,7 +185,7 @@ Dialog {
                         }
                         AdwaitaCheckBox {
                             id: writeImmediately
-                            enabled: driveCombo.count
+                            enabled: driveCombo.count && opacity > 0.0
                             opacity: liveUSBData.currentImage.download.running && liveUSBData.currentImage.download.progress / liveUSBData.currentImage.download.maxProgress < 0.95 ? 1.0 : 0.0
                             property bool confirmed: false
                             text: qsTranslate("", "Write the image immediately when the download is finished")
