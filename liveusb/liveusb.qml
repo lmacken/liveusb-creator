@@ -1,7 +1,10 @@
 import QtQuick 2.4
 import QtQuick.Controls 1.3
+import QtQuick.Controls.Styles 1.4
 import QtQuick.Window 2.2
+import QtGraphicalEffects 1.0
 import QtQuick.Dialogs 1.2
+import QtQuick.Layouts 1.1
 
 import LiveUSB 1.0
 
@@ -27,8 +30,33 @@ ApplicationWindow {
     property bool canGoBack: false
     property real margin: $(64) + (width - $(800)) / 4
 
+    AdwaitaNotificationBar {
+        id: deviceNotification
+        text: open ? qsTranslate("", "You inserted <b>%1</b> that already contains a live system.<br>Do you want to restore it to factory settings?").arg(liveUSBData.driveToRestore.text) : ""
+        open: liveUSBData.driveToRestore
+        acceptText: qsTranslate("", "Restore")
+        cancelText: qsTranslate("", "Do Nothing")
+        property var disk: null
+        anchors {
+            left: parent.left
+            right: parent.right
+            top: parent.top
+        }
+        onAccepted: restoreDialog.visible = true
+        Connections {
+            target: liveUSBData
+            onDriveToRestoreChanged: deviceNotification.open = liveUSBData.driveToRestore
+        }
+    }
+
     Rectangle {
-        anchors.fill: parent
+        anchors {
+            top: deviceNotification.bottom
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+        }
+
         color: palette.window
         //radius: 8
         clip: true
@@ -69,6 +97,10 @@ ApplicationWindow {
                 }
             }
         }
+    }
+
+    RestoreDialog {
+        id: restoreDialog
     }
 }
 

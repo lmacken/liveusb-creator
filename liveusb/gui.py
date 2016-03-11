@@ -430,8 +430,8 @@ class Release(QObject):
         self.infoChanged.emit()
         self.errorChanged.emit()
         self.warningChanged.emit()
-
-        self.addInfo(_('You can use Fedora Media Writer to restore the original size of your flash drive after you will have tried or installed Fedora.'))
+        
+        self.addInfo(_('After you have tried or installed Fedora, you can use Fedora Media Writer to restore your flash drive to its factory settings.'))
 
         self._writer.run()
 
@@ -716,6 +716,10 @@ class LiveUSBData(QObject):
     usbDrivesChanged = pyqtSignal()
     currentDriveChanged = pyqtSignal()
     optionsChanged = pyqtSignal()
+    driveToRestoreChanged = pyqtSignal()
+
+    # has to be a property because you can't pass python signal parameters to qml
+    _driveToRestore = None
 
     _currentIndex = 0
     _currentDrive = 0
@@ -775,11 +779,16 @@ class LiveUSBData(QObject):
             self._usbDrives = tmpDrives
             self.usbDrivesChanged.emit()
 
+            self._driveToRestore = None
+
             self.currentDrive = -1
             for i, drive in enumerate(self._usbDrives):
                 if drive.drive.device == previouslySelected:
                     self.currentDrive = i
+                if drive.drive.isIso9660:
+                    self._driveToRestore = drive
             self.currentDriveChanged.emit()
+            self.driveToRestoreChanged.emit()
 
     @pyqtProperty(ReleaseListModel, notify=releasesChanged)
     def releaseModel(self):
@@ -802,6 +811,10 @@ class LiveUSBData(QObject):
     @pyqtProperty(Release, notify=currentImageChanged)
     def currentImage(self):
         return self.releaseData[self._currentIndex]
+
+    @pyqtProperty(USBDrive, notify=driveToRestoreChanged)
+    def driveToRestore(self):
+        return self._driveToRestore
 
     @pyqtProperty(QQmlListProperty, notify=usbDrivesChanged)
     def usbDrives(self):
