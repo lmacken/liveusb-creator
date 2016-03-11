@@ -10,7 +10,7 @@ Button {
     style: ButtonStyle {
         background: AdwaitaRectangle {
             color: root.color
-            border.color: control.enabled ? "#777777" : "#c2c2c2"
+            border.color: Qt.colorEqual(root.color, "transparent") ? "#212121" : control.enabled ? "#777777" : "#c2c2c2"
         }
         label: Item {
             implicitWidth: labelText.width + $(16)
