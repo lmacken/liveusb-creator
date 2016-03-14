@@ -12,6 +12,13 @@ Dialog {
 
     property int state: 0
 
+    Connections {
+        target: liveUSBData.driveToRestore
+        onBeingRestoredChanged: root.state++
+    }
+
+    onVisibleChanged: state = 0
+
     contentItem : Rectangle {
         implicitWidth: $(480)
         implicitHeight: textItem.height + buttonItem.height + $(48)
@@ -67,7 +74,7 @@ Dialog {
                     }
                     Text {
                         Layout.alignment: Qt.AlignHCenter
-                        text: "Your drive was successfully restored!"
+                        text: qsTranslate("", "Your drive was successfully restored!")
                     }
                 }
             }
@@ -78,17 +85,25 @@ Dialog {
                 anchors.right: parent.right
                 spacing: $(12)
                 AdwaitaButton {
-                    text: "Cancel"
+                    text: qsTranslate("", "Cancel")
                     enabled: root.state == 0
-                    visible: root.state != 2
+                    visible: opacity > 0.0
+                    opacity: root.state == 2 ? 0.0 : 1.0
+                    Behavior on opacity { NumberAnimation {} }
                     onClicked: root.visible = false
                 }
                 AdwaitaButton {
-                    text: root.state == 2 ? "Close" : "Restore"
+                    text: root.state == 2 ? qsTranslate("", "Close") : qsTranslate("", "Restore")
                     color: root.state == 2 ? "#628fcf" : "red"
+                    Behavior on color { ColorAnimation {duration: 2000} }
                     textColor: "white"
-                    //enabled: root.state != 1
-                    onClicked: root.state = (root.state + 1) % 3
+                    enabled: root.state != 1
+                    onClicked: {
+                        if (root.state == 0)
+                            liveUSBData.driveToRestore.restore()
+                        else
+                            root.visible = false
+                    }
                 }
             }
         }

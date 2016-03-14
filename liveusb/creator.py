@@ -242,6 +242,9 @@ class LiveUSBCreator(object):
     def dd_image(self):
         raise NotImplementedError
 
+    def restore_drive(self, d):
+        raise NotImplementedError
+
 
 class LinuxLiveUSBCreator(LiveUSBCreator):
     bus = None  # the dbus.SystemBus
@@ -428,6 +431,10 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
     def is_admin(self):
         return os.getuid() == 0
+
+    def restore_drive(self, d):
+        time.sleep(15)
+        pass
 
 
 class MacOsLiveUSBCreator(LiveUSBCreator):

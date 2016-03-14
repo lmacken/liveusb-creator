@@ -692,12 +692,30 @@ class LiveUSBLogHandler(logging.Handler):
         if record.levelname in ('INFO', 'ERROR', 'WARN'):
             self.cb(record.msg)
 
+class USBDriveRestoreThread(QThread):
+    """ The actual write to the portable drive """
+
+    def __init__(self, parent):
+        QThread.__init__(self, parent)
+
+        self.live = parent.live
+        self.parent = parent
+
+    def run(self):
+        self.parent.beingRestored = True
+        self.live.restore_drive(self.parent.drive)
+        self.parent.beingRestored = False
+
 class USBDrive(QObject):
+
+    beingRestoredChanged = pyqtSignal()
 
     def __init__(self, parent, name, drive):
         QObject.__init__(self, parent)
+        self.live = parent.live
         self._name = name
         self._drive = drive
+        self._beingRestored = False
 
     @pyqtProperty(str, constant=True)
     def text(self):
@@ -707,6 +725,23 @@ class USBDrive(QObject):
     def drive(self):
         return self._drive
 
+    @pyqtProperty(bool, notify=beingRestoredChanged)
+    def beingRestored(self):
+        return self._beingRestored
+
+    @beingRestored.setter
+    def beingRestored(self, v):
+        if v != self._beingRestored:
+            self._beingRestored = v
+            self.beingRestoredChanged.emit()
+        if not v:
+            self._restoreThread = None
+
+    @pyqtSlot()
+    def restore(self):
+        self._restoreThread = USBDriveRestoreThread(self)
+        self._restoreThread.start()
+
 class LiveUSBData(QObject):
     """ An entry point to all the exposed properties.
         There is a list of images and USB drives
@@ -715,7 +750,6 @@ class LiveUSBData(QObject):
     currentImageChanged = pyqtSignal()
     usbDrivesChanged = pyqtSignal()
     currentDriveChanged = pyqtSignal()
-    optionsChanged = pyqtSignal()
     driveToRestoreChanged = pyqtSignal()
 
     # has to be a property because you can't pass python signal parameters to qml
