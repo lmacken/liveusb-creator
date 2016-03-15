@@ -14,9 +14,8 @@ Dialog {
     width: $(640)
 
     function reset() {
-        writeImmediately.confirmed = false
-        acceptButton.pressedOnce = false
         writeArrow.color = "black"
+        writeImmediately.checked = false
     }
 
     onVisibleChanged: reset()
@@ -25,6 +24,23 @@ Dialog {
         target: liveUSBData
         onCurrentImageChanged: {
             reset();
+        }
+    }
+
+    Connections {
+        id: downloadWait
+        target: liveUSBData.currentImage
+        onReadyToWriteChanged: {
+            if (liveUSBData.currentImage.readyToWrite && writeImmediately.checked) {
+                liveUSBData.currentImage.write()
+            }
+        }
+    }
+
+    Connections {
+        target: liveUSBData.currentImage.writer
+        onFinishedChanged: {
+            writeImmediately.checked = false
         }
     }
 
@@ -189,16 +205,8 @@ Dialog {
                         AdwaitaCheckBox {
                             id: writeImmediately
                             enabled: driveCombo.count && opacity > 0.0
-                            opacity: liveUSBData.currentImage.download.running && liveUSBData.currentImage.download.progress / liveUSBData.currentImage.download.maxProgress < 0.95 ? 1.0 : 0.0
-                            property bool confirmed: false
+                            opacity: !checked && liveUSBData.currentImage.download.running && liveUSBData.currentImage.download.progress / liveUSBData.currentImage.download.maxProgress < 0.95 ? 1.0 : 0.0
                             text: qsTranslate("", "Write the image immediately when the download is finished")
-                            onCheckedChanged: {
-                                liveUSBData.currentImage.writer.finished = true
-                                if (checked)
-                                    acceptButton.pressedOnce = true
-                                else
-                                    acceptButton.pressedOnce = false
-                            }
                         }
                     }
 
@@ -252,7 +260,6 @@ Dialog {
                             model: liveUSBData.usbDriveNames
                             currentIndex: liveUSBData.currentDrive
                             onCurrentIndexChanged: {
-                                acceptButton.pressedOnce = false
                                 liveUSBData.currentImage.writer.finished = false
                                 liveUSBData.currentDrive = currentIndex
                             }
@@ -311,7 +318,6 @@ Dialog {
                                     liveUSBData.currentImage.writer.cancel()
                                     liveUSBData.currentImage.writer.finished = false
                                     writeImmediately.checked = false
-                                    acceptButton.pressedOnce = false
                                     root.close()
                                 }
                             }
@@ -322,80 +328,21 @@ Dialog {
                                     top: parent.top
                                     bottom: parent.bottom
                                 }
-                                property bool pressedOnce: false
                                 color: liveUSBData.currentImage.writer.finished ? "#628fcf" : "red"
                                 textColor: enabled ? "white" : palette.text
                                 transformOrigin: Item.Center
-                                enabled: pressedOnce || (liveUSBData.currentImage.readyToWrite && !liveUSBData.currentImage.writer.running && liveUSBData.usbDrives.length > 0)
-                                text: liveUSBData.currentImage.writer.finished ? qsTranslate("", "Close") : pressedOnce ? qsTranslate("", "Are you sure?") : qsTranslate("", "Write to disk")
+                                enabled: (liveUSBData.currentImage.readyToWrite && !liveUSBData.currentImage.writer.running && liveUSBData.usbDrives.length > 0)
+                                text: liveUSBData.currentImage.writer.finished ? qsTranslate("", "Close") : qsTranslate("", "Write to disk")
                                 onClicked: {
                                     if (liveUSBData.currentImage.writer.finished) {
                                         liveUSBData.currentImage.download.cancel()
                                         liveUSBData.currentImage.writer.cancel()
                                         liveUSBData.currentImage.writer.finished = false
                                         writeImmediately.checked = false
-                                        acceptButton.pressedOnce = false
                                         root.close()
                                     }
-                                    else if(pressedOnce || !liveUSBData.currentImage.warning || liveUSBData.currentImage.warning.length == 0) {
-                                        if (!liveUSBData.currentImage.readyToWrite) {
-                                            writeImmediately.confirmed = true
-                                        }
-                                        else {
-                                            liveUSBData.currentImage.write()
-                                        }
-                                        pressedOnce = false
-                                    }
                                     else {
-                                        pressedOnce = true
-                                    }
-                                }
-                                Connections {
-                                    id: downloadWait
-                                    target: liveUSBData.currentImage
-                                    onReadyToWriteChanged: {
-                                        if (liveUSBData.currentImage.readyToWrite && writeImmediately.confirmed) {
-                                            liveUSBData.currentImage.write()
-                                        }
-                                    }
-                                }
-
-                                onPressedOnceChanged: {
-                                    if (pressedOnce)
-                                        acceptButtonBounce.start()
-                                }
-                                SequentialAnimation {
-                                    id: acceptButtonBounce
-                                    ParallelAnimation {
-                                        ColorAnimation {
-                                            duration: 80
-                                            target: acceptButton
-                                            property: "color"
-                                            from: "red"
-                                            to: Qt.tint("white", "red")
-                                        }
-                                        NumberAnimation {
-                                            target: acceptButton
-                                            property: "scale"
-                                            duration: 80
-                                            from: 1
-                                            to: 1.2
-                                        }
-                                    }
-                                    ParallelAnimation {
-                                        ColorAnimation {
-                                            duration: 80
-                                            target: acceptButton
-                                            property: "color"
-                                            from: Qt.tint("white", "red")
-                                            to: "red"
-                                        }
-                                        NumberAnimation {
-                                            target: acceptButton
-                                            property: "scale"
-                                            duration: 40
-                                            to: 1.0
-                                        }
+                                        liveUSBData.currentImage.write()
                                     }
                                 }
                             }
