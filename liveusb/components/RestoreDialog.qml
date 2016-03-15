@@ -32,7 +32,7 @@ Dialog {
                 id: textItem
                 spacing: $(36)
                 x: root.state == 0 ? 0 : root.state == 1 ? - (parent.width + $(36)) : - (2 * parent.width + $(72))
-                height: progress.height > warningText.height ? progress.height : warningText.height
+                height: warningText.height
                 Behavior on x {
                     NumberAnimation {
                         duration: 300
@@ -42,13 +42,23 @@ Dialog {
                 Text {
                     id: warningText
                     width: wrapper.width
-                    text: qsTranslate("", "<p align=\"justify\">To reclaim all space available on the drive, it has to be restored to factory settings. The live system and all saved data will be deleted.</p><p>Do you want to continue?</p>")
+                    text: qsTranslate("",  "<p align=\"justify\">
+                                                To reclaim all space available on the drive, it has to be restored to its factory settings.
+                                                The live system and all saved data will be deleted.
+                                            </p>
+                                            <p align=\"justify\">
+                                                You don't need to restore the drive if you want to write another live system to it.
+                                            </p>
+                                            <p align=\"justify\">
+                                                Do you want to continue?
+                                            </p>")
                     textFormat: Text.RichText
                     wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                 }
                 ColumnLayout {
                     id: progress
                     width: wrapper.width
+                    anchors.verticalCenter: parent.verticalCenter
                     spacing: $(12)
                     Item {
                         width: 1; height: 1
@@ -64,11 +74,12 @@ Dialog {
                         Layout.alignment: Qt.AlignHCenter
                         Layout.fillWidth: true
                         wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                        text: qsTranslate("", "<p justify=\"align\">Please wait while Fedora Media Writer restores your portable drive.</p>")
+                        text: qsTranslate("", "<p align=\"justify\">Please wait while Fedora Media Writer restores your portable drive.</p>")
                     }
                 }
                 ColumnLayout {
                     width: wrapper.width
+                    anchors.verticalCenter: parent.verticalCenter
                     CheckMark {
                         Layout.alignment: Qt.AlignHCenter
                     }
