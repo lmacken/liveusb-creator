@@ -90,12 +90,12 @@ Dialog {
                     visible: opacity > 0.0
                     opacity: root.state == 2 ? 0.0 : 1.0
                     Behavior on opacity { NumberAnimation {} }
+                    Behavior on x { NumberAnimation {} }
                     onClicked: root.visible = false
                 }
                 AdwaitaButton {
                     text: root.state == 2 ? qsTranslate("", "Close") : qsTranslate("", "Restore")
                     color: root.state == 2 ? "#628fcf" : "red"
-                    Behavior on color { ColorAnimation {duration: 2000} }
                     textColor: "white"
                     enabled: root.state != 1
                     onClicked: {
