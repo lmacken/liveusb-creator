@@ -242,7 +242,7 @@ class LiveUSBCreator(object):
     def dd_image(self):
         raise NotImplementedError
 
-    def restore_drive(self, d):
+    def restore_drive(self, d, callback):
         raise NotImplementedError
 
 
@@ -262,7 +262,8 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         import dbus
         self.callback = callback
         self.drives = {}
-        self.bus = dbus.SystemBus()
+        if not self.bus:
+            self.bus = dbus.SystemBus()
         udisks_obj = self.bus.get_object("org.freedesktop.UDisks2",
                                          "/org/freedesktop/UDisks2")
         self.udisks = dbus.Interface(udisks_obj, 'org.freedesktop.DBus.ObjectManager')
@@ -429,12 +430,51 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
     def flush_buffers(self):
         self.popen('sync', passive=True)
 
+
     def is_admin(self):
         return os.getuid() == 0
 
-    def restore_drive(self, d):
-        time.sleep(15)
-        pass
+    def restore_drive(self, d, callback):
+        import dbus
+
+        if not self.bus:
+            self.bus = dbus.SystemBus()
+
+        will_format = None
+        will_format_device = None
+
+        for name, device in self.udisks.GetManagedObjects().iteritems():
+            if 'org.freedesktop.UDisks2.Block' in device and 'org.freedesktop.UDisks2.Filesystem' in device:
+                current_device = self.strify(device['org.freedesktop.UDisks2.Block']['Device'])
+                if current_device.startswith(d.device) and device['org.freedesktop.UDisks2.Filesystem']['MountPoints']:
+                    obj = self.bus.get_object('org.freedesktop.UDisks2', name)
+                    obj.Unmount({'Force': True}, dbus_interface='org.freedesktop.UDisks2.Filesystem')
+            if 'org.freedesktop.UDisks2.Block' in device and 'org.freedesktop.UDisks2.PartitionTable' in device:
+                current_device = self.strify(device['org.freedesktop.UDisks2.Block']['Device'])
+                if current_device == d.device:
+                    will_format = name
+                    will_format_device = device
+
+        obj = self.bus.get_object('org.freedesktop.UDisks2', will_format)
+
+        create = obj.get_dbus_method('CreatePartition', 'org.freedesktop.UDisks2.PartitionTable')
+        clear = obj.get_dbus_method('Format', 'org.freedesktop.UDisks2.Block')
+
+        def error_handler(msg):
+            callback(False, msg.get_dbus_message())
+
+        def format_reply_handler():
+            callback(True)
+
+        def create_reply_handler(partition):
+            obj = self.bus.get_object('org.freedesktop.UDisks2', partition)
+            format = obj.get_dbus_method('Format', 'org.freedesktop.UDisks2.Block')
+            format.call_async('vfat', {}, reply_handler=format_reply_handler, error_handler=error_handler)
+
+        def clear_reply_handler():
+            create.call_async(0, will_format_device['org.freedesktop.UDisks2.Block']['Size'], '', '', {}, reply_handler=create_reply_handler, error_handler=error_handler)
+
+        clear.call_async('dos', {}, reply_handler=clear_reply_handler, error_handler=error_handler)
 
 
 class MacOsLiveUSBCreator(LiveUSBCreator):

@@ -692,20 +692,6 @@ class LiveUSBLogHandler(logging.Handler):
         if record.levelname in ('INFO', 'ERROR', 'WARN'):
             self.cb(record.msg)
 
-class USBDriveRestoreThread(QThread):
-    """ The actual write to the portable drive """
-
-    def __init__(self, parent):
-        QThread.__init__(self, parent)
-
-        self.live = parent.live
-        self.parent = parent
-
-    def run(self):
-        self.parent.beingRestored = True
-        self.live.restore_drive(self.parent.drive)
-        self.parent.beingRestored = False
-
 class USBDrive(QObject):
 
     beingRestoredChanged = pyqtSignal()
@@ -737,10 +723,13 @@ class USBDrive(QObject):
         if not v:
             self._restoreThread = None
 
+    def restoreCallback(self, ok, message=None):
+        beingRestored = False
+
     @pyqtSlot()
     def restore(self):
-        self._restoreThread = USBDriveRestoreThread(self)
-        self._restoreThread.start()
+        beingRestored = True
+        self.live.restore_drive(self.drive, self.restoreCallback)
 
 class LiveUSBData(QObject):
     """ An entry point to all the exposed properties.
@@ -782,6 +771,10 @@ class LiveUSBData(QObject):
         previouslySelected = ''
         if len(self._usbDrives) > 0:
             previouslySelected = self._usbDrives[self._currentDrive].drive.device
+
+        if self._driveToRestore and self._driveToRestore.beingRestored:
+            return
+
         for drive, info in self.live.drives.items():
             name = info.friendlyName
 
