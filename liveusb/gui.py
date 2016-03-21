@@ -715,20 +715,14 @@ class USBDrive(QObject):
     def beingRestored(self):
         return self._beingRestored
 
-    @beingRestored.setter
-    def beingRestored(self, v):
-        if v != self._beingRestored:
-            self._beingRestored = v
-            self.beingRestoredChanged.emit()
-        if not v:
-            self._restoreThread = None
-
     def restoreCallback(self, ok, message=None):
-        beingRestored = False
+        self._beingRestored = False
+        self.beingRestoredChanged.emit()
 
     @pyqtSlot()
     def restore(self):
-        beingRestored = True
+        self._beingRestored = True
+        self.beingRestoredChanged.emit()
         self.live.restore_drive(self.drive, self.restoreCallback)
 
 class LiveUSBData(QObject):
