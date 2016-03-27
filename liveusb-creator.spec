@@ -29,6 +29,7 @@ BuildRequires:  python-devel, python-setuptools, PyQt5-devel, desktop-file-utils
 
 Requires:       syslinux
 Requires:       PyQt5
+Requires:       qt5-qtgraphicaleffects
 Requires:       qt5-qtquickcontrols
 Requires:       isomd5sum
 Requires:       python-urlgrabber
