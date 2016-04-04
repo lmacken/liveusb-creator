@@ -193,54 +193,15 @@ class ReleaseDownload(QObject, BaseMeter):
             self._live.set_iso(value)
             self.pathChanged.emit()
 
-class ReleaseWriterProgressThread(QThread):
-    """ Periodically checks how the write progresses """
-    alive = True
-    get_free_bytes = None
-    drive = None
-    totalSize = 0
-    orig_free = 0
-
-    def set_data(self, size, drive, freebytes):
-        self.totalSize = size / 1024
-        self.drive = drive
-        self.get_free_bytes = freebytes
-        if self.get_free_bytes:
-            self.orig_free = self.get_free_bytes()
-        else:
-            self.orig_free = 0
-        self.parent().maxProgress = self.totalSize
-
-    def run(self):
-        while self.alive:
-            if self.get_free_bytes:
-                free = self.get_free_bytes()
-            else:
-                free = 0
-            value = (self.orig_free - free) / 1024
-            self.parent().progress = value
-            if (value >= self.totalSize):
-                break
-            sleep(3)
-
-    def stop(self):
-        self.alive = False
-
-    def terminate(self):
-        self.parent().progress = self.totalSize
-        self.terminate()
-
 
 class ReleaseWriterThread(QThread):
     """ The actual write to the portable drive """
 
-    def __init__(self, parent, progressThread):
+    def __init__(self, parent):
         QThread.__init__(self, parent)
 
         self.live = parent.live
         self.parent = parent
-        self.progressThread = progressThread
-
 
     def run(self):
         # TODO move this to the backend
@@ -259,12 +220,11 @@ class ReleaseWriterThread(QThread):
 
     def ddImage(self, now):
         # TODO move this to the backend
-        self.live.dd_image()
+        self.live.dd_image(self.update_progress)
         #self.live.log.removeHandler(handler)
         #duration = str(datetime.now() - now).split('.')[0]
         self.parent.status = 'Finished!'
         self.parent.finished = True
-        self.progressThread.stop()
         return
 
     def set_max_progress(self, maximum):
@@ -291,8 +251,7 @@ class ReleaseWriter(QObject):
         QObject.__init__(self, parent)
         self.live = parent.live
         self.release = parent
-        self.progressWatcher = ReleaseWriterProgressThread(self)
-        self.worker = ReleaseWriterThread(self, self.progressWatcher)
+        self.worker = ReleaseWriterThread(self)
 
     def reset(self):
         self._running = False
@@ -315,7 +274,6 @@ class ReleaseWriter(QObject):
 
     @pyqtSlot()
     def cancel(self):
-        self.progressWatcher.stop()
         self.worker.terminate()
         self.reset()
 
