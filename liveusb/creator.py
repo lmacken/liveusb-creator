@@ -521,7 +521,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
             c = wmi.WMI()
             drives = {}
             for d in c.Win32_DiskDrive():
-                if 7 not in d.Capabilities or 'USB' != d.InterfaceType: # does not support removable media
+                if not d.Capabilities or 7 not in d.Capabilities or 'USB' != d.InterfaceType: # does not support removable media
                     continue
 
                 data = Drive()
@@ -574,6 +574,8 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
     def dd_image(self, update_function=None):
         import re
 
+        print("AAA")
+
         if update_function:
             update_function(-1.0)
 
@@ -590,11 +592,13 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
 
         if update_function:
             update_function(0.0)
+        print("Writing" + self.iso)
         dd = subprocess.Popen([os.path.dirname(sys.argv[0])+'/tools/dd.exe', 'bs=1M', 'if='+self.iso, 'of=\\\\.\\PHYSICALDRIVE'+self.drive.device], shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         if update_function:
             while dd.poll() is None:
                 buf = dd.stdout.read(256)
                 r = re.match(buf, '^[^ ]+ ([0-9]+)%')
+                print(buf)
                 if r:
                     update_function(float(r.group(1)/100.0))
         else:
