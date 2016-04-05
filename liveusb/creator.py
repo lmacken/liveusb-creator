@@ -614,6 +614,17 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
 
     def restore_drive(self, d, callback):
 
+        def restore_drive_work(callback, device):
+            import threading
+            diskpart = subprocess.Popen(['diskpart'], shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            diskpart.communicate('select disk '+self.drive.device+'\r\nclean\r\ncreate part pri\r\nselect part 1\r\nformat fs=fat32 quick\r\nassign\r\nexit')
+            diskpart.wait()
+            callback(True)
+
+        from threading import Thread
+
+        t = Thread(target=restore_drive_work, args=(callback, self.drive.device, ))
+        t.start()
 
         """
         Notes to self:
