@@ -32,6 +32,7 @@ import subprocess
 import sys
 import time
 from StringIO import StringIO
+from argparse import _AppendAction
 from stat import ST_SIZE
 
 from liveusb import _
@@ -593,19 +594,25 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         dd = subprocess.Popen([(os.path.dirname(sys.argv[0]) if len(os.path.dirname(sys.argv[0])) else os.path.dirname(os.path.realpath(__file__))+'/..')+'/tools/dd.exe',
                                'bs=1M',
                                'if='+self.iso,
-                               'of=\\\\.\\PHYSICALDRIVE'+self.drive.device],
+                               'of=\\\\.\\PHYSICALDRIVE'+self.drive.device,
+                               '--size',
+                               '--progress'],
                               shell=True,
                               stdout=subprocess.PIPE,
-                              stderr=subprocess.STDOUT)
+                              stderr=subprocess.STDOUT,
+                              bufsize=1,
+                              universal_newlines=True)
         if update_function:
             while dd.poll() is None:
-                buf = dd.stdout.read(256)
-                r = re.match(buf, '^[^ ]+ ([0-9]+)%')
-                if r and len(r.groups()) == 2:
-                    update_function(float(r.group(1)/100.0))
+                buf = dd.stdout.readline().strip()
+                #buf = dd.stdout.read(256)
+                r = re.search('^([,0-9]+)', buf)
+                if r and len(r.groups()) > 0 and len(r.group(0)) > 0:
+                    update_function(float(r.group(0).replace(',', '')) / self.isosize)
         else:
             dd.wait()
 
+    def restore_drive(self, d, callback):
 
 
         """

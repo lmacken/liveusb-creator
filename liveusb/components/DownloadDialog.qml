@@ -197,7 +197,8 @@ Dialog {
                             }
                             AdwaitaProgressBar {
                                 width: parent.width
-                                value: liveUSBData.currentImage.writer.running ? liveUSBData.currentImage.writer.progress / liveUSBData.currentImage.writer.maxProgress : 0
+                                value: liveUSBData.currentImage.writer.progress
+                                onValueChanged: console.log("OMG " + value)
                                 visible: !liveUSBData.currentImage.download.running
                                 progressColor: liveUSBData.currentImage.writer.checking ? Qt.lighter("green") : "red"
                             }

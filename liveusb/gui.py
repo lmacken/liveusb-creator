@@ -45,6 +45,7 @@ from PyQt5.QtCore import pyqtProperty, pyqtSlot, QObject, QUrl, QDateTime, pyqtS
 from PyQt5.QtGui import QGuiApplication
 from PyQt5.QtQml import qmlRegisterType, qmlRegisterUncreatableType, QQmlComponent, QQmlApplicationEngine, QQmlListProperty, QQmlEngine
 from PyQt5 import QtQuick
+from setuptools.sandbox import save_pkg_resources_state
 
 import resources_rc
 import qml_rc
@@ -89,7 +90,6 @@ class ReleaseDownloadThread(QThread):
                 break
         try:
             iso = self.grabber.urlgrab(self.progress.release.url, filename=filename, reget='simple')
-            print iso
         except URLGrabError, e:
             # TODO find out if this errno is _really_ benign
             if e.errno == 9: # Requested byte range not satisfiable.
@@ -204,9 +204,6 @@ class ReleaseWriterThread(QThread):
         self.parent = parent
 
     def run(self):
-        # TODO move this to the backend
-        #handler = LiveUSBLogHandler(self.parent.status)
-        #self.live.log.addHandler(handler)
         now = datetime.now()
         try:
             self.ddImage(now)
@@ -216,19 +213,13 @@ class ReleaseWriterThread(QThread):
             self.live.log.exception(e)
 
         self.parent.running = False
-        #self.live.log.removeHandler(handler)
 
     def ddImage(self, now):
         # TODO move this to the backend
         self.live.dd_image(self.update_progress)
-        #self.live.log.removeHandler(handler)
-        #duration = str(datetime.now() - now).split('.')[0]
         self.parent.status = 'Finished!'
         self.parent.finished = True
         return
-
-    def set_max_progress(self, maximum):
-        self.parent.maxProgress = maximum
 
     def update_progress(self, value):
         self.parent.progress = value
@@ -237,13 +228,11 @@ class ReleaseWriter(QObject):
     """ Here we can track the progress of the writing and control it """
     runningChanged = pyqtSignal()
     currentChanged = pyqtSignal()
-    maximumChanged = pyqtSignal()
     statusChanged = pyqtSignal()
     finishedChanged = pyqtSignal()
 
     _running = False
     _current = -1.0
-    _maximum = -1.0
     _status = ''
     _finished = False
 
@@ -256,19 +245,15 @@ class ReleaseWriter(QObject):
     def reset(self):
         self._running = False
         self._current = -1.0
-        self._maximum = -1.0
         self.runningChanged.emit()
         self.currentChanged.emit()
-        self.maximumChanged.emit()
 
     @pyqtSlot()
     def run(self):
         self._running = True
         self._current = 0.0
-        self._maximum = 100.0
         self.runningChanged.emit()
         self.currentChanged.emit()
-        self.maximumChanged.emit()
         self.status = 'Writing'
         self.worker.start()
 
@@ -287,19 +272,9 @@ class ReleaseWriter(QObject):
             self._running = value
             self.runningChanged.emit()
 
-    @pyqtProperty(float, notify=maximumChanged)
-    def maxProgress(self):
-        return self._maximum
-
-    @maxProgress.setter
-    def maxProgress(self, value):
-        if (value != self._maximum):
-            self._maximum = value
-            self.maximumChanged.emit()
-
     @pyqtProperty(float, notify=currentChanged)
     def progress(self):
-        return self._current
+        return float(self._current)
 
     @progress.setter
     def progress(self, value):
