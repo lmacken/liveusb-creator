@@ -58,6 +58,16 @@ class Drive(object):
     mount = []
     isIso9660 = False
 
+    def __eq__(self, other):
+        return (isinstance(other, self.__class__)
+            and self.friendlyName == other.friendlyName
+            and self.size == other.size
+            and self.type == other.type
+            and self.isIso9660 == other.isIso9660)
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
 
 class LiveUSBCreator(object):
     """ An OS-independent parent class for Live USB Creators """
