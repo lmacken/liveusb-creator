@@ -734,6 +734,9 @@ class LiveUSBData(QObject):
                     self.currentDrive = i
                 if drive.drive.isIso9660:
                     self._driveToRestore = drive
+                if self.currentDrive == -1 and not self.live.drive:
+                    self.live.drive = drive
+
             self.currentDriveChanged.emit()
             self.driveToRestoreChanged.emit()
 
