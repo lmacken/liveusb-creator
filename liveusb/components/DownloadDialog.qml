@@ -159,6 +159,7 @@ Dialog {
                                     verticalAlignment: Text.AlignVCenter
                                     wrapMode: Text.Wrap
                                     text: liveUSBData.currentImage.info[index]
+                                    font.pixelSize: $(12)
                                 }
                             }
                         }

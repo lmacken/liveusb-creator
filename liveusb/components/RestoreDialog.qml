@@ -54,6 +54,7 @@ Dialog {
                                             </p>")
                     textFormat: Text.RichText
                     wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                    font.pixelSize: $(12)
                 }
                 ColumnLayout {
                     id: progress
@@ -75,6 +76,7 @@ Dialog {
                         Layout.fillWidth: true
                         wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                         text: qsTranslate("", "<p align=\"justify\">Please wait while Fedora Media Writer restores your portable drive.</p>")
+                        font.pixelSize: $(12)
                     }
                 }
                 ColumnLayout {
@@ -86,6 +88,7 @@ Dialog {
                     Text {
                         Layout.alignment: Qt.AlignHCenter
                         text: qsTranslate("", "Your drive was successfully restored!")
+                        font.pixelSize: $(12)
                     }
                 }
             }
