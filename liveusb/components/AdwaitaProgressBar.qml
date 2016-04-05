@@ -29,7 +29,7 @@ Rectangle {
         y: $(0.5)
         x: $(0.5)
         height: $(5)
-        width: (root.value - root.minimumValue) / (root.maximumValue - root.minimumValue) * parent.width;
+        width: (root.value - root.minimumValue) / (root.maximumValue - root.minimumValue) * (parent.width - 1);
         border {
             color: "#777777"
             width: $(1)
