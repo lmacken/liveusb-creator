@@ -16,43 +16,43 @@ msgstr ""
 #: liveusb/components/DownloadDialog.qml:9
 msgctxt ""
 msgid "Write %1 to USB"
-msgstr ""
+msgstr "Escribir 1% en el USB"
 
 #: liveusb/components/DownloadDialog.qml:250
 msgctxt ""
 msgid "There are no portable drives connected"
-msgstr ""
+msgstr "No hay unidades de disco portables conectados"
 
 #: liveusb/components/DownloadDialog.qml:290
 msgctxt ""
 msgid "Options"
-msgstr ""
+msgstr "Opciones"
 
 #: liveusb/components/DownloadDialog.qml:312
 msgctxt ""
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: liveusb/components/DownloadDialog.qml:335
 msgctxt ""
 msgid "Close"
-msgstr ""
+msgstr "Cerrar"
 
 #: liveusb/components/DownloadDialog.qml:335
 msgctxt ""
 msgid "Are you sure?"
-msgstr ""
+msgstr "¿Estas seguro?"
 
 #: liveusb/components/DownloadDialog.qml:335
 #, fuzzy
 msgctxt ""
 msgid "Write to disk"
-msgstr "Se escribió al dispositivo en"
+msgstr "Escribir en el disco"
 
 #: liveusb/components/DownloadDialog.qml:437
 msgctxt ""
 msgid "Write the image immediately when the download is finished"
-msgstr ""
+msgstr "Crear la imagen al terminar la descarga"
 
 #: liveusb/components/ImageDetails.qml:46
 #, fuzzy
@@ -68,13 +68,13 @@ msgstr ""
 #: liveusb/components/ImageDetails.qml:145
 msgctxt ""
 msgid ", released on %1"
-msgstr ""
+msgstr ", lanzado en %1"
 
 #: liveusb/components/ImageDetails.qml:156
 #, fuzzy
 msgctxt ""
 msgid "Select Live ISO"
-msgstr "Seleccione ISO Vivo"
+msgstr "Seleccionar ISO Vivo"
 
 #: liveusb/components/ImageDetails.qml:164
 #, fuzzy
@@ -85,27 +85,27 @@ msgstr "ISO seleccionado: %s"
 #: liveusb/components/ImageDetails.qml:164
 msgctxt ""
 msgid "None"
-msgstr ""
+msgstr "Ninguno"
 
 #: liveusb/components/ImageDetails.qml:226
 msgctxt ""
 msgid "Image files (*.iso)"
-msgstr ""
+msgstr "Archivos de imagenes (*.iso)"
 
 #: liveusb/components/ImageDetails.qml:226
 msgctxt ""
 msgid "All files (*)"
-msgstr ""
+msgstr "Todos los archivos (*)"
 
 #: liveusb/components/ImageList.qml:85
 msgctxt ""
 msgid "Find an operating system image"
-msgstr ""
+msgstr "Encontrar una imagen del sistema operativo"
 
 #: liveusb/components/ImageList.qml:212
 msgctxt ""
 msgid "Display additional Fedora flavors"
-msgstr ""
+msgstr "Mostrar sabores de Fedora adicionales"
 
 #: liveusb/creator.py:146
 msgid "Setting up OLPC boot file..."
@@ -165,7 +165,7 @@ msgstr "No se pudo montar el dispositivo: %s"
 
 #: liveusb/creator.py:338 liveusb/creator.py:1336
 msgid "Removing"
-msgstr ""
+msgstr "Removiendo"
 
 #: liveusb/creator.py:344
 #, fuzzy
@@ -174,7 +174,7 @@ msgstr "Eliminando el SO Vivo existente..."
 
 #: liveusb/creator.py:350
 msgid "Deleting "
-msgstr ""
+msgstr "Borrando"
 
 #: liveusb/creator.py:357
 #, fuzzy, python-format
@@ -198,11 +198,11 @@ msgstr "No se pudo encontrar el dispositivo %s"
 
 #: liveusb/creator.py:461
 msgid "Overwriting device with live image"
-msgstr ""
+msgstr "Sobrescribiendo el dispositivo con la imagen viva"
 
 #: liveusb/creator.py:468
 msgid "Running"
-msgstr ""
+msgstr "Corriendo"
 
 #: liveusb/creator.py:517
 msgid ""
@@ -234,12 +234,12 @@ msgstr "No se pudo montar el dispositivo: %s"
 
 #: liveusb/creator.py:780
 msgid "No mount points found after mounting attempt"
-msgstr ""
+msgstr "No se encontraron puntos de montaje"
 
 #: liveusb/creator.py:788
 #, python-format
 msgid "Using existing mount: %s"
-msgstr ""
+msgstr "Usar montaje existene: %s"
 
 #: liveusb/creator.py:800 liveusb/creator.py:1273
 msgid "Verifying filesystem..."
@@ -253,7 +253,7 @@ msgstr ""
 #: liveusb/creator.py:823
 #, python-format
 msgid "Unable to change volume label: %r"
-msgstr ""
+msgstr "No se puede cambiar la etiqueta de volumen: %r"
 
 #: liveusb/creator.py:827 liveusb/creator.py:1305
 msgid "Extracting live image to USB device..."
@@ -299,7 +299,7 @@ msgstr "No se pudo encontrar la partición"
 #: liveusb/creator.py:993
 #, python-format
 msgid "%s already bootable"
-msgstr ""
+msgstr "%s ahora es booteable"
 
 #: liveusb/creator.py:1013
 msgid "Unable to find partition"
@@ -385,7 +385,7 @@ msgstr ""
 #: liveusb/creator.py:1394
 #, python-format
 msgid "Error getting drive size: %r"
-msgstr ""
+msgstr "Error al obtener el tamaño del dispositivo: %r"
 
 #: liveusb/creator.py:1412
 msgid "Cannot find"
@@ -408,7 +408,7 @@ msgstr "No se pudo encontrar la partición"
 #: liveusb/creator.py:1459
 #, python-format
 msgid "Using proxies: %r"
-msgstr ""
+msgstr "Usando proxies: %r"
 
 #: liveusb/gui.py:243
 msgid ""
@@ -420,23 +420,23 @@ msgstr ""
 
 #: liveusb/gui.py:271
 msgid "Checking the source image"
-msgstr ""
+msgstr "Comprobando la imagen fuente"
 
 #: liveusb/gui.py:287
 msgid "Unpacking the image"
-msgstr ""
+msgstr "Desempaquetando la imagen"
 
 #: liveusb/gui.py:299
 msgid "Writing the data"
-msgstr ""
+msgstr "Escribiendo la información"
 
 #: liveusb/gui.py:305
 msgid "Checking the written data"
-msgstr ""
+msgstr "Comprobando la información escrita"
 
 #: liveusb/gui.py:316
 msgid "Finished!"
-msgstr ""
+msgstr "Terminado!"
 
 #: liveusb/gui.py:502
 msgid ""
@@ -487,11 +487,11 @@ msgstr ""
 
 #: liveusb/gui.py:627
 msgid "Ready to write"
-msgstr ""
+msgstr "Listo para ser escrito"
 
 #: liveusb/gui.py:631
 msgid "Finished"
-msgstr ""
+msgstr "Terminado"
 
 #: liveusb/gui.py:789
 msgid ""
@@ -511,7 +511,7 @@ msgstr "Creador de USB Vivo de Fedora"
 
 #: liveusb/releases.py:239
 msgid "Custom OS..."
-msgstr ""
+msgstr "SO personalizado..."
 
 #: liveusb/releases.py:240
 msgid ""
@@ -527,7 +527,7 @@ msgstr ""
 #: liveusb/urlgrabber/grabber.py:693 liveusb/urlgrabber/grabber.py:1172
 #, python-format
 msgid "Bad URL: %s"
-msgstr ""
+msgstr "Mala URL: %s"
 
 #: liveusb/urlgrabber/grabber.py:781
 #, python-format
@@ -537,12 +537,12 @@ msgstr ""
 #: liveusb/urlgrabber/grabber.py:906
 #, python-format
 msgid "Local file does not exist: %s"
-msgstr ""
+msgstr "El archivo local no existe: %s"
 
 #: liveusb/urlgrabber/grabber.py:909
 #, python-format
 msgid "Not a normal file: %s"
-msgstr ""
+msgstr "No es un archivo normal: %s"
 
 #: liveusb/urlgrabber/grabber.py:967
 #, python-format
@@ -576,7 +576,7 @@ msgstr ""
 #: liveusb/urlgrabber/grabber.py:1260
 #, python-format
 msgid "Socket Error: %s"
-msgstr ""
+msgstr "Error en el Socket: %s"
 
 #: liveusb/urlgrabber/grabber.py:1332
 #, python-format
@@ -585,7 +585,7 @@ msgstr ""
 
 #: liveusb/urlgrabber/mirror.py:287
 msgid "No more mirrors to try."
-msgstr ""
+msgstr "No hay mas espejos para intentar."
 
 #~ msgid "Unknown release: %s"
 #~ msgstr "Versión desconocida: %s"
