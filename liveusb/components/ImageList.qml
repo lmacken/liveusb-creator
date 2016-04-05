@@ -20,7 +20,7 @@ Item {
         id: searchBox
         border {
             color: searchInput.activeFocus ? "#4a90d9" : "#c3c3c3"
-            width: $(1)
+            width: 1
         }
         radius: $(6)
         color: "white"
@@ -208,8 +208,8 @@ Item {
                     clip: true
                     visible: liveUSBData.releaseProxyModel.isFront
                     anchors.fill: parent
-                    anchors.margins: $(1)
-                    radius: 3
+                    anchors.margins: 1
+                    radius: $(3)
                     color: palette.window
                     Rectangle {
                         anchors.fill: parent
@@ -218,7 +218,7 @@ Item {
                         radius: $(5)
                         border {
                             color: "#c3c3c3"
-                            width: $(1)
+                            width: 1
                         }
                     }
 
