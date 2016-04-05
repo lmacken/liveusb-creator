@@ -25,7 +25,7 @@ Item {
         color: root.color
         border {
             color: "#c3c3c3"
-            width: $1
+            width: 1
         }
         Item {
             id: iconRect
