@@ -20,7 +20,7 @@ Item {
         id: searchBox
         border {
             color: searchInput.activeFocus ? "#4a90d9" : "#c3c3c3"
-            width: 1
+            width: $(1)
         }
         radius: $(6)
         color: "white"
@@ -208,7 +208,7 @@ Item {
                     clip: true
                     visible: liveUSBData.releaseProxyModel.isFront
                     anchors.fill: parent
-                    anchors.margins: 1
+                    anchors.margins: $(1)
                     radius: 3
                     color: palette.window
                     Rectangle {
@@ -228,7 +228,7 @@ Item {
                         opacity: hidden ? 0.0 : 1.0
                         Behavior on opacity { NumberAnimation { duration: 60 } }
                         anchors.centerIn: parent
-                        spacing: 2
+                        spacing: $(2)
                         Repeater {
                             model: 3
                             Rectangle {
