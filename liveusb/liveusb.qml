@@ -6,8 +6,6 @@ import QtGraphicalEffects 1.0
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
 
-import LiveUSB 1.0
-
 import "components"
 
 ApplicationWindow {
