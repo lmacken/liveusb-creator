@@ -1,7 +1,7 @@
 
 
 # -*- mode: python -*-
-from PyInstaller.hooks.hookutils import qt5_qml_data
+from PyInstaller.utils.hooks import qt5_qml_data
 
 # removes all debug dll variants from the archive, comparing them to their regular counterparts (*d.dll vs *.dll)
 def stripDebug(list):
