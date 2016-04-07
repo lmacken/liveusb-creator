@@ -220,6 +220,9 @@ class LiveUSBCreator(object):
                     drive = key
                     found = True
                     break
+                elif self.drives[key] == drive:
+                    drive = key
+                    found = True
             if not found:
                 raise LiveUSBError(_("Cannot find device %s" % drive))
         self.log.debug("%s selected: %s" % (drive, self.drives[drive]))
