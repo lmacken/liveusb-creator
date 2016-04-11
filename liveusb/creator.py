@@ -253,7 +253,7 @@ class LiveUSBCreator(object):
     def is_admin(self):
         raise NotImplementedError
 
-    def dd_image(self):
+    def dd_image(self, update_function=None):
         raise NotImplementedError
 
     def restore_drive(self, d, callback):
@@ -350,7 +350,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         for name, device in self.udisks.GetManagedObjects().iteritems():
             handleAdded(name, device)
 
-    def dd_image(self):
+    def dd_image(self, update_function=None):
         self.log.info(_('Overwriting device with live image'))
         drive = self.drive.device
         cmd = 'dd if="%s" of="%s" bs=1M iflag=direct oflag=direct conv=fdatasync' % (self.iso, drive)
