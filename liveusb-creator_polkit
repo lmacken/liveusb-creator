@@ -1,6 +1,6 @@
 #!/bin/bash
 if [ $(which pkexec) ]; then
-    pkexec --disable-internal-agent "/usr/sbin/liveusb-creator" "$@"
+    pkexec --disable-internal-agent "/usr/bin/liveusb-creator" "$@"
 else
-    /usr/sbin/liveusb-creator "$@"
+    /usr/bin/liveusb-creator "$@"
 fi
