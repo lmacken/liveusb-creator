@@ -58,10 +58,6 @@ rm -rf %{buildroot}
 %{__python} setup.py install -O1 --skip-build --root %{buildroot}
 %{__rm} -r liveusb/urlgrabber
 
-# program needs root, move to sbin
-mkdir -p %{buildroot}%{_sbindir}
-mv %{buildroot}%{_bindir}/%{name} %{buildroot}%{_sbindir}/%{name}
-
 # polkit stuff
 mkdir -p %{buildroot}%{_datadir}/polkit-1/actions
 %{__install} -p -m644 \
