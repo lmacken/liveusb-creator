@@ -317,7 +317,7 @@ class Release(QObject):
 
     _path = ''
 
-    _archMap = {'64bit': ['x86_64'], '32bit': ['i686','i386']} #, 'ARM': ['armv7hl']}
+    _archMap = {'Intel 64bit': ['x86_64'], 'Intel 32bit': ['i686','i386']} #, 'ARM': ['armv7hl']}
 
     def __init__(self, parent, index, live, data):
         QObject.__init__(self, parent)
@@ -547,7 +547,9 @@ class ReleaseListProxy(QSortFilterProxyModel):
     _nameFilter = ''
     _frontPage = True
 
-    _archMap = {'64bit': ['x86_64'], '32bit': ['i686','i386']} #, 'ARM': ['armv7hl']}
+    _archMap = {'Intel 64bit': ['x86_64'], 'Intel 32bit': ['i686','i386']} #, 'ARM': ['armv7hl']}
+    _archMapDetailed = {'Intel 64bit': _('ISO format image for Intel, AMD and other compatible PCs (64-bit)'), 'Intel 32bit': _('ISO format image for Intel, AMD and other compatible PCs (32-bit)')} #, 'ARM': ['armv7hl']}
+
 
     def __init__(self, parent, sourceModel):
         QSortFilterProxyModel.__init__(self, parent)
@@ -590,12 +592,16 @@ class ReleaseListProxy(QSortFilterProxyModel):
         return self._archMap.keys()
 
     @pyqtProperty(str, notify=archChanged)
+    def archFilterDetailed(self):
+        return self._archMapDetailed[self.archFilter]
+
+    @pyqtProperty(str, notify=archChanged)
     def archFilter(self):
         for name, abbrs in self._archMap.items():
             if abbrs == self._archFilter:
                 return name
-        self._archFilter = self._archMap['64bit']
-        return '64bit'
+        self._archFilter = self._archMap['Intel 64bit']
+        return 'Intel 64bit'
 
     @archFilter.setter
     def archFilter(self, value):
