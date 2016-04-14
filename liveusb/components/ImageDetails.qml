@@ -125,11 +125,13 @@ Item {
                                 Text {
                                     font.pixelSize: $(13)
                                     color: "gray"
+                                    visible: liveUSBData.currentImage.arch.length
                                     text: liveUSBData.releaseProxyModel.archFilter
                                 }
                                 Text {
                                     font.pixelSize: $(11)
                                     color: "gray"
+                                    visible: liveUSBData.currentImage.arch.length
                                     text: liveUSBData.releaseProxyModel.archFilterDetailed
                                 }
                                 RowLayout {
