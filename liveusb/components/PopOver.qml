@@ -63,6 +63,7 @@ Item {
                 onCheckedChanged: {
                     if (checked && liveUSBData.releaseProxyModel.archFilter != modelData)
                         liveUSBData.releaseProxyModel.archFilter = modelData
+                    popover.open = false
                 }
             }
         }
