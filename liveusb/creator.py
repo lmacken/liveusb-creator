@@ -31,6 +31,7 @@ import signal
 import subprocess
 import sys
 import time
+import re
 from StringIO import StringIO
 from argparse import _AppendAction
 from stat import ST_SIZE
@@ -353,9 +354,24 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
     def dd_image(self, update_function=None):
         self.log.info(_('Overwriting device with live image'))
         drive = self.drive.device
-        cmd = 'dd if="%s" of="%s" bs=1M iflag=direct oflag=direct conv=fdatasync' % (self.iso, drive)
-        self.log.debug(_('Running') + ' %s' % cmd)
-        self.popen(cmd)
+        cmd = ['dd', 'if=%s'%self.iso, 'of=%s'%drive, 'bs=1M', 'iflag=direct', 'oflag=direct', 'conv=fdatasync', 'status=progress']
+
+        if update_function:
+            update_function(0.0)
+
+        self.log.debug(_('Running'), cmd)
+        dd = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=0, universal_newlines=True)
+
+        if update_function:
+            while dd.poll() is None:
+                buf = dd.stdout.readline()
+                match = re.search('([0-9]+) bytes', buf)
+                if match:
+                    update_function(float(match.group(1)) / self.isosize)
+        else:
+            dd.wait()
+
+        update_function(1.0)
 
     def terminate(self):
         for pid in self.pids:
