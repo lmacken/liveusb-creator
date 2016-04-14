@@ -172,6 +172,11 @@ Item {
 
                                         PopOver {
                                             id: popover
+                                            anchors {
+                                                horizontalCenter: parent.horizontalCenter
+                                                top: parent.bottom
+                                                topMargin: $(8) + opacity * $(24)
+                                            }
                                         }
                                     }
                                 }

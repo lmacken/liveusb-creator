@@ -7,11 +7,6 @@ Item {
     id: popover
     z: -1
     property bool open: false
-    anchors {
-        right: parent.right
-        top: parent.bottom
-        topMargin: $(8) + opacity * $(24)
-    }
     visible: opacity > 0.0
     opacity: open ? 1.0 : 0.0
     Behavior on opacity { NumberAnimation { duration: 150 } }
