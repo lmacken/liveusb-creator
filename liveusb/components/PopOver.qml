@@ -26,14 +26,14 @@ Item {
         antialiasing: true
         border {
             width: 1
-            color: "black"
+            color: "#b1b1b1"
         }
         radius: $(6)
         Rectangle {
             z: -1
             y: -$(6.5) - 1
             antialiasing: true
-            border.color: "black"
+            border.color: "#b1b1b1"
             border.width: 1
             color: palette.window
             anchors.horizontalCenter: parent.horizontalCenter
