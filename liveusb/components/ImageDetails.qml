@@ -76,6 +76,7 @@ Item {
                 width: parent.width
                 spacing: $(24)
                 RowLayout {
+                    z: 1 // so the popover stays over the text below
                     anchors.left: parent.left
                     anchors.right: parent.right
                     spacing: $(24)
@@ -92,7 +93,7 @@ Item {
                     }
                     ColumnLayout {
                         Layout.fillHeight: true
-                        spacing: $(12)
+                        spacing: $(6)
                         RowLayout {
                             Layout.fillWidth: true
                             Text {
@@ -115,36 +116,64 @@ Item {
                             }
                         }
                         Item {
+                            Layout.fillWidth: true
                             height: childrenRect.height
 
                             ColumnLayout {
-                                spacing: $(12)
-                                RowLayout {
-                                    visible: liveUSBData.currentImage.arch.length
-                                    spacing: $(12)
-                                    ExclusiveGroup {
-                                        id: archEG
-                                    }
-                                    Repeater {
-                                        model: liveUSBData.currentImage.arch
-                                        AdwaitaRadioButton {
-                                            text: modelData
-                                            Layout.alignment: Qt.AlignVCenter
-                                            exclusiveGroup: archEG
-                                            checked: liveUSBData.releaseProxyModel.archFilter == modelData
-                                            onCheckedChanged: {
-                                                if (checked && liveUSBData.releaseProxyModel.archFilter != modelData)
-                                                    liveUSBData.releaseProxyModel.archFilter = modelData
-                                            }
-                                        }
-                                    }
+                                width: parent.width
+                                spacing: $(6)
+                                Text {
+                                    font.pixelSize: $(13)
+                                    color: "gray"
+                                    text: liveUSBData.releaseProxyModel.archFilter
                                 }
                                 Text {
-                                    // I'm sorry, everyone, I can't find a better way to determine if the date is valid
-                                    text: liveUSBData.currentImage.version ? (qsTranslate("", "Version %1").arg(liveUSBData.currentImage.version) +
-                                        (liveUSBData.currentImage.releaseDate.toLocaleDateString().length > 0 ? (qsTranslate("", ", released on %1").arg(liveUSBData.currentImage.releaseDate.toLocaleDateString())) : "")) : ""
                                     font.pixelSize: $(11)
                                     color: "gray"
+                                    text: liveUSBData.releaseProxyModel.archFilterDetailed
+                                }
+                                RowLayout {
+                                    width: parent.width
+                                    Text {
+                                        // I'm sorry, everyone, I can't find a better way to determine if the date is valid
+                                        text: liveUSBData.currentImage.version ? (qsTranslate("", "Version %1").arg(liveUSBData.currentImage.version) +
+                                            (liveUSBData.currentImage.releaseDate.toLocaleDateString().length > 0 ? (qsTranslate("", ", released on %1").arg(liveUSBData.currentImage.releaseDate.toLocaleDateString())) : "")) : ""
+                                        font.pixelSize: $(11)
+                                        color: "gray"
+                                    }
+                                    Item {
+                                        Layout.fillWidth: true
+                                    }
+                                    Text {
+                                        Layout.alignment: Qt.AlignRight
+                                        visible: liveUSBData.currentImage.arch.length
+                                        text: "Other architectures..."
+                                        font.pixelSize: $(11)
+                                        color: mouse.containsPress ? "#284875" : mouse.containsMouse ? "#447BC7" : "#315FA0"
+                                        Behavior on color { ColorAnimation { duration: 100 } }
+                                        MouseArea {
+                                            id: mouse
+                                            anchors.fill: parent
+                                            hoverEnabled: true
+                                            onClicked: popover.open = !popover.open
+                                        }
+
+                                        Rectangle {
+                                            anchors {
+                                                left: parent.left
+                                                right: parent.right
+                                                top: parent.bottom
+                                                topMargin: $(1.5)
+                                            }
+                                            radius: height / 2
+                                            color: parent.color
+                                            height: $(1.2)
+                                        }
+
+                                        PopOver {
+                                            id: popover
+                                        }
+                                    }
                                 }
                             }
 
