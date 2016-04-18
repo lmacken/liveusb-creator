@@ -153,11 +153,6 @@ def getSpins(url, source):
     d = pyquery.PyQuery(urlread(url))
     spins = []
 
-    if source == 'Spins':
-        spins.append({'version': '', 'releaseDate': '', 'source': '', 'name': 'Fedora ' + source, 'logo': '', 'description': '', 'screenshots': [], 'variants': {}, 'summary': 'Alternative desktops for Fedora'})
-    elif source == 'Labs':
-        spins.append({'version': '', 'releaseDate': '', 'source': '', 'name': 'Fedora ' + source, 'logo': '', 'description': '', 'screenshots': [], 'variants': {}, 'summary': 'Functional bundles for Fedora'})
-
     for i in d('div').filter('.high').items('span'):
         spinUrl = url + i.siblings()('a').attr('href')
         spin = getSpinDetails(spinUrl, source)
@@ -233,10 +228,10 @@ def getProducts(url='https://getfedora.org/'):
 
     return products
 
-def get_fedora_flavors():
-    releases = []
-    releases += getProducts('https://getfedora.org/')
-    releases += [{'name': _('Custom OS...'),
+def get_fedora_flavors(store=True):
+    r = []
+    r += getProducts('https://getfedora.org/')
+    r += [{'name': _('Custom OS...'),
                   'description': _('<p>Here you can choose a OS image from your hard drive to be written to your flash disk</p><p>Currently it is only supported to write raw disk images (.iso or .bin)</p>'),
                   'logo': 'qrc:/icon_folder',
                   'screenshots': [],
@@ -245,9 +240,11 @@ def get_fedora_flavors():
                   'releaseDate': '',
                   'source': 'Local',
                   'variants': {'': dict(url='', sha256='', size=0)}}]
-    releases += getSpins("http://spins.fedoraproject.org", "Spins")
-    releases += getSpins("http://labs.fedoraproject.org", "Labs")
-    return releases
+    r += getSpins("http://spins.fedoraproject.org", "Spins")
+    r += getSpins("http://labs.fedoraproject.org", "Labs")
+    if (store):
+        releases[:] = r
+    return r
 
 # A backup list of releases, just in case we can't fetch them.
 fedora_releases =  [{'description': u"<p>Fedora Workstation is a reliable, user-friendly, and powerful operating system for your laptop or desktop computer. It supports a wide range of developers, from hobbyists and students to professionals in corporate environments.</p>\n        <blockquote><p>&#8220;The plethora of tools provided by  Fedora allows me to get the job done.  It just works.&#8221;</p>\n              <p align=right> \u2015 <em>Christine Flood, JVM performance engineer</em></p></blockquote><h3>Sleek user interface</h3>\n\t      <p>Focus on your code in the GNOME 3 desktop environment. GNOME is built with developer feedback and minimizes distractions, so you can concentrate on what's important.</p>\n        <h3>Complete open source toolbox</h3>\n\t      <p>Skip the drag of trying to find or build the tools you need. With Fedora's complete set of open source languages, tools, and utilities, everything is a click or command line away. There's even project hosting and repositories like COPR to make your code and builds available quickly to the community.</p>\n        <h3>GNOME Boxes &amp; other virt tools</h3>\n\t      <p>Get virtual machines up and running quickly to test your code on multiple platforms using GNOME Boxes. Or dig into powerful, scriptable virtualization tools for even more control.</p>\n        <h3>Built-in Docker support</h3>\n\t      <p>Containerize your own apps, or deploy containerized apps out of the box on Fedora, using the latest technology like Docker.</p>\n        ",
@@ -442,9 +439,8 @@ fedora_releases =  [{'description': u"<p>Fedora Workstation is a reliable, user-
                           'url': 'https://download.fedoraproject.org/pub/alt/releases/23/Spins/x86_64/Fedora-Live-Security-x86_64-23-10.iso'}},
   'version': '23'}]
 
-
 releases = fedora_releases
 
 if __name__ == '__main__':
     import pprint
-    pprint.pprint(get_fedora_flavors())
+    pprint.pprint(get_fedora_flavors(False))

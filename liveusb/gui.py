@@ -51,7 +51,7 @@ import resources_rc
 import qml_rc
 
 from liveusb import LiveUSBCreator, LiveUSBError, _
-from liveusb.releases import releases
+from liveusb.releases import releases, get_fedora_flavors
 
 if sys.platform == 'win32':
     from liveusb.urlgrabber.grabber import URLGrabber, URLGrabError
@@ -664,6 +664,16 @@ class USBDrive(QObject):
         self.beingRestoredChanged.emit()
         self.live.restore_drive(self.drive, self.restoreCallback)
 
+class DataUpdateThread(QThread):
+    def __init__(self, data):
+        QThread.__init__(self)
+        self.data = data
+
+    def run(self):
+        get_fedora_flavors()
+        self.data.fillReleases()
+
+
 class LiveUSBData(QObject):
     """ An entry point to all the exposed properties.
         There is a list of images and USB drives
@@ -686,6 +696,18 @@ class LiveUSBData(QObject):
         self._releaseModel = ReleaseListModel(self)
         self._releaseProxy = ReleaseListProxy(self, self._releaseModel)
 
+        self.fillReleases()
+        self.updateThread = DataUpdateThread(self)
+
+        self._usbDrives = []
+
+        self.live.detect_removable_drives(callback=self.USBDeviceCallback)
+
+        QTimer.singleShot(0, self.updateThread.start)
+
+    @pyqtSlot()
+    def fillReleases(self):
+        self.releaseModel.beginResetModel()
         self.releaseData = []
 
         for release in releases:
@@ -693,11 +715,9 @@ class LiveUSBData(QObject):
                                             len(self.releaseData),
                                             self.live,
                                             release
-                                    ))
-        self._usbDrives = []
+                                            ))
 
-        self.live.detect_removable_drives(callback=self.USBDeviceCallback)
-
+        self.releaseModel.endResetModel()
 
     def USBDeviceCallback(self):
         tmpDrives = []
@@ -766,7 +786,9 @@ class LiveUSBData(QObject):
 
     @pyqtProperty(Release, notify=currentImageChanged)
     def currentImage(self):
-        return self.releaseData[self._currentIndex]
+        if self._currentIndex < len(self.releaseData):
+            return self.releaseData[self._currentIndex]
+        return None
 
     @pyqtProperty(USBDrive, notify=driveToRestoreChanged)
     def driveToRestore(self):
@@ -814,6 +836,8 @@ class LiveUSBApp(QGuiApplication):
         qmlRegisterUncreatableType(Release, 'LiveUSB', 1, 0, 'Release', 'Not creatable directly, use the liveUSBData instance instead')
         qmlRegisterUncreatableType(USBDrive, 'LiveUSB', 1, 0, 'Drive', 'Not creatable directly, use the liveUSBData instance instead')
         qmlRegisterUncreatableType(LiveUSBData, 'LiveUSB', 1, 0, 'Data', 'Use the liveUSBData root instance')
+
+        # releases = get_fedora_flavors()
 
         engine = QQmlApplicationEngine()
         self.data = LiveUSBData(opts)
