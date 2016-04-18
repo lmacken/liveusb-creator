@@ -19,7 +19,7 @@ ApplicationWindow {
         id: palette
     }
 
-    property real scalingFactor: Math.ceil(Screen.pixelDensity * 25.4) / 96
+    property real scalingFactor: Math.ceil(Screen.pixelDensity * 25.4) / 96 > 1 ? Math.ceil(Screen.pixelDensity * 25.4) / 96 : 1
     function $(x) {
         return x * scalingFactor
     }
