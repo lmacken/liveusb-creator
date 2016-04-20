@@ -32,7 +32,7 @@ Requires:       PyQt5
 Requires:       qt5-qtgraphicaleffects
 Requires:       qt5-qtquickcontrols
 Requires:       isomd5sum
-Requires:       python-urlgrabber
+Requires:       python-requests
 Requires:       pyparted >= 2.0
 Requires:       syslinux-extlinux
 Requires:       udisks2
@@ -56,7 +56,6 @@ make gui
 %install
 rm -rf %{buildroot}
 %{__python} setup.py install -O1 --skip-build --root %{buildroot}
-%{__rm} -r liveusb/urlgrabber
 
 #Adding the AppStream metadata file
 install -Dm 0644 -p liveusb-creator.appdata.xml \
@@ -105,6 +104,9 @@ rm -rf %{buildroot}
 %{_datadir}/appdata/liveusb-creator.appdata.xml
 
 %changelog
+* Wed Apr 20 2016 Martin Briza <mbriza@redhat.com> - 3.15.0-0.3.newui
+- Changed urlgrabber to requests
+
 * Wed Apr 20 2016 Jiri Eischmann <eischmann@redhat.com> - 3.15.0-0.2.newui
 - Adding AppStream metadata file
 

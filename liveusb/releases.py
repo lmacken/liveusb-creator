@@ -3,6 +3,7 @@
 import re
 import traceback
 
+#todo port away from urlgrabber too
 from urlgrabber import urlread
 from urlgrabber.grabber import URLGrabError
 

@@ -42,7 +42,7 @@ if sys.platform == 'win32':
     setup(
         name = 'liveusb-creator',
         version = VERSION,
-        packages = ['liveusb', 'liveusb/urlgrabber'],
+        packages = ['liveusb'],
         scripts = ['liveusb-creator'],
         license = 'GNU General Public License (GPL)',
         url = 'https://fedorahosted.org/liveusb-creator',

@@ -49,16 +49,10 @@ from setuptools.sandbox import save_pkg_resources_state
 
 import resources_rc
 import qml_rc
+import grabber
 
 from liveusb import LiveUSBCreator, LiveUSBError, _
 from liveusb.releases import releases, get_fedora_flavors
-
-if sys.platform == 'win32':
-    from liveusb.urlgrabber.grabber import URLGrabber, URLGrabError
-    from liveusb.urlgrabber.progress import BaseMeter
-else:
-    from urlgrabber.grabber import URLGrabber, URLGrabError
-    from urlgrabber.progress import BaseMeter
 
 try:
     import dbus.mainloop.pyqt5
@@ -81,25 +75,14 @@ class ReleaseDownloadThread(QThread):
         self.proxies = proxies
 
     def run(self):
-        self.grabber = URLGrabber(progress_obj=self.progress, proxies=self.proxies)
-        home = os.getenv('HOME', 'USERPROFILE')
-        filename = os.path.basename(urlparse.urlparse(self.progress.release.url).path)
-        for folder in ('Downloads', 'My Documents'):
-            if os.path.isdir(os.path.join(home, folder)):
-                filename = os.path.join(home, folder, filename)
-                break
         try:
-            iso = self.grabber.urlgrab(self.progress.release.url, filename=filename, reget='simple')
-        except URLGrabError, e:
-            # TODO find out if this errno is _really_ benign
-            if e.errno == 9: # Requested byte range not satisfiable.
-                self.downloadFinished.emit(filename)
-            else:
-                self.downloadError.emit(e.strerror)
-        else:
-            self.downloadFinished.emit(iso)
+            filename = grabber.download(self.progress.release.url, update_maximum=self.progress.start, update_current=self.progress.update)
+            self.progress.end()
+            self.downloadFinished.emit(filename)
+        except LiveUSBError as e:
+            self.downloadError.emit(e.args[0])
 
-class ReleaseDownload(QObject, BaseMeter):
+class ReleaseDownload(QObject):
     """ Wrapper for the iso download process.
     It exports properties to track the percentage and the file with the result.
     """
@@ -128,13 +111,13 @@ class ReleaseDownload(QObject, BaseMeter):
         self.currentChanged.emit()
         self.maximumChanged.emit()
 
-    def start(self, filename=None, url=None, basename=None, size=None, now=None, text=None):
+    def start(self, size=None):
         self._maximum = size
         self._running = True
         self.maximumChanged.emit()
         self.runningChanged.emit()
 
-    def update(self, amount_read, now=None):
+    def update(self, amount_read):
         """ Update our download progressbar.
 
         :read: the number of bytes read so far
@@ -143,9 +126,11 @@ class ReleaseDownload(QObject, BaseMeter):
             self._current = amount_read
             self.currentChanged.emit()
 
-    def end(self, amount_read):
-        self._current = amount_read
+    def end(self):
+        self._current = self._maximum
         self.currentChanged.emit()
+        self._running = False
+        self.runningChanged.emit()
 
     @pyqtSlot(str)
     def childFinished(self, iso):
