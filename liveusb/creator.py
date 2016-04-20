@@ -336,7 +336,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 self.callback()
 
         def handleRemoved(path, interfaces):
-            if self.drives.has_key(path):
+            if 'org.freedesktop.UDisks2.Block' in interfaces and self.drives.has_key(path):
                 del self.drives[path]
 
             if self.callback:
