@@ -10,7 +10,7 @@
 
 Name:           liveusb-creator
 Version:        3.15.0
-Release:        0.1.newui%{?dist}
+Release:        0.2.newui%{?dist}
 Summary:        A liveusb creator
 
 Group:          Applications/System
@@ -25,7 +25,7 @@ ExcludeArch:    ppc
 ExcludeArch:    ppc64
 ExcludeArch:    %{arm}
 
-BuildRequires:  python-devel, python-setuptools, PyQt5-devel, desktop-file-utils gettext
+BuildRequires:  python-devel, python-setuptools, PyQt5-devel, desktop-file-utils, gettext, libappstream-glib
 
 Requires:       syslinux
 Requires:       PyQt5
@@ -58,6 +58,10 @@ rm -rf %{buildroot}
 %{__python} setup.py install -O1 --skip-build --root %{buildroot}
 %{__rm} -r liveusb/urlgrabber
 
+#Adding the AppStream metadata file
+install -Dm 0644 -p liveusb-creator.appdata.xml \
+	%{buildroot}%{_datadir}/appdata/liveusb-creator.appdata.xml
+
 # polkit stuff
 mkdir -p %{buildroot}%{_datadir}/polkit-1/actions
 %{__install} -p -m644 \
@@ -79,6 +83,9 @@ rm -rf %{buildroot}/%{_datadir}/applications/liveusb-creator.desktop
 
 %find_lang %{name}
 
+%check
+appstream-util validate-relax --nonet %{buildroot}/%{_datadir}/appdata/liveusb-creator.appdata.xml
+
 %clean
 rm -rf %{buildroot}
 
@@ -94,7 +101,13 @@ rm -rf %{buildroot}
 #%{_datadir}/locale/*/LC_MESSAGES/liveusb-creator.mo
 %{_datadir}/polkit-1/actions/org.fedoraproject.pkexec.run-liveusb-creator.policy
 
+#AppStream metadata
+%{_datadir}/appdata/liveusb-creator.appdata.xml
+
 %changelog
+* Wed Apr 20 2016 Jiri Eischmann <eischmann@redhat.com> - 3.15.0-0.2.newui
+- Adding AppStream metadata file
+
 * Tue Aug 25 2015 mbriza <mbriza@redhat.com> - 3.15.0-0.1.newui
 - Update to git: 00e2ea65
 

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2016 Jiri Eischmann <eischmann@redhat.com> -->
+
+<application>
+	<id type="desktop">liveusb-creator.desktop</id>
+	<metadata_license>CC0-1.0</metadata_license>
+	<name>Fedora Media Writer</name>
+	<summary>A tool to create a live USB drive with an edition of Fedora</summary>
+	<description>
+		<p>A tool to create a bootable live USB drive with an edition of Fedora. Not only can Fedora Media Writer write an image to your flash drive, it can also download it for you. It offers official editions (Server, Workstation), Fedora spins (KDE Plasma Desktop, Xfce Desktop, Cinnamon Desktop,...), and Fedora Labs (Design Suite, Security Lab,...). It provides basic information about each of them to help you make the right choice.</p>
+		<p>Fedora Media Writer can also write other bootable ISOs loaded from your local disk, but keep in mind that it's only tested with Fedora images.</p>
+	</description>
+	<keywords>iso,fedora,usb,writer,live,spin,creator</keywords>
+	<url type="homepage">https://fedorahosted.org/liveusb-creator</url>
+	<screenshots>
+		<screenshot type="default">http://example.org/screenshot1.png</screenshot>
+		<screenshot>http://example.org/screenshot2.png</screenshot>
+<!--FIXME: change the example links to the actual location of the screenshots in the upstream repository.-->
+	</screenshots>
+	<updatecontact>eischmann@redhat.com</updatecontact>
+<!--FIXME: change the contact to someone who represents the upstream project-->
+</application>
