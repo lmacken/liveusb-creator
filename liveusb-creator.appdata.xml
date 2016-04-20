@@ -13,10 +13,8 @@
 	<keywords>iso,fedora,usb,writer,live,spin,creator</keywords>
 	<url type="homepage">https://fedorahosted.org/liveusb-creator</url>
 	<screenshots>
-		<screenshot type="default">http://example.org/screenshot1.png</screenshot>
-		<screenshot>http://example.org/screenshot2.png</screenshot>
-<!--FIXME: change the example links to the actual location of the screenshots in the upstream repository.-->
+		<screenshot type="default">https://github.com/lmacken/liveusb-creator/raw/develop/screenshots/screenshot1.png</screenshot>
+		<screenshot>https://github.com/lmacken/liveusb-creator/raw/develop/screenshots/screenshot2.png</screenshot>
 	</screenshots>
-	<updatecontact>eischmann@redhat.com</updatecontact>
-<!--FIXME: change the contact to someone who represents the upstream project-->
+	<updatecontact>mbriza@redhat.com</updatecontact>
 </application>
