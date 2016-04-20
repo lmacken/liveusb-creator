@@ -703,7 +703,7 @@ class LiveUSBData(QObject):
 
         self.live.detect_removable_drives(callback=self.USBDeviceCallback)
 
-        QTimer.singleShot(0, self.updateThread.start)
+        #QTimer.singleShot(0, self.updateThread.start)
 
     @pyqtSlot()
     def fillReleases(self):
