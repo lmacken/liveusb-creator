@@ -47,6 +47,14 @@ def chown_file(path):
     else:
         pass
 
+def cancel_download(url, target_folder=find_downloads()):
+    file_name = os.path.basename(url)
+    full_path = os.path.join(target_folder, file_name)
+    partial_path = full_path + ".part"
+
+    if os.path.exists(partial_path):
+        os.remove(partial_path)
+
 def download(url, target_folder=find_downloads(), update_maximum = None, update_current = None):
     CHUNK_SIZE = 1024 * 1024
     current_size = 0

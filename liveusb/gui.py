@@ -83,6 +83,10 @@ class ReleaseDownloadThread(QThread):
         except LiveUSBError as e:
             self.downloadError.emit(e.args[0])
 
+    def terminate(self):
+        QThread.terminate(self)
+        grabber.cancel_download(self.progress.release.url)
+
 class ReleaseDownload(QObject):
     """ Wrapper for the iso download process.
     It exports properties to track the percentage and the file with the result.
