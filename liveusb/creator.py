@@ -359,6 +359,12 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         if update_function:
             update_function(0.0)
 
+        for i in os.listdir('/dev'):
+            dev = os.path.join('/dev/', i)
+            if dev.startswith(os.path.normpath(drive)) and dev != os.path.normpath(drive):
+                umount = subprocess.Popen(['umount', '-f', dev], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                umount.wait()
+
         self.log.debug(_('Running'), cmd)
         dd = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=0, universal_newlines=True)
 
