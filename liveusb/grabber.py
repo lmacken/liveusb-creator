@@ -47,15 +47,17 @@ def chown_file(path):
     else:
         pass
 
-
 def download(url, target_folder=find_downloads(), update_maximum = None, update_current = None):
     CHUNK_SIZE = 1024 * 1024
     current_size = 0
 
     file_name = os.path.basename(url)
     full_path = os.path.join(target_folder, file_name)
+    partial_path = full_path + ".part"
     if os.path.exists(full_path):
-        current_size = os.path.getsize(full_path)
+        return full_path
+    elif os.path.exists(partial_path):
+        current_size = os.path.getsize(partial_path)
     bytes_read = current_size
 
     if current_size > 0:
@@ -78,14 +80,16 @@ def download(url, target_folder=find_downloads(), update_maximum = None, update_
         if update_maximum:
             update_maximum(current_size + int(r.headers['Content-Length']))
 
-        with open(full_path, mode) as f:
-            chown_file(full_path)
+        with open(partial_path, mode) as f:
+            chown_file(partial_path)
 
             for chunk in r.iter_content(CHUNK_SIZE):
                 f.write(chunk)
                 bytes_read += len(chunk)
                 if update_current:
                     update_current(bytes_read)
+
+        os.rename(partial_path, full_path)
 
     except requests.exceptions.ReadTimeout as e:
         raise LiveUSBError("Your internet connection seems to be broken")
