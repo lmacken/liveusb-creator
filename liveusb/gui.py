@@ -81,7 +81,7 @@ class ReleaseDownloadThread(QThread):
             self.progress.end()
             self.downloadFinished.emit(filename)
         except LiveUSBError as e:
-            self.progress.release.addError(e.args[0])
+            self.downloadError.emit(e.args[0])
 
     def terminate(self):
         QThread.terminate(self)
@@ -147,6 +147,7 @@ class ReleaseDownload(QObject):
     @pyqtSlot(str)
     def childError(self, err):
         self.reset()
+        self.release.addError(err)
 
     @pyqtSlot(str)
     def run(self):
@@ -335,6 +336,7 @@ class Release(QObject):
         self._download.runningChanged.connect(self.statusChanged)
         self._writer.runningChanged.connect(self.statusChanged)
         self._writer.statusChanged.connect(self.statusChanged)
+        self.errorChanged.connect(self.statusChanged)
 
         parent.releaseProxyModel.archChanged.connect(self.sizeChanged)
         parent.releaseProxyModel.archChanged.connect(self.pathChanged)
@@ -469,7 +471,7 @@ class Release(QObject):
 
     @pyqtProperty(str, notify=statusChanged)
     def status(self):
-        if not self._download.running and not self.readyToWrite and not self._writer.running:
+        if not self._download.running and not self.readyToWrite and not self._writer.running and len(self._error) == 0:
             return _('Starting')
         elif self._download.running:
             return _('Downloading')
