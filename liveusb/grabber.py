@@ -11,6 +11,7 @@ from PyQt5.QtCore import QStandardPaths
 
 def find_downloads():
     # todo look into SUDO_UID and PKEXEC_UID for the original user
+    path = None
     if sys.platform.startswith("linux"):
         import pwd
         uid = 0
@@ -19,10 +20,17 @@ def find_downloads():
         elif 'PKEXEC_UID' in os.environ:
             uid = int(os.environ['PKEXEC_UID'])
 
-        pw = pwd.getpwuid(uid)
-        p = subprocess.Popen(['sudo', '-u', pw[0], 'xdg-user-dir', 'DOWNLOAD'], stdout=subprocess.PIPE)
-        p.wait()
-        path = p.stdout.readline().strip()
+        try:
+            pw = pwd.getpwuid(uid)
+            p = subprocess.Popen(['sudo', '-u', pw[0], 'xdg-user-dir', 'DOWNLOAD'], stdout=subprocess.PIPE)
+            p.wait()
+            if (p.returncode == 0):
+                path = p.stdout.readline().strip()
+            if not path:
+                path = pw[5]
+        except KeyError:
+            path = tempfile.mkdtemp("liveusb-creator")
+
     else:
         path = QStandardPaths.writableLocation(QStandardPaths.DownloadLocation)
 
@@ -99,12 +107,8 @@ def download(url, target_folder=find_downloads(), update_maximum = None, update_
 
         os.rename(partial_path, full_path)
 
-    except requests.exceptions.ReadTimeout as e:
+    except requests.exceptions.RequestException as e:
         raise LiveUSBError("Your internet connection seems to be broken")
-    except requests.exceptions.ConnectTimeout as e:
-        raise LiveUSBError("Your internet connection seems to be broken")
-    except Exception as e:
-        raise LiveUSBError("Couldn't download the file: %s (%d): %s" % (r.reason, r.status_code, e.message))
 
     return full_path
 

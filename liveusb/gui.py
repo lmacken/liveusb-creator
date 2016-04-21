@@ -81,7 +81,7 @@ class ReleaseDownloadThread(QThread):
             self.progress.end()
             self.downloadFinished.emit(filename)
         except LiveUSBError as e:
-            self.downloadError.emit(e.args[0])
+            self.progress.release.addError(e.args[0])
 
     def terminate(self):
         QThread.terminate(self)
