@@ -203,7 +203,6 @@ Item {
 
             footer: Item {
                 height: !liveUSBData.releaseProxyModel.isFront ? $(54) : $(36)
-                visible: liveUSBData.rowCount > 3
                 width: osListView.width
                 Rectangle {
                     clip: true
