@@ -78,8 +78,8 @@ Dialog {
                                 Rectangle {
                                     Layout.fillWidth: false
                                     Layout.alignment: Qt.AlignVCenter
-                                    width: cross.height
-                                    height: cross.height
+                                    width: $(16)
+                                    height: $(16)
                                     radius: width / 2
                                     color: "#88ffffff"
                                     border {
@@ -92,14 +92,14 @@ Dialog {
                                         rotation: 45
                                         Rectangle {
                                             anchors.centerIn: parent
-                                            width: parent.width * 0.8
-                                            height: parent.width * 0.05
+                                            width: parent.width * 0.6
+                                            height: parent.width * 0.1
                                             color: "red"
                                         }
                                         Rectangle {
                                             anchors.centerIn: parent
-                                            height: parent.width * 0.8
-                                            width: parent.width * 0.05
+                                            height: parent.width * 0.6
+                                            width: parent.width * 0.1
                                             color: "red"
                                         }
                                     }
