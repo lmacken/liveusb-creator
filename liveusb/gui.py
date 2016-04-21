@@ -43,6 +43,7 @@ from time import sleep
 from datetime import datetime
 from PyQt5.QtCore import pyqtProperty, pyqtSlot, QObject, QUrl, QDateTime, pyqtSignal, QThread, QAbstractListModel, QSortFilterProxyModel, QModelIndex, Qt, QTranslator, QLocale, QTimer
 from PyQt5.QtGui import QGuiApplication
+from PyQt5.QtWidgets import QApplication
 from PyQt5.QtQml import qmlRegisterType, qmlRegisterUncreatableType, QQmlComponent, QQmlApplicationEngine, QQmlListProperty, QQmlEngine
 from PyQt5 import QtQuick
 from setuptools.sandbox import save_pkg_resources_state
@@ -808,10 +809,10 @@ class LiveUSBData(QObject):
             for r in self.releaseData:
                 r.download.finished = False
 
-class LiveUSBApp(QGuiApplication):
+class LiveUSBApp(QApplication):
     """ Main application class """
     def __init__(self, opts, args):
-        QGuiApplication.__init__(self, args)
+        QApplication.__init__(self, args)
         translator = QTranslator()
         translator.load(QLocale.system().name(), "po")
         self.installTranslator(translator)
