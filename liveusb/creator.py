@@ -626,7 +626,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
             mountvol.wait()
 
         diskpart = subprocess.Popen(['diskpart'], shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        diskpart.communicate('select disk '+self.drive.device+'\r\nclean\r\nexit')
+        diskpart.communicate('select disk '+self.drive.device+'\r\nclean\r\nexit\r\n')
         diskpart.wait()
         if diskpart.returncode != 0:
             self.log('Diskpart exited with a nonzero status')
@@ -660,7 +660,7 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         def restore_drive_work(callback, device):
             import threading
             diskpart = subprocess.Popen(['diskpart'], shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            diskpart.communicate('select disk '+self.drive.device+'\r\nclean\r\ncreate part pri\r\nselect part 1\r\nformat fs=fat32 quick\r\nassign\r\nexit')
+            diskpart.communicate('select disk '+self.drive.device+'\r\nclean\r\ncreate part pri\r\nselect part 1\r\nformat fs=fat32 quick\r\nassign\r\nexit\r\n')
             diskpart.wait()
             callback(True)
 
