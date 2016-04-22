@@ -70,6 +70,8 @@ class ReleaseDownloadThread(QThread):
     downloadFinished = pyqtSignal(str)
     downloadError = pyqtSignal(str)
 
+    beingCancelled = False
+
     def __init__(self, progress, proxies):
         QThread.__init__(self)
         self.progress = progress
@@ -77,15 +79,18 @@ class ReleaseDownloadThread(QThread):
 
     def run(self):
         try:
-            filename = grabber.download(self.progress.release.url, update_maximum=self.progress.start, update_current=self.progress.update)
-            self.progress.end()
-            self.downloadFinished.emit(filename)
+            self.beingCancelled = False
+            filename = grabber.download(self, self.progress.release.url, update_maximum=self.progress.start, update_current=self.progress.update)
+            if filename:
+                self.progress.end()
+                self.downloadFinished.emit(filename)
         except LiveUSBError as e:
             self.downloadError.emit(e.args[0])
 
-    def terminate(self):
-        QThread.terminate(self)
-        grabber.cancel_download(self.progress.release.url)
+    @pyqtSlot()
+    def cancelDownload(self):
+        self.beingCancelled = True
+
 
 class ReleaseDownload(QObject):
     """ Wrapper for the iso download process.
@@ -158,7 +163,7 @@ class ReleaseDownload(QObject):
 
     @pyqtSlot()
     def cancel(self):
-        self._grabber.terminate()
+        self._grabber.cancelDownload()
         self.reset()
 
     @pyqtProperty(float, notify=maximumChanged)

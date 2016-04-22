@@ -63,7 +63,7 @@ def cancel_download(url, target_folder=find_downloads()):
     if os.path.exists(partial_path):
         os.remove(partial_path)
 
-def download(url, target_folder=find_downloads(), update_maximum = None, update_current = None):
+def download(parent, url, target_folder=find_downloads(), update_maximum = None, update_current = None):
     CHUNK_SIZE = 1024 * 1024
     current_size = 0
 
@@ -100,10 +100,15 @@ def download(url, target_folder=find_downloads(), update_maximum = None, update_
             chown_file(partial_path)
 
             for chunk in r.iter_content(CHUNK_SIZE):
-                f.write(chunk)
-                bytes_read += len(chunk)
-                if update_current:
-                    update_current(bytes_read)
+                if not parent.beingCancelled:
+                    f.write(chunk)
+                    bytes_read += len(chunk)
+                    if update_current:
+                        update_current(bytes_read)
+                else:
+                    f.close()
+                    cancel_download(url, target_folder)
+                    return None
 
         os.rename(partial_path, full_path)
 
