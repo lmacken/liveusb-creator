@@ -4,9 +4,10 @@ import re
 import traceback
 
 #todo port away from urlgrabber too
+"""
 from urlgrabber import urlread
 from urlgrabber.grabber import URLGrabError
-
+"""
 from pyquery import pyquery
 
 from liveusb import _
@@ -16,7 +17,7 @@ BASE_URL = 'https://dl.fedoraproject.org'
 PUB_URL = BASE_URL + '/pub/fedora/linux/releases/'
 ALT_URL = BASE_URL + '/pub/alt/releases/'
 ARCHES = ('armhfp', 'x86_64', 'i686', 'i386')
-
+"""
 def getArch(url):
     return url.split('/')[-1].split('.')[0].split('-')[3]
 
@@ -228,9 +229,10 @@ def getProducts(url='https://getfedora.org/'):
             products.append(getProductDetails(productUrl))
 
     return products
-
+"""
 def get_fedora_flavors(store=True):
     r = []
+    """
     r += getProducts('https://getfedora.org/')
     r += [{'name': _('Custom OS...'),
                   'description': _('<p>Here you can choose a OS image from your hard drive to be written to your flash disk</p><p>Currently it is only supported to write raw disk images (.iso or .bin)</p>'),
@@ -245,6 +247,7 @@ def get_fedora_flavors(store=True):
     r += getSpins("http://labs.fedoraproject.org", "Labs")
     if (store):
         releases[:] = r
+    """
     return r
 
 # A backup list of releases, just in case we can't fetch them.
