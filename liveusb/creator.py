@@ -362,7 +362,16 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 del env[i]
         env['LC_ALL'] = 'C'
 
-        cmd = ['dd', 'if=%s'%self.iso, 'of=%s'%drive, 'bs=1M', 'iflag=direct', 'oflag=direct', 'conv=fdatasync', 'status=progress']
+        cmd = ['dd', 'if=%s'%self.iso, 'of=%s'%drive, 'bs=1M', 'iflag=direct', 'oflag=direct', 'conv=fdatasync']
+
+        #check for version of coreutls (for progress reporting)
+        p = subprocess.Popen(['dd', '--version'], stdout=subprocess.PIPE)
+        p.wait()
+        version = p.stdout.readline().strip()
+        if version.startswith('dd (coreutils) ') and version >= 'dd (coreutils) 8.24':
+            cmd.append('status=progress')
+        else:
+            update_function = None
 
         if update_function:
             update_function(0.0)
@@ -378,6 +387,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
 
         if update_function:
             while dd.poll() is None:
+
                 buf = dd.stdout.readline()
                 match = re.search('([0-9]+) bytes', buf)
                 if match:
