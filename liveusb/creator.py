@@ -354,6 +354,14 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
     def dd_image(self, update_function=None):
         self.log.info(_('Overwriting device with live image'))
         drive = self.drive.device
+
+        # has to run in C locale
+        env = os.environ.copy()
+        for i in env.keys():
+            if i.startswith('LC_'):
+                del env[i]
+        env['LC_ALL'] = 'C'
+
         cmd = ['dd', 'if=%s'%self.iso, 'of=%s'%drive, 'bs=1M', 'iflag=direct', 'oflag=direct', 'conv=fdatasync', 'status=progress']
 
         if update_function:
@@ -366,7 +374,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
                 umount.wait()
 
         self.log.debug(_('Running'), cmd)
-        dd = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=0, universal_newlines=True)
+        dd = subprocess.Popen(cmd, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=0, universal_newlines=True)
 
         if update_function:
             while dd.poll() is None:
