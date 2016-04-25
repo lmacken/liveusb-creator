@@ -397,7 +397,8 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
         else:
             dd.wait()
 
-        update_function(1.0)
+        if update_function:
+            update_function(1.0)
 
     def terminate(self):
         for pid in self.pids:
