@@ -9,8 +9,8 @@
 %global commit afdc2a1c9777c6a04179750d0032ea66e9de03b2
 
 Name:           liveusb-creator
-Version:        3.15.0
-Release:        0.2.newui%{?dist}
+Version:        3.95.0
+Release:        1
 Summary:        A liveusb creator
 
 Group:          Applications/System
@@ -29,8 +29,7 @@ BuildRequires:  python-devel, python-setuptools, PyQt5-devel, desktop-file-utils
 
 Requires:       syslinux
 Requires:       PyQt5
-Requires:       qt5-qtgraphicaleffects
-Requires:       qt5-qtquickcontrols
+Requires:       qt5-qtquickcontrols >= 5.3.0
 Requires:       isomd5sum
 Requires:       python-requests
 Requires:       pyparted >= 2.0
@@ -104,6 +103,9 @@ rm -rf %{buildroot}
 %{_datadir}/appdata/liveusb-creator.appdata.xml
 
 %changelog
+* Mon Apr 25 2016 Martin Briza <mbriza@redhat.com> - 3.95.0
+- Set the QML imports to require at least Qt 5.3
+
 * Wed Apr 20 2016 Martin Briza <mbriza@redhat.com> - 3.15.0-0.3.newui
 - Changed urlgrabber to requests
 
