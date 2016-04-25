@@ -381,7 +381,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             if dev.startswith(os.path.normpath(drive)) and dev != os.path.normpath(drive):
                 umount = subprocess.Popen(['umount', dev], env=env, shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
                 umount.wait()
-                if not 'not mounted' in umount.stdout.readline():
+                if umount.returncode != 0 and not 'not mounted' in umount.stdout.readline():
                     raise LiveUSBError(_("The drive you're trying to use is open in another application"))
 
         self.log.debug(_('Running'), cmd)
