@@ -1,5 +1,6 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.2
+import QtQuick.Controls.Styles 1.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.0
@@ -269,17 +270,12 @@ Dialog {
                                     currentIndex = -1
                             }
 
-                            enabled: !liveUSBData.currentImage.writer.running
+                            enabled: !liveUSBData.currentImage.writer.running &&  liveUSBData.usbDriveNames.length > 0
                             Row {
-                                spacing: $(8)
+                                spacing: $(6)
                                 anchors.fill: parent
-                                anchors.leftMargin: $(8)
+                                anchors.leftMargin: $(12)
                                 visible: liveUSBData.usbDriveNames.length <= 0
-                                BusyIndicator {
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    height: parent.height * 0.6
-                                    width: height
-                                }
                                 Text {
                                     height: parent.height
                                     verticalAlignment: Text.AlignVCenter
