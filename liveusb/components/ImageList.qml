@@ -228,14 +228,29 @@ Item {
                         opacity: hidden ? 0.0 : 1.0
                         Behavior on opacity { NumberAnimation { duration: 60 } }
                         anchors.centerIn: parent
-                        spacing: $(2)
-                        Repeater {
-                            model: 3
-                            Rectangle {
-                                height: $(4)
-                                width: $(4)
-                                color: "#bebebe"
+                        spacing: $(3)
+                        Rectangle { id: dot1; height: $(4); width: $(4); radius: $(1); color: "#bebebe"; antialiasing: true }
+                        Rectangle { id: dot2; height: $(4); width: $(4); radius: $(1); color: "#bebebe"; antialiasing: true }
+                        Rectangle { id: dot3; height: $(4); width: $(4); radius: $(1); color: "#bebebe"; antialiasing: true }
+                        SequentialAnimation {
+                            id: updateAnimation
+                            running: true
+                            loops: -1
+                            NumberAnimation { target: dot1; property: "scale"; from: 1.0; to: 1.5; duration: 300 }
+                            NumberAnimation { target: dot1; property: "scale"; from: 1.5; to: 1.0; duration: 300 }
+                            NumberAnimation { target: dot2; property: "scale"; from: 1.0; to: 1.5; duration: 300 }
+                            NumberAnimation { target: dot2; property: "scale"; from: 1.5; to: 1.0; duration: 300 }
+                            NumberAnimation { target: dot3; property: "scale"; from: 1.0; to: 1.5; duration: 300 }
+                            NumberAnimation { target: dot3; property: "scale"; from: 1.5; to: 1.0; duration: 300 }
+                            onStopped: {
+                                dot1.scale = 1.0
+                                dot2.scale = 1.0
+                                dot3.scale = 1.0
                             }
+                        }
+                        Connections {
+                            target: liveUSBData
+                            onUpdateThreadStopped: updateAnimation.running = false
                         }
                     }
                     Text {

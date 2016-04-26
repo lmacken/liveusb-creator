@@ -679,6 +679,7 @@ class LiveUSBData(QObject):
     usbDrivesChanged = pyqtSignal()
     currentDriveChanged = pyqtSignal()
     driveToRestoreChanged = pyqtSignal()
+    updateThreadStopped = pyqtSignal()
 
     # has to be a property because you can't pass python signal parameters to qml
     _driveToRestore = None
@@ -700,6 +701,7 @@ class LiveUSBData(QObject):
         self.live.detect_removable_drives(callback=self.USBDeviceCallback)
 
         self.updateThread.finished.connect(self.fillReleases)
+        self.updateThread.finished.connect(self.updateThreadStopped)
         QTimer.singleShot(0, self.updateThread.start)
 
     @pyqtSlot()
