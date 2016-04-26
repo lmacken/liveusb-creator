@@ -118,6 +118,29 @@ def download(parent, url, target_folder=find_downloads(), update_maximum = None,
     return full_path
 
 
+def urlread(url):
+    CHUNK_SIZE = 1024 * 1024
+
+    bytes_read = 0
+    ret = ''
+
+    try:
+        r = requests.get(url, stream=True, allow_redirects=True, timeout=(30.0, 30.0))
+
+        if r.status_code != 200:
+            raise LiveUSBError("Couldn't download the file: %s (%d)" % (r.reason, r.status_code))
+
+        for chunk in r.iter_content(CHUNK_SIZE):
+            bytes_read += len(chunk)
+            ret += chunk
+
+    except requests.exceptions.RequestException as e:
+        raise LiveUSBError("Your internet connection seems to be broken")
+
+    return ret
+
+
+
 
 def __print(val):
     print(val)
