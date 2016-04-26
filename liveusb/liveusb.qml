@@ -11,12 +11,15 @@ ApplicationWindow {
     id: mainWindow
     minimumWidth: $(800)
     minimumHeight: $(480)
-    width: $(800)
-    height: $(480)
     title: qsTranslate("", "Fedora Media Writer")
 
     SystemPalette {
         id: palette
+    }
+
+    Component.onCompleted: {
+        width = $(800)
+        height = $(480)
     }
 
     property real scalingFactor: Math.ceil(Screen.pixelDensity * 25.4) / 96 > 1 ? Math.ceil(Screen.pixelDensity * 25.4) / 96 : 1
