@@ -85,9 +85,9 @@ def download(parent, url, target_folder=find_downloads(), update_maximum = None,
         r = requests.get(url, headers=resume_header, stream=True, allow_redirects=True, timeout=(30.0, 30.0))
 
         if r.status_code == 200:
-            mode = "ab"
-        elif r.status_code == 206:
             mode = "wb"
+        elif r.status_code == 206:
+            mode = "ab"
         elif r.status_code == 416:
             return full_path
         else:
