@@ -3,10 +3,9 @@
 import re
 import traceback
 
-#todo port away from urlgrabber too
-from grabber import urlread
 from pyquery import pyquery
 
+from liveusb.grabber import urlread
 from liveusb import _
 from PyQt5.QtCore import QDateTime
 
@@ -32,7 +31,7 @@ def getSHA(url):
     filename = url.split('/')[-1]
     try:
         d = pyquery.PyQuery(urlread(baseurl))
-    except URLGrabError:
+    except LiveUSBError:
         return ''
     checksum = ''
     for i in d.items('a'):

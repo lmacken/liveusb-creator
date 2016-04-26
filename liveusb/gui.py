@@ -668,7 +668,6 @@ class DataUpdateThread(QThread):
 
     def run(self):
         get_fedora_flavors()
-        self.data.fillReleases()
 
 
 class LiveUSBData(QObject):
@@ -700,10 +699,12 @@ class LiveUSBData(QObject):
 
         self.live.detect_removable_drives(callback=self.USBDeviceCallback)
 
-        #QTimer.singleShot(0, self.updateThread.start)
+        self.updateThread.finished.connect(self.fillReleases)
+        QTimer.singleShot(0, self.updateThread.start)
 
     @pyqtSlot()
     def fillReleases(self):
+        print ("BAM")
         self.releaseModel.beginResetModel()
         self.releaseData = []
 
@@ -715,6 +716,7 @@ class LiveUSBData(QObject):
                                             ))
 
         self.releaseModel.endResetModel()
+        self.releaseProxyModel.invalidate()
 
     def USBDeviceCallback(self):
         tmpDrives = []

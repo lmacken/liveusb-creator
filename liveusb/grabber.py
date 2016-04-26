@@ -1,10 +1,10 @@
-from liveusb import LiveUSBError
-
 import subprocess
 import os
 import sys
 import requests
 import tempfile
+
+from liveusb import _
 
 from PyQt5.QtCore import QStandardPaths
 
