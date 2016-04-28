@@ -41,5 +41,10 @@ Rectangle {
             GradientStop { position: 1.0; color: Qt.darker(root.progressColor) }
         }
     }
+
+    AdwaitaBusyIndicator {
+        anchors.fill: parent
+        visible: isNaN(root.value)
+    }
 }
 

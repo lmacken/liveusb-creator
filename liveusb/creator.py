@@ -364,7 +364,7 @@ class LinuxLiveUSBCreator(LiveUSBCreator):
             update_function = None
 
         if update_function:
-            update_function(0.0)
+            update_function(float('nan'))
 
         for i in os.listdir('/dev'):
             dev = os.path.join('/dev/', i)
