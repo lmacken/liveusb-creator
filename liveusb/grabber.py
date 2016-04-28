@@ -5,6 +5,7 @@ import requests
 import tempfile
 
 from liveusb import _
+from liveusb import LiveUSBError
 
 from PyQt5.QtCore import QStandardPaths
 

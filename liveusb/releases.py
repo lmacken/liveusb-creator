@@ -5,9 +5,10 @@ import traceback
 
 from pyquery import pyquery
 
-from liveusb.grabber import urlread
-from liveusb import _
+import grabber
+from liveusb import _, LiveUSBError
 from PyQt5.QtCore import QDateTime
+
 
 BASE_URL = 'https://dl.fedoraproject.org'
 PUB_URL = BASE_URL + '/pub/fedora/linux/releases/'
@@ -30,13 +31,16 @@ def getSHA(url):
     baseurl = '/'.join(url.split('/')[:-1])
     filename = url.split('/')[-1]
     try:
-        d = pyquery.PyQuery(urlread(baseurl))
-    except LiveUSBError:
+        d = pyquery.PyQuery(grabber.urlread(baseurl))
+    except LiveUSBError, e:
         return ''
     checksum = ''
     for i in d.items('a'):
         if 'CHECKSUM' in i.attr('href'):
-            checksum = urlread(baseurl + '/' + i.attr('href'))
+            try:
+                checksum = grabber.urlread(baseurl + '/' + i.attr('href'))
+            except LiveUSBError, e:
+                pass
             break
 
     for line in checksum.split('\n'):
@@ -60,7 +64,10 @@ def getSize(text):
     return int(size)
 
 def getDownload(url):
-    d = pyquery.PyQuery(urlread(url))
+    try:
+        d = pyquery.PyQuery(grabber.urlread(url))
+    except LiveUSBError, e:
+        return None
     ret = dict()
     url = d('a.btn-success').attr('href')
     ret[getArch(url)] = dict(
@@ -80,7 +87,10 @@ def getDownload(url):
     return ret
 
 def getSpinDetails(url, source):
-    d = pyquery.PyQuery(urlread(url))
+    try:
+        d = pyquery.PyQuery(grabber.urlread(url))
+    except LiveUSBError, e:
+        return None
     spin = {
         'name': '',
         'summary': '',
@@ -112,6 +122,8 @@ def getSpinDetails(url, source):
             spin['description'] += line
 
     download = getDownload(url + "/.." + d('a.btn').attr('href'))
+    if not download:
+        return None
     spin['variants'] = download
     spin['version'] = getRelease(download)
     if spin['version'] == '23':
@@ -148,19 +160,24 @@ def getSpinDetails(url, source):
     return spin
 
 def getSpins(url, source):
-    d = pyquery.PyQuery(urlread(url))
+    try:
+        d = pyquery.PyQuery(grabber.urlread(url))
+    except LiveUSBError, e:
+        return None
     spins = []
 
     for i in d('div').filter('.high').items('span'):
         spinUrl = url + i.siblings()('a').attr('href')
         spin = getSpinDetails(spinUrl, source)
+        if not spin:
+            continue
         spin['summary'] = i.html()
         spins.append(spin)
 
     return spins
 
 def getProductDetails(url):
-    d = pyquery.PyQuery(urlread(url))
+    d = pyquery.PyQuery(grabber.urlread(url))
     product = {
         'name': '',
         'summary': '',
@@ -210,7 +227,10 @@ def getProductDetails(url):
     return product
 
 def getProducts(url='https://getfedora.org/'):
-    d = pyquery.PyQuery(urlread(url))
+    try:
+        d = pyquery.PyQuery(grabber.urlread(url))
+    except LiveUSBError, e:
+        return None
 
     products = []
 
@@ -222,13 +242,20 @@ def getProducts(url='https://getfedora.org/'):
             productUrl += i.attr('href')
 
         if not "cloud" in productUrl and not productUrl.endswith("download"):
-            products.append(getProductDetails(productUrl))
+            product = getProductDetails(productUrl)
+            if product:
+                products.append(product)
 
     return products
 
 def get_fedora_flavors(store=True):
     r = []
-    r += getProducts('https://getfedora.org/')
+    products = getProducts('https://getfedora.org/')
+    spins = getSpins("http://spins.fedoraproject.org", "Spins")
+    labs = getSpins("http://labs.fedoraproject.org", "Labs")
+
+    if products:
+        r += products
     r += [{'name': _('Custom OS...'),
                   'description': _('<p>Here you can choose a OS image from your hard drive to be written to your flash disk</p><p>Currently it is only supported to write raw disk images (.iso or .bin)</p>'),
                   'logo': 'qrc:/icon_folder',
@@ -238,10 +265,14 @@ def get_fedora_flavors(store=True):
                   'releaseDate': '',
                   'source': 'Local',
                   'variants': {'': dict(url='', sha256='', size=0)}}]
-    r += getSpins("http://spins.fedoraproject.org", "Spins")
-    r += getSpins("http://labs.fedoraproject.org", "Labs")
-    if (store):
+    if spins:
+        r += spins
+    if labs:
+        r += labs
+
+    if store and len(r) > 1:
         releases[:] = r
+
     return r
 
 # A backup list of releases, just in case we can't fetch them.

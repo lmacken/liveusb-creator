@@ -706,7 +706,6 @@ class LiveUSBData(QObject):
 
     @pyqtSlot()
     def fillReleases(self):
-        print ("BAM")
         self.releaseModel.beginResetModel()
         self.releaseData = []
 
