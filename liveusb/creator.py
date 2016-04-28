@@ -36,19 +36,9 @@ from StringIO import StringIO
 from argparse import _AppendAction
 from stat import ST_SIZE
 
-from liveusb import _
+from liveusb import _, LiveUSBError
 from liveusb.releases import releases
 
-
-class LiveUSBError(Exception):
-    """ A generic error message that is thrown by the LiveUSBCreator """
-
-    def __init__(self, fullMessage, shortMessage=""):
-        self.args = [fullMessage]
-        if shortMessage != "":
-            self.short = shortMessage
-        else:
-            self.short = fullMessage
 
 
 class Drive(object):

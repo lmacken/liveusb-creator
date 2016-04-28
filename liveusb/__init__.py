@@ -37,7 +37,16 @@ def utf8_gettext(string):
     " Translate string, converting it to a UTF-8 encoded bytestring "
     return _(string).encode('utf8')
 
-from liveusb.creator import LiveUSBError
+
+class LiveUSBError(Exception):
+    """ A generic error message that is thrown by the LiveUSBCreator """
+
+    def __init__(self, fullMessage, shortMessage=""):
+        self.args = [fullMessage]
+        if shortMessage != "":
+            self.short = shortMessage
+        else:
+            self.short = fullMessage
 
 if sys.platform == "win32":
     from liveusb.creator import WindowsLiveUSBCreator as LiveUSBCreator
