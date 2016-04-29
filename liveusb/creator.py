@@ -650,6 +650,11 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
             while dd.poll() is None:
                 buf = dd.stdout.readline().strip()
                 #buf = dd.stdout.read(256)
+                if "Error" in buf:
+                    if ": 32" in buf:
+                        raise LiveUSBError(_("The drive is being used by some other application"))
+                    else:
+                        raise LiveUSBError(buf)
                 r = re.search('^([,0-9]+)', buf)
                 if r and len(r.groups()) > 0 and len(r.group(0)) > 0:
                     ratio = float(float(r.group(0).replace(',', '')) / self.isosize)
