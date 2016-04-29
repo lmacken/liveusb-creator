@@ -476,7 +476,7 @@ class Release(QObject):
 
     @pyqtProperty(str, notify=statusChanged)
     def status(self):
-        if not self._download.running and not self.readyToWrite and not self._writer.running and len(self._error) == 0:
+        if not self.writer.finished and not self._download.running and not self.readyToWrite and not self._writer.running and len(self._error) == 0:
             return _('Starting')
         elif self._download.running:
             return _('Downloading')
@@ -687,6 +687,8 @@ class LiveUSBData(QObject):
     _currentIndex = 0
     _currentDrive = 0
 
+    releaseData = []
+
     def __init__(self, opts):
         QObject.__init__(self)
         self.live = LiveUSBCreator(opts=opts)
@@ -706,8 +708,11 @@ class LiveUSBData(QObject):
 
     @pyqtSlot()
     def fillReleases(self):
+        if self.releaseData and self.releaseData[self.currentIndex]:
+            if self.releaseData[self.currentIndex].download.running or self.releaseData[self.currentIndex].writer.running:
+                return
+
         self.releaseModel.beginResetModel()
-        self.releaseData = []
 
         for release in releases:
             self.releaseData.append(Release(self,
@@ -718,6 +723,7 @@ class LiveUSBData(QObject):
 
         self.releaseModel.endResetModel()
         self.releaseProxyModel.invalidate()
+        self.currentImageChanged.emit()
 
     def USBDeviceCallback(self):
         tmpDrives = []

@@ -622,21 +622,19 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
         import re
 
         if update_function:
-            update_function(-1.0)
+            update_function(float("NaN"))
 
         for i in self.drive.mount:
             mountvol = subprocess.Popen(['mountvol', i, '/d'], shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             mountvol.wait()
 
         diskpart = subprocess.Popen(['diskpart'], shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        diskpart.communicate('select disk '+self.drive.device+'\r\nclean\r\nexit\r\n')
+        diskpart.communicate('select disk '+self.drive.device+'\nclean\nexit\n')
         diskpart.wait()
         if diskpart.returncode != 0:
             self.log('Diskpart exited with a nonzero status')
             return
 
-        if update_function:
-            update_function(0.0)
         dd = subprocess.Popen([(os.path.dirname(sys.argv[0]) if len(os.path.dirname(sys.argv[0])) else os.path.dirname(os.path.realpath(__file__))+'/..')+'/tools/dd.exe',
                                'bs=1M',
                                'if='+self.iso,
@@ -654,16 +652,22 @@ class WindowsLiveUSBCreator(LiveUSBCreator):
                 #buf = dd.stdout.read(256)
                 r = re.search('^([,0-9]+)', buf)
                 if r and len(r.groups()) > 0 and len(r.group(0)) > 0:
-                    update_function(float(r.group(0).replace(',', '')) / self.isosize)
+                    ratio = float(float(r.group(0).replace(',', '')) / self.isosize)
+                    if ratio >= 0.0 and ratio <= 1.0:
+                        update_function(ratio)
         else:
             dd.wait()
+
+        if update_function:
+            update_function(1.0)
+
 
     def restore_drive(self, d, callback):
 
         def restore_drive_work(callback, device):
             import threading
             diskpart = subprocess.Popen(['diskpart'], shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            diskpart.communicate('select disk '+self.drive.device+'\r\nclean\r\ncreate part pri\r\nselect part 1\r\nformat fs=fat32 quick\r\nassign\r\nexit\r\n')
+            diskpart.communicate('select disk '+self.drive.device+'\nclean\ncreate part pri\nselect part 1\nformat fs=fat32 quick\nassign\nexit\n')
             diskpart.wait()
             callback(True)
 

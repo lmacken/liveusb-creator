@@ -327,8 +327,7 @@ Dialog {
                                 }
                                 color: liveUSBData.currentImage.writer.finished ? "#628fcf" : "red"
                                 textColor: enabled ? "white" : palette.text
-                                transformOrigin: Item.Center
-                                enabled: (liveUSBData.currentImage.readyToWrite && !liveUSBData.currentImage.writer.running && liveUSBData.usbDrives.length > 0)
+                                enabled: liveUSBData.currentImage.readyToWrite && !liveUSBData.currentImage.writer.running && liveUSBData.usbDrives.length > 0
                                 text: liveUSBData.currentImage.writer.finished ? qsTranslate("", "Close") : qsTranslate("", "Write to disk")
                                 onClicked: {
                                     if (liveUSBData.currentImage.writer.finished) {
