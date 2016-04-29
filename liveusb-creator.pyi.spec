@@ -54,7 +54,7 @@ stripQml(a.datas)
 stripDebug(a.binaries)
 stripDebug(newqml)
 # TODO doesn't work
-#insertAngle(a.datas)
+insertAngle(a.datas)
 
 exe = EXE(pyz,
           a.scripts,
