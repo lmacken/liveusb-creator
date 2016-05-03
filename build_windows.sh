@@ -9,3 +9,7 @@ cp "${QTCREATOR_PATH}/libEGL.dll" dist/liveusb-creator
 cp "${QTCREATOR_PATH}/libGLESv2.dll" dist/liveusb-creator
 
 git describe --tags >> dist/liveusb-creator/RELEASE
+
+signtool sign dist/liveusb-creator/liveusb-creator.exe
+makensis data/liveusb-creator.nsi
+signtool sign data/FMW-setup.exe

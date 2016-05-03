@@ -1,5 +1,5 @@
-Name "LiveUSB Creator 3.99.0"
-OutFile "liveusb-creator-3.99.0-setup.exe"
+Name "Fedora Media Writer"
+OutFile "FMW-setup.exe"
 
 !include "MUI2.nsh"
 XPStyle on
@@ -9,10 +9,10 @@ XPStyle on
 
 SetCompressor lzma
 
-InstallDir "$PROGRAMFILES\LiveUSB Creator"
-InstallDirRegKey HKEY_LOCAL_MACHINE "SOFTWARE\LiveUSB Creator" ""
+InstallDir "$PROGRAMFILES\Fedora Media Writer"
+InstallDirRegKey HKEY_LOCAL_MACHINE "SOFTWARE\Fedora Media Writer" ""
 
-DirText "Select the directory to install LiveUSB Creator in:"
+DirText "Select the directory to install Fedora Media Writer in:"
 
 !define MUI_ICON liveusb-creator.ico
 ;!define MUI_UNICON liveusb-creator.ico
@@ -103,32 +103,32 @@ Section ""
 
 	; Create shortcut.
 	SetOutPath -
-	CreateDirectory "$SMPROGRAMS\LiveUSB Creator"
-	CreateShortCut "$SMPROGRAMS\LiveUSB Creator\LiveUSB Creator.lnk" "$INSTDIR\liveusb-creator.exe"
-	CreateShortCut "$SMPROGRAMS\LiveUSB Creator\Uninstall LiveUSB Creator.lnk" "$INSTDIR\uninst.exe" "" "$INSTDIR\uninst.exe" 0
+	CreateDirectory "$SMPROGRAMS\Fedora Media Writer"
+	CreateShortCut "$SMPROGRAMS\Fedora Media Writer\Fedora Media Writer.lnk" "$INSTDIR\liveusb-creator.exe"
+	CreateShortCut "$SMPROGRAMS\Fedora Media Writer\Uninstall Fedora Media Writer.lnk" "$INSTDIR\uninst.exe" "" "$INSTDIR\uninst.exe" 0
 
 	; Create uninstaller.
-	WriteRegStr HKEY_LOCAL_MACHINE "SOFTWARE\LiveUSB Creator" "" "$INSTDIR"
-	WriteRegStr HKEY_LOCAL_MACHINE "Software\Microsoft\Windows\CurrentVersion\Uninstall\LiveUSB Creator" "DisplayName" "LiveUSB Creator (remove only)"
-	WriteRegStr HKEY_LOCAL_MACHINE "Software\Microsoft\Windows\CurrentVersion\Uninstall\LiveUSB Creator" "UninstallString" '"$INSTDIR\uninst.exe"'
+	WriteRegStr HKEY_LOCAL_MACHINE "SOFTWARE\Fedora Media Writer" "" "$INSTDIR"
+	WriteRegStr HKEY_LOCAL_MACHINE "Software\Microsoft\Windows\CurrentVersion\Uninstall\Fedora Media Writer" "DisplayName" "Fedora Media Writer (remove only)"
+	WriteRegStr HKEY_LOCAL_MACHINE "Software\Microsoft\Windows\CurrentVersion\Uninstall\Fedora Media Writer" "UninstallString" '"$INSTDIR\uninst.exe"'
 	WriteUninstaller "$INSTDIR\uninst.exe"
 
 SectionEnd
 
-UninstallText "This will uninstall LiveUSB Creator from your system."
+UninstallText "This will uninstall Fedora Media Writer from your system."
 
 Section Uninstall
 
 	; Delete shortcuts.
-	Delete "$SMPROGRAMS\LiveUSB Creator\LiveUSB Creator.lnk"
-	Delete "$SMPROGRAMS\LiveUSB Creator\Uninstall LiveUSB Creator.lnk"
-	RMDir "$SMPROGRAMS\LiveUSB Creator"
-	Delete "$DESKTOP\LiveUSB Creator.lnk"
+	Delete "$SMPROGRAMS\Fedora Media Writer\Fedora Media Writer.lnk"
+	Delete "$SMPROGRAMS\Fedora Media Writer\Uninstall Fedora Media Writer.lnk"
+	RMDir "$SMPROGRAMS\Fedora Media Writer"
+	Delete "$DESKTOP\Fedora Media Writer.lnk"
 
 	; Delete registry keys.
 	Delete "$INSTDIR\uninst.exe"
-	DeleteRegKey HKEY_LOCAL_MACHINE "SOFTWARE\LiveUSB Creator"
-	DeleteRegKey HKEY_LOCAL_MACHINE "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\LiveUSB Creator"
+	DeleteRegKey HKEY_LOCAL_MACHINE "SOFTWARE\Fedora Media Writer"
+	DeleteRegKey HKEY_LOCAL_MACHINE "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Fedora Media Writer"
 
 	; Delete everything in the installation directory.
 	RMDir /R "$INSTDIR"
