@@ -57,7 +57,7 @@ rm -rf %{buildroot}
 %{__python} setup.py install -O1 --skip-build --root %{buildroot}
 
 #Adding the AppStream metadata file
-install -Dm 0644 -p liveusb-creator.appdata.xml \
+install -Dm 0644 -p data/liveusb-creator.appdata.xml \
 	%{buildroot}%{_datadir}/appdata/liveusb-creator.appdata.xml
 
 # polkit stuff
@@ -98,9 +98,6 @@ rm -rf %{buildroot}
 %{_datadir}/appdata/%{name}.appdata.xml
 #%{_datadir}/locale/*/LC_MESSAGES/liveusb-creator.mo
 %{_datadir}/polkit-1/actions/org.fedoraproject.pkexec.run-liveusb-creator.policy
-
-#AppStream metadata
-%{_datadir}/appdata/liveusb-creator.appdata.xml
 
 %changelog
 * Mon Apr 25 2016 Martin Briza <mbriza@redhat.com> - 3.95.0
