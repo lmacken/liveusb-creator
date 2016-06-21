@@ -704,7 +704,8 @@ class LiveUSBData(QObject):
 
         self.updateThread.finished.connect(self.fillReleases)
         self.updateThread.finished.connect(self.updateThreadStopped)
-        QTimer.singleShot(0, self.updateThread.start)
+        if datetime.today().year >= 2016 and datetime.today().month > 9:
+            QTimer.singleShot(0, self.updateThread.start)
 
     @pyqtSlot()
     def fillReleases(self):
