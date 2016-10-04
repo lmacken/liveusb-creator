@@ -361,7 +361,7 @@ class Release(QObject):
         self.errorChanged.emit()
         self.warningChanged.emit()
 
-        self.addInfo(_('After you have tried or installed Fedora, you can use Fedora Media Writer to restore your flash drive to its factory settings.'))
+        self.addInfo(_('After you have tried or installed Fedora, you can use Fedora LiveUSB Creator to restore your flash drive to its factory settings.'))
 
         self._writer.run()
 

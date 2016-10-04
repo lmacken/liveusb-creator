@@ -73,7 +73,7 @@ Dialog {
                     Text {
                         Layout.alignment: Qt.AlignHCenter
                         wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                        text: qsTranslate("", "<p align=\"justify\">Please wait while Fedora Media Writer restores your portable drive.</p>")
+                        text: qsTranslate("", "<p align=\"justify\">Please wait while Fedora LiveUSB Creator restores your portable drive.</p>")
                         font.pixelSize: $(12)
                     }
                 }

@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Name=Fedora Media Writer
+Name=Fedora LiveUSB Creator
 Comment=Write Fedora images to a portable drive
 Icon=fedorausb
 Exec=liveusb-creator_polkit
