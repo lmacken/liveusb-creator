@@ -10,7 +10,16 @@
 		<p>A tool to create a bootable live USB drive with an edition of Fedora. Not only can Fedora LiveUSB Creator write an image to your flash drive, it can also download it for you. It offers official editions (Server, Workstation), Fedora spins (KDE Plasma Desktop, Xfce Desktop, Cinnamon Desktop,...), and Fedora Labs (Design Suite, Security Lab,...). It provides basic information about each of them to help you make the right choice.</p>
 		<p>Fedora LiveUSB Creator can also write other bootable ISOs loaded from your local disk, but keep in mind that it's only tested with Fedora images.</p>
 	</description>
-	<keywords>iso,fedora,usb,writer,live,spin,creator</keywords>
+	<keywords>
+		<keyword>iso</keyword>
+		<keyword>fedora</keyword>
+		<keyword>usb</keyword>
+		<keyword>writer</keyword>
+		<keyword>live</keyword>
+		<keyword>spin</keyword>
+		<keyword>creator</keyword>
+		<keyword>media</keyword>
+	</keywords>
 	<url type="homepage">https://fedorahosted.org/liveusb-creator</url>
 	<screenshots>
 		<screenshot type="default">https://github.com/lmacken/liveusb-creator/raw/develop/screenshots/screenshot1.png</screenshot>
